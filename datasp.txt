@@ -1,0 +1,522 @@
+seller表
+seller_id	                                int(11)                           賣家id
+store_name	                        varchar(255)                店家名稱
+contact_number	               	varchar(20)                  店家連絡電話
+email	                                varchar(255)	              email
+company_address	                varchar(255)	             店家地址
+company_description	        text                               店家描述簡介
+store_image	                        varchar(255)                攤位照片
+opening_hours                       time                              攤位開始營業時間
+closing_hours	                        time                              攤位結束營業時間
+created_at                              timestamp                    建立日期
+rest_day	                                varchar(50)                  賣家周一到周日 選擇公休日期(0~6) 前端也做成下拉選項
+profile_picture                        varchar(255)                賣家個人頭貼圖片 
+favorite_count	                        int(11)                           被買家蒐藏數
+market_id                                int(11)                           夜市id 
+ad_id                                       int(11)                           廣告id
+--------------------------------------------------------------------------------------
+products表
+product_id                              int(11)                           產品id
+category                                 varchar(255)                 種類
+product_name                       varchar(255)                 產品名稱 
+product_description              text                                產品描述
+image_url                               varchar(255)                 產品圖
+price                                       int(20)                            價格
+stock_quantity                       int(11)                            庫存數量 
+created_at                             timestamp                     建立日期
+status                                    tinyint(1)		            產品上下架狀態 0=false
+category_id                          int(11)                              種類id 
+favorite_count                      int(11)                              被買家蒐藏數
+product_ingredient              text                                  成分表 
+product_nutrition                  text                                  營養成分表
+seller_id                             int(11)                                賣家id (外鍵)
+附註:
+補充說明目前設定products表中的seller_id:
+小七的滷肉飯seller_id:4
+('小七的滷肉飯', '0911-444444', '台北市大安區信義路四段218號', '香氣四溢的滷肉飯，讓你一試再愛上。'),
+
+老王的珍珠奶茶seller_id:6
+('老王的珍珠奶茶', '0933-666666', '台南市中西區忠義路12號', '香濃的奶茶搭配Q彈珍珠，一口一顆珍珠，滿滿的幸福感。'),
+
+老李的麻辣鍋seller_id:16
+('老李的麻辣鍋', '0911-161616', '台南市北區成功路66號', '麻辣鍋中的巔峰之作，辣中帶鮮，讓你食指大動。'),
+
+上面的賣家id在products表中有對應欄位，目的是讓商家登入自己的系統後，觀看產品列表能列出來該賣家正在售賣的產品。
+
+--------------------------------------------------------------------------------------
+product_categories表  
+category_id                          int(11)                              種類id
+category_name                   varchar(255)                    種類
+--------------------------------------------------------------------------------------
+account表
+account_id                         int(11)                                帳號id
+seller_id                             int(11)                                賣家id (外鍵)
+account                              varchar(255)                      賣家註冊的帳號(手機)
+password                           varchar(255)                      密碼
+--------------------------------------------------------------------------------------
+bank_account表
+account_id                         int(11)                                銀行帳號id
+seller_id                             int(11)                                賣家id(外鍵)
+account_number               varchar(255)                     銀行帳號號碼
+bank_code                        int(11)                                銀行代碼
+created_at                         timestamp                         建立日期
+--------------------------------------------------------------------------------------
+
+ALTER TABLE account
+ADD CONSTRAINT fk_account_seller_id
+FOREIGN KEY (seller_id)
+REFERENCES seller(seller_id);
+
+
+ALTER TABLE bank_account
+ADD CONSTRAINT fk_bank_account_seller_id
+FOREIGN KEY (seller_id)
+REFERENCES seller(seller_id);
+--------------------------------------------------------------------------------------
+
+我的bank_account表中 一個seller_id能有三個銀行帳號(一位攤販能有三個銀行資料做備用)
+舉例:
+bank_account表
+account_id  |	seller_id  |	account_number  |  bank_code |	created_at	
+       1               |         1           |       0987654321        |       830          |   //這裡自動生成    
+       2               |         1           |       0333654321        |       330          |   //這裡自動生成    
+       3               |         1           |       0111654321        |       430          |   //這裡自動生成    
+
+我的account表中的欄位 一個seller_id只有一筆資料
+舉例:
+account表
+account_id  |	seller_id	|        account        | 	password	
+       1                |          1          |   0987654321    |      123314114r
+       2                |          2          |   0933333333    |      13rrr14114r
+
+
+
+要給予分配的賣家攤位名(共3位):
+小七的滷肉飯seller_id:4   
+('小七的滷肉飯', '0911-444444', '台北市大安區信義路四段218號', '香氣四溢的滷肉飯，讓你一試再愛上。'),
+0976331267
+asd1234
+
+老王的珍珠奶茶seller_id:6
+('老王的珍珠奶茶', '0933-666666', '台南市中西區忠義路12號', '香濃的奶茶搭配Q彈珍珠，一口一顆珍珠，滿滿的幸福感。'),
+0987654321
+asd1236
+
+老李的麻辣鍋seller_id:16
+('老李的麻辣鍋', '0911-161616', '台南市北區成功路66號', '麻辣鍋中的巔峰之作，辣中帶鮮，讓你食指大動。'),
+0971353209
+asd12316
+
+
+
+INSERT INTO seller (store_name, contact_number, company_address, company_description)
+VALUES
+('阿嬤的鹹酥雞', '0922-111111', '台北市中正區忠孝東路一段1號', '好吃的鹹酥雞，香脆多汁，來一份不夠吃！'),
+('阿宗的麵線', '0933-222222', '台中市西屯區市政北二路75號', '台中最有名的麵線攤販，湯頭鮮美，深受學生歡迎。'),
+('阿財的豆花', '0955-333333', '高雄市鼓山區美術南二路30號', '超滑嫩的豆花，配上珍珠、紅豆，清涼解暑的最佳選擇。'),
+('小七的滷肉飯', '0911-444444', '台北市大安區信義路四段218號', '香氣四溢的滷肉飯，讓你一試再愛上。'),
+('阿昌的大腸包小腸', '0988-555555', '新竹市東區介壽路168號', '道地的新竹味，酥脆的大腸包裹著Q彈的小腸，必點美食。'),
+('老王的珍珠奶茶', '0933-666666', '台南市中西區忠義路12號', '香濃的奶茶搭配Q彈珍珠，一口一顆珍珠，滿滿的幸福感。'),
+('阿美的芋頭球', '0977-777777', '彰化縣彰化市光復路二段66號', '外酥內軟的芋頭球，外表金黃酥脆，內裡芋頭香氣滿溢。'),
+('小龍的蚵仔煎', '0922-888888', '嘉義市西區民生北路99號', '嘉義最道地的蚵仔煎，酥脆外皮，鮮嫩多汁的蚵仔，美味無比。'),
+('阿姨的冰淇淋', '0955-999999', '宜蘭縣宜蘭市民族路一段28號', '宜蘭的冰淇淋必吃攤販，多種口味任你挑選，冰涼爽口。'),
+('老張的滷味', '0911-101010', '桃園市中壢區中山東路168號', '滷味大碗，鹹甜適中，讓你停不下來。'),
+('小貝的章魚燒', '0933-111111', '新北市板橋區文化路一段88號', '酥脆外皮，內餡Q彈，章魚燒中的經典口味。'),
+('阿成的烤玉米', '0988-121212', '苗栗縣苗栗市中正路55號', '香甜多汁的烤玉米，吃了停不下來的好滋味。'),
+('老媽的魯肉飯', '0922-131313', '台北市士林區文林路125號', '醇厚的魯肉，搭配軟綿的米飯，家的味道就是這樣。'),
+('小雯的香腸', '0933-141414', '新竹市北區民權路188號', '嚼勁十足的台式香腸，炒飯、泡麵的好夥伴。'),
+('阿哲的豬血糕', '0955-151515', '台中市北區太原路99號', 'Q彈爽口的豬血糕，沾著辣椒醬更是美味。'),
+('老李的麻辣鍋', '0911-161616', '台南市北區成功路66號', '麻辣鍋中的巔峰之作，辣中帶鮮，讓你食指大動。'),
+('小美的臭豆腐', '0988-171717', '彰化縣彰化市進化路55號', '獨門的臭味配上香脆外皮，是台灣味道的代表。'),
+('阿德的潤餅', '0933-181818', '新竹市東區光復路168號', '香脆的潤餅皮，搭配豐富的餡料，一口咬下滿滿幸福感。'),
+('老王的蘿蔔糕', '0955-191919', '高雄市鳳山區文化路二段88號', '彈牙的蘿蔔糕，外脆內軟，老少咸宜的美味。'),
+('小李的鴨血糕', '0911-202020', '台北市松山區八德路三段99號', '獨特的口感，沾上醬料更是美味可口。'),
+('阿青的鹹豆漿', '0988-212121', '台中市西屯區惠中路88號', '濃郁的鹹豆漿，搭配煎餅或油條，早餐首選。'),
+('老吳的蜜餞', '0933-222222', '彰化縣鹿港鎮頂番路55號', '香甜可口的蜜餞，各式水果滿足你的味蕾。'),
+('小陳的鴨腿', '0955-232323', '新北市三重區重新路168號', '香嫩多汁的鴨腿，外皮酥脆，是肉食者的最愛。'),
+('阿美的芝麻湯圓', '0911-242424', '台南市安南區海佃路88號', '熱騰騰的湯圓，包裹著濃郁的芝麻餡，冬天的最愛。'),
+('老王的油飯', '0988-252525', '桃園市桃園區成功路99號', '香氣撲鼻的油飯，米粒飽滿，讓你回味無窮。'),
+('小林的貢丸湯', '0933-262626', '高雄市鳳山區文衡路55號', '嚼勁十足的貢丸，搭配清甜的湯頭，下飯好幫手。'),
+('阿珍的炸雞排', '0955-272727', '台北市中山區長安東路168號', '酥脆多汁的炸雞排，是街頭美食中的經典之作。'),
+('老張的炒米粉', '0911-282828', '新竹市東區民生路88號', '熱騰騰的炒米粉，香氣四溢，令人垂涎三尺。'),
+('小劉的珍珠粉圓', '0988-292929', '苗栗縣苗栗市中山路55號', 'Q彈的珍珠，配上香甜的粉圓，一口一顆，停不下來。'),
+('阿花的米糕', '0933-303030', '台中市南區建國南路99號', '綿密香甜的米糕，搭配花生粉或紅豆，口感十足。'),
+('老王的香腸', '0955-313131', '台南市南區文化路一段88號', '台式香腸的經典味道，配上一杯啤酒最爽快。'),
+('小劉的擔仔麵', '0911-323232', '高雄市前鎮區民權二路168號', '濃郁的麵湯，配上香嫩的肉片，讓你一口接一口。'),
+('阿美的蔥油餅', '0988-333333', '台北市大同區迪化街55號', '外酥內軟的蔥油餅，鹹香可口，美味十足。'),
+('老張的肉圓', '0933-343434', '桃園市中壢區中央西路99號', '外酥內嫩的肉圓，沾上甜辣醬，一口接一口停不下來。'),
+('小張的涼粉', '0955-353535', '新北市永和區永和路168號', '清涼解暑的涼粉，搭配醬料和辣椒，酸辣可口。');
+
+
+我的EXPRESS資料夾結構
+
+├── public 
+ │       ├── seller(用來裝賣家上傳的頭貼與商店資料夾)
+ │       ├── products(用來上傳產品圖片的資料夾)
+├── routers
+ │       ├── productsRouter.js
+ │       ├── sellerRouter.js
+ │       ├── authRoutes.js
+├── src
+├── utils
+ │       ├── db.js
+├── views
+├── index.js
+├── dev.env
+└──...
+
+我的next.js資料夾結構
+├── components(與別人開發的檔案)
+ │       ├── common
+ │       │       ├── search-bar.js
+ │       ├── layout
+│       │       ├── default-layout.js
+│       │       ├── footer.js
+│       │       ├── main-layout.js
+│       │       ├── navbar-custom.js
+│       │       ├── navbar-logout.js
+│       │       ├── navbar-seller.js
+│       │       ├── navbar.js
+│       │       ├── section-index.js
+│       │       ├── section.js
+ │       ├── AythChecker.js
+├── contexts
+ │       ├── SellerContext.js
+├── pages
+ │       ├── api(它內建的)
+ │       │       ├── hello.js
+ │       ├── seller-basic-data
+ │       │       ├── ad.js(廣告頁)
+ │       │       ├── config.js(我的路由)
+ │       │       ├── addProduct.js(新增商品頁)
+ │       │       ├── bank.js(賣家基本資料的銀行頁面)
+ │       │       ├── basic.js(賣家基本資料主頁面 index.js)
+ │       │       ├── modify.js(修改產品資料頁面)
+ │       │       ├── orderList.js(訂單列表頁面
+ │       │       ├── producutsList.js(產品列表頁面)
+ │       │       ├── QRcode.js(QRcode掃描頁面)
+ │       ├──seller-login
+ │       │       ├── login.js
+ │       ├──seller-register
+ │       │       ├── register.js
+ │       ├── _app.js
+ │       ├── _document.js
+ │       ├── index.js
+├── public
+├── server
+ │       ├── index.js
+├── styles
+ │       ├── globals.css
+ │       ├── globals.scss
+ │       ├── Home.module.css
+ │       ├── index.scss
+└──...
+
+// packagejson
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "next": "14.1.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.0.1",
+    "scss": "^0.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "sass": "^1.74.1"
+  }
+}
+
+
+
+// hello.js
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+
+export default function handler(req, res) {
+  res.status(200).json({ name: "John Doe" });
+}
+
+
+// _app.js
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { SellerProvider } from '../contexts/SellerContext';
+import MainLayout from '@/components/layout/main-layout'
+import AuthChecker from '../components/AuthChecker'
+import { useEffect } from 'react'
+import '@/styles/globals.scss'
+
+
+function MyApp({ Component, pageProps }) {
+
+  
+  useEffect(() => {
+    // 要document物件出現後才能導入 bootstrap的js函式庫
+    import('bootstrap/dist/js/bootstrap')
+  }, [])
+  const getLayout =
+  Component.getLayout || ((page) => <MainLayout>{page}</MainLayout>)
+
+
+  return getLayout(
+
+    <SellerProvider>
+      <AuthChecker>
+      <Component {...pageProps} />
+      </AuthChecker>
+    </SellerProvider>
+  );
+}
+
+export default MyApp;
+
+
+// _document.js
+import { Html, Head, Main, NextScript } from "next/document";
+
+export default function Document() {
+  return (
+    <Html lang="en">
+      <Head />
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
+
+
+// /contexts/SellerContext.js
+import { createContext, useContext, useState } from "react";
+
+export const SellerContext = createContext();
+
+export const useSeller = () => useContext(SellerContext);
+
+export const SellerProvider = ({ children }) => {
+  const [seller, setSeller] = useState(null);
+
+  return (
+    <SellerContext.Provider value={{ seller, setSeller }}>
+      {children}
+    </SellerContext.Provider>
+  );
+};
+
+
+ // /components/AuthChecker.js
+import { useEffect, useContext } from "react";
+import { SellerContext } from "../contexts/SellerContext";
+import { useRouter } from 'next/router';
+
+const AuthChecker = ({ children }) => {
+  const { seller, setSeller } = useContext(SellerContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedSellerId = localStorage.getItem("sellerId");
+    if (storedSellerId) {
+      setSeller({ id: storedSellerId, isLoggedIn: true });
+    } else {
+      // 如果没有存储的 sellerId，可以重定向到登录页面
+      router.push('/seller-login');
+    }
+  }, []);
+
+  return children;
+};
+
+export default AuthChecker;
+
+
+// config.js
+// 賣家相關路由
+const SELLER_API="http://localhost:3002/sellers/"
+
+// 產品相關路由
+const PRODUCTS_API="http://localhost:3002/products/"
+
+export {SELLER_API,PRODUCTS_API}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+我是一名全端工程師 下面訊息非常多 ~~  請仔細理解我的所有意思 並幫助我
+我目前正在使用
+-next.js為前端
+-express為後端
+-mysql為資料庫
+我接下來需要你記住我給你的程式碼與結構
+我會給:
+1.我的Mysql資料庫設計 與所有 欄位
+2.我的Express 專案資料夾結構
+3.Express中的所有程式碼與檔案(每個程式碼上面都有程式碼的名稱)
+4.我的next.js專案資料夾結構
+5.我的next.js中的所有程式碼與檔案(每個程式碼上面都有程式碼的名稱)
+------------------------------------------------------------------------------------------
+我的目標是 搭建一個 賣家會員中心的系統頁面
+流程:
+當我的賣家從登入頁面登入後>會進入一個賣家基本資料頁面，裡面會全是賣家的基本資料，這些基本資料將會在一個表單中
+賣家能對這些資料進行 修改 新增 刪除 也就是對自己的個人資料作CRUD
+要達成以上目標我需要
+1.一個 前端 登入頁面 透過axios發送登入請求的表單 當後端密碼驗證過之後
+發送賣家id與賣家名 到前端 前端的context要接收並且變 讓我的所有有關賣家的網頁都能透過axios發送請求連id一起發送後從後端撈資料後呈現
+2.一個 前端 讓賣家能透過axios發送請求的表單 時時的更新資料庫中的欄位
+3.我的賣家系統布置大概是這樣 
+請您幫幫我用bootstrap 切版成
+container>col.3+col.1+col.8
+切版 :
+
+左側是一個類似導覽列的react組件 其作用是 讓用戶點下後可以讓  右側的欄位內顯示的組件更換成相應組件
+-------------------------------------------------------------------------------------------------------------------
+|                                                                                                   _______________________________________________            
+|      (賣家頭貼放在這 )基本資料編輯                          |                                                                                               |
+|       銀行帳號設定                                                              |                                                                                               |
+|       訂單管理                                                                        |                            這裡是賣家基本資料                        |                                     
+|      上架商品                                                                         |   利用登入後取得context的用戶資料                     |   
+|   產品列表>列表預覽+修改商品                                 |           帶入一個表單中                                                   |   
+|(這裡>是點下產品列表後手風琴動畫特效             |              向後端請求該id的身分資訊                          |
+並對應出 目前的功能頁)                                                 |                再將資訊帶入該表單中                                 |  
+ |       賣家評論區                                                                   |       讓用戶能透過這表單對自己的資料作修改   |              
+|       訂單QRcode掃描                                                       |                                                                                                 |
+|       廣告投放區域                                                              |                                                                                                 |
+|                                                                                                  |                                                                                                 |
+|                                                                                                  |                                                                                                 |
+|                                                                                                  |                                                                                                 |          
+|                                                                                                  | ________________________________________________|                 
+
+
+
+
+
+
+
+右側這裡 我需要一個bootsrtap的輸入框表單
+------------------------------------------------------------------------------------
+|                                               使用帳號號輸入框                                                                 |
+|                                               使用者密碼輸入框                                                                 |
+|                                               商家店名輸入框                                                                      |
+|                                               商家連絡電話                                                                           |
+|                                                email                                                                                           |
+|                                                商家地址                                                                                   |
+|                                                 上傳商家圖片 (這裡要能上船圖檔                                |
+|                                                  店家簡介  (這裡是一個textarea 在下方)                    |
+|                                                  |                                             |                                                     |
+|                                                  |                                             |                                                     |
+|                                                  |                                             |                                                     |
+|                                                  |______________________|                                                     |
+|                                                                                                                                                      |
+|                                                                                                                                                      |
+|                                                                                                                                                      |
+|                                                                                                                                                      |
+|_________________________________________________________________________ |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------????????????????????????/
+
+我的設計與賣家基本資料並沒有太多差異~ 
+差異在表單方面替換成一個bootstrat的表格
+
+我將給你我的:
+1. mysql products 表結構
+2.我的產品列表express後端
+
+以下是功能描述:
+我所要達成的功能一樣是需要從context中拿取seller_id 往後端查詢
+
+左側的一切將與賣家基礎資料一模一樣
+右側將是一個表格
+將產品的一些欄位顯示出來
+
+-------------------------------------------------------------------------------------------------------------------
+|                                                                                                      _____________________________________________         |
+|                                                                                                       |______依照產品名稱搜索________(搜索按鈕)_|       |
+|                                                                                                                                                                                                           |
+|                                                                                             <依照金額分類>  <依照類別分類>  <依照狀態分類>     // 這是下拉選單                                                                                            
+|                                                                                                _______________________________________________            |
+|      (賣家頭貼放在這 )基本資料編輯                          |                                                                                               |         |
+|       銀行帳號設定                                                              |                                                                                               |         |
+|       訂單管理                                                                        |    這裡是從後端拿取產品列表中的資料並示      |        |                             
+|      上架商品                                                                         |            | -----------------------------------------|        |        |
+|   產品列表>列表預覽+修改商品                                 |           |      表格設計是兩行上面名稱下面值   |        |       | 
+|(這裡>是點下產品列表後手風琴動畫特效             |            |------------------------------------------|       |        |
+並對應出 目前的功能頁)                                                 |                                                                                                |         |
+ |       賣家評論區                                                                   |             | -----------------------------------------|       |        |
+|       訂單QRcode掃描                                                       |            |      表格設計是兩行上面名稱下面值   |        |       |
+|       廣告投放區域                                                              |              | -----------------------------------------|       |        |
+|                                                                                                  |                                                                                                 |        |
+|                                                                                                  |               | -----------------------------------------|       |       |
+|                                                                                                  |               |      表格設計是兩行上面名稱下面值   |      |       |    
+|                                                                                                  |                | -----------------------------------------|      |        |
+
+
+
+
+
+
+表格內要有:產品名稱、產品數量、產品類別、產品價格、產品狀態
+表格詳細設計:
+----------------------------------------------------------------------------------------------------------------------
+|            產品名稱            ||            產品數量            ||            產品類別            ||           產品狀態            |           修改         |
+----------------------------------------------------------------------------------------------------------------------
+|            後端來的            ||            後端來的            ||            後端來的            ||          後端來的             |  一個修改按鈕 |
+-----------------------------------------------------------------------------------------------------------------------

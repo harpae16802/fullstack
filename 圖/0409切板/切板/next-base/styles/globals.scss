@@ -1,0 +1,850 @@
+// 檔案位置: styles/global.scss
+// 變數覆蓋用 (Variable overrides)
+// // 全站配色 colors
+$black: #070505;
+$primary: rgb(163, 44, 45);
+$secondary: rgb(225, 209, 178);
+$success: rgb(41, 162, 30);
+$warning: rgb(255, 201, 64);
+$danger: rgb(255, 1, 1);
+$light-primary: rgb(234, 105, 106);
+$deep-primary: rgb(98, 27, 27);
+$deep-gray: rgb(183, 180, 177);
+$gray: rgb(229, 225, 221);
+
+// ↑↑↑  變數覆蓋(Variable overrides) 要寫在這行"上面"  ↑↑↑
+// 導入所有 bootstrap 樣式
+@import '~bootstrap/scss/bootstrap';
+// ↓↓↓  其它客製樣式要寫在這行的"下面" ↓↓↓
+
+body {
+  @media (max-width: 992px) {
+    padding: 0px;
+  }
+  padding: 0px 20px;
+  position: relative;
+
+  // 共通元件CSS設定
+  // 按鈕
+  .btn {
+    color: #fff;
+    padding: 5px 30px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .btn-light {
+    color: $primary;
+    border: 2px solid #fff;
+    background-color: #fff;
+    --bs-btn-hover-bg: #fff;
+    --bs-btn-hover-color: rgb(163, 44, 45);
+    --bs-btn-hover-border-color: #fff;
+    --bs-btn-focus-shadow-rgb: 255, 255, 255;
+    --bs-btn-active-color: rgb(163, 44, 45);
+    --bs-btn-active-bg: #fff;
+    --bs-btn-active-border-color: rgb(163, 44, 45);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(63, 44, 45, 0.125);
+  }
+  .btn-light:hover {
+    border: 2px solid $primary;
+  }
+  .btn-outline-primary {
+    border-radius: 20px;
+    border: 2px solid $primary;
+    background-color: #fff;
+    color: $primary;
+  }
+
+  // 表單
+  .form-label {
+    @media (max-width: 992px) {
+      font-size: 18px;
+    }
+    color: $primary;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .form-control {
+    border: 2px solid $primary;
+    border-radius: 12px;
+    padding: 12px 30px;
+  }
+
+  // textarea 滾輪修改(最後選擇不顯示)
+  .form-control::-webkit-scrollbar {
+    display: none;
+    width: 12px;
+    height: 5px;
+  }
+  .form-control::-webkit-scrollbar-thumb {
+    background-color: $primary;
+    border-radius: 12px;
+    // border-right: 2px solid #fff;
+    // border-left: 2px solid #fff;
+  }
+  .form-control::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 0px 12px 0px 0px;
+  }
+  .form-control::-webkit-resizer {
+    // background-color: #fff;
+    background-color: transparent;
+    border-radius: 0px 0px 12px 0px;
+  }
+  .form-control::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+  // .form-control::-webkit-scrollbar-button:vertical:decrement {
+  //   display: block;
+  //   background-color: #fff;
+  //   border-radius: 0px 12px 0px 0px;
+  // }
+  // .form-control::-webkit-scrollbar-button{
+  //   background-color: #fff;
+  //   border-radius: 0px 12px 0px 0px;
+  // }
+
+  // 下拉選單
+  .form-select {
+    border: 2px solid $primary;
+    border-radius: 12px;
+    padding: 12px 30px;
+  }
+  .form-select:hover {
+    background-color: #ffffff;
+    color: #333;
+  }
+  .form-select option{
+    border-radius: 12px;
+  }
+
+  // 勾選
+  .form-check {
+    color: $primary;
+    font-weight: 700;
+  }
+  .form-check-input {
+    border: 2px solid $primary;
+  }
+  .form-check-input:focus {
+    border: 2px solid $primary;
+    box-shadow: none;
+  }
+
+  // 頁碼
+  nav {
+    .pagination {
+      --bs-pagination-padding-x:0px;
+      --bs-pagination-padding-y:0px;
+      --bs-pagination-border-color:transparent;
+      --bs-pagination-hover-border-color:transparent;
+      --bs-pagination-active-border-color:transparent;
+      --bs-pagination-focus-bg:#fff;
+      --bs-pagination-border-radius:5px;
+      --bs-pagination-active-bg:rgb(234, 105, 106);
+      --bs-pagination-disabled-color:rgb(183, 180, 177);
+      --bs-pagination-disabled-bg:rgb(229, 225, 221);
+      --bs-pagination-disabled-border-color:transparent;
+      color: $primary;
+      font-size: 16px;
+      font-weight: 800;
+      gap:20px;
+      border: none;
+      .page-number,.page-pre,.page-next{
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+      }
+    }
+    .pagination .page-item {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+
+    }
+    .pagination .page-link {
+      border-radius: 5px; 
+    }
+  }
+
+  // 以下是layout設定
+  .my-container-fluid {
+    @media (max-width: 992px) {
+      border-radius: 0px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 0px;
+      border-radius: 0px;
+      // border 手機版有奇怪的破圖才設的 沒效果可拿掉
+      // border-right: 2px solid $primary;
+      // border-left: 2px solid $primary;
+    }
+    align-self: stretch;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 70px;
+    border-radius: 70px;
+    background: $primary;
+
+    header {
+      @media (max-width: 992px) {
+        // border 手機版有奇怪的破圖才設的 或許可拿掉
+        border-right: 12px solid $primary;
+        border-left: 12px solid $primary;
+        padding: 10px 0px 0px 0px;
+      }
+      padding: 15px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      // ====== Navbar設定
+      .navbar .container-fluid {
+        font-size: 1.2rem;
+        height: 54px;
+
+        @media (max-width: 992px) {
+          height: initial;
+          padding: 0px;
+          justify-content: center;
+        }
+      }
+
+      // === 手機板漢堡設定
+      .navbar-toggler {
+        border: none;
+        color: $secondary;
+        padding: 0;
+      }
+      .navbar-toggler-icon {
+        height: 25px;
+      }
+      .navbar-toggler:focus {
+        box-shadow: none;
+        color: $light-primary;
+      }
+      .navbar-toggler .navbar-toggler-icon {
+        background-image: none;
+        font-size: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      // === Navbar連結設定
+      // 手機板上欄
+      .inline-nav {
+        @media (max-width: 992px) {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          align-self: stretch;
+          width: 100%;
+          padding: 0px 16px;
+          margin-bottom: 10px;
+        }
+      }
+
+      // 手機板右邊 icons
+      .container-fluid .right-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .navbar-brand.min-cart {
+        @media (max-width: 992px) {
+          display: flex;
+          font-size: 25px;
+          color: $secondary;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        display: none;
+      }
+      .navbar-brand.min-cart:hover{
+        color: $light-primary;
+      }
+
+      // Navbar相關設定
+      .navbar-nav {
+        @media (max-width: 992px) {
+          display: flex;
+          justify-content: center;
+          align-items: start;
+          gap: 0px;
+          background-color: $secondary;
+          border-radius: 20px;
+        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        //  網頁版下拉選單部分
+        .triangle {
+          @media (max-width: 992px) {
+            display: none;
+          }
+          position: absolute;
+          border-color: transparent transparent #fff transparent;
+          border-style: solid solid solid solid;
+          border-width: 25px;
+          top: -40px;
+          left: 100px;
+          height: 0px;
+          width: 0px;
+        }
+        .nav-item .dropdown-webbar {
+          text-decoration: none;
+        }
+
+        .nav-item .dropdown-menu.login-border {
+          @media (max-width: 992px) {
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+          }
+        }
+
+        .nav-item .dropdown-menu {
+          @media (max-width: 992px) {
+            position: initial;
+            width: initial;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 50%);
+            border-radius: 0px;
+          }
+          // 定位
+          top: 60px;
+          left: -110px;
+          // 外觀設定
+          width: 210px;
+          border: none;
+          border-radius: 20px;
+          --bs-dropdown-link-hover-bg: none;
+          --bs-dropdown-link-active-bg: none;
+          padding-top: 6px;
+          padding-bottom: 0px;
+
+          li:not(:last-child) {
+            @media (max-width: 992px) {
+              border: none;
+            }
+            border-bottom: 2px dotted $gray;
+          }
+          .dropdown-item {
+            @media (max-width: 992px) {
+              padding: 8px 20px;
+              font-weight: 500;
+              justify-content: start;
+              border-top: 1px dotted $primary;
+            }
+            color: $primary;
+            text-align: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 800;
+            display: flex;
+            padding: 20px 20px;
+            justify-content: center;
+            align-items: center;
+            align-self: stretch;
+          }
+          .dropdown-item:hover {
+            color: $light-primary;
+          }
+          .dropdown-item:active {
+            color: $light-primary;
+          }
+        }
+
+        // 手機板 Navbar的部分
+        .view-nav-items .nav-item {
+          @media (max-width: 992px) {
+            display: flex;
+            align-items: center;
+            align-self: stretch;
+          }
+        }
+        // 下底線
+        .view-nav-items .nav-item:nth-child(-n + 2) {
+          @media (max-width: 992px) {
+            border-bottom: 1px dotted $primary;
+          }
+        }
+        .nav-min-types {
+          @media (max-width: 992px) {
+            display: flex;
+            flex-direction: column;
+            align-self: stretch;
+          }
+          display: none;
+        }
+
+        .nav-min-types .nav-item {
+          border-top: 1px dotted $primary;
+        }
+        .nav-link .my-drop-items {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .faangle {
+            font-size: 25px;
+          }
+          .faangleup {
+            display: none;
+          }
+        }
+        .nav-link.show .my-drop-items {
+          .faangleup {
+            display: initial;
+          }
+          .faangledown {
+            display: none;
+          }
+        }
+
+        // 網頁版nav調整
+        .view-nav-items {
+          @media (max-width: 992px) {
+            flex-direction: column;
+          }
+          display: flex;
+          align-self: stretch;
+          align-items: center;
+          justify-content: center;
+          .nav-link {
+            @media (max-width: 992px) {
+              width: initial;
+            }
+            width: 150px;
+            text-align: center;
+          }
+        }
+
+        // 以下為兩版共用的部分
+        .nav-link {
+          @media (max-width: 992px) {
+            font-weight: 700;
+            font-size: 16px;
+            color: $primary;
+            padding: 8px 20px;
+          }
+          color: $secondary;
+        }
+        .nav-link:hover {
+          @media (max-width: 992px) {
+            color: $light-primary;
+          }
+          color: $light-primary;
+        }
+        .nav-link.active {
+          @media (max-width: 992px) {
+            font-weight: 700;
+            color: $light-primary;
+            border: none;
+            padding: 8px 20px;
+          }
+          color: $secondary;
+          border: 2px solid $secondary;
+          border-radius: 20px;
+          padding: 4px 30px;
+        }
+        .nav-link.disabled {
+          color: $deep-primary;
+        }
+
+        // 右側圖案設定
+        .nav-icon-items {
+          @media (max-width: 992px) {
+            display: none;
+          }
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+        .nav-icons {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .dropdown-webbar:hover,
+        .dropdown-webbar.show {
+          .fa-bars {
+            color: $light-primary;
+          }
+          .fa-user {
+            background-color: $light-primary;
+            border: 1px solid $light-primary;
+          }
+        }
+        .nav-icons .fa-bars {
+          color: $secondary;
+          font-size: 25px;
+          margin-right: 10px;
+        }
+        .nav-icons .fa-user {
+          font-size: 35px;
+          color: $primary;
+          background-color: $secondary;
+          border: 1px solid $secondary;
+          padding: 6px 6px 4px 6px;
+          border-radius: 100px;
+        }
+        .nav-icons .fa-cart-shopping {
+          font-size: 30px;
+        }
+      }
+    }
+
+    // 主內容區
+    main {
+      // .bgColor {
+      //   margin-top: -20px;
+      //   border-right: 20px solid $primary;
+      //   border-left: 20px solid $primary;
+      //   padding: 20px;
+      //   border-radius: 70px 70px 0px 0px;
+      //   background-color: $secondary;
+      // }
+
+      // 優惠輪播欄
+      .simple-news {
+        @media (max-width: 992px) {
+          border: $primary solid 10px;
+          border-top: none;
+          border-radius: 30px 30px 0px 0px;
+          padding: 15px 20px 25px 20px;
+        }
+        background-color: $secondary;
+        border-radius: 70px 70px 0px 0px;
+        border-right: 20px solid $primary;
+        border-left: 20px solid $primary;
+        padding: 20px 80px 40px 80px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        align-self: stretch;
+
+        h6 {
+          @media (max-width: 992px) {
+            font-size: 12px;
+          }
+          margin: 0;
+          color: $black;
+          font-size: 1.2rem;
+          font-weight: bolder;
+          line-height: normal;
+        }
+
+        .news {
+          display: flex;
+          a {
+            @media (max-width: 992px) {
+              font-size: 12px;
+            }
+            width: 350px;
+            margin-left: 1.2rem;
+            text-wrap: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: $black;
+            text-decoration: none;
+          }
+        }
+      }
+
+      // 主視覺區
+      .kv {
+        @media (max-width: 992px) {
+          border: $primary solid 10px;
+          border-radius: 30px 30px 0px 0px;
+          padding: 20px 20px 70px 20px;
+          height: 50vh;
+          gap: 15px;
+        }
+        height: 90vh;
+        margin-top: -20px;
+        background-color: $secondary;
+        background-image: url(../public/images/layout/P_20240224_194256.jpg);
+        background-size: cover;
+        border-radius: 70px 70px 0px 0px;
+        border: $primary solid 20px;
+        padding: 80px 80px 150px 80px;
+        gap: 40px;
+      }
+
+      // 首頁的section
+      .section-index {
+        @media (max-width: 992px) {
+          border: $primary solid 10px;
+          border-radius: 30px 30px 0px 0px;
+          padding: 20px 20px 60px 20px;
+        }
+        display: flex;
+
+        padding: 80px 80px 150px 80px;
+        align-self: stretch;
+        position: relative;
+        background: $secondary;
+        background: linear-gradient(
+            0deg,
+            rgba(225, 209, 178, 0.8) 0%,
+            rgba(225, 209, 178, 0.8) 100%
+          ),
+          url(../public/images/layout/bgc.jpg), lightgray 50%;
+        margin-top: -40px;
+        border-radius: 70px 70px 0px 0px;
+        border: $primary solid 20px;
+        flex-direction: column;
+      }
+      // 一般的section
+      .section {
+        @media (max-width: 992px) {
+          border: $primary solid 10px;
+          border-bottom: $primary solid 20px;
+          border-top: none;
+          border-radius: 30px 30px 0px 0px;
+          padding: 20px 20px 60px 20px;
+        }
+        display: flex;
+        padding: 80px 80px 150px 80px;
+        align-self: stretch;
+        position: relative;
+        background: $secondary;
+        background: linear-gradient(
+            0deg,
+            rgba(225, 209, 178, 0.8) 0%,
+            rgba(225, 209, 178, 0.8) 100%
+          ),
+          url(../public/images/layout/bgc.jpg), lightgray 50%;
+        border-radius: 70px 70px 0px 0px;
+        border: $primary solid 20px;
+        border-top: none;
+        flex-direction: column;
+      }
+    }
+
+    // ====== footer設定
+    footer.row {
+      @media (max-width: 992px) {
+        padding: 0;
+        margin: 0;
+      }
+    }
+    footer {
+      position: relative;
+      // height: 50vh;
+      align-self: stretch;
+      z-index: 0;
+      @media (max-width: 992px) {
+        // border 手機版有奇怪的破圖才設的 或許可拿掉
+        border-right: 12px solid $primary;
+        border-left: 12px solid $primary;
+        border-bottom: 12px solid $primary;
+        padding: 15px;
+      }
+      // footer 的圓頂設定
+      .footer-circle {
+        padding: 0px;
+        height: 0px;
+        width: 0px;
+        .circle {
+          @media (max-width: 992px) {
+            padding: 80px;
+            border-radius: 100px;
+            top: -30px;
+          }
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          padding: 200px;
+          background-color: $primary;
+          border-radius: 200px;
+          top: -80px;
+          z-index: 0;
+        }
+      }
+
+      .footer-bar {
+        @media (max-width: 992px) {
+          padding: 10px 0px;
+        }
+        color: #fff;
+        z-index: 1;
+        padding: 80px 80px 0px 80px;
+
+        // 導覽連結的設定
+        .footer-top {
+          @media (max-width: 992px) {
+            padding-top: 60px;
+          }
+          width: 100%;
+          justify-content: space-between;
+          align-items: flex-start;
+          .left-footer,
+          .right-footer {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            .footer-link {
+              @media (max-width: 992px) {
+                align-self: stretch;
+                font-size: 16px;
+              }
+              font-size: 28px;
+              font-weight: 500;
+              color: #fff;
+              text-decoration: none;
+            }
+            :hover {
+              color: $light-primary;
+            }
+          }
+          .left-footer {
+            @media (max-width: 992px) {
+              padding-left: 30px;
+              gap: 10px;
+            }
+            justify-content: start;
+            .footer-item {
+              @media (max-width: 992px) {
+                padding: 0;
+              }
+              padding-right: 8%;
+              // padding-right: 4%;
+            }
+            :not(:first-child) {
+              @media (max-width: 992px) {
+                padding: 0;
+              }
+              padding-left: 8%;
+              // padding-left: 4%;
+            }
+            :not(:last-child) {
+              border-right: 1px solid #fff;
+              @media (max-width: 992px) {
+                border: none;
+              }
+            }
+          }
+          .right-footer {
+            @media (max-width: 992px) {
+              padding-right: 30px;
+              text-align: end;
+              gap: 10px;
+            }
+            justify-content: end;
+            .footer-item {
+              @media (max-width: 992px) {
+                padding: 0;
+              }
+              padding-left: 8%;
+              // padding-left: 4%;
+            }
+            :not(:last-child) {
+              @media (max-width: 992px) {
+                padding: 0;
+              }
+              padding-right: 8%;
+              // padding-right: 4%;
+            }
+            :not(:last-child) {
+              border-right: 1px solid #fff;
+              @media (max-width: 992px) {
+                border: none;
+              }
+            }
+          }
+        }
+        // 下半部加 icon
+        .center-text {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .icon-pic {
+            @media (max-width: 992px) {
+              top: -10px;
+            }
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -30px;
+            .web-icon {
+              @media (max-width: 992px) {
+                width: 70px;
+                height: 70px;
+              }
+            }
+          }
+          .web-info {
+            @media (max-width: 992px) {
+              padding-top: 50px;
+              font-size: 12px;
+              gap: 3px;
+            }
+            padding-top: 180px;
+            text-align: center;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 5px;
+            .tel-item:not(:last-child) {
+              padding-right: 20px;
+            }
+            .copy {
+              @media (max-width: 992px) {
+                margin-top: 20px;
+                font-size: 10px;
+              }
+              margin-top: 60px;
+              font-size: 12px;
+              color: $light-primary;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// google Noto Sans TC 字體
+@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap';
+
+// 定義中文字體用
+body {
+  font-family: 'Noto Sans', 'Noto Sans TC Regular', Helvetica, Arial,
+    'PingFang TC', '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei',
+    '微軟正黑體',
+    // Cross-platform generic font family (default user interface font)
+    system-ui,
+    // Safari for macOS and iOS (San Francisco)
+    -apple-system,
+    // Windows
+    'Segoe UI',
+    // Android
+    Roboto,
+    // Basic web fallback
+    'Helvetica Neue',
+    Arial,
+    // Linux
+    'Noto Sans',
+    'Liberation Sans',
+    // Sans serif fallback
+    sans-serif,
+    // Emoji fonts
+    'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
