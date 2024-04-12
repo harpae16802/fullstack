@@ -1,6 +1,4 @@
 // authRouter.js
-
-// authRouter.js
 import express from "express";
 import db from "../utils/db.js";
 import multer from "multer";

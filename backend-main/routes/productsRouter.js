@@ -27,62 +27,108 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-productsRouter
-  .get("/:sellerId", async (req, res) => {
-    const { sellerId } = req.params;
-    const {
-      category,
-      minPrice,
-      maxPrice,
-      status,
-      page = 1,
-      limit = 10,
-    } = req.query;
-    const countQuery = 'SELECT COUNT(*) AS total FROM products WHERE seller_id = ?';
-    let query = "SELECT * FROM products WHERE seller_id = ?";
-    const params = [sellerId];
+productsRouter.get("/:sellerId/categories", async (req, res) => {
+  const { sellerId } = req.params;
 
-    if (category) {
-      query += " AND category = ?";
-      params.push(category);
-    }
+  try {
+      const query = `
+          SELECT DISTINCT pc.category_id, pc.category_name
+          FROM product_categories pc
+          JOIN products p ON p.category_id = pc.category_id
+          WHERE p.seller_id = ?;
+      `;
+      const [categories] = await db.query(query, [sellerId]);
+      res.json({ success: true, categories });
+  } catch (error) {
+      console.error("獲取類別列表失敗", error);
+      res.status(500).json({ success: false, message: "後端錯誤" });
+  }
+})
+productsRouter.get("/:sellerId", async (req, res) => {
+  const { sellerId } = req.params;
+  const {
+    productName,
+    category,
+    minPrice,
+    maxPrice,
+    status,
+    page = 1,
+    limit = 10,
+  } = req.query;
 
-    if (minPrice && maxPrice) {
-      query += " AND price BETWEEN ? AND ?";
-      params.push(minPrice, maxPrice);
-    } else if (minPrice) {
-      query += " AND price >= ?";
-      params.push(minPrice);
-    } else if (maxPrice) {
-      query += " AND price <= ?";
-      params.push(maxPrice);
-    }
+  // SQL
+  let query = "SELECT * FROM products WHERE seller_id = ?";
+  let countQuery = "SELECT COUNT(*) AS total FROM products WHERE seller_id = ?";
+  const params = [sellerId];
+  const countParams = [sellerId];
 
-    // 根據 status 篩選
-    if (status !== undefined) {
-      query += " AND status = ?";
-      params.push(status); // 假設 status 通過 query string 傳入，並且是 0 或 1
-    }
-    const offset = Math.max(0, (page - 1) * limit);//計算頁數
-    query += " LIMIT ? OFFSET ?"; // SQL分頁語法
-    params.push(parseInt(limit), offset); // 強制参数是整數
-    try {
-      const [totalRows] = await db.query(countQuery, [sellerId]); // 假设你只基于sellerId来计算总数
-      const total = totalRows[0].total;
-      const [rows] = await db.query(query, params); // 假設 db.query 返回的是一个數組，其中第一个元素包含查詢結果
-      const products = rows.map((product) => ({
-        productName: product.product_name, // 產品名稱
-        stockQuantity: product.stock_quantity, // 產品數量
-        category: product.category, // 產品類別
-        price: product.price, // 產品價格
-        status: product.status === 1 ? "上架" : "下架", // 產品狀態，这里假设 1 代表上架，其他值代表下架
-      }));
-      res.json({ success: true, products, total });
-    } catch (error) {
-      console.error("获取产品列表失败", error);
-      res.status(500).json({ success: false, message: "服务器错误" });
-    }
-  })
+  if (productName) {
+    query += " AND product_name LIKE ?";
+    countQuery += " AND product_name LIKE ?";
+    params.push(`%${productName}%`);
+    countParams.push(`%${productName}%`);
+  }
+
+  if (category) {
+    query += " AND category_id = ?";
+    countQuery += " AND category_id = ?";
+    params.push(parseInt(category)); // 類別
+    countParams.push(parseInt(category));
+  }
+
+  if (minPrice && maxPrice) {
+    query += " AND price BETWEEN ? AND ?";
+    countQuery += " AND price BETWEEN ? AND ?";
+    params.push(minPrice, maxPrice);
+    countParams.push(minPrice, maxPrice);
+  } else if (minPrice) {
+    query += " AND price >= ?";
+    countQuery += " AND price >= ?";
+    params.push(minPrice);
+    countParams.push(minPrice);
+  } else if (maxPrice) {
+    query += " AND price <= ?";
+    countQuery += " AND price <= ?";
+    params.push(maxPrice);
+    countParams.push(maxPrice);
+  }
+
+  if (status !== undefined) {
+    query += " AND status = ?";
+    countQuery += " AND status = ?";
+    params.push(status);
+    countParams.push(status);
+  }
+
+  // 分頁處裡
+  const offset = (page - 1) * limit;
+  query += " LIMIT ? OFFSET ?";
+  params.push(parseInt(limit), parseInt(offset));
+
+  try {
+    // 查询总数
+    const [totalResults] = await db.query(countQuery, countParams);
+    const total = totalResults[0].total;
+
+    // 回傳前端的值
+    const [rows] = await db.query(query, params);
+    const products = rows.map((product) => ({
+      product_id: product.product_id,
+      productName: product.product_name,
+      stockQuantity: product.stock_quantity,
+      category: product.category,
+      price: product.price,
+      status: product.status === 1 ? "上架" : "下架",
+      category_id: product.category_id
+    }));
+
+    res.json({ success: true, total, products });
+  } catch (error) {
+    console.error("获取产品列表失败", error);
+    res.status(500).json({ success: false, message: "服务器错误" });
+  }
+})
+
 
   // 新增產品包含上船圖檔
   .post("/add", upload.single("image"), async (req, res) => {
