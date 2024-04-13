@@ -26,109 +26,127 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
+productsRouter.put(
+  "/edit-profile-picture/:sellerId",
+  upload.single("profilePicture"),
+  async (req, res) => {
+    const { sellerId } = req.params;
+    const imageUrl = req.file ? `/products/${req.file.filename}` : null;
+
+    try {
+      const query = "UPDATE sellers SET profile_picture = ? WHERE id = ?";
+      await db.query(query, [imageUrl, sellerId]);
+      res.json({ success: true, imageUrl, message: "頭像更新成功。" });
+    } catch (error) {
+      console.error("更新頭像失敗", error);
+      res.status(500).json({ success: false, message: "更新頭像失敗" });
+    }
+  }
+);
 
 productsRouter.get("/:sellerId/categories", async (req, res) => {
   const { sellerId } = req.params;
 
   try {
-      const query = `
+    const query = `
           SELECT DISTINCT pc.category_id, pc.category_name
           FROM product_categories pc
           JOIN products p ON p.category_id = pc.category_id
           WHERE p.seller_id = ?;
       `;
-      const [categories] = await db.query(query, [sellerId]);
-      res.json({ success: true, categories });
+    const [categories] = await db.query(query, [sellerId]);
+    res.json({ success: true, categories });
   } catch (error) {
-      console.error("獲取類別列表失敗", error);
-      res.status(500).json({ success: false, message: "後端錯誤" });
+    console.error("獲取類別列表失敗", error);
+    res.status(500).json({ success: false, message: "後端錯誤" });
   }
-})
-productsRouter.get("/:sellerId", async (req, res) => {
-  const { sellerId } = req.params;
-  const {
-    productName,
-    category,
-    minPrice,
-    maxPrice,
-    status,
-    page = 1,
-    limit = 10,
-  } = req.query;
+});
+productsRouter
+  .get("/:sellerId", async (req, res) => {
+    const { sellerId } = req.params;
+    const {
+      productName,
+      category,
+      minPrice,
+      maxPrice,
+      status,
+      page = 1,
+      limit = 10,
+    } = req.query;
 
-  // SQL
-  let query = "SELECT * FROM products WHERE seller_id = ?";
-  let countQuery = "SELECT COUNT(*) AS total FROM products WHERE seller_id = ?";
-  const params = [sellerId];
-  const countParams = [sellerId];
+    // SQL
+    let query = "SELECT * FROM products WHERE seller_id = ?";
+    let countQuery =
+      "SELECT COUNT(*) AS total FROM products WHERE seller_id = ?";
+    const params = [sellerId];
+    const countParams = [sellerId];
 
-  if (productName) {
-    query += " AND product_name LIKE ?";
-    countQuery += " AND product_name LIKE ?";
-    params.push(`%${productName}%`);
-    countParams.push(`%${productName}%`);
-  }
+    if (productName) {
+      query += " AND product_name LIKE ?";
+      countQuery += " AND product_name LIKE ?";
+      params.push(`%${productName}%`);
+      countParams.push(`%${productName}%`);
+    }
 
-  if (category) {
-    query += " AND category_id = ?";
-    countQuery += " AND category_id = ?";
-    params.push(parseInt(category)); // 類別
-    countParams.push(parseInt(category));
-  }
+    if (category) {
+      query += " AND category_id = ?";
+      countQuery += " AND category_id = ?";
+      params.push(parseInt(category)); // 類別
+      countParams.push(parseInt(category));
+    }
 
-  if (minPrice && maxPrice) {
-    query += " AND price BETWEEN ? AND ?";
-    countQuery += " AND price BETWEEN ? AND ?";
-    params.push(minPrice, maxPrice);
-    countParams.push(minPrice, maxPrice);
-  } else if (minPrice) {
-    query += " AND price >= ?";
-    countQuery += " AND price >= ?";
-    params.push(minPrice);
-    countParams.push(minPrice);
-  } else if (maxPrice) {
-    query += " AND price <= ?";
-    countQuery += " AND price <= ?";
-    params.push(maxPrice);
-    countParams.push(maxPrice);
-  }
+    if (minPrice && maxPrice) {
+      query += " AND price BETWEEN ? AND ?";
+      countQuery += " AND price BETWEEN ? AND ?";
+      params.push(minPrice, maxPrice);
+      countParams.push(minPrice, maxPrice);
+    } else if (minPrice) {
+      query += " AND price >= ?";
+      countQuery += " AND price >= ?";
+      params.push(minPrice);
+      countParams.push(minPrice);
+    } else if (maxPrice) {
+      query += " AND price <= ?";
+      countQuery += " AND price <= ?";
+      params.push(maxPrice);
+      countParams.push(maxPrice);
+    }
 
-  if (status !== undefined) {
-    query += " AND status = ?";
-    countQuery += " AND status = ?";
-    params.push(status);
-    countParams.push(status);
-  }
+    if (status !== undefined) {
+      query += " AND status = ?";
+      countQuery += " AND status = ?";
+      params.push(status);
+      countParams.push(status);
+    }
 
-  // 分頁處裡
-  const offset = (page - 1) * limit;
-  query += " LIMIT ? OFFSET ?";
-  params.push(parseInt(limit), parseInt(offset));
+    // 分頁處裡
+    const offset = (page - 1) * limit;
+    query += " LIMIT ? OFFSET ?";
+    params.push(parseInt(limit), parseInt(offset));
 
-  try {
-    // 查询总数
-    const [totalResults] = await db.query(countQuery, countParams);
-    const total = totalResults[0].total;
+    try {
+      // 查询总数
+      const [totalResults] = await db.query(countQuery, countParams);
+      const total = totalResults[0].total;
 
-    // 回傳前端的值
-    const [rows] = await db.query(query, params);
-    const products = rows.map((product) => ({
-      product_id: product.product_id,
-      productName: product.product_name,
-      stockQuantity: product.stock_quantity,
-      category: product.category,
-      price: product.price,
-      status: product.status === 1 ? "上架" : "下架",
-      category_id: product.category_id
-    }));
+      // 回傳前端的值
+      const [rows] = await db.query(query, params);
+      const products = rows.map((product) => ({
+        product_id: product.product_id,
+        productName: product.product_name,
+        stockQuantity: product.stock_quantity,
+        category: product.category,
+        price: product.price,
+        status: product.status === 1 ? "上架" : "下架",
+        category_id: product.category_id,
+      }));
 
-    res.json({ success: true, total, products });
-  } catch (error) {
-    console.error("获取产品列表失败", error);
-    res.status(500).json({ success: false, message: "服务器错误" });
-  }
-})
-
+      res.json({ success: true, total, products });
+    } catch (error) {
+      console.error("获取产品列表失败", error);
+      res.status(500).json({ success: false, message: "服务器错误" });
+    }
+  })
 
   // 新增產品包含上船圖檔
   .post("/add", upload.single("image"), async (req, res) => {

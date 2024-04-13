@@ -54,7 +54,7 @@ sellerRouter.get("/:sellerId", async (req, res) => {
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 // 編輯賣家資訊
-sellerRouter.put("/:sellerId/edit",upload.array(), async (req, res) => {
+sellerRouter.put("/:sellerId/edit", upload.array(), async (req, res) => {
   const sellerId = req.params.sellerId;
   const {
     storeName,
@@ -67,11 +67,12 @@ sellerRouter.put("/:sellerId/edit",upload.array(), async (req, res) => {
     closingHours,
     restDay,
     profilePicture,
-    account, 
-    password
+    account,
+    password,
   } = req.body;
   try {
-    const sellerQuery = "UPDATE seller SET store_name=?, contact_number=?, email=?, company_address=?, company_description=?, store_image=?, opening_hours=?, closing_hours=?, rest_day=?, profile_picture=? WHERE seller_id=?";
+    const sellerQuery =
+      "UPDATE seller SET store_name=?, contact_number=?, email=?, company_address=?, company_description=?, store_image=?, opening_hours=?, closing_hours=?, rest_day=?, profile_picture=? WHERE seller_id=?";
     await db.query(sellerQuery, [
       storeName,
       contactNumber,
@@ -86,12 +87,9 @@ sellerRouter.put("/:sellerId/edit",upload.array(), async (req, res) => {
       sellerId,
     ]);
     if (account && password) {
-      const accountQuery = "UPDATE account SET account=?, password=? WHERE seller_id=?";
-      await db.query(accountQuery, [
-        account,
-        password,
-        sellerId,
-      ]);
+      const accountQuery =
+        "UPDATE account SET account=?, password=? WHERE seller_id=?";
+      await db.query(accountQuery, [account, password, sellerId]);
     }
     res.status(200).json({ success: true, message: "賣家資訊編輯成功" });
   } catch (error) {
@@ -111,7 +109,11 @@ sellerRouter.put(
     try {
       const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
       await db.query(query, [profilePicture, sellerId]);
-      res.status(200).json({ success: true, message: "頭像編輯成功" });
+      res.status(200).json({
+        success: true,
+        imageUrl: `/public/seller/${profilePicture}`, // 這裡假設你將文件保存在public/seller目錄下
+        message: "頭像編輯成功",
+      });
     } catch (error) {
       console.error("頭像編輯失敗", error);
       res.status(500).json({ success: false, message: "頭像編輯失敗" });

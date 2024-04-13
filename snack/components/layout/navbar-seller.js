@@ -163,6 +163,7 @@ export default function NavbarSeller() {
           </div>
         </div>
       </nav>
+      
     </>
   )
 }

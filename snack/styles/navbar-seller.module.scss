@@ -1,0 +1,194 @@
+/* styles/navbar-seller.module.scss */
+// 表单卡片背景与边框
+// .formCard {
+//   background-color: rgba(255, 255, 255, 0.5);
+//   border: 1px solid #dedede;
+//   padding: 20px;
+//   border-radius: 10px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   position: relative;
+//   overflow: hidden;
+// }
+.formWrapper {
+  background-color: #fff; // 白色背景
+  border: 1px solid #ccc; // 灰色框線
+  padding: 1rem; // 添加內邊距
+  border-radius: 8px; // 圓角
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // 添加陰影
+}
+.formCard {
+  border: 1px solid red; // 外層紅色框線
+  padding: 1rem; // 根據需要添加間距
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -1rem; // 根據需要調整位置
+    right: -1rem; // 根據需要調整位置
+    background-color: rgba(255, 0, 0, 0.2); // 透明紅色背景
+    width: calc(100% + 2rem); // 背景寬度大於容器寬度
+    height: calc(100% + 2rem); // 背景高度大於容器高度
+    z-index: -1; // 保證在容器後面
+  }
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #dedede;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+// 按钮组样式
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.btnPrimary {
+  background-color: #de4f4f; // 範例紅色，根據設計調整
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px; // 根據設計調整半徑
+  cursor: pointer;
+  font-weight: bold; // 假設按鈕根據設計是粗體
+  margin-right: 10px; // 按鈕之間的間距
+  text-transform: uppercase; // 如果文字應該是大寫
+  &:hover {
+    background-color: darken(#de4f4f, 10%); // 悬停时更深的颜色
+  }
+}
+
+.btnSecondary {
+  background-color: #f7f7f7; // 淺灰色，根據設計調整
+  color: #333; // 次要按鈕的深色文字
+  border: 1px solid #dedede; // 設計中的邊框
+  padding: 10px 20px;
+  border-radius: 4px; // 根據設計調整半徑
+  cursor: pointer;
+  font-weight: bold; // 假設按鈕根據設計是粗體
+  margin-left: 10px; // 按鈕之間的間距
+  &:hover {
+    background-color: #e6e6e6; // 悬停时略微变暗
+  }
+}
+
+// 下拉框样式调整
+.customSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: .375rem 2.25rem .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #333;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}
+
+// 下拉菜单和标签的容器样式，用于分组
+.selectGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+// 标签样式，用于致中
+.selectLabel {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+// 修正文本框和下拉框的外观
+.formControl, .form-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+// 链接样式，移除下划线，修改悬停颜色
+.navLink {
+  display: block;
+  padding: 10px 15px;
+  margin: 5px 0;
+  background-color: #f7f0e8;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #de4f4f;
+    color: #fff;
+  }
+}
+.sellerSidebarWrapper {
+  border: 2px solid #de4f4f;
+  border-radius: 8px;
+  background-color: #f4e9e2;
+  padding: 16px;
+  margin-bottom: 20px;
+  // text-align: center;
+
+  .profileWrapper {
+    background: transparent;
+    padding: 1rem 0;
+  }
+
+  .profilePicture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid black;
+    display: inline-block; // 讓頭像可被text-align影響
+  }
+
+  .formTitle {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .navLink {
+    padding: 10px 15px;
+    margin: 0; // 移除間距，使其更緊湊
+    // 其他樣式保持不變
+  }
+
+  ul {
+    padding-left: 0; // 移除默認的內邊距
+  }
+}
+.formWrapper {
+  border: 2px solid #de4f4f; // Red border around the form
+  background-color: #fff; // White background for the form
+  border-radius: 8px; // Rounded corners
+  padding: 20px; // Padding inside the form
+  margin-top: 20px; // Space above the form
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Shadow for depth
+}
+

@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useSeller } from "../../contexts/SellerContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Section from "@/components/layout/section";
+import styles from "../../styles/navbar-seller.module.scss";
 
 export default function SellerBasicData() {
   // 使用 useRouter
@@ -73,6 +74,7 @@ export default function SellerBasicData() {
         });
     }
   }, [sellerId]);
+
   // 修改 更新 賣家的 資料
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,9 +92,20 @@ export default function SellerBasicData() {
     }));
   };
 
+  // 驗證
+  const validateForm = () => {
+    let valid = true;
+    if (!sellerData.account || !sellerData.email) {
+      alert("請輸入資料");
+      valid = false;
+    }
+    // 可以添加更多的验证规则
+    return valid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (!validateForm()) return;
     const formData = new FormData();
     formData.append("account", sellerData.account);
     formData.append("password", sellerData.password);
@@ -134,17 +147,13 @@ export default function SellerBasicData() {
     formData.append("profilePicture", file);
 
     axios
-      .put(
-        `${SELLER_API}${sellerId}/edit/profilePicture`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .put(`${SELLER_API}${sellerId}/edit/profilePicture`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
-        alert("头像上传成功");
+        alert("頭像上傳成功");
         setImageVersion((prevVersion) => prevVersion + 1); // 獲取頭貼
       })
       .catch((error) => {
@@ -166,18 +175,21 @@ export default function SellerBasicData() {
     return options;
   };
   return (
-    <Section>
-      <div className="container mt-5">
+    <Section className={styles.sellerBasicSection}>
+      <div className={`container mt-5`}>
         <div className="row">
-          <div className="col-3">
+          <div className={`col-3 sellerSidebarWrapper`}>
+            <div  className={styles.profilePicture}>
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <img
               src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
-              alt="卖家头像"
+              alt="賣家頭像"
+              // className={styles.profilePicture}
               style={{
                 border: "2px solid black",
                 width: "100px",
                 height: "100px",
+                borderRadius: "50px",
               }}
               onClick={handleImageClick} // 使用handleImageClick
             />
@@ -189,228 +201,248 @@ export default function SellerBasicData() {
               ref={fileInputRef} // 將ref賦予到DOM元素
               onChange={handleProfilePictureChange}
             />
-
+            </div>
+            {/* 這裡的賣家頭像直接連結伺服器 */}
             <div
-              className="nav flex-column nav-pills"
+              className={` ${styles.sellerSidebarWrapper}`}
               id="v-pills-tab"
               role="tablist"
               aria-orientation="vertical"
             >
               <ul className="list-unstyled">
                 <li>
-                  <Link href="/seller-basic-data/">
-                    <span className="nav-link">商家基本資料</span>
+                  <Link href="/seller-basic-data/" passHref>
+                    <span className={styles.navLink}>商家基本資料</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/seller-basic-data/bank">
-                    <span className="nav-link">銀行帳號設定</span>
+                  <Link href="/seller-basic-data/bank" passHref>
+                    <span className={styles.navLink}>銀行帳號設定</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/seller-basic-data/orderList">
-                    <span className="nav-link">訂單管理</span>
+                    <span className={styles.navLink}>訂單管理</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/seller-basic-data/addProduct">
-                    <span className="nav-link">上架商品</span>
+                    <span className={styles.navLink}>上架商品</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/seller-basic-data/producutsList">
-                    <span className="nav-link">產品列表</span>
+                    <span className={styles.navLink}>產品列表</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/seller-basic-data/reviews">
-                    <span className="nav-link">賣家評論區</span>
+                    <span className={styles.navLink}>賣家評論區</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/seller-basic-data/qrCode">
-                    <span className="nav-link">QRcode掃描區</span>
+                    <span className={styles.navLink}>QRcode掃描區</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/seller-basic-data/ad">
-                    <span className="nav-link">廣告投放</span>
+                    <span className={styles.navLink}>廣告投放</span>
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
+
           <div className="col-1"></div> {/* 用於分隔 */}
           <div className="col-8">
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="account" className="form-label">
-                  使用帳號
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="account"
-                  name="account"
-                  placeholder="使用者帳號"
-                  value={sellerData.account || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  使用者密碼
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  placeholder="使用者密碼"
-                  value={sellerData.password || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="storeName" className="form-label">
-                  商家店名
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="storeName"
-                  name="storeName"
-                  placeholder="攤位名稱"
-                  value={sellerData.storeName || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="contactNumber" className="form-label">
-                  商家連絡電話
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="contactNumber"
-                  name="contactNumber"
-                  placeholder="連絡電話"
-                  value={sellerData.contactNumber || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="電子郵件"
-                  value={sellerData.email || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="companyAddress" className="form-label">
-                  商家地址
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="companyAddress"
-                  name="companyAddress"
-                  placeholder="商家地址"
-                  value={sellerData.companyAddress || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="store_image" className="form-label">
-                  上傳商家圖片
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="store_image"
-                  name="store_image"
-                  onChange={handleFileChange} // 圖片
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="companyDescription" className="form-label">
-                  店家簡介
-                </label>
-                <textarea
-                  className="form-control"
-                  id="companyDescription"
-                  name="companyDescription"
-                  rows="3"
-                  placeholder="商家簡介"
-                  value={sellerData.companyDescription || ""}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
-              <div className="row g-3 align-items-center mb-3">
-                <div className="col-auto">
-                  <label htmlFor="restDay" className="col-form-label">
-                    選擇公休日
+            <div className={styles.formCard}>
+              <form onSubmit={handleSubmit} className={styles.formWrapper}>
+
+                <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
+
+                <div className="mb-3">
+                  <label htmlFor="account" className="form-label">
+                    使用帳號
                   </label>
-                </div>
-                <div className="col-auto">
-                  <select
-                    className="form-select"
-                    id="restDay"
-                    name="restDay"
-                    value={sellerData.restDay || ""}
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="account"
+                    name="account"
+                    placeholder="使用者帳號"
+                    value={sellerData.account || ""}
                     onChange={handleChange}
-                  >
-                    {[...Array(7).keys()].map((day) => (
-                      <option key={day} value={day + 1}>
-                        {day + 1}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </div>
-                <div className="col-auto">
-                  <label htmlFor="openingHours" className="col-form-label">
-                    開始營業時間
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    使用者密碼
                   </label>
-                </div>
-                <div className="col-auto">
-                  <select
-                    className="form-select"
-                    id="openingHours"
-                    name="openingHours"
-                    value={sellerData.openingHours || ""}
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="使用者密碼"
+                    value={sellerData.password || ""}
                     onChange={handleChange}
-                  >
-                    {generateTimeOptions()}
-                  </select>
+                  />
                 </div>
-                <div className="col-auto">
-                  <label htmlFor="closingHours" className="col-form-label">
-                    結束營業時間
+                <div className="mb-3">
+                  <label htmlFor="storeName" className="form-label">
+                    商家店名
                   </label>
-                </div>
-                <div className="col-auto">
-                  <select
-                    className="form-select"
-                    id="closingHours"
-                    name="closingHours"
-                    value={sellerData.closingHours || ""}
+                  <input
+                    type="text"
+                    className={styles.formControl}
+                    id="storeName"
+                    name="storeName"
+                    placeholder="攤位名稱"
+                    value={sellerData.storeName || ""}
                     onChange={handleChange}
-                  >
-                    {generateTimeOptions()}
-                  </select>
+                  />
                 </div>
-              </div>
-              <button type="submit" className="btn btn-primary">
-                提交修改
-              </button>
-            </form>
+                <div className="mb-3">
+                  <label htmlFor="contactNumber" className="form-label">
+                    商家連絡電話
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="contactNumber"
+                    name="contactNumber"
+                    placeholder="連絡電話"
+                    value={sellerData.contactNumber || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="電子郵件"
+                    value={sellerData.email || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="companyAddress" className="form-label">
+                    商家地址
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="companyAddress"
+                    name="companyAddress"
+                    placeholder="商家地址"
+                    value={sellerData.companyAddress || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="store_image" className="form-label">
+                    上傳商家圖片
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="store_image"
+                    name="store_image"
+                    onChange={handleFileChange} // 圖片
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="companyDescription" className="form-label">
+                    店家簡介
+                  </label>
+                  <textarea
+                    className="form-control"
+                    id="companyDescription"
+                    name="companyDescription"
+                    rows="3"
+                    placeholder="商家簡介"
+                    value={sellerData.companyDescription || ""}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+                {/* 下拉是選單 */}
+                <div className={styles.selectGroup}>
+                  <div className="col-auto">
+                    <label htmlFor="restDay" className={styles.selectLabel}>
+                      選擇公休日
+                    </label>
+                  </div>
+                  <div className="col-auto">
+                    <select
+                      className={`form-select ${styles.customSelect}`}
+                      id="restDay"
+                      name="restDay"
+                      value={sellerData.restDay || ""}
+                      onChange={handleChange}
+                    >
+                      {[...Array(7).keys()].map((day) => (
+                        <option key={day} value={day}>
+                          {day === 0 ? "每天" : `每週${day}天`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="col-auto">
+                    <label
+                      htmlFor="openingHours"
+                      className={styles.selectLabel}
+                    >
+                      開始營業時間
+                    </label>
+                  </div>
+                  <div className="col-auto">
+                    <select
+                      className={`form-select ${styles.customSelect}`}
+                      id="openingHours"
+                      name="openingHours"
+                      value={sellerData.openingHours || ""}
+                      onChange={handleChange}
+                    >
+                      {generateTimeOptions()}
+                    </select>
+                  </div>
+                  <div className="col-auto">
+                    <label
+                      htmlFor="closingHours"
+                      className={styles.selectLabel}
+                    >
+                      結束營業時間
+                    </label>
+                  </div>
+                  <div className="col-auto">
+                    <select
+                      className={`form-select ${styles.customSelect}`}
+                      id="closingHours"
+                      name="closingHours"
+                      value={sellerData.closingHours || ""}
+                      onChange={handleChange}
+                    >
+                      {generateTimeOptions()}
+                    </select>
+                  </div>
+                </div>
+                {/* 按鈕樣式 */}
+                <div className={styles.buttonGroup}>
+                  <Link href="/seller-basic-data/">
+                    <button className={styles.btnSecondary}>回到店面</button>
+                  </Link>
+                  <button type="submit" className={styles.btnPrimary}>
+                    提交修改
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

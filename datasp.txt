@@ -29,7 +29,7 @@ category_id                          int(11)                              種類
 favorite_count                      int(11)                              被買家蒐藏數
 product_ingredient              text                                  成分表 
 product_nutrition                  text                                  營養成分表
-seller_id                             int(11)                                賣家id (外鍵)
+seller_id                               int(11)                              賣家id (外鍵)
 附註:
 補充說明目前設定products表中的seller_id:
 小七的滷肉飯seller_id:4
@@ -168,17 +168,17 @@ VALUES
 我的next.js資料夾結構
 ├── components(與別人開發的檔案)
  │       ├── common
- │       │       ├── search-bar.js
+ │       │       ├── search-bar.js(與別人開發的檔案)
  │       ├── layout
-│       │       ├── default-layout.js
-│       │       ├── footer.js
-│       │       ├── main-layout.js
-│       │       ├── navbar-custom.js
-│       │       ├── navbar-logout.js
-│       │       ├── navbar-seller.js
-│       │       ├── navbar.js
-│       │       ├── section-index.js
-│       │       ├── section.js
+│       │       ├── default-layout.js(與別人開發的檔案)
+│       │       ├── footer.js(與別人開發的檔案)
+│       │       ├── main-layout.js(與別人開發的檔案)
+│       │       ├── navbar-custom.js(與別人開發的檔案)
+│       │       ├── navbar-logout.js(與別人開發的檔案)
+│       │       ├── navbar-seller.js(與別人開發的檔案)
+│       │       ├── navbar.js(與別人開發的檔案)
+│       │       ├── section-index.js(與別人開發的檔案)
+│       │       ├── section.js(與別人開發的檔案)
  │       ├── AythChecker.js
 ├── contexts
  │       ├── SellerContext.js
@@ -206,6 +206,7 @@ VALUES
 ├── server
  │       ├── index.js
 ├── styles
+ │       ├── navbar-seller.module.scss  (樣式)
  │       ├── globals.css
  │       ├── globals.scss
  │       ├── Home.module.css

@@ -8,6 +8,7 @@ import { useSeller } from "../../contexts/SellerContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Section from "@/components/layout/section";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "../../styles/navbar-seller.module.scss";
 
 const ProductsList = () => {
   // 使用 useRouter
@@ -28,6 +29,21 @@ const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState(""); // 篩選
   const [categories, setCategories] = useState([]); // 下拉是選單篩選過濾
   const [selectedProducts, setSelectedProducts] = useState([]); // 批量操作
+  // 修改賣家資料 後 的狀態
+  const [sellerData, setSellerData] = useState({
+    account: "",
+    password: "",
+    storeName: "",
+    contactNumber: "",
+    email: "",
+    companyAddress: "",
+    companyDescription: "",
+    openingHours: "09:00",
+    closingHours: "22:00",
+    restDay: "0",
+    profilePicture: "",
+  });
+
 
   // 使用Ref
   const handleImageClick = () => {
@@ -46,6 +62,33 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
+    if (sellerId) {
+      axios
+        .get(`${SELLER_API}${sellerId}`)
+        .then((response) => {
+          const data = response.data.data; // 注意确保这里的路径正确
+          console.log(data); // 查看数据结构
+
+          setSellerData((prevData) => ({
+            ...prevData,
+            account: data.account || "",
+            password: data.password || "",
+            storeName: data.store_name || "",
+            contactNumber: data.contact_number || "",
+            email: data.email || "",
+            companyAddress: data.company_address || "",
+            companyDescription: data.company_description || "",
+            openingHours: data.opening_hours || "17:00",
+            closingHours: data.closing_hours || "23:00",
+            restDay: data.rest_day?.toString() || "6",
+            profilePicture: data.profile_picture || "",
+            // 其他字段...
+          }));
+        })
+        .catch((error) => {
+          console.error("获取商家信息失败", error);
+        });
+    }
     const queryParams = new URLSearchParams({
       page: currentPage,
       limit: itemsPerPage,
@@ -127,8 +170,7 @@ const ProductsList = () => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
-  // 賣家頭項
+  // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -143,258 +185,263 @@ const ProductsList = () => {
         },
       })
       .then((response) => {
-        alert("头像上传成功");
-        setImageVersion((prevVersion) => prevVersion + 1); // 更新頭貼版本以重新加載圖片
+        alert("頭像上傳成功");
+        setImageVersion((prevVersion) => prevVersion + 1); // 獲取頭貼
       })
       .catch((error) => {
-        console.error("頭像上传失败", error);
-        alert("頭像上传失败");
+        console.error("頭像上傳失敗", error);
+        alert("頭像上傳失敗");
       });
   };
-
   return (
     <Section>
-      <div className="container mt-5">
-        <div className="row">
-          {/* 基礎左側導航藍 */}
-          <div className="col-3">
-            {/* 這裡的賣家頭像直接連結伺服器 */}
-            <img
-              src={`http://localhost:3002/public/seller/${seller?.profilePicture}?v=${imageVersion}`}
-              alt="卖家头像"
-              style={{
-                border: "2px solid black",
-                width: "100px",
-                height: "100px",
-              }}
-              onClick={handleImageClick} // 使用handleImageClick
-            />
-            <input
-              type="file"
-              id="profilePictureInput"
-              style={{ display: "none" }}
-              ref={fileInputRef} // 將ref賦予到DOM元素
-              onChange={handleProfilePictureChange}
-            />
-
-            <div
-              className="nav flex-column nav-pills"
-              id="v-pills-tab"
-              role="tablist"
-              aria-orientation="vertical"
-            >
-              <ul className="list-unstyled">
-                <li>
-                  <Link href="/seller-basic-data/">
-                    <span className="nav-link">商家基本資料</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/bank">
-                    <span className="nav-link">銀行帳號設定</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/orderList">
-                    <span className="nav-link">訂單管理</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/addProduct">
-                    <span className="nav-link">上架商品</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/productList">
-                    <span className="nav-link">產品列表</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/reviews">
-                    <span className="nav-link">賣家評論區</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/qrCode">
-                    <span className="nav-link">QRcode掃描區</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller-basic-data/ad">
-                    <span className="nav-link">廣告投放</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="col-1"></div> {/* 用於分隔 */}
-          {/* 搜索框 */}
-          <div className="col-8">
-            <div className="input-group mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="搜索產品名稱..."
-                value={searchTerm}
-                onChange={(e) =>
-                  setSearchTerm(e.target.value) & setCurrentPage(1)
-                }
+      <div className={styles.sellerBasicSection}>
+        <div className={`container mt-5`}>
+          <div className="row">
+            {/* 基礎左側導航藍 */}
+            <div className={`col-3 sellerSidebarWrapper`}>
+              {/* 這裡的賣家頭像直接連結伺服器 */}
+              <img
+                src={`http://localhost:3002/public/seller/${seller?.profilePicture}?v=${imageVersion}`}
+                alt="卖家头像"
+                className={styles.profilePicture}
+                style={{
+                  border: "2px solid black",
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "50px",
+                }}
+                onClick={handleImageClick} // 使用handleImageClick
               />
-              <div className="input-group-append">
-                {/* 清除搜索词按钮 */}
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={() => setSearchTerm("")}
-                >
-                  <i className="bi bi-x-lg"></i>
-                </button>
+              <input
+                type="file"
+                id="profilePictureInput"
+                style={{ display: "none" }}
+                ref={fileInputRef} // 将ref赋予到DOM元素
+                onChange={handleProfilePictureChange}
+              />
+              {/* 這裡的賣家頭像直接連結伺服器 */}
+              <div
+                className={` ${styles.sellerSidebarWrapper}`}
+                id="v-pills-tab"
+                role="tablist"
+                aria-orientation="vertical"
+              >
+                <ul className="list-unstyled">
+                  <li>
+                    <Link href="/seller-basic-data/">
+                      <span className={styles.navLink}>商家基本資料</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/bank">
+                      <span className={styles.navLink}>銀行帳號設定</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/orderList">
+                      <span className={styles.navLink}>訂單管理</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/addProduct">
+                      <span className={styles.navLink}>上架商品</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/productList">
+                      <span className={styles.navLink}>產品列表</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/reviews">
+                      <span className={styles.navLink}>賣家評論區</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/qrCode">
+                      <span className={styles.navLink}>QRcode掃描區</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/seller-basic-data/ad">
+                      <span className={styles.navLink}>廣告投放</span>
+                    </Link>
+                  </li>
+                </ul>
               </div>
             </div>
-            <br></br>
-            {/* 篩選 */}
-            <div className="row">
-              <div className="col-12">
-                <div className="form-row">
-                  {/*  類別篩選 */}
-                  <div className="col-4 mb-3">
-                    <select
-                      className="form-control"
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setFilter((prev) => ({
-                          ...prev,
-                          category: value || undefined, // 当选择“以类别搜索”时，设置为undefined
-                        }));
-                      }}
-                      value={filter.category || ""}
-                    >
-                      <option value="">以類別搜尋</option>
-                      {categories.map((category) => (
-                        <option
-                          value={category.category_id}
-                          key={category.category_id}
-                        >
-                          {category.category_name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+            <div className="col-1"></div> {/* 用於分隔 */}
+            {/* 搜索框 */}
+            <div className="col-8">
+              <div className="input-group mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="搜索產品名稱..."
+                  value={searchTerm}
+                  onChange={(e) =>
+                    setSearchTerm(e.target.value) & setCurrentPage(1)
+                  }
+                />
+                <div className="input-group-append">
+                  {/* 清除搜索词按钮 */}
+                  <button
+                    className="btn btn-outline-primary"
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                  >
+                    <i className="bi bi-x-lg"></i>
+                  </button>
+                </div>
+              </div>
+              <br></br>
+              {/* 篩選 */}
+              <div className="row">
+                <div className="col-12">
+                  <div className="form-row">
+                    {/*  類別篩選 */}
+                    <div className="col-4 mb-3">
+                      <select
+                        className="form-control"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFilter((prev) => ({
+                            ...prev,
+                            category: value || undefined, // 当选择“以类别搜索”时，设置为undefined
+                          }));
+                        }}
+                        value={filter.category || ""}
+                      >
+                        <option value="">以類別搜尋</option>
+                        {categories.map((category) => (
+                          <option
+                            value={category.category_id}
+                            key={category.category_id}
+                          >
+                            {category.category_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                  {/* 價格篩選 */}
-                  <div className="col-4 mb-3">
-                    <select
-                      className="form-control"
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        const [min, max] = value ? value.split("-") : [];
-                        setFilter((prev) => ({
-                          ...prev,
-                          minPrice: min || undefined, // 如果没有选择有效的范围，则移除这些键
-                          maxPrice: max || undefined,
-                        }));
-                      }}
-                      value={
-                        filter.minPrice && filter.maxPrice
-                          ? `${filter.minPrice}-${filter.maxPrice}`
-                          : ""
-                      }
-                    >
-                      <option value="">以價格搜尋</option>
-                      <option value="0-30">0-30</option>
-                      <option value="30-60">30-60</option>
-                      <option value="60-200">60-200</option>
-                    </select>
-                  </div>
+                    {/* 價格篩選 */}
+                    <div className="col-4 mb-3">
+                      <select
+                        className="form-control"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const [min, max] = value ? value.split("-") : [];
+                          setFilter((prev) => ({
+                            ...prev,
+                            minPrice: min || undefined, // 如果没有选择有效的范围，则移除这些键
+                            maxPrice: max || undefined,
+                          }));
+                        }}
+                        value={
+                          filter.minPrice && filter.maxPrice
+                            ? `${filter.minPrice}-${filter.maxPrice}`
+                            : ""
+                        }
+                      >
+                        <option value="">以價格搜尋</option>
+                        <option value="0-30">0-30</option>
+                        <option value="30-60">30-60</option>
+                        <option value="60-200">60-200</option>
+                      </select>
+                    </div>
 
-                  {/* 狀態篩選 */}
-                  <div className="col-4 mb-3">
-                    <select
-                      className="form-control"
-                      onChange={(e) =>
-                        setFilter({ ...filter, status: e.target.value })
-                      }
-                      value={filter.status || ""}
-                    >
-                      <option value="">以上下架分類</option>
-                      <option value="1">上架</option>
-                      <option value="0">下架</option>
-                    </select>
+                    {/* 狀態篩選 */}
+                    <div className="col-4 mb-3">
+                      <select
+                        className="form-control"
+                        onChange={(e) =>
+                          setFilter({ ...filter, status: e.target.value })
+                        }
+                        value={filter.status || ""}
+                      >
+                        <option value="">以上下架分類</option>
+                        <option value="1">上架</option>
+                        <option value="0">下架</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <br></br>
-            {/* 表格 */}
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>產品名稱</th>
-                  <th>產品數量</th>
-                  <th>產品類別</th>
-                  <th>產品價格</th>
-                  <th>產品狀態</th>
-                  <th>修改</th>
-                  <th>批量修改</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product) => (
-                  <tr key={product.product_id}>
-                    <td>{product.productName}</td>
-                    <td>{product.stockQuantity}</td>
-                    <td>{product.category}</td>
-                    <td>{product.price}</td>
-                    <td>{product.status}</td>
-                    <td>
-                      <Link href={`/modify/${product.product_id}`}>修改</Link>
-                    </td>
-                    <td>
-                      <input
-                        type="checkbox"
-                        onChange={() => {}}
-                        value={product.product_id}
-                      />
-                    </td>
+              <br></br>
+              {/* 表格 */}
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>產品名稱</th>
+                    <th>產品數量</th>
+                    <th>產品類別</th>
+                    <th>產品價格</th>
+                    <th>產品狀態</th>
+                    <th>修改</th>
+                    {/* <th>批量修改</th> */}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <button onClick={() => {}}>批量上下架</button>
-            {/* 分頁 */}
-            <nav>
-              <ul className="pagination justify-content-center">
-                <li
-                  className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() =>
-                      currentPage > 1 && handlePageChange(currentPage - 1)
-                    }
+                </thead>
+                <tbody>
+                  {products.map((product) => (
+                    <tr key={product.product_id}>
+                      <td>{product.productName}</td>
+                      <td>{product.stockQuantity}</td>
+                      <td>{product.category}</td>
+                      <td>{product.price}</td>
+                      <td>{product.status}</td>
+                      <td>
+                        <Link href={`/modify/${product.product_id}`}>修改</Link>
+                      </td>
+                      {/* <td>
+                        <input
+                          type="checkbox"
+                          onChange={() => {}}
+                          value={product.product_id}
+                        />
+                      </td> */}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {/* <button onClick={() => {}}>批量上下架</button> */}
+              {/* 分頁 */}
+              <nav>
+                <ul className="pagination justify-content-center">
+                  <li
+                    className={`page-item ${
+                      currentPage === 1 ? "disabled" : ""
+                    }`}
                   >
-                    <i className="bi bi-chevron-left"></i>
-                  </button>
-                </li>
-                {renderPageNumbers()}
-                <li
-                  className={`page-item ${
-                    currentPage === totalPages ? "disabled" : ""
-                  }`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() =>
-                      currentPage < totalPages &&
-                      handlePageChange(currentPage + 1)
-                    }
+                    <button
+                      className="page-link"
+                      onClick={() =>
+                        currentPage > 1 && handlePageChange(currentPage - 1)
+                      }
+                    >
+                      <i className="bi bi-chevron-left"></i>
+                    </button>
+                  </li>
+                  {renderPageNumbers()}
+                  <li
+                    className={`page-item ${
+                      currentPage === totalPages ? "disabled" : ""
+                    }`}
                   >
-                    <i className="bi bi-chevron-right"></i>
-                  </button>
-                </li>
-              </ul>
-            </nav>
+                    <button
+                      className="page-link"
+                      onClick={() =>
+                        currentPage < totalPages &&
+                        handlePageChange(currentPage + 1)
+                      }
+                    >
+                      <i className="bi bi-chevron-right"></i>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>
