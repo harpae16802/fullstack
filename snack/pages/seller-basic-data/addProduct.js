@@ -178,9 +178,9 @@ export default function SellerBasicData() {
     <Section className={styles.sellerBasicSection}>
       <div className={`container mt-5`}>
         <div className="row">
-          <div className={`col-3 `}>
+          {/* 導覽列 */}
+          <div className={`col-md-3 col-12`}>
             {/* 這裡的賣家頭像直接連結伺服器 */}
-            {/* <div className={styles.sellerSidebarWrapper}> */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
                 <img
@@ -204,8 +204,6 @@ export default function SellerBasicData() {
                   onChange={handleProfilePictureChange}
                 />
                 </div>
-      
-              {/* </div> */}
               {/* 這裡的賣家頭像直接連結伺服器 */}
               <div
                 className={styles.sellerSidebarWrapper}
@@ -215,7 +213,7 @@ export default function SellerBasicData() {
                 aria-orientation="vertical"
               >
                 <ul className="list-unstyled">
-                  <li>
+                  <li className={styles.navListItem}> 
                     <Link href="/seller-basic-data/" passHref>
                       <span className={styles.navLink}>商家基本資料</span>
                     </Link>
@@ -259,8 +257,10 @@ export default function SellerBasicData() {
               </div>
             </div>
           </div>
-          <div className="col-1"></div> {/* 用於分隔 */}
-          <div className="col-8">
+          {/* 導覽列 */}
+          <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
+          {/* 表單 */}
+          <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
@@ -448,6 +448,7 @@ export default function SellerBasicData() {
               </form>
             </div>
           </div>
+          {/* 表單 */}
         </div>
       </div>
     </Section>
