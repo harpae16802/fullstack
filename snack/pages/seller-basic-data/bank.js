@@ -162,18 +162,18 @@ export default function SellerBasicData() {
       });
   };
   // 生成24小時時間選項
-  const generateTimeOptions = () => {
-    const options = [];
-    for (let hour = 0; hour < 24; hour++) {
-      const value = `${hour.toString().padStart(2, "0")}:00`;
-      options.push(
-        <option key={hour} value={value}>
-          {value}
-        </option>
-      );
-    }
-    return options;
-  };
+  // const generateTimeOptions = () => {
+  //   const options = [];
+  //   for (let hour = 0; hour < 24; hour++) {
+  //     const value = `${hour.toString().padStart(2, "0")}:00`;
+  //     options.push(
+  //       <option key={hour} value={value}>
+  //         {value}
+  //       </option>
+  //     );
+  //   }
+  //   return options;
+  // };
   return (
     <Section className={styles.sellerBasicSection}>
       <div className={`container mt-5`}>
@@ -263,37 +263,93 @@ export default function SellerBasicData() {
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
+                <h2 className={`${styles.formTitle}`}>銀行帳號設定</h2>
 
                 <div className="mb-3">
                   <label htmlFor="account" className="form-label">
-                    使用帳號
+                    主要銀行帳號
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     id="account"
                     name="account"
-                    placeholder="使用者帳號"
-                    value={sellerData.account || ""}
+                    placeholder="銀行帳號代碼"
+                    value={()=>{}}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
-                    使用者密碼
+                    
                   </label>
                   <input
                     type="password"
                     className="form-control"
                     id="password"
                     name="password"
-                    placeholder="使用者密碼"
-                    value={sellerData.password || ""}
+                    placeholder="銀行帳號"
+                    value={()=>{}}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
+                  <label htmlFor="account" className="form-label">
+                    第二銀行帳號
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="account"
+                    name="account"
+                    placeholder="銀行帳號代碼"
+                    value={()=>{}}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="銀行帳號"
+                    value={()=>{}}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="account" className="form-label">
+                    第三銀行帳號
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="account"
+                    name="account"
+                    placeholder="銀行帳號代碼"
+                    value={()=>{}}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="銀行帳號"
+                    value={()=>{}}
+                    onChange={handleChange}
+                  />
+                </div>
+                {/* <div className="mb-3">
                   <label htmlFor="storeName" className="form-label">
                     商家店名
                   </label>
@@ -374,15 +430,15 @@ export default function SellerBasicData() {
                     value={sellerData.companyDescription || ""}
                     onChange={handleChange}
                   ></textarea>
-                </div>
+                </div> */}
                 {/* 下拉是選單 */}
                 <div className={styles.selectGroup}>
-                  <div className="col-auto">
+                  {/* <div className="col-auto">
                     <label htmlFor="restDay" className={styles.selectLabel}>
                       選擇公休日
                     </label>
-                  </div>
-                  <div className="col-auto">
+                  </div> */}
+                  {/* <div className="col-auto">
                     <select
                       className={`form-select ${styles.customSelect}`}
                       id="restDay"
@@ -396,16 +452,16 @@ export default function SellerBasicData() {
                         </option>
                       ))}
                     </select>
-                  </div>
-                  <div className="col-auto">
+                  </div> */}
+                  {/* <div className="col-auto">
                     <label
                       htmlFor="openingHours"
                       className={styles.selectLabel}
                     >
                       開始營業時間
                     </label>
-                  </div>
-                  <div className="col-auto">
+                  </div> */}
+                  {/* <div className="col-auto">
                     <select
                       className={`form-select ${styles.customSelect}`}
                       id="openingHours"
@@ -423,8 +479,8 @@ export default function SellerBasicData() {
                     >
                       結束營業時間
                     </label>
-                  </div>
-                  <div className="col-auto">
+                  </div> */}
+                  {/* <div className="col-auto">
                     <select
                       className={`form-select ${styles.customSelect}`}
                       id="closingHours"
@@ -434,7 +490,7 @@ export default function SellerBasicData() {
                     >
                       {generateTimeOptions()}
                     </select>
-                  </div>
+                  </div> */}
                 </div>
                 {/* 按鈕樣式 */}
                 <div className={styles.buttonGroup}>

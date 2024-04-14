@@ -203,17 +203,16 @@ export default function SellerBasicData() {
                   ref={fileInputRef} // 將ref賦予到DOM元素
                   onChange={handleProfilePictureChange}
                 />
-                </div>
+              </div>
               {/* 這裡的賣家頭像直接連結伺服器 */}
               <div
                 className={styles.sellerSidebarWrapper}
-                
                 id="v-pills-tab"
                 role="tablist"
                 aria-orientation="vertical"
               >
                 <ul className="list-unstyled">
-                  <li className={styles.navListItem}> 
+                  <li className={styles.navListItem}>
                     <Link href="/seller-basic-data/" passHref>
                       <span className={styles.navLink}>商家基本資料</span>
                     </Link>
@@ -263,39 +262,53 @@ export default function SellerBasicData() {
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
+                <h2 className={`${styles.formTitle}`}>上架新增商品</h2>
 
                 <div className="mb-3">
                   <label htmlFor="account" className="form-label">
-                    使用帳號
+                    產品名稱
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     id="account"
                     name="account"
-                    placeholder="使用者帳號"
-                    value={sellerData.account || ""}
+                    placeholder="產品名稱"
+                    value={() => {}}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
+                  <label htmlFor="companyDescription" className="form-label">
+                    產品描述
+                  </label>
+                  <textarea
+                    className="form-control"
+                    id="companyDescription"
+                    name="companyDescription"
+                    rows="3"
+                    placeholder="產品描述簡介"
+                    value={() => {}}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+                <div className="mb-3">
                   <label htmlFor="password" className="form-label">
-                    使用者密碼
+                    產品價格
                   </label>
                   <input
                     type="password"
                     className="form-control"
                     id="password"
                     name="password"
-                    placeholder="使用者密碼"
-                    value={sellerData.password || ""}
+                    placeholder="產品價格(台幣)"
+                    value={() => {}}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="storeName" className="form-label">
-                    商家店名
+                    產品營養表
                   </label>
                   <input
                     type="text"
@@ -303,13 +316,13 @@ export default function SellerBasicData() {
                     id="storeName"
                     name="storeName"
                     placeholder="攤位名稱"
-                    value={sellerData.storeName || ""}
+                    value={() => {}}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="contactNumber" className="form-label">
-                    商家連絡電話
+                    產品成分
                   </label>
                   <input
                     type="text"
@@ -317,13 +330,13 @@ export default function SellerBasicData() {
                     id="contactNumber"
                     name="contactNumber"
                     placeholder="連絡電話"
-                    value={sellerData.contactNumber || ""}
+                    value={() => {}}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
-                    Email
+                    產品數量
                   </label>
                   <input
                     type="email"
@@ -331,27 +344,14 @@ export default function SellerBasicData() {
                     id="email"
                     name="email"
                     placeholder="電子郵件"
-                    value={sellerData.email || ""}
+                    value={() => {}}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="companyAddress" className="form-label">
-                    商家地址
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="companyAddress"
-                    name="companyAddress"
-                    placeholder="商家地址"
-                    value={sellerData.companyAddress || ""}
-                    onChange={handleChange}
-                  />
-                </div>
+
                 <div className="mb-3">
                   <label htmlFor="store_image" className="form-label">
-                    上傳商家圖片
+                    上傳產品圖片
                   </label>
                   <input
                     type="file"
@@ -361,25 +361,12 @@ export default function SellerBasicData() {
                     onChange={handleFileChange} // 圖片
                   />
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="companyDescription" className="form-label">
-                    店家簡介
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="companyDescription"
-                    name="companyDescription"
-                    rows="3"
-                    placeholder="商家簡介"
-                    value={sellerData.companyDescription || ""}
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
+
                 {/* 下拉是選單 */}
                 <div className={styles.selectGroup}>
                   <div className="col-auto">
                     <label htmlFor="restDay" className={styles.selectLabel}>
-                      選擇公休日
+                      結束販售日
                     </label>
                   </div>
                   <div className="col-auto">
@@ -390,14 +377,14 @@ export default function SellerBasicData() {
                       value={sellerData.restDay || ""}
                       onChange={handleChange}
                     >
-                      {[...Array(7).keys()].map((day) => (
+                      {[...Array(30).keys()].map((day) => (
                         <option key={day} value={day}>
-                          {day === 0 ? "請選擇公休日" : `每週第${day}天`}
+                          {day === 0 ? "結束販售日" : `第${day}天`}
                         </option>
                       ))}
                     </select>
                   </div>
-                  <div className="col-auto">
+                  {/* <div className="col-auto">
                     <label
                       htmlFor="openingHours"
                       className={styles.selectLabel}
@@ -423,16 +410,24 @@ export default function SellerBasicData() {
                     >
                       結束營業時間
                     </label>
+                  </div> */}
+                  
+                  <div className="col-auto">
+                    <label htmlFor="restDay" className={styles.selectLabel}>
+                      上下架狀態
+                    </label>
                   </div>
                   <div className="col-auto">
                     <select
                       className={`form-select ${styles.customSelect}`}
-                      id="closingHours"
-                      name="closingHours"
-                      value={sellerData.closingHours || ""}
-                      onChange={handleChange}
+                      // onChange={(e) =>
+                      //   setFilter({ ...filter, status: e.target.value })
+                      // }
+                      // value={filter.status || ""}
                     >
-                      {generateTimeOptions()}
+                      <option value="">以上下架分類</option>
+                      <option value="1">上架</option>
+                      <option value="0">下架</option>
                     </select>
                   </div>
                 </div>
