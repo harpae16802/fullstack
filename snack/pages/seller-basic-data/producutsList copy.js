@@ -199,50 +199,42 @@ const ProductsList = () => {
         <div className={`container mt-5`}>
           <div className="row">
             {/* 基礎左側導航藍 */}
-            <div className={`col-3 `}>
-            {/* 這裡的賣家頭像直接連結伺服器 */}
-            {/* <div className={styles.sellerSidebarWrapper}> */}
-            <div className={styles.profileContainer}>
-              <div className={styles.profileWrapper}>
-                <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
-                  alt="賣家頭像"
-                  className={styles.profilePicture}
-                  style={{
-                    border: "2px solid black",
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50px",
-                  }}
-                  onClick={handleImageClick} // 使用handleImageClick
-                />
-
-                <input
-                  type="file"
-                  id="profilePictureInput"
-                  style={{ display: "none" }}
-                  ref={fileInputRef} // 將ref賦予到DOM元素
-                  onChange={handleProfilePictureChange}
-                />
-                </div>
-      
-              {/* </div> */}
+            <div className={`col-3 sellerSidebarWrapper`}>
+              {/* 這裡的賣家頭像直接連結伺服器 */}
+              <img
+                src={`http://localhost:3002/public/seller/${seller?.profilePicture}?v=${imageVersion}`}
+                alt="卖家头像"
+                className={styles.profilePicture}
+                style={{
+                  border: "2px solid black",
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "50px",
+                }}
+                onClick={handleImageClick} // 使用handleImageClick
+              />
+              <input
+                type="file"
+                id="profilePictureInput"
+                style={{ display: "none" }}
+                ref={fileInputRef} // 将ref赋予到DOM元素
+                onChange={handleProfilePictureChange}
+              />
               {/* 這裡的賣家頭像直接連結伺服器 */}
               <div
-                className={styles.sellerSidebarWrapper}
-                
+                className={` ${styles.sellerSidebarWrapper}`}
                 id="v-pills-tab"
                 role="tablist"
                 aria-orientation="vertical"
               >
                 <ul className="list-unstyled">
                   <li>
-                    <Link href="/seller-basic-data/" passHref>
+                    <Link href="/seller-basic-data/">
                       <span className={styles.navLink}>商家基本資料</span>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/seller-basic-data/bank" passHref>
+                    <Link href="/seller-basic-data/bank">
                       <span className={styles.navLink}>銀行帳號設定</span>
                     </Link>
                   </li>
@@ -257,7 +249,7 @@ const ProductsList = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/seller-basic-data/producutsList">
+                    <Link href="/seller-basic-data/productList">
                       <span className={styles.navLink}>產品列表</span>
                     </Link>
                   </li>
@@ -279,7 +271,6 @@ const ProductsList = () => {
                 </ul>
               </div>
             </div>
-          </div>
             <div className="col-1"></div> {/* 用於分隔 */}
             {/* 搜索框 */}
             <div className="col-8">
