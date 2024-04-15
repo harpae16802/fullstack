@@ -1,0 +1,307 @@
+/*  */
+
+.text-color {
+  color: #a32c2d;
+}
+.text-m-color {
+  color:black;
+}
+.border-0 {
+  border: 0;
+}
+
+
+.border-1 {
+  border: 2px #a32c2d solid;
+  font-weight: bold;
+}
+.border-1-grey {
+  border-top: 1px #5d5d5d solid;
+  border-left: 1px #5d5d5d solid;
+  border-right: 1px #5d5d5d solid;
+  font-weight: bold;
+}
+.rd-2 {
+  border-radius: 10px;
+}
+.rd-30 {
+  border-radius: 30px;
+}
+.flexBetween {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between !important; 
+}
+.flexend {
+  display: flex;
+  flex-direction: row;
+  justify-content:end; 
+  text-align: right;
+}
+.text-parmary,
+.text-parmary-nav {
+  font-weight: bold;
+  color: #a32c2d;
+  background-color: white;
+}
+.text-parmary.active,
+.text-parmary:hover {
+  font-weight: bold;
+  color: #ff0004;
+  /* background-color: white; */
+}
+.text-parmary-nav.active,
+.text-parmary.active:hover {
+  font-weight: bold !important;
+  color: #ff0004 !important;
+}
+/* 錯誤 */
+.inputErr {
+  border: 1px solid red;
+}
+/* nputErr */
+/* 內容外框 */
+.main-O-baground {
+  padding: 3em;
+  border-radius: 50px;
+
+  background-color: rgb(255 246 233 / 50%);
+}
+
+.main-O-baground-border50 {
+  padding: 41px 30px;
+  border: 2px #a32c2d solid;
+  border-radius: 50px;
+}
+
+/* ImageIcon */
+
+.ImageIcon {
+  border: 4px solid #a32c2d;
+}
+
+/* 自訂一寬度 */
+
+.iconWidth {
+  width: 50px;
+  height: 50px;
+  flex-grow: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  /* position: relative;
+    left: 20px; */
+}
+.iconGrow {
+  flex-grow: 1;
+  flex: 1 1  auto !important;
+  width: 100%;
+  height: 10px;
+  margin: auto;
+  border-radius: 30px;
+  border: 2px solid rgb(175, 175, 175);
+}
+
+/* 自訂義進度 */
+.progressParmary {
+  font-weight: bold;
+  background-color: rgb(173, 173, 173);  
+  color: #a32c2d;
+}
+
+.progressParmary.active {
+  font-weight: bold;
+  background-color: #a32c2d;
+  color: rgb(255, 255, 255);
+}
+/*  */
+.imgIcon {
+  width: 125px;
+  height: 125px;
+}
+
+input.imgIcon {
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+}
+.image-upload > input {
+  display: none;
+}
+/* 自訂一背景 */
+
+.opacipty1 {
+  opacity: 0.5;
+}
+/*  */
+.overflow1 {
+  overflow: hidden;
+}
+.scroll {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+/* btn */
+
+.btn-parmary {
+  font-weight: bold;
+  background-color: #a32c2d !important;
+  color: white !important;
+}
+.btn-parmary-white {
+  font-weight: bold;
+  background-color: white !important;
+  color: #a32c2d  !important;
+}
+
+.btn-parmary:hover,
+.btn-parmary.active {
+  font-weight: bold;
+  /* background-color: white; */
+  color: #a32c2d;
+}
+
+.btn-parmary-white.active {
+  font-weight: bold;
+  background-color: #a32c2d;
+  color: white;
+}
+.btn-parmary-white:hover {
+  color: red;
+}
+.btn-parmary-red {
+  color: red;
+}
+
+.btn-parmary-transparent {
+  font-weight: bold;
+  background-color: transparent;
+  color: #a32c2d;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+.mx-full {
+  width: 100%;
+}
+.step {
+  display: flex;
+  cursor: pointer;
+  padding: 20px;
+  /* background-color: transparent; */
+}
+.step span {
+  /* position: absolute; */
+}
+.card-body.stepPostion {
+  padding: 10px 10px 8px 10px;
+}
+.stepPostion > *:nth-child(1) {
+  position: relative;
+  z-index: 5;
+
+  left: 10px;
+}
+.stepPostion > *:nth-child(3) {
+  position: relative;
+  left: -10px;
+  z-index: 5;
+}
+.stepPostion > *:nth-child(4) {
+  position: relative;
+  left: -20px;
+}
+.stepPostion > *:nth-child(5) {
+  z-index: 5;
+
+  position: relative;
+  left: -30px;
+}
+
+/* 
+ imgicon
+*/
+.setimg{
+  width: 100%;
+  height: 400px;
+}
+.imgIconContent {
+  position: relative; 
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  width: inherit;
+}
+
+/* credit */
+.creditTitle {
+  font-size: 20px;
+}
+.credit {
+  padding: 18px;
+  margin: auto;
+  border: 0;
+}
+
+/* qrcode 規格電腦 */
+.lg-open {
+  display:block;
+}
+.md-open {
+  display: none;
+}
+
+@media (max-width: 1300px) {
+  .setPersonFormGrid {
+    width: 100%;
+    height: 200px;
+    order: -1;
+  }
+  }
+
+@media (max-width: 1100px) {
+  .setPersonFormGrid {
+    width: 100%;
+    height: 300px;
+    order: -1;
+  }
+
+  .setMdGrid {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .main-O-baground-border50 {
+    padding: 20px;
+    border: 2px #a32c2d solid;
+    border-radius: 50px;
+  }
+  .md-open {
+    display: block;
+  }
+  .lg-open {
+    display: none;
+  }
+  .imgIconWidth{
+    width: 100%;
+    height:400px;
+  }
+  .imgIcon{
+    width: 100%;
+    position: relative;
+    border: 0;
+  }
+  .step { 
+    padding: 0px;
+    /* background-color: transparent; */
+  }
+  .stepPostion > *:nth-child(1) ,  .stepPostion > *:nth-child(3),  .stepPostion > *:nth-child(5) {
+    padding: 30px;
+  }
+}
