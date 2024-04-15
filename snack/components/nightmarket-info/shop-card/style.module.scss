@@ -1,0 +1,41 @@
+// setting
+$bdrs: 10px;
+
+.card {
+  margin: 10px;
+  display: inline-block;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+  border-radius: $bdrs;
+
+  .img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-top-left-radius: $bdrs;
+    border-top-right-radius: $bdrs;
+  }
+
+  .text {
+    padding: 8px 12px;
+    background-color: #fff;
+    border-bottom-left-radius: $bdrs;
+    border-bottom-right-radius: $bdrs;
+
+    .title {
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .time,
+    .score {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2px;
+
+      .icon,
+      .span {
+        margin-right: 6px;
+      }
+    }
+  }
+}

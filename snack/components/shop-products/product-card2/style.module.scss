@@ -1,0 +1,44 @@
+.productCard2 {
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  @media (max-width: 576px) {
+    min-width: 20rem;
+  }
+
+  .text {
+    padding: 14px 0 14px 14px;
+
+    .price {
+      margin-right: 24px;
+    }
+
+    .icon {
+      margin-right: 7px;
+    }
+
+    .p {
+      margin-top: 7px;
+      color: #b1b7b5;
+    }
+  }
+
+  .img {
+    width: 120px;
+  }
+
+  .addBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

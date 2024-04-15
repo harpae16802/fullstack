@@ -13,7 +13,8 @@ $gray: rgb(229, 225, 221);
 
 // Search Bar的設定
 .kv,
-.section {
+.section ,
+.section-nopaddin{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -648,3 +649,42 @@ $gray: rgb(229, 225, 221);
     }
   }
 }
+
+
+
+// dondon
+// 縮小版
+  .search-bar-small {
+    @media (max-width: 992px) {
+      width: 100%;
+      padding: 5px;
+    }
+    background-color: #fff;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    form {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      input {
+        border: none;
+      }
+      :focus {
+        border: none;
+        box-shadow: none;
+      }
+    }
+    .search-icon {
+      @media (max-width: 992px) {
+        padding-right: 10px;
+      }
+      padding-left: 10px;
+    }
+  }
+  .fa-sistrix {
+    color: $primary;
+    font-size: 25px;
+  }

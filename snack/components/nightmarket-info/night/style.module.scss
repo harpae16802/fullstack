@@ -1,0 +1,100 @@
+// setting
+$bdrs: 20px;
+
+.container {
+  .nightName {
+    margin-bottom: 14px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .nightInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .left,
+    .right {
+      .bigImage,
+      .smallImage,
+      .mobileImg {
+        width: 100%;
+        height: auto;
+        border-radius: $bdrs;
+        object-fit: cover;
+      }
+
+      .bigImage {
+        margin-bottom: 14px;
+      }
+    }
+
+    .scrollbar {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .right {
+      padding-left: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+
+      @media (max-width: 576px) {
+        padding: 24px;
+      }
+
+      .p {
+        text-align: justify;
+      }
+
+      .traffic {
+        background-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+        border-radius: $bdrs;
+        padding: 24px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex-grow: 1;
+
+        .title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 24px;
+
+          .icon {
+            font-size: 24px;
+          }
+        }
+
+        .trafficInfo {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .container,
+  .row,
+  .col {
+    padding: 0;
+    margin: 0;
+  }
+
+  .nightInfo {
+    .left,
+    .right {
+      .bigImage,
+      .smallImage {
+        border-radius: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+// setting
+$bdrs: 10px;
+
+.card {
+  max-width: 20rem;
+  border-radius: $bdrs;
+
+  .imgDiv {
+    position: relative;
+
+    .img {
+      width: 100%;
+      height: 140px;
+      border-radius: $bdrs;
+    }
+
+    .addBtn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      position: absolute;
+      bottom: 10px;
+      right: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .textDiv {
+    padding-top: 7px;
+
+    .price {
+      margin-right: 24px;
+    }
+
+    .icon {
+      margin-right: 7px;
+    }
+  }
+}
