@@ -6,7 +6,9 @@ import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
 import { useEffect } from 'react'
 import '@/styles/globals.scss'
-
+import '@/styles/index.scss'
+import '@/styles/login.scss'
+import '@/styles/game.scss'
 
 function MyApp({ Component, pageProps }) {
 

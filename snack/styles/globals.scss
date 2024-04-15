@@ -18,12 +18,165 @@ $gray: rgb(229, 225, 221);
 // ↓↓↓  其它客製樣式要寫在這行的"下面" ↓↓↓
 
 body {
+  font-family: 'Noto Sans';
   @media (max-width: 992px) {
     padding: 0px;
   }
   padding: 0px 20px;
   position: relative;
 
+  // 共通元件CSS設定
+  // 按鈕
+  .btn {
+    color: #fff;
+    padding: 5px 30px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-align: center;
+    font-style: normal;
+    line-height: normal;
+  }
+  .btn-light {
+    color: $primary;
+    border: 2px solid #fff;
+    background-color: #fff;
+    --bs-btn-hover-bg: #fff;
+    --bs-btn-hover-color: rgb(163, 44, 45);
+    --bs-btn-hover-border-color: #fff;
+    --bs-btn-focus-shadow-rgb: 255, 255, 255;
+    --bs-btn-active-color: rgb(163, 44, 45);
+    --bs-btn-active-bg: #fff;
+    --bs-btn-active-border-color: rgb(163, 44, 45);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(63, 44, 45, 0.125);
+  }
+  .btn-light:hover {
+    border: 2px solid $primary;
+  }
+  .btn-outline-primary {
+    border-radius: 20px;
+    border: 2px solid $primary;
+    background-color: #fff;
+    color: $primary;
+  }
+
+  // 表單
+  .form-label {
+    @media (max-width: 992px) {
+      font-size: 18px;
+    }
+    color: $primary;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .form-control {
+    border: 2px solid $primary;
+    border-radius: 12px;
+    padding: 12px 30px;
+  }
+
+  // textarea 滾輪修改(最後選擇不顯示)
+  .form-control::-webkit-scrollbar {
+    display: none;
+    width: 12px;
+    height: 5px;
+  }
+  .form-control::-webkit-scrollbar-thumb {
+    background-color: $primary;
+    border-radius: 12px;
+    // border-right: 2px solid #fff;
+    // border-left: 2px solid #fff;
+  }
+  .form-control::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 0px 12px 0px 0px;
+  }
+  .form-control::-webkit-resizer {
+    // background-color: #fff;
+    background-color: transparent;
+    border-radius: 0px 0px 12px 0px;
+  }
+  .form-control::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+  // .form-control::-webkit-scrollbar-button:vertical:decrement {
+  //   display: block;
+  //   background-color: #fff;
+  //   border-radius: 0px 12px 0px 0px;
+  // }
+  // .form-control::-webkit-scrollbar-button{
+  //   background-color: #fff;
+  //   border-radius: 0px 12px 0px 0px;
+  // }
+
+  // 下拉選單
+  .form-select {
+    border: 2px solid $primary;
+    border-radius: 12px;
+    padding: 12px 30px;
+  }
+  .form-select:hover {
+    background-color: #ffffff;
+    color: #333;
+  }
+  .form-select option {
+    border-radius: 12px;
+  }
+
+  // 勾選
+  .form-check {
+    color: $primary;
+    font-weight: 700;
+  }
+  .form-check-input {
+    border: 2px solid $primary;
+  }
+  .form-check-input:focus {
+    border: 2px solid $primary;
+    box-shadow: none;
+  }
+
+  // 頁碼
+  nav {
+    .pagination {
+      --bs-pagination-padding-x: 0px;
+      --bs-pagination-padding-y: 0px;
+      --bs-pagination-border-color: transparent;
+      --bs-pagination-hover-border-color: transparent;
+      --bs-pagination-active-border-color: transparent;
+      --bs-pagination-focus-bg: #fff;
+      --bs-pagination-border-radius: 5px;
+      --bs-pagination-active-bg: rgb(234, 105, 106);
+      --bs-pagination-disabled-color: rgb(183, 180, 177);
+      --bs-pagination-disabled-bg: rgb(229, 225, 221);
+      --bs-pagination-disabled-border-color: transparent;
+      color: $primary;
+      font-size: 16px;
+      font-weight: 800;
+      gap: 20px;
+      border: none;
+      .page-number,
+      .page-pre,
+      .page-next {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+      }
+    }
+    .pagination .page-item {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+    }
+    .pagination .page-link {
+      border-radius: 5px;
+    }
+  }
+
+  // 以下是layout設定
   .my-container-fluid {
     @media (max-width: 992px) {
       border-radius: 0px;
@@ -102,7 +255,7 @@ body {
         }
       }
 
-      // 手機板右邊icons
+      // 手機板右邊 icons
       .container-fluid .right-icons {
         display: flex;
         align-items: center;
@@ -119,6 +272,9 @@ body {
           text-align: center;
         }
         display: none;
+      }
+      .navbar-brand.min-cart:hover {
+        color: $light-primary;
       }
 
       // Navbar相關設定
@@ -147,7 +303,6 @@ body {
           border-width: 25px;
           top: -40px;
           left: 100px;
-          /* 設定 width、height 可更好理解原理 */
           height: 0px;
           width: 0px;
         }
@@ -327,7 +482,8 @@ body {
           justify-content: center;
         }
 
-        .dropdown-webbar:hover,.dropdown-webbar.show {
+        .dropdown-webbar:hover,
+        .dropdown-webbar.show {
           .fa-bars {
             color: $light-primary;
           }
@@ -355,19 +511,22 @@ body {
       }
     }
 
+    // 主內容區
     main {
-      .bgColor {
-        margin-top: -20px;
-        border-right: 20px solid $primary;
-        border-left: 20px solid $primary;
-        padding: 20px;
-        border-radius: 70px 70px 0px 0px;
-        background-color: $secondary;
-      }
+      // .bgColor {
+      //   margin-top: -20px;
+      //   border-right: 20px solid $primary;
+      //   border-left: 20px solid $primary;
+      //   padding: 20px;
+      //   border-radius: 70px 70px 0px 0px;
+      //   background-color: $secondary;
+      // }
 
+      // 優惠輪播欄
       .simple-news {
         @media (max-width: 992px) {
           border: $primary solid 10px;
+          border-top: none;
           border-radius: 30px 30px 0px 0px;
           padding: 15px 20px 25px 20px;
         }
@@ -405,19 +564,21 @@ body {
             overflow: hidden;
             text-overflow: ellipsis;
             color: $black;
+            text-decoration: none;
           }
         }
       }
 
+      // 主視覺區
       .kv {
         @media (max-width: 992px) {
           border: $primary solid 10px;
           border-radius: 30px 30px 0px 0px;
-          padding: 20px 20px 80px 20px;
+          padding: 20px 20px 70px 20px;
           height: 50vh;
           gap: 15px;
         }
-        height: 90vh;
+        // height: 90vh;
         margin-top: -20px;
         background-color: $secondary;
         background-image: url(../public/images/layout/P_20240224_194256.jpg);
@@ -427,6 +588,9 @@ body {
         padding: 80px 80px 150px 80px;
         gap: 40px;
       }
+
+      // 首頁的section
+
       .section-index {
         @media (max-width: 992px) {
           border: $primary solid 10px;
@@ -450,13 +614,27 @@ body {
         border: $primary solid 20px;
         flex-direction: column;
       }
+      .section-index.index-nop {
+        @media (max-width: 992px) {
+          padding: 20px 0px 60px 0px;
+        }
+      }
+      .section-index.index-nop.discount {
+        @media (max-width: 992px) {
+          height: 40vh;
+        }
+        padding: 0px;
+        // padding: 80px 0px 150px 0px;
+        height: 80vh;
+      }
+      // 一般的section
       .section {
         @media (max-width: 992px) {
           border: $primary solid 10px;
+          // border-bottom: $primary solid 20px;
           border-top: none;
           border-radius: 30px 30px 0px 0px;
           padding: 20px 20px 60px 20px;
-          margin-top: -10px;
         }
         display: flex;
         padding: 80px 80px 150px 80px;
@@ -543,7 +721,7 @@ body {
                 align-self: stretch;
                 font-size: 16px;
               }
-              font-size: 28px;
+              font-size: 24px;
               font-weight: 500;
               color: #fff;
               text-decoration: none;
@@ -563,12 +741,14 @@ body {
                 padding: 0;
               }
               padding-right: 8%;
+              // padding-right: 4%;
             }
             :not(:first-child) {
               @media (max-width: 992px) {
                 padding: 0;
               }
               padding-left: 8%;
+              // padding-left: 4%;
             }
             :not(:last-child) {
               border-right: 1px solid #fff;
@@ -589,12 +769,14 @@ body {
                 padding: 0;
               }
               padding-left: 8%;
+              // padding-left: 4%;
             }
             :not(:last-child) {
               @media (max-width: 992px) {
                 padding: 0;
               }
               padding-right: 8%;
+              // padding-right: 4%;
             }
             :not(:last-child) {
               border-right: 1px solid #fff;
@@ -658,30 +840,34 @@ body {
 }
 
 // google Noto Sans TC 字體
-@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap';
+
+@import 'https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap';
 
 // 定義中文字體用
 body {
-  font-family: 'Noto Sans', 'Noto Sans TC Regular', Helvetica, Arial,
-    'PingFang TC', '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei',
-    '微軟正黑體',
-    // Cross-platform generic font family (default user interface font)
-    system-ui,
-    // Safari for macOS and iOS (San Francisco)
-    -apple-system,
-    // Windows
-    'Segoe UI',
-    // Android
-    Roboto,
-    // Basic web fallback
-    'Helvetica Neue',
-    Arial,
-    // Linux
-    'Noto Sans',
-    'Liberation Sans',
-    // Sans serif fallback
-    sans-serif,
-    // Emoji fonts
-    'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: 'Noto Sans', 'Noto Sans TC', 'Noto Sans TC Regular',
+    'Kaisei Tokumin', Helvetica, Arial, 'PingFang TC', '苹方-繁', 'Heiti TC',
+    '黑體-繁', 'Microsoft JhengHei',
+    '微軟正黑體'
+      // // Cross-platform generic font family (default user interface font)
+    // system-ui,
+    // // Safari for macOS and iOS (San Francisco)
+    // -apple-system,
+    // // Windows
+    // 'Segoe UI',
+    // // Android
+    // Roboto,
+    // // Basic web fallback
+    // 'Helvetica Neue',
+    // Arial,
+    // // Linux
+    // 'Noto Sans',
+    // 'Liberation Sans',
+    // // Sans serif fallback
+    // sans-serif,
+    // // Emoji fonts
+    // 'Apple Color Emoji',
+    // 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'
+;
 }

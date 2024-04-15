@@ -9,6 +9,11 @@ $sidebar-background: #f4e9e2;
 $border-color: #de4f4f;
 $text-color: #333;
 $hover-bg-color: color.scale($sidebar-background, $lightness: -10%);
+$primary-red: #ff0000; // 用你的紅色代碼替換
+$background-light-red: #ffecec; // 用較淺的紅色代碼替換
+$border-red: #ff0000; // 用邊框的紅色代碼
+
+
 
 // 响应式断点
 $mobile-width: 480px;
@@ -303,3 +308,95 @@ $mobile-width: 480px;
 
 
 
+//表格
+// 表格基本樣式
+.table {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  width: 100%;
+
+  th {
+    border-bottom: 2px solid $primary-red;
+  }
+
+  thead th {
+    background-color: $background-light-red;
+    color: $primary-red;
+    font-weight: bold;
+    padding: 0.75rem;
+    border: 1px solid $primary-red;
+    border-bottom-width: 3px;
+  }
+
+  tbody tr {
+    background-color: #fff;
+    margin-bottom: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); // 調整陰影大小和顏色
+
+    td {
+      padding: 0.75rem;
+      border: 1px solid $primary-red;
+      text-align: center; // 根據設計圖可能需要調整
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+      }
+      &:last-child {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+    }
+  }
+}
+
+// 分頁控件樣式
+.pagination {
+  .page-item {
+    .page-link {
+      color: $primary-red;
+      background-color: #fff;
+      border: 1px solid $primary-red;
+      &:hover {
+        background-color: $background-light-red;
+      }
+      &.disabled, &:disabled {
+        color: #ccc;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #ccc;
+      }
+    }
+    &.active .page-link {
+      background-color: $primary-red;
+      border-color: $primary-red;
+      color: #fff;
+    }
+  }
+}
+
+// 搜索和篩選輸入框樣式
+.form-control {
+  border: 1px solid $border-red;
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($primary-red, .25);
+  }
+}
+
+// 按鈕樣式
+.btn-outline-primary {
+  color: $primary-red;
+  border-color: $primary-red;
+  &:hover {
+    color: #fff;
+    background-color: $primary-red;
+    border-color: $primary-red;
+  }
+}
+
+// 搜索按鈕旁邊的清除按鈕
+.bi-x-lg {
+  color: $primary-red;
+  &:hover {
+    color: #fff;
+  }
+}

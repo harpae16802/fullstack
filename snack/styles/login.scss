@@ -1,0 +1,328 @@
+$black: #070505;
+$primary: rgb(163, 44, 45);
+$secondary: rgb(225, 209, 178);
+$success: rgb(41, 162, 30);
+$warning: rgb(255, 201, 64);
+$danger: rgb(255, 1, 1);
+$light-primary: rgb(234, 105, 106);
+$deep-primary: rgb(98, 27, 27);
+$deep-gray: rgb(183, 180, 177);
+$gray: rgb(229, 225, 221);
+
+@import '~bootstrap/scss/bootstrap';
+
+// 燈籠動畫的設定
+@keyframes swing {
+  0% {
+    transform: translateX(-50%) translateY(-100%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-50%) translateY(-100%) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-100%) rotate(0deg);
+  }
+  75% {
+    transform: translateX(-50%) translateY(-100%) rotate(5deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-100%) rotate(0deg);
+  }
+}
+.seller-login-page {
+  position: relative;
+  .lamp-pic {
+    position: absolute;
+    width: 10px;
+    top: 200px;
+    left: -10px;
+    z-index: 1;
+    .lamp-obj {
+      transform: translateX(-50%) translateY(-100%);
+      transform-origin: center top;
+    }
+    :hover {
+      animation: swing 1s linear infinite;
+    }
+  }
+}
+.custom-login-page {
+  position: relative;
+  .lamp-pic {
+    position: absolute;
+    width: 10px;
+    top: 200px;
+    right: -10px;
+    z-index: 1;
+    .lamp-obj {
+      transform: translateX(-50%) translateY(-100%);
+      transform-origin: center top;
+    }
+    :hover {
+      animation: swing 1s linear infinite;
+    }
+  }
+}
+.custom-page,
+.seller-page {
+  @media (max-width: 992px) {
+    display: none;
+  }
+  width: 100%;
+  height: 100%;
+
+  .custom-login-group,
+  .seller-login-group {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    padding: 0;
+
+    // 分頁
+
+    .nav.nav-tabs {
+      height: 50px;
+      margin-bottom: 0px;
+      //   li{
+      //     margin: 0;
+      //   }
+      .nav-item {
+        flex: 1;
+        text-align: center;
+
+        .nav-link {
+          width: 100%;
+          background-color: rgba(255, 255, 255, 0.5);
+          border: 5px solid $primary;
+          border-bottom: none;
+          border-left: none;
+          height: 100%;
+          border-radius: 0px;
+          font-size: 16px;
+          font-weight: 500;
+        }
+        .nav-link.active {
+          background-color: $primary;
+          color: #fff;
+        }
+      }
+    }
+
+    .login-pic {
+      height: 700px;
+      width: 700px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      border-radius: 20px 0px 0px 20px;
+      border-top: 5px solid $primary;
+      border-right: 5px solid $primary;
+      border-bottom: 5px solid $primary;
+      border-left: 10px solid $primary;
+    }
+
+    .tab-content {
+      margin-top: -1px;
+      padding: 40px 50px 80px 50px;
+      gap: 40px;
+      height: 651px;
+      border-radius: 0px 20px 20px 0px;
+      border-top: 5px solid $primary;
+      border-right: 10px solid $primary;
+      border-bottom: 5px solid $primary;
+      background-color: rgba(255, 255, 255, 0.5);
+      //   border-left: 5px solid $primary;
+    }
+    .login-title {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      span {
+        color: #621b1b;
+        font-size: 28px;
+        font-weight: 700;
+        margin-right: 20px;
+      }
+    }
+    .custom-input-group form {
+      padding-top: 40px;
+      flex-direction: column;
+      border-bottom: 1px solid $deep-gray;
+    }
+
+    .forget-text {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      .forget-p {
+        text-decoration: none;
+      }
+    }
+    .btn.btn-primary {
+      display: flex;
+      width: 140px;
+      padding: 5px 30px;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+    }
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+    }
+    .must-text {
+      color: $danger;
+      font-size: 16px;
+      font-weight: 500;
+      margin-left: 5px;
+    }
+    .google-login {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      padding: 10px 30px;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      border-radius: 20px;
+      border: 2px solid $primary;
+      background: #fff;
+      span {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+    .google-login:active,
+    .google-login:hover {
+      color: #fff;
+      background-color: $primary;
+    }
+  }
+
+  .seller-login-group {
+    .nav.nav-tabs {
+      .nav-item {
+        .nav-link {
+          border: 5px solid $primary;
+          border-bottom: none;
+          border-right: none;
+        }
+      }
+    }
+    .seller-input-group form {
+      padding-top: 80px;
+      flex-direction: column;
+      border-bottom: none;
+      z-index: 1;
+    }
+    .seller-input-group.step-1 form {
+      padding-top: 80px;
+      flex-direction: column;
+      border-bottom: none;
+    }
+    .seller-input-group.step-2 form {
+      padding-top: 80px;
+      flex-direction: column;
+      border-bottom: none;
+    }
+
+    .login-pic {
+      border-radius: 0px 20px 20px 0px;
+      border-top: 5px solid $primary;
+      border-left: 5px solid $primary;
+      border-bottom: 5px solid $primary;
+      border-right: 10px solid $primary;
+    }
+
+    .tab-content {
+      border-radius: 20px 0px 0px 20px;
+      border-top: 5px solid $primary;
+      border-left: 10px solid $primary;
+      border-bottom: 5px solid $primary;
+      border-right: none;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+// 以下設定縮小版時
+.custom-page-min,.seller-page-min {
+  @media (max-width: 992px) {
+    display: block;
+    width: 100%;
+  }
+  display: none;
+  .custom-min-group,.seller-min-group {
+    width: 100%;
+    .custom-min-login,.custom-min-register,.seller-min-login,.seller-min-register {
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .login-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span {
+        color: #621b1b;
+        font-size: 28px;
+        font-weight: 700;
+        margin-right: 20px;
+      }
+    }
+    .custom-input-group form {
+      border-bottom: 1px solid $deep-gray;
+    }
+    .btn.btn-primary {
+      display: flex;
+      width: 140px;
+      padding: 5px 30px;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+    }
+    .google-login {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      padding: 10px 30px;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      border-radius: 20px;
+      border: 2px solid $primary;
+      background: #fff;
+      span {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+    .google-login:active,
+    .google-login:hover {
+      color: #fff;
+      background-color: $primary;
+    }
+    .must-text {
+      color: $danger;
+      font-size: 16px;
+      font-weight: 500;
+      margin-left: 5px;
+    }
+    .forget-text {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      .forget-p {
+        text-decoration: none;
+      }
+    }
+  }
+}

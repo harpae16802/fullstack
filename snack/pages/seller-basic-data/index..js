@@ -390,7 +390,7 @@ export default function SellerBasicData() {
                       value={sellerData.restDay || ""}
                       onChange={handleChange}
                     >
-                      {[...Array(7).keys()].map((day) => (
+                      {[...Array(8).keys()].map((day) => (
                         <option key={day} value={day}>
                           {day === 0 ? "請選擇公休日" : `每週第${day}天`}
                         </option>
