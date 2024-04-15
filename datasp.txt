@@ -149,20 +149,28 @@ VALUES
 
 
 我的EXPRESS資料夾結構
-
+├──controllers
+│       ├──jsonFormConsroller
+│       ├──jsonTableConsroller.js
+│       ├──lineController.js
+│       ├──paypalController.js
+│       ├──qrcodeConstroller.js
 ├── public 
  │       ├── seller(用來裝賣家上傳的頭貼與商店資料夾)
  │       ├── products(用來上傳產品圖片的資料夾)
+ │       ├── images(用來裝會員上傳的頭貼)
 ├── routers
  │       ├── productsRouter.js
  │       ├── sellerRouter.js
  │       ├── authRoutes.js
+ │       ├── shop-products.js
 ├── src
 ├── utils
  │       ├── db.js
 ├── views
 ├── index.js
 ├── dev.env
+├──routes.js
 └──...
 
 我的next.js資料夾結構

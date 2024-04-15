@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
     import('bootstrap/dist/js/bootstrap')
   }, [])
   const getLayout =
-    Component.getLayout || ((page) => <MainLayout><Sesson>{page}</Sesson></MainLayout>)
+    Component.getLayout || ((page) => <MainLayout><>{page}</></MainLayout>)
 
   return getLayout(
     <SellerProvider>
