@@ -39,15 +39,7 @@ app.get("/market-data", async (req, res) => {
   res.json(rows);
 });
 
-//店家商品路由
-app.get("/seller-data", async (req, res) => {
-  const sql = "SELECT * FROM seller";
-  const [rows] = await db.query(sql);
-
-  res.json(rows);
-});
-
-//店家產品路由
+// 店家產品路由
 app.use("/shop-products", shopRouter);
 
 // 會員路由

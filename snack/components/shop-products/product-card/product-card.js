@@ -1,17 +1,38 @@
 // 內建
-import React from "react";
+import React, { useState } from 'react'
 // icons
-import { FaThumbsUp, FaPlus } from "react-icons/fa";
+import { FaThumbsUp, FaPlus, FaRegHeart, FaHeart } from 'react-icons/fa'
+// fetch 網址
+import { FAVORITE_PRODUCTS } from '@/components/config/api-path'
 // 樣式
-import style from "./style.module.scss";
+import style from './style.module.scss'
 
 export default function ProductCard({
-  imgUrl = "",
-  title = "",
-  price = "",
-  percentage = "",
-  pepole = "",
+  product_id,
+  imgUrl = '',
+  title = '',
+  price = '',
+  percentage = '',
+  pepole = '',
 }) {
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  // 加入收藏 - 商品
+  const toggleFavoriteProducts = async () => {
+    try {
+      const response = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
+      const data = await response.json()
+      if (data.success) {
+        setIsFavorite(data.action === 'add')
+      } else {
+        // 處理錯誤情況
+        console.error('Failed to toggle favorite:', data.error)
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error)
+    }
+  }
+
   return (
     <div className={style.card}>
       <div className={style.imgDiv}>
@@ -21,15 +42,29 @@ export default function ProductCard({
         </button>
       </div>
       <div className={style.textDiv}>
-        <h5 className={`fw-bold mb-0`}>{title}</h5>
+        <div className={`d-flex align-items-center`}>
+          <h5 className={`fw-bold mb-0`}>{title}</h5>
+          {isFavorite ? (
+            <FaHeart
+              className={`${style.icon}`}
+              onClick={toggleFavoriteProducts}
+            />
+          ) : (
+            <FaRegHeart
+              className={`${style.icon}`}
+              onClick={toggleFavoriteProducts}
+            />
+          )}
+        </div>
+
         <div className="d-flex align-items-center">
           <span className={style.price}>${price}</span>
           <span className="d-flex align-items-center">
-            <FaThumbsUp className={style.icon} />
-            {percentage}% ({pepole})
+            <FaThumbsUp className={style.iconThumbsUp} />
+            {percentage} ({pepole})
           </span>
         </div>
       </div>
     </div>
-  );
+  )
 }

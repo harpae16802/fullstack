@@ -1,36 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 // 元件
-import SectionProducts from "@/components/layout/section-nopaddin";
-import ShopInfo from "@/components/shop-products/shop-info/shop-info";
-import SearchBarSmaller from "@/components/common/search-bar-smaller";
-import ProductCard from "@/components/shop-products/product-card/product-card";
-import ProductCard2 from "@/components/shop-products/product-card2/product-card2";
+import SectionProducts from '@/components/layout/section-nopaddin'
+import ShopInfo from '@/components/shop-products/shop-info/shop-info'
+import SearchBarSmaller from '@/components/common/search-bar-smaller'
+import ProductCard from '@/components/shop-products/product-card/product-card'
+import ProductCard2 from '@/components/shop-products/product-card2/product-card2'
 // icons
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart } from 'react-icons/fa'
 // fetch 網址
-import { SELLER_DATA } from "@/components/config/api-path";
+import { SELLER_DATA, PRODUCTS_DATA } from '@/components/config/api-path'
+
 // 樣式
-import style from "./shop-products.module.scss";
+import style from './shop-products.module.scss'
 
 export default function ShopProducts() {
-  const [seller, setSeller] = useState(null);
+  const [seller, setSeller] = useState(null)
+  const [products, setProducts] = useState([])
 
-  // 撈資料呈現
+  const seller_id = 4
+
+  // 撈 seller 資料
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const r = await fetch(SELLER_DATA);
+        const r = await fetch(SELLER_DATA)
         if (!r.ok) {
-          throw new Error("Network response 錯誤");
+          throw new Error('Network response 錯誤')
         }
-        const data = await r.json();
-        setSeller(data[3]);
+        const data = await r.json()
+        setSeller(data[3])
       } catch (error) {
-        console.log("fetch 錯誤:", error);
+        console.log('fetch 錯誤:', error)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
+
+  // 撈 products 資料
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
+        if (!r.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await r.json()
+        setProducts(data.slice(0, 4))
+      } catch (error) {
+        console.error('fetch products 錯誤:', error)
+      }
+    }
+
+    fetchProducts()
+  }, [seller_id])
 
   return (
     <SectionProducts>
@@ -76,7 +98,7 @@ export default function ShopProducts() {
                           人氣精選
                         </a>
                       </li>
-                    );
+                    )
                   })}
               </ul>
             </div>
@@ -97,24 +119,23 @@ export default function ShopProducts() {
                 <div
                   className={`row flex-nowrap flex-md-wrap ${style.productCardRow}`}
                 >
-                  {Array(4)
-                    .fill(1)
-                    .map((v, i) => {
-                      return (
-                        <div
-                          className={`col-12 col-lg-3 ${style.productCardCol}`}
-                          key={i}
-                        >
-                          <ProductCard
-                            imgUrl="/images/shop02.jpg"
-                            title="雞肉飯和配菜"
-                            price="70"
-                            percentage="43"
-                            pepole="46"
-                          />
-                        </div>
-                      );
-                    })}
+                  {products.map((product) => {
+                    return (
+                      <div
+                        className={`col-12 col-lg-3 ${style.productCardCol}`}
+                        key={product.product_id}
+                      >
+                        <ProductCard
+                          product_id={product.product_id}
+                          imgUrl={`/images/products/${product.image_url}`}
+                          title={product.product_name}
+                          price={product.price}
+                          percentage="4.3"
+                          pepole="46"
+                        />
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
 
@@ -141,11 +162,11 @@ export default function ShopProducts() {
                                   imgUrl="/images/shop02.jpg"
                                 />
                               </div>
-                            );
+                            )
                           })}
                       </div>
                     </div>
-                  );
+                  )
                 })}
             </div>
 
@@ -166,5 +187,5 @@ export default function ShopProducts() {
         </div>
       </div>
     </SectionProducts>
-  );
+  )
 }

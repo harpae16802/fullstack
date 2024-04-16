@@ -12,6 +12,7 @@ $bdrs: 10px;
       width: 100%;
       height: 140px;
       border-radius: $bdrs;
+      object-fit: cover;
     }
 
     .addBtn {
@@ -31,12 +32,18 @@ $bdrs: 10px;
   .textDiv {
     padding-top: 7px;
 
+    .icon {
+      margin-left: 4px;
+      color: #a32c2d;
+      cursor: pointer;
+    }
+
     .price {
       margin-right: 24px;
     }
 
-    .icon {
-      margin-right: 7px;
+    .iconThumbsUp {
+      margin-right: 4px;
     }
   }
 }

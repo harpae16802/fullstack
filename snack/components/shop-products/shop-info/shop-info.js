@@ -1,44 +1,48 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 // icons
-import { FaRegClock, FaRegStar, FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaRegClock, FaRegStar, FaRegHeart, FaHeart } from 'react-icons/fa'
 // fetch 網址
-import { FAVORITE_STORE } from "@/components/config/api-path";
+import { FAVORITE_STORE } from '@/components/config/api-path'
 // 樣式
-import style from "./style.module.scss";
+import style from './style.module.scss'
 
 export default function ShopInfo({
   seller_id,
-  shopName = "",
-  time1 = "",
-  time2 = "",
-  score = "",
-  comment = "",
+  shopName = '',
+  time1 = '',
+  time2 = '',
+  score = '',
+  comment = '',
 }) {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false)
 
-  const toggleFavorite = async () => {
+  // 加入收藏 - 店家
+  const toggleFavoriteShop = async () => {
     try {
-      const response = await fetch(`${FAVORITE_STORE}/${seller_id}`);
-      const data = await response.json();
+      const response = await fetch(`${FAVORITE_STORE}/${seller_id}`)
+      const data = await response.json()
       if (data.success) {
-        setIsFavorite(data.action === "add");
+        setIsFavorite(data.action === 'add')
       } else {
         // 處理錯誤情況
-        console.error("Failed to toggle favorite:", data.error);
+        console.error('Failed to toggle favorite:', data.error)
       }
     } catch (error) {
-      console.error("Error toggling favorite:", error);
+      console.error('Error toggling favorite:', error)
     }
-  };
+  }
 
   return (
     <div className={`row ${style.shopInfo}`}>
       <div className={`col-12 d-flex ${style.title}`}>
         <h1 className={`fw-bold mb-0`}>{shopName}</h1>
         {isFavorite ? (
-          <FaHeart className={`${style.icon}`} onClick={toggleFavorite} />
+          <FaHeart className={`${style.icon}`} onClick={toggleFavoriteShop} />
         ) : (
-          <FaRegHeart className={`${style.icon}`} onClick={toggleFavorite} />
+          <FaRegHeart
+            className={`${style.icon}`}
+            onClick={toggleFavoriteShop}
+          />
         )}
       </div>
       <div className={`col-12 d-flex align-items-center`}>
@@ -55,5 +59,5 @@ export default function ShopInfo({
         </a>
       </div>
     </div>
-  );
+  )
 }
