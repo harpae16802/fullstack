@@ -311,39 +311,44 @@ $mobile-width: 480px;
 //表格
 // 表格基本樣式
 .table {
-  border-collapse: separate;
+  // border-collapse: separate;
   border-spacing: 0 0.5rem;
   width: 100%;
-
+      border-radius: 10px;
   th {
+    border-radius: 10px;
     border-bottom: 2px solid $primary-red;
   }
 
   thead th {
-    background-color: $background-light-red;
+    // background-color: $background-light-red;
     color: $primary-red;
     font-weight: bold;
-    padding: 0.75rem;
+    padding: 1.25em;
     border: 1px solid $primary-red;
+    border-radius: 10px;
     border-bottom-width: 3px;
   }
 
   tbody tr {
     background-color: #fff;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); // 調整陰影大小和顏色
 
     td {
-      padding: 0.75rem;
+      padding:1rem;
       border: 1px solid $primary-red;
       text-align: center; // 根據設計圖可能需要調整
+      border-radius: 10px;
       &:first-child {
         border-top-left-radius: 0.5rem;
         border-bottom-left-radius: 0.5rem;
+        border-radius: 10px;
       }
       &:last-child {
         border-top-right-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
+        border-radius: 10px;
       }
     }
   }
