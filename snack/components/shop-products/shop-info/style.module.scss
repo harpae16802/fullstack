@@ -44,12 +44,6 @@ $white: #fff;
   outline: none;
   padding: 60px;
 
-  .avatar {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-  }
-
   .bigStar {
     font-size: 24px;
   }
@@ -72,11 +66,21 @@ $white: #fff;
     }
   }
 
-  .comment {
+  .userComment {
     padding: 14px;
     margin-top: 14px;
     border-radius: 10px;
     border: 1px solid #e5e1dd;
+
+    .titleInfo {
+      border: 1px solid #000;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
   }
 }
 

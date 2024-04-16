@@ -117,23 +117,25 @@ export default function ShopInfo({
                 })}
             </div>
 
-            {/* comment */}
-            <div className={`${style.comment}`}>
-              <div>
+            {/* user comment */}
+            <div className={`${style.userComment}`}>
+              <div className={`d-flex ${style.titleInfo}`}>
                 <img
                   src="12345.jpg"
                   alt=""
                   className={`rounded-circle ${style.avatar}`}
                 />
-                <p className="fw-bold m-0">肥倫</p>
-                {/* star */}
                 <div>
-                  {Array(5)
-                    .fill(1)
-                    .map((v) => {
-                      return <FaStar key={v} className={style.star} />
-                    })}
-                  <span>1周前</span>
+                  <p className="fw-bold m-0">肥倫</p>
+                  {/* star */}
+                  <div>
+                    {Array(5)
+                      .fill(1)
+                      .map((v) => {
+                        return <FaStar key={v} className={style.star} />
+                      })}
+                    <span>1周前</span>
+                  </div>
                 </div>
               </div>
 
