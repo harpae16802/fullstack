@@ -13,7 +13,7 @@ const AuthChecker = ({ children }) => {
       setSeller({ id: storedSellerId, isLoggedIn: true });
     } else {
       // 如果没有存储的 sellerId，可以重定向到登录页面
-      router.push('/seller-login');
+      // router.push('/seller-login');
     }
   }, []);
 
