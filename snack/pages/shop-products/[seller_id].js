@@ -12,47 +12,48 @@ import { SELLER_DATA, PRODUCTS_DATA } from '@/components/config/api-path'
 
 // 樣式
 import style from './shop-products.module.scss'
+import { useRouter } from 'next/router'
 
 export default function ShopProducts() {
-  const [seller, setSeller] = useState(null)
-  const [products, setProducts] = useState([])
+  const router = useRouter()
+  const { seller_id } = router.query
 
-  const seller_id = 4
+  const [seller, setSeller] = useState(null) // 渲染資訊出來
+  const [products, setProducts] = useState([]) // 渲染資訊出來
 
   // 撈 seller 資料
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const r = await fetch(SELLER_DATA)
-        if (!r.ok) {
-          throw new Error('Network response 錯誤')
-        }
+        const r = await fetch(`${SELLER_DATA}/${seller_id}`)
+
+        if (!r.ok) throw new Error('網絡回應錯誤')
         const data = await r.json()
-        setSeller(data[3])
+        setSeller(data[0])
       } catch (error) {
-        console.log('fetch 錯誤:', error)
+        console.error('撈取資料錯誤:', error)
       }
     }
     fetchData()
-  }, [])
-
-  // 撈 products 資料
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
-        if (!r.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const data = await r.json()
-        setProducts(data.slice(0, 4))
-      } catch (error) {
-        console.error('fetch products 錯誤:', error)
-      }
-    }
-
-    fetchProducts()
   }, [seller_id])
+
+  // // 撈 products 資料
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
+  //       if (!r.ok) {
+  //         throw new Error('Network response was not ok')
+  //       }
+  //       const data = await r.json()
+  //       setProducts(data.slice(0, 4))
+  //     } catch (error) {
+  //       console.error('fetch products 錯誤:', error)
+  //     }
+  //   }
+
+  //   fetchProducts()
+  // }, [seller_id])
 
   return (
     <SectionProducts>
@@ -72,11 +73,11 @@ export default function ShopProducts() {
             {seller && (
               <ShopInfo
                 seller_id={seller.seller_id}
-                shopName={seller.store_name}
-                time1="周一到周六"
-                time2="下午5:00到上午2:00"
-                score="4.2"
-                comment="169則留言"
+                shopName={seller.store_name} // 确保从状态动态传递 store_name
+                time1="周一到周六" // 如果这些信息也应该是动态的，请替换为对应的状态
+                time2="下午5:00到上午2:00" // 同上
+                score="4.2" // 如果有动态数据，请替换
+                comment="169則留言" // 如果有动态数据，请替换
               />
             )}
           </div>

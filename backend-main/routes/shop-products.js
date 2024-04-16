@@ -4,10 +4,15 @@ import db from "../utils/db.js";
 const router = express.Router();
 
 // 獲取店家資料
-router.get("/seller-data", async (req, res) => {
-  const sql = "SELECT * FROM seller";
-  const [rows] = await db.query(sql);
-  res.json(rows);
+router.get("/seller/:seller_id", async (req, res) => {
+  const sql = "SELECT * FROM seller WHERE seller_id = ?";
+
+  try {
+    const [row] = await db.query(sql, [req.params.seller_id]);
+    res.json(row);
+  } catch (error) {
+    console.error("資料庫查詢店家出錯:", error);
+  }
 });
 
 // 獲取店家商品資料
@@ -18,7 +23,6 @@ router.get("/products/:seller_id", async (req, res) => {
     res.json(row);
   } catch (error) {
     console.error("資料庫查詢產品出錯:", error);
-    res.status(500).send("資料庫查詢產品出錯");
   }
 });
 
