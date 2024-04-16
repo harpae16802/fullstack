@@ -1,13 +1,6 @@
-$black: #070505;
-$primary: rgb(163, 44, 45);
-$secondary: rgb(225, 209, 178);
-$success: rgb(41, 162, 30);
-$warning: rgb(255, 201, 64);
-$danger: rgb(255, 1, 1);
-$light-primary: rgb(234, 105, 106);
-$deep-primary: rgb(98, 27, 27);
-$deep-gray: rgb(183, 180, 177);
-$gray: rgb(229, 225, 221);
+// 全站配色
+// 引入變數使用
+@import "variable";
 
 @import '~bootstrap/scss/bootstrap';
 
@@ -136,10 +129,16 @@ $gray: rgb(229, 225, 221);
       //   border-left: 5px solid $primary;
     }
     .login-title {
+      @media (max-width: 992px) {
+        justify-content: space-between;
+      }
       display: flex;
       align-items: center;
       justify-content: start;
       span {
+        @media (max-width: 992px) {
+          margin-right: 0px;
+        }
         color: #621b1b;
         font-size: 28px;
         font-weight: 700;
@@ -266,10 +265,16 @@ $gray: rgb(229, 225, 221);
       gap: 40px;
     }
     .login-title {
+      @media (max-width: 992px) {
+        justify-content: space-between;
+      }
       display: flex;
       align-items: center;
       justify-content: space-between;
       span {
+        @media (max-width: 992px) {
+          margin-right: 0px;
+        }
         color: #621b1b;
         font-size: 28px;
         font-weight: 700;
