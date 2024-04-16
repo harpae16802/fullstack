@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
 // 元件
 import SectionProducts from '@/components/layout/section-nopaddin'
 import ShopInfo from '@/components/shop-products/shop-info/shop-info'
@@ -20,6 +21,7 @@ export default function ShopProducts() {
 
   const [seller, setSeller] = useState(null) // 渲染資訊出來
   const [products, setProducts] = useState([]) // 渲染資訊出來
+  const [mainDishes, setMainDishes] = useState([]) // 渲染過濾的商品
 
   // 撈 seller 資料
   useEffect(() => {
@@ -31,29 +33,29 @@ export default function ShopProducts() {
         const data = await r.json()
         setSeller(data[0])
       } catch (error) {
-        console.error('撈取資料錯誤:', error)
+        console.error('撈取 seller 資料錯誤:', error)
       }
     }
     fetchData()
   }, [seller_id])
 
-  // // 撈 products 資料
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
-  //       if (!r.ok) {
-  //         throw new Error('Network response was not ok')
-  //       }
-  //       const data = await r.json()
-  //       setProducts(data.slice(0, 4))
-  //     } catch (error) {
-  //       console.error('fetch products 錯誤:', error)
-  //     }
-  //   }
+  // 撈 products 資料
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
+        if (!r.ok) {
+          throw new Error('網絡回應錯誤')
+        }
+        const data = await r.json()
+        setProducts(data.slice(0, 4))
+      } catch (error) {
+        console.error('撈取 products 資料錯誤:', error)
+      }
+    }
 
-  //   fetchProducts()
-  // }, [seller_id])
+    fetchProducts()
+  }, [seller_id])
 
   return (
     <SectionProducts>
@@ -90,17 +92,23 @@ export default function ShopProducts() {
 
             <div className="col-12 col-md-9">
               <ul className={`d-flex align-items-center p-0 ${style.ul}`}>
-                {Array(4)
-                  .fill(1)
-                  .map((v, i) => {
-                    return (
-                      <li key={i} className={`${style.li}`}>
-                        <a href="#!" className={`fw-bold ${style.a}`}>
-                          人氣精選
-                        </a>
-                      </li>
-                    )
-                  })}
+                <li className={`d-flex ${style.li}`}>
+                  <Link href="#hotSell" className={`fw-bold ${style.a}`}>
+                    人氣精選
+                  </Link>
+                  <Link href="#mainFood" className={`fw-bold ${style.a}`}>
+                    主食單點區
+                  </Link>
+                  <Link href="#" className={`fw-bold ${style.a}`}>
+                    副食單點區
+                  </Link>
+                  <Link href="#" className={`fw-bold ${style.a}`}>
+                    這裡都是甜的
+                  </Link>
+                  <Link href="#" className={`fw-bold ${style.a}`}>
+                    想喝飲料看這裡
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -110,13 +118,13 @@ export default function ShopProducts() {
             {/* card */}
             <div className="col-12 col-md-9">
               <div className="row">
-                <div className="row">
-                  <div className="col">
-                    <h5 className="fw-bold">人氣精選</h5>
-                  </div>
+                {/* card1 */}
+                <div className="col">
+                  <h5 className="fw-bold" id="hotSell">
+                    人氣精選
+                  </h5>
                 </div>
 
-                {/* card1 */}
                 <div
                   className={`row flex-nowrap flex-md-wrap ${style.productCardRow}`}
                 >
@@ -141,34 +149,30 @@ export default function ShopProducts() {
               </div>
 
               {/* card2 */}
-              {Array(4)
-                .fill(1)
-                .map((v) => {
-                  return (
-                    <div key={v} className={`row ${style.card2}`}>
-                      <div className="row">
-                        <h5 className="fw-bold">人氣精選</h5>
-                      </div>
-                      <div className="row">
-                        {Array(5)
-                          .fill(1)
-                          .map((v) => {
-                            return (
-                              <div key={v} className={`col-12 col-md-6`}>
-                                <ProductCard2
-                                  title="酥炸杏鮑菇"
-                                  price="80"
-                                  percentage="36"
-                                  pepole="48"
-                                  imgUrl="/images/shop02.jpg"
-                                />
-                              </div>
-                            )
-                          })}
-                      </div>
-                    </div>
-                  )
-                })}
+              <div className={`row ${style.card2}`}>
+                <div className="row">
+                  <h5 className="fw-bold" id="mainFood">
+                    主食單點區
+                  </h5>
+                </div>
+                <div className="row">
+                  {Array(5)
+                    .fill(1)
+                    .map((v) => {
+                      return (
+                        <div key={v} className={`col-12 col-md-6`}>
+                          <ProductCard2
+                            title="酥炸杏鮑菇"
+                            price="80"
+                            percentage="36"
+                            pepole="48"
+                            imgUrl="/images/shop02.jpg"
+                          />
+                        </div>
+                      )
+                    })}
+                </div>
+              </div>
             </div>
 
             {/* cart */}
