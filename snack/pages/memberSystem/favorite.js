@@ -6,11 +6,29 @@ import FavaiteMobile from   "@/components/memberS/favaite/mobile/favrate"
 import Search from "@/components/memberS/qrcode/searchbar"
 import styles from "@/styles/form.module.css"
 import Pagination from "@/components/memberS/others/pagination"
-import QrcodeCurrent from "@/components/modal/qrcodeCurrent";
-
+import QrcodeCurrent from "@/components/modal/qrcodeCurrent"; 
 import classNames from 'classnames'
+import { useEffect, useState } from "react";
 
 export default function QrcodeselectMobile1() {
+  const [isBigScreen, setIsBigScreen] = useState(false);
+  const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
+  useEffect(()=>{
+  const handleResize = () => {
+    setIsBigScreen(window.innerWidth > 500);
+    setIsTabletOrMobile(window.innerWidth <= 500);
+  };
+  
+  // 監聽視窗大小變化
+  window.addEventListener('resize', handleResize);
+  // 初始設置一次
+  handleResize();
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+  
+  },[])
   return (
     <div className="container">
       <div className="row">
@@ -26,9 +44,10 @@ export default function QrcodeselectMobile1() {
            <Search />
 
           <div className={classNames(styles['border-1'], "px-4 py-3 mt-4", styles["rd-2"])}>
-
-            <Favaite />
-            <FavaiteMobile />
+          {isBigScreen &&  <Favaite />}
+          {isTabletOrMobile &&   <FavaiteMobile />}
+           
+           
 
 
           </div>

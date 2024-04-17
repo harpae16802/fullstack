@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "@/styles/form.module.css"
 import Image from 'next/image'
 import classNames from 'classnames'
 import { FaHome } from "react-icons/fa";
 import { CgAddR } from "react-icons/cg";
-import { IoIosArrowDown } from "react-icons/io";
-
+import { IoIosArrowDown } from "react-icons/io"; 
 
 export default function QrcodeMobile() {
+  const [numberbtn,setnumberbtn]=useState(1);
 
   return (
     <>
@@ -24,8 +24,7 @@ export default function QrcodeMobile() {
         <IoIosArrowDown className='me-3' />
       </div>
       <div className={classNames("collapse")} id="collapseExample1">
-        {Array(3).fill(1).map((v, i) => {
-
+        {Array(3).fill(1).map((v, i) => { 
           return (
             <div className="creditItem qrcodeRecordMobile" key={i} >
               <div className={classNames("itemgroup item1", styles["mb-0"])}>
@@ -36,12 +35,12 @@ export default function QrcodeMobile() {
                       <Image src="/ch.jpeg" alt="Description" width={100} height={100} layout='responsive' />
                     </dir>
                   </div>
-                  <div className="time px-2" style={{ textAlign: 'center' }}><small>2024/03/01</small>
-                    <h6 className={classNames(styles['btn-parmary-transparent'])}>海苔雞排</h6>
-                    <div className='number'>
-                      <span className='numbericon' >+</span>
-                      <span className='numbericon'>1</span>
-                      <span className='numbericon'>+</span>
+                  <div className="time px-2 px-2 flex-column d-flex text-align-center justify-content-evenly" style={{ textAlign: 'center' }}><small>2024/03/01</small>
+                    <h6 className={classNames(styles['btn-parmary-transparent'])}>海苔雞排<br/><br/><br/></h6>
+                    <div className='number d-flex'>
+                      <span className='numbericon' onClick={()=>setnumberbtn(numberbtn+1)}>+</span>
+                      <span className='numbericon no-background'><input readonly type="number" name="number" id="" onInput={(e)=>{setnumberbtn(e.target.value)}} defaultValue={numberbtn} className='supernumb' /></span>
+                      <span className='numbericon' onClick={()=>setnumberbtn(numberbtn-1)}>-</span>
                     </div>
                   </div>
                 </div>

@@ -27,32 +27,26 @@ export default function ticket() {
 
           <div className="card">
             {/* flexBetween */}
+            
             {Array(4).fill(1).map(() => {
               return (  
                 <div className={classNames("card full-width card-body mb-0")}>
 
                   {/* flexBetween */}
                   <div className={classNames("full-width", "mx-0 px-3 py-3", styles.flexBetween)}>
-                    <div className={classNames("d-flex flex-column content-column-center")}>
-                      <dir className="productImage">
-                        <Image src="/ch.jpeg" alt="Description" width={100} height={100} layout='responsive' />
-                      </dir>
-                      <div className='number'>
-                        <span className='numbericon' >+</span>
-                        <span className='numbericon'>1</span>
-                        <span className='numbericon'>+</span>
-                      </div>
-
+                    <div className={classNames("d-flex ")}>
+                 
+                    <Image src="/ch.jpeg" alt="Description" width={60} height={60} />
+                    <div className="time" style={{ textAlign: 'center' }}>
+                        2024/02/01    <br />    楊威雨 
+                    </div> 
                     </div>
-                    <div className={classNames("countGroup", styles.flexBetween)}>
-                      <div className="time px-2" style={{ textAlign: 'center' }}>
-                        <h6 className={classNames(styles['btn-parmary-transparent'])}>海苔雞排</h6>    <small>2024/03/01</small>
-                     <button type="submit" className={classNames("btn text-sm", styles["btn-parmary"], styles["rd-30"])}>加入購物車 </button>
-                
-                      </div> 
-
+                    <button type="submit" style={{height:"50px"}} className={classNames("btn  sm-btn ", styles["btn-parmary"])}>查看詳細 </button>
+                    <button type="submit" style={{height:"50px"}} className={classNames("btn  sm-btn ", styles["text-color"],styles["border-001"])}>到店面 </button>
+                    <div>
                     </div>
-                  </div>
+                    </div>
+                    <p className='full30-width single-ellipsis'>這家的料理該怎麼說的,簡而言之就是好吃再詳細說一些的話就是喜歡他的的調味，甜而不膩然後又易入口</p>
                 </div>)
             })
             }

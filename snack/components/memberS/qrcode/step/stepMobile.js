@@ -1,6 +1,5 @@
 import React from 'react'
-import styles from "@/styles/form.module.css"
-import StepCard from "@/components/memberS/qrcode/step/step_card-mobile"
+import styles from "@/styles/form.module.css" 
 import classNames from 'classnames'
 export default function StepMobile({ stepLevel }) {
   return (
@@ -16,9 +15,9 @@ export default function StepMobile({ stepLevel }) {
       </div>
     </div>
         <div  className='stepcard d-flex justify-content-center' > 
-        {stepLevel==1 &&    <StepCard title="step1:選擇兌換商品" value="可選擇多樣商品，但只能來自同一家商店喔!"/>}
-        {stepLevel==2 &&    <StepCard title="確認商品" value="可選擇多樣商品，但只能來自同一家商店喔!"  color='false' />}
-        {stepLevel==3 &&    <StepCard title="兌換QRcode" value="可選擇多樣商品，但只能來自同一家商店喔!"  color='false' />}
+        {stepLevel==1 &&    <StepCard title="step1:選擇兌換商品" value="可選擇多樣商品，但只能來自同一家商店喔!" color={stepLevel == 1 ? 'true' : 'false'}  /> }
+        {stepLevel==2 &&    <StepCard title="確認商品" value="可選擇多樣商品，但只能來自同一家商店喔!"   color={stepLevel == 2 ? 'true' : 'false'}  />}
+        {stepLevel==3 &&    <StepCard title="兌換QRcode" value="可選擇多樣商品，但只能來自同一家商店喔!"  color={stepLevel == 3 ? 'true' : 'false'}  />}
        
         </div>
     </div>

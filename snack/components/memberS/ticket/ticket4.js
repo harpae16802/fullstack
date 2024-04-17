@@ -28,7 +28,7 @@ export default function ticket() {
             {Array(4).fill(1).map(() => {
               return <div className={classNames("card card-body", styles.flexBetween)}>
                 <div className={classNames("", styles.flexBetween)}>
-                  <Image src="/ch.jpeg" alt="Description" width={60} height={60} />
+                  <Image src="/ch.jpeg" alt="Description" width={150} height={150} />
                   <div className="time" style={{ textAlign: 'center' }}>
                     遊戲獎勵
                     <br />  2024/0202

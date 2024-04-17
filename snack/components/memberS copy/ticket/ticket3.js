@@ -1,13 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
-import Point from '../../others/point'
+import Point from '../others/point'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
 import Pagination from '@/components/memberS/others/pagination'
 export default function ticket() {
   return (
-    <div className={classNames(styles["md-open"],"ticket")}>
+    <div>
       <Point />
       <ul className={classNames("nav nav-tabs d-flex flex-grow-1 px-5")}>
         <li className="nav-item flex-grow-1">
@@ -26,12 +26,9 @@ export default function ticket() {
           <div className="card">
             {/* flexBetween */}
             {Array(4).fill(1).map(() => {
-              return <div className={classNames("border-1-bg card-body", styles.flexBetween)}>
+              return <div className={classNames("card card-body", styles.flexBetween)}>
                 <div className={classNames("", styles.flexBetween)}>
-                <div style={{width:"150px"}}>
-                <dir className="productImage">
-                <Image src="/ch.jpeg" alt="Description" width={100} height={100} layout='responsive' />
-              </dir>  </div>
+                  <Image src="/ch.jpeg" alt="Description" width={150} height={150} />
                   <div className="time" style={{ textAlign: 'center' }}>
                     遊戲獎勵
                     <br />  2024/0202

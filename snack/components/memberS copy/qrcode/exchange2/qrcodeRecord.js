@@ -37,7 +37,7 @@ export default function creditComponts() {
                 <div className={classNames(styles['border-1-grey'], "mx-0 px-3 py-3", styles.flexBetween)}>
                   <div className={classNames("", styles.flexBetween)}>
                     <Image src="/ch.jpeg" alt="Description" width={60} height={60} />
-                    <div className="time px-2" style={{ textAlign: 'center' }}>
+                    <div className="time " style={{ textAlign: 'center' }}>
                       <h6 className={classNames(styles['btn-parmary-transparent'])}>海苔雞排</h6>    <small>2024/03/01</small>
 
                     </div>
