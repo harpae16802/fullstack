@@ -31,16 +31,6 @@ const ProductsList = () => {
   const [selectedProducts, setSelectedProducts] = useState([]); // 批量操作
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
-    account: "",
-    password: "",
-    storeName: "",
-    contactNumber: "",
-    email: "",
-    companyAddress: "",
-    companyDescription: "",
-    openingHours: "09:00",
-    closingHours: "22:00",
-    restDay: "0",
     profilePicture: "",
   });
 
@@ -49,15 +39,15 @@ const ProductsList = () => {
     fileInputRef.current.click();
   };
 
-  //批量操作
-  const handleCheckboxChange = (e) => {
-    const productId = e.target.value;
-    if (e.target.checked) {
-      setSelectedProducts([...selectedProducts, productId]);
-    } else {
-      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-    }
-  };
+  // //批量操作
+  // const handleCheckboxChange = (e) => {
+  //   const productId = e.target.value;
+  //   if (e.target.checked) {
+  //     setSelectedProducts([...selectedProducts, productId]);
+  //   } else {
+  //     setSelectedProducts(selectedProducts.filter((id) => id !== productId));
+  //   }
+  // };
 
   // 總請求 發至後端
   useEffect(() => {
@@ -70,16 +60,6 @@ const ProductsList = () => {
 
           setSellerData((prevData) => ({
             ...prevData,
-            account: data.account || "",
-            password: data.password || "",
-            storeName: data.store_name || "",
-            contactNumber: data.contact_number || "",
-            email: data.email || "",
-            companyAddress: data.company_address || "",
-            companyDescription: data.company_description || "",
-            openingHours: data.opening_hours || "17:00",
-            closingHours: data.closing_hours || "23:00",
-            restDay: data.rest_day?.toString() || "6",
             profilePicture: data.profile_picture || "",
             // 其他字段...
           }));
@@ -104,7 +84,7 @@ const ProductsList = () => {
         );
         setCategories(response.data.categories);
       } catch (error) {
-        console.error("加载类别数据失败", error);
+        console.error("載入數據失敗", error);
       }
     };
 

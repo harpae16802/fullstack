@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 
-export default function SellerBasicData() {
+export default function bank() {
   // 使用 useRouter
   const router = useRouter()
 

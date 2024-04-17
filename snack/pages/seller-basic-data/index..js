@@ -153,11 +153,11 @@ const handleProfilePictureChange = async (e) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    alert("头像上传成功");
+    alert("頭像更新成功");
     updateSeller({ profilePicture: response.data.imageUrl });
   } catch (error) {
-    console.error("头像上传失败", error);
-    alert("头像上传失败");
+    console.error("頭像上船失敗", error);
+    alert("頭像更新失敗");
   }
 };
   // 生成24小時時間選項
@@ -376,6 +376,7 @@ const handleProfilePictureChange = async (e) => {
                 </div>
                 {/* 下拉是選單 */}
                 <div className={styles.selectGroup}>
+
                   <div className="col-auto">
                     <label htmlFor="restDay" className={styles.selectLabel}>
                       選擇公休日
@@ -396,6 +397,7 @@ const handleProfilePictureChange = async (e) => {
                       ))}
                     </select>
                   </div>
+
                   <div className="col-auto">
                     <label
                       htmlFor="openingHours"
@@ -415,6 +417,7 @@ const handleProfilePictureChange = async (e) => {
                       {generateTimeOptions()}
                     </select>
                   </div>
+
                   <div className="col-auto">
                     <label
                       htmlFor="closingHours"
@@ -434,6 +437,7 @@ const handleProfilePictureChange = async (e) => {
                       {generateTimeOptions()}
                     </select>
                   </div>
+
                 </div>
                 {/* 按鈕樣式 */}
                 <div className={styles.buttonGroup}>

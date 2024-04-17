@@ -152,31 +152,48 @@ productsRouter
   .post("/add", upload.single("image"), async (req, res) => {
     const {
       category,
+      category_id,
       productName,
       productDescription,
       price,
       stockQuantity,
-      sellerId,
+      productIngredient,
+      productNutrition,
+      seller_id,
     } = req.body;
-    const imageUrl = req.file ? `/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
+    console.log(req.body);
+
+    const imageUrl = req.file ? `/public/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
+    const status = 1; // 根據您的業務規則設置，例如，新建產品預設為上架狀態
+    const favoriteCount = 0; // 新建產品的初始蒐藏數為0
 
     try {
-      const query =
-        "INSERT INTO products (category, product_name, product_description, image_url, price, stock_quantity, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      const query = `
+        INSERT INTO products (
+          category, category_id, product_name, product_description, image_url,
+          price, stock_quantity, seller_id, status, favorite_count, 
+          product_ingredient, product_nutrition
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
       await db.query(query, [
         category,
+        category_id,
         productName,
         productDescription,
         imageUrl,
         price,
         stockQuantity,
-        sellerId,
+        seller_id,
+        status,
+        favoriteCount,
+        productIngredient,
+        productNutrition,
       ]);
       res.status(200).json({
         success: true,
-        imageUrl: `/public/products/${imageUrl}`, // 這裡假設你將文件保存在public/seller目錄下
-        message: "頭像編輯成功",
-          });
+        imageUrl: imageUrl, // 不需要添加前綴路徑，因為已經在 imageUrl 中包含了
+        message: "產品新增成功",
+      });
     } catch (error) {
       console.error("產品新增失敗", error);
       res.status(500).json({ success: false, message: "產品新增失敗" });
@@ -188,6 +205,7 @@ productsRouter
     const productId = req.params.productId;
     const { category, productName, productDescription, price, stockQuantity } =
       req.body;
+    
     try {
       const query =
         "UPDATE products SET category=?, product_name=?, product_description=?, price=?, stock_quantity=? WHERE product_id=?";
