@@ -17,7 +17,8 @@ export default function SellerBasicData() {
   const fileInputRef = useRef(null);
 
   //拿取seller_id
-  const { seller } = useSeller();
+  // const { seller } = useSeller();
+  const { seller, updateSeller } = useSeller();
   const sellerId = seller?.id;
 
   // 賣家頭像 初始與更新
@@ -138,29 +139,27 @@ export default function SellerBasicData() {
       });
   };
 
-  // 更新賣家 頭貼 包含顯示
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+// 更新賣家 頭貼 包含顯示
+const handleProfilePictureChange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append("profilePicture", file);
+  const formData = new FormData();
+  formData.append("profilePicture", file);
 
-    axios
-      .put(`${SELLER_API}${sellerId}/edit/profilePicture`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        alert("頭像上傳成功");
-        setImageVersion((prevVersion) => prevVersion + 1); // 獲取頭貼
-      })
-      .catch((error) => {
-        console.error("頭像上傳失敗", error);
-        alert("頭像上傳失敗");
-      });
-  };
+  try {
+    const response = await axios.put(`${SELLER_API}${seller.id}/edit/profilePicture`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    alert("头像上传成功");
+    updateSeller({ profilePicture: response.data.imageUrl });
+  } catch (error) {
+    console.error("头像上传失败", error);
+    alert("头像上传失败");
+  }
+};
   // 生成24小時時間選項
   const generateTimeOptions = () => {
     const options = [];
@@ -184,7 +183,7 @@ export default function SellerBasicData() {
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
                 <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+                 src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -439,7 +438,7 @@ export default function SellerBasicData() {
                 {/* 按鈕樣式 */}
                 <div className={styles.buttonGroup}>
                   <Link href="/seller-basic-data/">
-                  <button  utton className={styles.btnSecondary}>回到店面</button>
+                  <button  className={styles.btnSecondary}>回到店面</button>
                   </Link>
                   <button type="submit" className={styles.btnPrimary}>
                     提交修改

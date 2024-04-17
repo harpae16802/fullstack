@@ -203,6 +203,7 @@ VALUES
  │       │       ├── orderList.js(訂單列表頁面
  │       │       ├── producutsList.js(產品列表頁面)
  │       │       ├── QRcode.js(QRcode掃描頁面)
+ │       │       ├──reviews.js(賣家評論區)
  │       ├──seller-login
  │       │       ├── login.js
  │       ├──seller-register

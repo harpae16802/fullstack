@@ -142,24 +142,27 @@ export default function SellerBasicData() {
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
+  
     const formData = new FormData();
     formData.append("profilePicture", file);
-
-    axios
-      .put(`${SELLER_API}${sellerId}/edit/profilePicture`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        alert("頭像上傳成功");
-        setImageVersion((prevVersion) => prevVersion + 1); // 獲取頭貼
-      })
-      .catch((error) => {
-        console.error("頭像上傳失敗", error);
-        alert("頭像上傳失敗");
-      });
+  
+    axios.put(`${SELLER_API}${sellerId}/edit/profilePicture`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      alert("頭像上傳成功");
+      setImageVersion(prevVersion => prevVersion + 1); // 更新imageVersion以刷新图片
+      setSellerData(prevData => ({
+        ...prevData,
+        profilePicture: response.data.imageUrl // 使用后端返回的新图片路径
+      }));
+    })
+    .catch((error) => {
+      console.error("頭像上傳失敗", error);
+      alert("頭像上傳失敗");
+    });
   };
   // 生成24小時時間選項
   const generateTimeOptions = () => {

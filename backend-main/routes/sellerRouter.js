@@ -148,27 +148,44 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
 });
 
 // 編輯賣家頭像 (圖片上傳)
-sellerRouter.put(
-  "/:sellerId/edit/profilePicture",
-  upload.single("profilePicture"),
-  async (req, res) => {
-    const sellerId = req.params.sellerId;
-    const profilePicture = req.file ? req.file.filename : null; // 從 req.file 中取得上傳的頭像檔名
+// sellerRouter.put(
+//   "/:sellerId/edit/profilePicture",
+//   upload.single("profilePicture"),
+//   async (req, res) => {
+//     const sellerId = req.params.sellerId;
+//     const profilePicture = req.file ? req.file.filename : null; // 從 req.file 中取得上傳的頭像檔名
 
-    try {
-      const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
-      await db.query(query, [profilePicture, sellerId]);
-      res.status(200).json({
-        success: true,
-        imageUrl: `/public/seller/${profilePicture}`, // 這裡假設你將文件保存在public/seller目錄下
-        message: "頭像編輯成功",
-      });
-    } catch (error) {
-      console.error("頭像編輯失敗", error);
-      res.status(500).json({ success: false, message: "頭像編輯失敗" });
-    }
+//     try {
+//       const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
+//       await db.query(query, [profilePicture, sellerId]);
+//       res.status(200).json({
+//         success: true,
+//         imageUrl: `/public/seller/${profilePicture}`, // 這裡假設你將文件保存在public/seller目錄下
+//         message: "頭像編輯成功",
+//       });
+//     } catch (error) {
+//       console.error("頭像編輯失敗", error);
+//       res.status(500).json({ success: false, message: "頭像編輯失敗" });
+//     }
+//   }
+// );
+sellerRouter.put("/:sellerId/edit/profilePicture", upload.single("profilePicture"), async (req, res) => {
+  const sellerId = req.params.sellerId;
+  const profilePicture = req.file ? req.file.filename : null; // 從 req.file 中取得上傳的頭像檔名
+
+  try {
+    const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
+    await db.query(query, [profilePicture, sellerId]);
+    res.status(200).json({
+      success: true,
+      imageUrl: `/public/seller/${profilePicture}`, // 确保这是正确的路径
+      message: "頭像編輯成功",
+    });
+  } catch (error) {
+    console.error("頭像編輯失敗", error);
+    res.status(500).json({ success: false, message: "頭像編輯失敗" });
   }
-);
+});
 
 // 編輯賣家店家照片 (圖片上傳)
 sellerRouter.put(

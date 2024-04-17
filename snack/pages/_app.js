@@ -8,7 +8,7 @@ import AuthChecker from '../components/AuthChecker'
 import { useEffect } from 'react'
 import Sesson from '@/components/layout/section'
 import '@/styles/globals.scss'
-import '../styles/form.css';
+import '../styles/form.css'
 import '@/styles/index.scss'
 import '@/styles/login.scss'
 import '@/styles/game.scss'
@@ -19,7 +19,12 @@ function MyApp({ Component, pageProps }) {
     import('bootstrap/dist/js/bootstrap')
   }, [])
   const getLayout =
-    Component.getLayout || ((page) => <MainLayout><>{page}</></MainLayout>)
+    Component.getLayout ||
+    ((page) => (
+      <MainLayout>
+        <>{page}</>
+      </MainLayout>
+    ))
 
   return getLayout(
     <MemberProvider>
@@ -29,7 +34,7 @@ function MyApp({ Component, pageProps }) {
           <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
             integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-            crossorigin="anonymous"
+            crossOrigin="anonymous" // 修改这里
           ></script>
         </AuthChecker>
       </SellerProvider>

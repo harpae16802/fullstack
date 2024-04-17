@@ -42,14 +42,14 @@ export default function SellerBasicData() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const { profile_picture, bankAccounts } = response.data.data // 直接从data对象读取profile_picture和bankAccounts
-          console.log('完整的响应数据:', response.data) // 打印完整的响应数据
+          const { profile_picture, bankAccounts } = response.data.data // 解構出我的資料
+          console.log('後端的數據:', response.data) // debug
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: profile_picture || '', // 使用正确的属性名profile_picture
-            bankAccounts: bankAccounts || [], // 确保bankAccounts是一个数组
-            // ...如果还有其他seller信息，也可以在这里展开
+            profilePicture: profile_picture || '', // 使用鉤子
+            bankAccounts: bankAccounts || [], // 使用鉤子
+            // 設定前端的 狀態
           }))
         })
         .catch((error) => {
@@ -58,31 +58,7 @@ export default function SellerBasicData() {
     }
   }, [sellerId, imageVersion])
 
-  // useEffect(() => {
-
-  //   console.log("index.js中的sellerId", sellerId);
-
-  //   if (sellerId) {
-  //     axios
-  //       .get(`${SELLER_API}${sellerId}`)
-  //       .then((response) => {
-  //         const data = response.data.data; // 注意确保这里的路径正确
-  //         console.log(data); // 查看数据结构
-
-  //         setSellerData((prevData) => ({
-  //           ...prevData,
-  //           profilePicture: data.profile_picture || "",
-  //           // 其他字段...
-  //         }));
-  //       })
-  //       .catch((error) => {
-  //         console.error("获取商家信息失败", error);
-  //       });
-  //   }
-  // }, [sellerId]);
-
-  // 修改 更新 賣家的 資料
-  // 修改银行账号数据
+  // 修改銀行帳號
   const handleBankAccountChange = (index, field) => (event) => {
     const updatedBankAccounts = sellerData.bankAccounts.map((account, idx) => {
       if (idx === index) {
@@ -130,7 +106,11 @@ export default function SellerBasicData() {
       })
       .then((response) => {
         alert('頭像上傳成功')
-        setImageVersion((prevVersion) => prevVersion + 1) // 獲取頭貼
+        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setSellerData((prevData) => ({
+          ...prevData,
+          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+        }))
       })
       .catch((error) => {
         console.error('頭像上傳失敗', error)
@@ -272,7 +252,7 @@ export default function SellerBasicData() {
                 {/* 提交按鈕 */}
                 <div className={styles.buttonGroup}>
                   <Link href="/seller-basic-data/">
-                    <button utton className={styles.btnSecondary}>
+                    <button className={styles.btnSecondary}>
                       回到店面
                     </button>
                   </Link>
