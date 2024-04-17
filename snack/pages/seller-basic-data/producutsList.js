@@ -262,7 +262,7 @@ const ProductsList = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/seller-basic-data/qrCode">
+                      <Link href="/seller-basic-data/QRcode">
                         <span className={styles.navLink}>QRcode掃描區</span>
                       </Link>
                     </li>

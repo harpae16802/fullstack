@@ -305,61 +305,111 @@ $mobile-width: 480px;
     }
   }
 }
+
+
+
+
+
+
+
+
+
 //表格
+
 .table {
-  border-spacing: 0 0.5rem;
+  border-collapse: separate;
+  border-spacing: 0 1rem; // 根据设计图调整行间距
   width: 100%;
-  border-radius: 50px; // 給予table圓角效果
+  margin: 1rem 0; // 表格上下的间距
 
-  thead th {
-    color: black; // 將字體顏色改為黑色
-    font-weight: bold;
-    padding: 1.25em;
-    border: 1px solid $primary-red;
-    background-color: $background-light-red; // 如果需要，將背景顏色保持原樣
-    border-bottom-width: 3px;
-    border-radius: 10px; // 給予表頭圓角效果
-  }
-
-  tbody tr {
-    background-color: #fff;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-
-    td {
-      padding:1rem;
+  thead {
+    th {
+      background-color: $sidebar-background;
+      color: black; // 将表头字体颜色设置为黑色
       border: 1px solid $primary-red;
       text-align: center;
-      color: black; // 將字體顏色改為黑色
-      // 刪除td的圓角設置，因為table的border-radius已經足夠
+      padding: 0.75rem;
+      border-radius: 0.5rem; // 设计图中为圆角
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+      }
+      &:last-child {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+     background-color:$sidebar-background;
+     color: black; // 将表头字体颜色设置为黑色
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // 给予行阴影以提升层次感
+      transition: transform 0.1s ease-in-out; // 点击行时的交互效果
+
+      &:hover {
+        transform: scale(1.02); // 鼠标悬浮时微微放大
+      }
+
+      td {
+        border: 1px solid $primary-red;
+        text-align: center;
+        padding: 0.75rem;
+        color: #333; // 设计图中字体颜色为深色
+
+        // &:first-child {
+        //   border-left: none; // 移除最左侧边框
+        // }
+        // &:last-child {
+        //   border-right: none; // 移除最右侧边框
+        // }
+      }
+      // 为第一列的 td 添加左边框的圆角
+      td:first-child {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+      }
+      // 为最后一列的 td 添加右边框的圆角
+      td:last-child {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+      
     }
   }
 }
 
-// 分頁控件樣式
-.pagination {
-  .page-item {
-    .page-link {
-      color: $primary-red;
-      background-color: #fff;
-      border: 1px solid $primary-red;
-      &:hover {
-        background-color: $background-light-red;
-      }
-      &.disabled, &:disabled {
-        color: #ccc;
-        pointer-events: none;
-        background-color: #fff;
-        border-color: #ccc;
-      }
-    }
-    &.active .page-link {
-      background-color: $primary-red;
-      border-color: $primary-red;
-      color: #fff;
-    }
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 搜索和篩選輸入框樣式
 .form-control {

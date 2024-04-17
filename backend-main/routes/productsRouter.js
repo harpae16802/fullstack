@@ -172,7 +172,11 @@ productsRouter
         stockQuantity,
         sellerId,
       ]);
-      res.status(200).json({ success: true, message: "產品新增成功" });
+      res.status(200).json({
+        success: true,
+        imageUrl: `/public/products/${imageUrl}`, // 這裡假設你將文件保存在public/seller目錄下
+        message: "頭像編輯成功",
+          });
     } catch (error) {
       console.error("產品新增失敗", error);
       res.status(500).json({ success: false, message: "產品新增失敗" });

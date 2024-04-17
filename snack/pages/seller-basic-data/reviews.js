@@ -73,7 +73,7 @@ export default function SellerBasicData() {
           console.error("获取商家信息失败", error);
         });
     }
-  }, [sellerId,imageVersion]);
+  }, [sellerId]);
 
   // 修改 更新 賣家的 資料
   const handleChange = (e) => {
@@ -439,7 +439,7 @@ export default function SellerBasicData() {
                 {/* 按鈕樣式 */}
                 <div className={styles.buttonGroup}>
                   <Link href="/seller-basic-data/">
-                  <button  utton className={styles.btnSecondary}>回到店面</button>
+                    <button className={styles.btnSecondary}>回到店面</button>
                   </Link>
                   <button type="submit" className={styles.btnPrimary}>
                     提交修改
