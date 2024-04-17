@@ -15,21 +15,18 @@ export default function ProductCard({
   percentage = '',
   pepole = '',
 }) {
-  const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false) // 最愛
 
   // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
     try {
-      const response = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
-      const data = await response.json()
+      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
+      const data = await r.json()
       if (data.success) {
         setIsFavorite(data.action === 'add')
-      } else {
-        // 處理錯誤情況
-        console.error('Failed to toggle favorite:', data.error)
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error)
+      console.error('加入最愛 錯誤:', error)
     }
   }
 

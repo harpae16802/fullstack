@@ -22,6 +22,9 @@ export default function ShopProducts() {
   const [seller, setSeller] = useState(null) // 渲染資訊出來
   const [products, setProducts] = useState([]) // 渲染資訊出來
   const [mainDishes, setMainDishes] = useState([]) // 渲染過濾的商品
+  const [snack, setSnack] = useState([]) // 渲染過濾的商品
+  const [sweet, setSweet] = useState([]) // 渲染過濾的商品
+  const [drink, setDrink] = useState([]) // 渲染過濾的商品
 
   // 撈 seller 資料
   useEffect(() => {
@@ -39,7 +42,7 @@ export default function ShopProducts() {
     fetchData()
   }, [seller_id])
 
-  // 撈 products 資料
+  // 撈 products 資料跟分類
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -49,6 +52,30 @@ export default function ShopProducts() {
         }
         const data = await r.json()
         setProducts(data.slice(0, 4))
+
+        // 過濾分類
+        const mainDishProducts = data.filter(
+          (product) => product.category === '主食'
+        )
+        setMainDishes(mainDishProducts)
+
+        // 過濾分類
+        const snackProducts = data.filter(
+          (product) => product.category === '小吃'
+        )
+        setSnack(snackProducts)
+
+        // 過濾分類
+        const sweetProducts = data.filter(
+          (product) => product.category === '甜品'
+        )
+        setSweet(sweetProducts)
+
+        // 過濾分類
+        const drinkProducts = data.filter(
+          (product) => product.category === '飲料'
+        )
+        setDrink(drinkProducts)
       } catch (error) {
         console.error('撈取 products 資料錯誤:', error)
       }
@@ -99,13 +126,13 @@ export default function ShopProducts() {
                   <Link href="#mainFood" className={`fw-bold ${style.a}`}>
                     主食單點區
                   </Link>
-                  <Link href="#" className={`fw-bold ${style.a}`}>
+                  <Link href="#snack" className={`fw-bold ${style.a}`}>
                     副食單點區
                   </Link>
-                  <Link href="#" className={`fw-bold ${style.a}`}>
+                  <Link href="#sweet" className={`fw-bold ${style.a}`}>
                     這裡都是甜的
                   </Link>
-                  <Link href="#" className={`fw-bold ${style.a}`}>
+                  <Link href="#drink" className={`fw-bold ${style.a}`}>
                     想喝飲料看這裡
                   </Link>
                 </li>
@@ -148,7 +175,7 @@ export default function ShopProducts() {
                 </div>
               </div>
 
-              {/* card2 */}
+              {/* card2 主食 */}
               <div className={`row ${style.card2}`}>
                 <div className="row">
                   <h5 className="fw-bold" id="mainFood">
@@ -156,21 +183,96 @@ export default function ShopProducts() {
                   </h5>
                 </div>
                 <div className="row">
-                  {Array(5)
-                    .fill(1)
-                    .map((v) => {
-                      return (
-                        <div key={v} className={`col-12 col-md-6`}>
-                          <ProductCard2
-                            title="酥炸杏鮑菇"
-                            price="80"
-                            percentage="36"
-                            pepole="48"
-                            imgUrl="/images/shop02.jpg"
-                          />
-                        </div>
-                      )
-                    })}
+                  {mainDishes.map((dish, index) => {
+                    return (
+                      <div key={index} className={`col-12 col-md-6`}>
+                        <ProductCard2
+                          product_id={dish.product_id}
+                          title={dish.product_name}
+                          price={dish.price}
+                          percentage="3.6"
+                          pepole="48"
+                          imgUrl={`/images/products/${dish.image_url}`}
+                          introduce={dish.product_description}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+              {/* 小吃 */}
+              <div className={`row ${style.card2}`}>
+                <div className="row">
+                  <h5 className="fw-bold" id="snack">
+                    副食單點區
+                  </h5>
+                </div>
+                <div className="row">
+                  {snack.map((dish, index) => {
+                    return (
+                      <div key={index} className={`col-12 col-md-6`}>
+                        <ProductCard2
+                          product_id={dish.product_id}
+                          title={dish.product_name}
+                          price={dish.price}
+                          percentage="3.6"
+                          pepole="48"
+                          imgUrl={`/images/products/${dish.image_url}`}
+                          introduce={dish.product_description}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+              {/* 甜品 */}
+              <div className={`row ${style.card2}`}>
+                <div className="row">
+                  <h5 className="fw-bold" id="sweet">
+                    這裡都是甜的
+                  </h5>
+                </div>
+                <div className="row">
+                  {sweet.map((dish, index) => {
+                    return (
+                      <div key={index} className={`col-12 col-md-6`}>
+                        <ProductCard2
+                          product_id={dish.product_id}
+                          title={dish.product_name}
+                          price={dish.price}
+                          percentage="3.6"
+                          pepole="48"
+                          imgUrl={`/images/products/${dish.image_url}`}
+                          introduce={dish.product_description}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+              {/* 飲料 */}
+              <div className={`row ${style.card2}`}>
+                <div className="row">
+                  <h5 className="fw-bold" id="drink">
+                    想喝飲料看這裡
+                  </h5>
+                </div>
+                <div className="row">
+                  {drink.map((dish, index) => {
+                    return (
+                      <div key={index} className={`col-12 col-md-6`}>
+                        <ProductCard2
+                          product_id={dish.product_id}
+                          title={dish.product_name}
+                          price={dish.price}
+                          percentage="3.6"
+                          pepole="48"
+                          imgUrl={`/images/products/${dish.image_url}`}
+                          introduce={dish.product_description}
+                        />
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             </div>

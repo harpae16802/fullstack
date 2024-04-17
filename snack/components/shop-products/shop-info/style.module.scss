@@ -1,8 +1,12 @@
 // setting
 $main: #a32c2d;
+$gray: #e5e1dd;
+$deep-gray: #b1b7b5;
 $white: #fff;
 
 .shopInfo {
+  position: relative;
+
   .title {
     margin-top: 14px;
     margin-bottom: 7px;
@@ -10,7 +14,8 @@ $white: #fff;
     align-items: center;
 
     .icon {
-      margin-left: 14px;
+      margin-top: 7px;
+      margin-left: 7px;
       color: $main;
       font-size: 2rem;
       cursor: pointer;
@@ -21,7 +26,7 @@ $white: #fff;
     margin-left: 14px;
     border: none;
     background-color: transparent;
-    color: #a32c2d;
+    color: $main;
   }
 
   .icon,
@@ -38,7 +43,7 @@ $white: #fff;
   bottom: auto;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-  background: #fff;
+  background: $white;
   overflow: auto;
   border-radius: 24px;
   outline: none;
@@ -67,20 +72,40 @@ $white: #fff;
   }
 
   .userComment {
-    padding: 14px;
     margin-top: 14px;
-    border-radius: 10px;
-    border: 1px solid #e5e1dd;
+    padding: 14px;
+    border: 1px solid $gray;
+    border-radius: 20px;
 
-    .titleInfo {
-      border: 1px solid #000;
-    }
-
-    .avatar {
-      width: 50px;
+    .user {
       height: 50px;
-      object-fit: cover;
+      margin-bottom: 14px;
+
+      .avatar {
+        margin-right: 14px;
+      }
+
+      .time {
+        margin-left: 7px;
+        color: $deep-gray;
+        font-size: 14px;
+      }
     }
+
+    .icon {
+      margin-top: -3px;
+      margin-right: 4px;
+      color: $main;
+    }
+  }
+
+  .close {
+    color: $main;
+    font-size: 24px;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    cursor: pointer;
   }
 }
 
@@ -91,4 +116,8 @@ $white: #fff;
   right: 0;
   bottom: 0;
   background: rgb(7, 5, 5, 0.4);
+}
+
+.zz {
+  border: 1px solid #000;
 }

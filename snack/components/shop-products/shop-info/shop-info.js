@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 // 套件
 import Modal from 'react-modal'
 // icons
+import { CgClose } from 'react-icons/cg'
 import {
   FaRegClock,
   FaRegStar,
   FaRegHeart,
   FaHeart,
   FaStar,
-  FaThumbsUp,
 } from 'react-icons/fa'
 // fetch 網址
 import { FAVORITE_STORE } from '@/components/config/api-path'
@@ -25,8 +25,8 @@ export default function ShopInfo({
   score = '',
   comment = '',
 }) {
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [modalIsOpen, setIsModalOpen] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false) // 最愛
+  const [modalIsOpen, setIsModalOpen] = useState(false) // 彈窗
 
   // 加入收藏 - 店家
   const toggleFavoriteShop = async () => {
@@ -85,6 +85,9 @@ export default function ShopInfo({
           className={style.modal}
           overlayClassName={style.overlay}
         >
+          <div>
+            <CgClose className={`${style.close}`} onClick={closeModal} />
+          </div>
           <div className="d-flex flex-column">
             <div className={`d-flex align-items-end`}>
               <h2 className="m-0 me-1">5</h2>
@@ -118,30 +121,30 @@ export default function ShopInfo({
             </div>
 
             {/* user comment */}
-            <div className={`${style.userComment}`}>
-              <div className={`d-flex ${style.titleInfo}`}>
+            <div className={style.userComment}>
+              <div className={`d-flex ${style.user}`}>
                 <img
-                  src="12345.jpg"
+                  src="/avatar.png"
                   alt=""
                   className={`rounded-circle ${style.avatar}`}
                 />
                 <div>
-                  <p className="fw-bold m-0">肥倫</p>
-                  {/* star */}
-                  <div>
+                  <p className="m-0 fw-bold">肥倫</p>
+                  <div className="d-flex align-items-center">
                     {Array(5)
                       .fill(1)
-                      .map((v) => {
-                        return <FaStar key={v} className={style.star} />
-                      })}
-                    <span>1周前</span>
+                      .map((v) => (
+                        <FaStar key={v} className={style.star} />
+                      ))}
+                    <span className={style.time}>2024.04.17</span>
                   </div>
                 </div>
               </div>
-
-              <p>最接近橘子工坊的百香QQ綠，口味讚啦！</p>
-              <FaThumbsUp />
-              <span>5</span>
+              <p className="m-0">最接近橘子工坊的百香QQ綠，口味讚啦！</p>
+              <div>
+                <FaRegHeart className={style.icon} />
+                <span>3</span>
+              </div>
             </div>
           </div>
         </Modal>

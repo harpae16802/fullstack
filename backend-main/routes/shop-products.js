@@ -5,9 +5,8 @@ const router = express.Router();
 
 // 獲取店家資料
 router.get("/seller/:seller_id", async (req, res) => {
-  const sql = "SELECT * FROM seller WHERE seller_id = ?";
-
   try {
+    const sql = "SELECT * FROM seller WHERE seller_id = ?";
     const [row] = await db.query(sql, [req.params.seller_id]);
     res.json(row);
   } catch (error) {
@@ -17,8 +16,8 @@ router.get("/seller/:seller_id", async (req, res) => {
 
 // 獲取店家商品資料
 router.get("/products/:seller_id", async (req, res) => {
-  const sql = "SELECT * FROM products WHERE seller_id = ?";
   try {
+    const sql = "SELECT * FROM products WHERE seller_id = ?";
     const [row] = await db.query(sql, [req.params.seller_id]);
     res.json(row);
   } catch (error) {
@@ -114,6 +113,20 @@ router.get("/toggle-like-products/:product_id", async (req, res) => {
   }
 
   res.json(output);
+});
+
+// 檢視評論
+router.get("/comments/:seller_id", async (req, res) => {
+  const seller_id = req.params.seller_id;
+  const order_id = seller_id === "4" ? 1 : 2;
+
+  try {
+    const sql = `SELECT * FROM comment WHERE order_id = ?`;
+    const [row] = await db.query(sql, [order_id]);
+    res.json(row);
+  } catch (error) {
+    console.error("評論查詢產品出錯:", error);
+  }
 });
 
 export default router;
