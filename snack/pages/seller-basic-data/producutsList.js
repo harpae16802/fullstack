@@ -194,7 +194,7 @@ const ProductsList = () => {
   };
   return (
     <Section>
-      <div className={styles.sellerBasicSection}>
+   
         <div className={`container mt-5`}>
           <div className="row">
             {/* 導覽列 */}
@@ -276,10 +276,14 @@ const ProductsList = () => {
               </div>
             </div>
             {/* 導覽列 */}
+
             <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
-            {/* 搜索框 */}
-            <div className="col-md-8 col-12">
-              <div className="input-group mb-3">
+
+            {/* 右側基本資料 */}
+            <div className={`col-md-8 col-12 ${styles.formCard}`}>
+              <div className={`${styles.formWrapper}`}>
+              <h2 className={`${styles.formTitle}`}>產品列表</h2>
+              {/* 搜索框 */}
                 <input
                   type="text"
                   className="form-control"
@@ -289,8 +293,8 @@ const ProductsList = () => {
                     setSearchTerm(e.target.value) & setCurrentPage(1)
                   }
                 />
-                <div className="input-group-append">
                   {/* 清除搜索词按钮 */}
+                <div className="input-group-append">
                   <button
                     className="btn btn-outline-primary"
                     type="button"
@@ -299,12 +303,13 @@ const ProductsList = () => {
                     <i className="bi bi-x-lg"></i>
                   </button>
                 </div>
-              </div>
+                {/* 清除搜索词按钮 */}
+                {/* 搜索框 */}
               <br></br>
               {/* 篩選 */}
-              <div className="row">
-                <div className="col-12">
-                  <div className="form-row">
+              <div className="container">
+                <div className="col-12" >
+                  <div className="row">
                     {/*  類別篩選 */}
                     <div className="col-4 mb-3">
                       <select
@@ -376,7 +381,7 @@ const ProductsList = () => {
 
               <br></br>
               {/* 表格 */}
-              <table className="table">
+              <table className={`${styles.table}`}>
                 <thead>
                   <tr>
                     <th>產品名稱</th>
@@ -448,9 +453,10 @@ const ProductsList = () => {
               </nav>
             </div>
           </div>
+          </div>
         </div>
-      </div>
-    </Section>
+ 
+          </Section>
   );
 };
 

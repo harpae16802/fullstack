@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Head from 'next/head'
 import Image from 'next/image'
 import NavbarLogout from './navbar-logout'
@@ -6,8 +6,17 @@ import NavbarCustom from './navbar-custom'
 import NavbarSeller from './navbar-seller'
 import Footer from './footer'
 import Section from './section'
+// import { useSeller } from "../../contexts/SellerContext"
 
 export default function MainLayout({ children }) {
+
+
+  // const { seller } = useSeller();
+  // const sellerId = seller?.id;
+
+  // if(sellerId){
+  //   //就渲染賣家
+  // }
   return (
     <>
       <Head>
