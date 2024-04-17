@@ -1,16 +1,84 @@
+button.ma-0{
+  margin: 0 !important;
+} 
+.form .wrap div {
+  margin: auto;
+}
 .text-color {
   color: #a32c2d !important;
 }
+.ma-auto {
+  margin: auto;
+}
+.w25 {
+  width: 25%;
+}
 
-.text-m-color{
-  color: #000000;
-}
-.text-end{
-  text-align: right;
-}
-.width50{
+
+.w50 {
   width: 50%;
 }
+.w75 {
+  width: 75%;
+}
+.full-width {
+  width: 100%;
+}
+.text-end {
+  text-align: right;
+}
+.width50 {
+  width: 50%;
+}
+ 
+/* Chrome, Safari, Edge, Opera */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.sm-btn {
+  width: 120px !important;
+  height: 45px;
+}
+.numbericon {
+  font-size: 14px;
+  background-color: rgb(196, 195, 195);
+  margin: 0 2px;
+  padding: 8px;
+}
+.single-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Firefox */
+
+.form input[type='number'] {
+  width: 80px;
+  margin: 20;
+  text-align: center;
+  height: 43px;
+  font-size: 18px;
+  -moz-appearance: textfield;
+}
+.form span {
+  font-size: 18px;
+  margin: auto;
+}
+.form #collapseExample1{
+  border-bottom: 1px solid grey;
+}
+.ticket h5 {
+  font-size: 20px;
+}
+.supernumb {
+  width: 40px;
+}
+.text-m-color {
+  color: #000000;
+}
+
 .content-column-center {
   display: flex;
   flex-direction: column;
@@ -23,10 +91,13 @@
 .background-w {
   background-color: white;
 }
-.full-width {
-  width: 100%;
+
+.time-wrap {
+  display: flex;
+  flex-wrap: wrap;
 }
 .border-1-bg {
+  border: 0px;
   border-bottom: 1px solid rgb(200, 200, 200);
 }
 .border-1-main {
@@ -44,9 +115,9 @@
 .full30-width {
   width: 350px;
 }
-.xl-close{
+.xl-close {
   display: block;
- }
+}
 .btn-m-secondary {
   background-color: #a32c2d;
   color: white;
@@ -105,17 +176,38 @@ select.inputErr {
 }
 /* selectmenu */
 .selectMenuPostion {
+  max-width: 400px;
   position: relative;
   top: -2em;
 }
 /* memeberList */
-.memeberList .accordion-button,.memeberList .accordion-item{
+.memeberList a {
+  text-decoration: none;
+  list-style: none;
+}
+.memeberList .accordion-button,
+.memeberList .accordion-item {
   background-color: white !important;
 }
-div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after  {
+div.accordion-item:not(.accordion-drop)
+  .accordion-button:not(.collapsed)::after {
   background-image: none !important;
- }
+}
 
+#accordion-title {
+  background: #fff1f1;
+  border-bottom: 1px solid rgb(169, 169, 169);
+}
+#accordion-title.active {
+  background-color: #a32c2d !important;
+  color: white !important;
+}
+.accordion.memeberList button.active,
+.accordion-button:not(.collapsed) button.active {
+  background-color: #a32c2d !important;
+  color: white !important;
+  width: 100%;
+}
 /* imgicon */
 
 .imgicon {
@@ -160,30 +252,7 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
 .itemClose {
   display: none;
 }
-/* .qrcodeProduct */
-.qrcodeProduct {
-  align-items: center;
-  border-bottom: 1px grey;
-  display: flex;
-  justify-content: space-between;
-}
 
-.qrcodeRecord:hover {
-  background-color: white;
-  color: #a32c2d;
-}
-.qrcodeRecord h3 {
-  font-size: 30px;
-  font-weight: bold;
-}
-
-.choosebtn {
-  color: #a32c2d;
-  background-color: white;
-  border-radius: 30px;
-  max-height: 33px;
-  font-size: 16px;
-}
 /* step */
 .step_card h6 {
   font-size: 20px;
@@ -242,7 +311,7 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
 /* 自訂義進度 */
 .progressParmary {
   font-weight: bold;
-  background-color: rgb(173, 173, 173); 
+  background-color: rgb(173, 173, 173);
   color: #a32c2d;
 }
 .progressParmary.active {
@@ -292,6 +361,7 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
   color: rgb(163, 44, 45);
   font-weight: bold;
 }
+
 .qrcodeCurrentIcon {
   width: 30%;
   height: 30%;
@@ -330,10 +400,9 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
   background-color: #a32c2d;
   color: rgb(255, 255, 255);
 }
-.numbericon {
-  background-color: rgb(196, 195, 195);
-  margin: 0 2px;
-  padding: 5px;
+
+.no-background {
+  background-color: transparent;
 }
 .text-sm {
   font-size: 12px !important;
@@ -345,102 +414,116 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
   background-color: #a32c2d;
   color: rgb(255, 255, 255);
 }
-
- 
-@media (max-width: 1100px) {
-  body {
-    /* background-color: red; */
-  }
-  .setPersonFormGrid {
-    width: 100%;
-  }
-  .SelectMenuPostion {
-    margin-top: 10px;
-    flex-grow: 1;
-  }
-  .card {
-    margin-bottom: 10px;
-  }
-  h4 {
-    font-size: 16px !important;
-  }
-  .qrcodeRecord,
-  .qrcodeRecord div,
-  .qrcodeRecord button,
-  .qrcodeRecord h4,
-  .qrcodeRecord .btn {
-    margin: auto;
-    padding: 6px 0 !important;
-    font-size: 16px;
-    color: #a32c2d;
-  }
-  /* step */
-  .step_card h6 {
-    font-size: 16px;
-    margin: 0;
-  }
-  .step_card p {
-    margin: 0;
-    font-size: 14px;
-  }
-  .fahome {
-    margin: 0;
-    font-size: 16px;
-  }
-  .qrcodeRecord .choosebtn {
-    font-size: 9px;
-    margin: 0;
-    min-width: 40px;
-  }
-  .qrcodeProduct {
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    border-bottom: 1px grey;
-    display: flex;
-  }
-  .qrcodeRecord h3 {
-    font-size: 14px;
-    margin: auto;
-  }
-  .numbericon {
-    width: 100px;
-    height: 100px;
-  }
-  .favrote button {
-    width: 100%;
-    font-size: 14px;
-  }
-  .imgicon {
-    height: 100%;
-    position: absolute;
-    height: 100%;
-    text-align: center;
-    bottom: -20px;
-    margin: auto;
-    z-index: 5;
-  }
+.choosebtn {
+  border-radius: 10px;
+  text-wrap: nowrap;
+  min-width: 30px;
+  color: #a32c2d;
+  background: transparent;
 }
-@media (max-width: 1300px) {
-  .setimgicon .imgIcon {
-    order: 10;
-  }
-  .xl-full-width {
-    width: 100%;
-  }
- /* .xl-close{
-  display: none;
- } */
- .xl-full-width.col-xl-9 {
+.countGroup {
+  display: flex;
+}
+small {
+  /* small 特殊 */
+  margin: auto;
+}
+.form div,
+.form h1,
+.form h3 {
+  /* 暫時 */
   width: 100%;
- }
- .selectMenuPostion {
-  position: relative;
-  top: 0;
+  margin: auto;
 }
+@media (max-width: 1000px) {
+  .stepComputer .stepcard {
+    justify-content: center;
+  }
 }
 @media (max-width: 500px) {
+  .form .qrcodeProduct {
+    padding: 0 !important;
+  }
+  .smt-1 {
+    margin-left: 3px;
+  }
+  .stepComputer .stepcard {
+    justify-content: center;
+  }
+  .countGroup {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .countGroup span {
+    width: 100%;
+    text-align: center;
+  }
+  .form button {
+    border-radius: 15px;
+    background: transparent;
+    padding: 2px !important;
+  }
+  .form .classbtn {
+    border-radius: 12px;
+    background: transparent;
+    font-size: 16px;
+    padding: 4px 10px !important;
+  }
 
+  .itemgroup{
+    width: 100%;
+  }
+  .fahome {
+    font-size: 16px;
+  }
 
+  .form h3 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .form h4 {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .form h5 {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .w-auto{
+    width: auto;
+  }
+  .sm-w10 {
+    width: 10%;
+  }
+  .sm-w20 {
+    width: 20%;
+  }
 
+  .sm-w25 {
+    width: 25%;
+  }
+  .sm-w50 {
+    width: 50%;
+  }
+  .sm-w75 {
+    width: 75%;
+  }
+  .sm-w80 {
+    width: 80%;
+  }
+  .sm-w90 {
+    width: 90%;
+  }
+  .sm-full-width {
+    width: 100%;
+  }
+  small {
+    /* small 特殊 */
+    margin: auto;
+  }
+  .form .md-content{
+    width: 100%;
+    justify-content: center;
+  }
 }

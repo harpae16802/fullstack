@@ -1,0 +1,52 @@
+
+.step {
+    position: relative;
+    left:5px;
+    display: flex;
+    cursor: pointer;
+    padding: 20px;
+    /* background-color: transparent; */
+  }
+  .step span {
+    /* position: absolute; */
+  }
+  .card-body.stepPostion {
+    padding: 10px 10px 8px 10px;
+  }
+  .stepPostion > *:nth-child(1) {
+    position: relative;
+    z-index: 5;
+    padding: 20px;
+    left: 10px;
+  }
+  .stepPostion > *:nth-child(3) {
+    position: relative;
+    left: -10px;
+    z-index: 5;
+    padding: 20px;
+  }
+  .stepPostion > *:nth-child(4) {
+    position: relative;
+    left: -20px;
+  }
+  .stepPostion > *:nth-child(5) {
+    z-index: 5;
+    padding: 20px;
+    position: relative;
+    left: -30px;
+  }
+
+ 
+@media (max-width: 1290px) {
+    
+.step { 
+    position: relative;
+    left:5px;
+    padding: 0px; 
+  }
+ 
+  .stepComputer .stepcard {
+      display: flex;
+      justify-content: center;
+  }
+}

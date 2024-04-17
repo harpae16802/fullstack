@@ -1,18 +1,34 @@
  
 
 import SelectMenu from "@/components/memberS/person/selectMenu";
-import QrcodeRecord from "@/components/memberS/qrcode/exchange2/qrcodeRecord"
-import QrcodeRecordMobile from "@/components/memberS/qrcode/exchange2/qrcodeRecordMobile"
-import StepComputer from "@/components/memberS/qrcode/step/stepComputer";
-import StepMobile from "@/components/memberS/qrcode/step/stepMobile";
+import QrcodeRecord from "@/components/memberS/qrcode/qrcodeRecord2"
+ import StepComputer from "@/components/memberS/qrcode/step/stepComputer"; 
 import Search from "@/components/memberS/qrcode/searchbar"
 import styles from "@/styles/form.module.css"
 import Pagination from "@/components/memberS/others/pagination"
 import QrcodeCurrent from "@/components/modal/qrcodeCurrent";
-
+import { useState,useEffect  } from "react";
 import classNames from 'classnames'
 
 export default function QrcodeselectMobile1() {
+  const [isBigScreen, setIsBigScreen] = useState(false);
+  const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
+  useEffect(()=>{
+  const handleResize = () => {
+    setIsBigScreen(window.innerWidth > 500);
+    setIsTabletOrMobile(window.innerWidth <=500);
+  };
+  
+  // 監聽視窗大小變化
+  window.addEventListener('resize', handleResize);
+  // 初始設置一次
+  handleResize();
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+  
+  },[])
   return (
     <div className="container">
       <div className="row">
@@ -24,17 +40,13 @@ export default function QrcodeselectMobile1() {
         <div className={classNames("", styles["main-O-baground"])}>
 
           <h4 className="text-title">[Qrcode兌換]</h4>
-          <StepComputer stepLevel="2" />
-          <StepMobile stepLevel="2" />
+    
+          <StepComputer stepLevel="2" /> 
            <Search />
 
           <h4 className='creditTitle credit   text-smtitle' style={{ border: 0 }}>我的商品</h4>
           <div className={classNames(styles['border-1'], "px-4 py-3 mt-4", styles["rd-2"])}>
-
-            <QrcodeRecord />
-            <QrcodeRecordMobile />
-
-
+            <QrcodeRecord /> 
           </div>
           <Pagination />
           <div className="d-flex justify-content-center align-items-center">

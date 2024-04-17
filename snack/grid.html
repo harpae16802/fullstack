@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid with Media Queries</title>
+    <style>
+     
+        .wrap {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 25% 100px auto;
+            grid-template-areas:
+                "header header header header header"
+                "side  main main main main"
+                "side footer footer footer footer";
+            height: 100vh;
+            width: 940px;
+            margin: 0 auto;
+        }
+
+        .item-a {
+            grid-area: header;
+            background-color: purple;
+        }
+
+        .item-b {
+            grid-area: main;
+            background-color: orange;
+        }
+
+        .item-c {
+            grid-area: side;
+            background-color: green;
+        }
+
+        .item-d {
+            grid-area: footer;
+            background-color: gray;
+        }
+
+        /* 在小屏幕设备上改变列数 */
+        @media screen and (max-width: 768px) {
+            .wrap {
+            display: grid;
+            grid-template-columns: 200px 50px auto 50px 200px;
+            grid-template-rows: 25% 100px auto;
+            grid-template-areas:
+                "header side side side side"
+                "header  main main main footer"
+                "header main main main footer";
+            height: 100vh;
+            width: 940px;
+            margin: 0 auto;
+        }
+        }
+
+        /* 在超小屏幕设备上改变列数 */
+        @media screen and (max-width: 480px) {
+           
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="item item-a">1</div>
+        <div class="item item-b">2</div>
+        <div class="item item-c">3</div>
+        <div class="item item-d">4</div>
+        <div class="item item-e">5</div>
+        <div class="item item-f">6</div>
+    </div>
+</body>
+
+</html>

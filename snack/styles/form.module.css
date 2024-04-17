@@ -1,7 +1,7 @@
 /*  */
 
 .text-color {
-  color: #a32c2d;
+  color: #a32c2d; 
 }
 .text-m-color {
   color:black;
@@ -9,10 +9,14 @@
 .border-0 {
   border: 0;
 }
+.border-001 {
+  color: #a32c2d !important;
+  border: 1px #a32c2d solid;
 
+}
 
 .border-1 {
-  border: 2px #a32c2d solid;
+  border: 3px #a32c2d solid;
   font-weight: bold;
 }
 .border-1-grey {
@@ -62,6 +66,7 @@
 /* nputErr */
 /* 內容外框 */
 .main-O-baground {
+  min-height: 950px;
   padding: 3em;
   border-radius: 50px;
 
@@ -159,13 +164,13 @@ input.imgIcon {
 .btn-parmary.active {
   font-weight: bold;
   /* background-color: white; */
-  color: #a32c2d;
+  color: #a32c2d !important;
 }
-
+.nav-tabs .nav-link.active,
 .btn-parmary-white.active {
   font-weight: bold;
-  background-color: #a32c2d;
-  color: white;
+  background-color: #a32c2d !important;
+  color: white  !important;
 }
 .btn-parmary-white:hover {
   color: red;
@@ -185,39 +190,6 @@ input.imgIcon {
 }
 .mx-full {
   width: 100%;
-}
-.step {
-  display: flex;
-  cursor: pointer;
-  padding: 20px;
-  /* background-color: transparent; */
-}
-.step span {
-  /* position: absolute; */
-}
-.card-body.stepPostion {
-  padding: 10px 10px 8px 10px;
-}
-.stepPostion > *:nth-child(1) {
-  position: relative;
-  z-index: 5;
-
-  left: 10px;
-}
-.stepPostion > *:nth-child(3) {
-  position: relative;
-  left: -10px;
-  z-index: 5;
-}
-.stepPostion > *:nth-child(4) {
-  position: relative;
-  left: -20px;
-}
-.stepPostion > *:nth-child(5) {
-  z-index: 5;
-
-  position: relative;
-  left: -30px;
 }
 
 /* 
@@ -255,53 +227,14 @@ input.imgIcon {
 .md-open {
   display: none;
 }
-
-@media (max-width: 1300px) {
-  .setPersonFormGrid {
-    width: 100%;
-    height: 200px;
-    order: -1;
-  }
-  }
-
-@media (max-width: 1100px) {
-  .setPersonFormGrid {
-    width: 100%;
-    height: 300px;
-    order: -1;
-  }
-
-  .setMdGrid {
-    margin: auto;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  .main-O-baground-border50 {
-    padding: 20px;
-    border: 2px #a32c2d solid;
-    border-radius: 50px;
-  }
-  .md-open {
-    display: block;
-  }
-  .lg-open {
-    display: none;
-  }
-  .imgIconWidth{
-    width: 100%;
-    height:400px;
-  }
-  .imgIcon{
-    width: 100%;
-    position: relative;
-    border: 0;
-  }
-  .step { 
-    padding: 0px;
-    /* background-color: transparent; */
-  }
-  .stepPostion > *:nth-child(1) ,  .stepPostion > *:nth-child(3),  .stepPostion > *:nth-child(5) {
-    padding: 30px;
-  }
+ 
+@media (max-width:500px) {
+  .main-O-baground {
+      min-height: 950px;
+      padding: 0;
+      border-radius: 50px;
+    
+      background-color: transparent;
+    }
+    
 }

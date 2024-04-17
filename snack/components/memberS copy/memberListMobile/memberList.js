@@ -26,7 +26,7 @@ export default function Home() {
 
   //  {/* select 表單選單 */}
   return (
-    <div className={classNames(styles["md-open"],"border-1-main")}>
+    <div className={classNames("border-1-main")}>
       {/* select 表單選單 */}
       <button
       className="navbar-toggler text-color d-flex justify-content-center "
