@@ -9,9 +9,18 @@ import { RxCross1 } from "react-icons/rx";
 import { FiHeart } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 
-const ProductCard = () =>{
+// const ProductCard = () =>{
+//     return(
+      
+//     );
+// };
+
+export default function ProductDetail() {
     return(
-        <div style={{width:'1518px',height:'726px',borderRadius:'20px',backgroundColor:'#fff',display:'flex'}}>
+        <>
+            <Section>
+            
+            <div style={{width:'1518px',height:'726px',borderRadius:'20px',backgroundColor:'#fff',display:'flex'}}>
 
         <Image src="/images/蛋塔.jpg" width={759} height={726} style={{borderRadius:'20px 0px 0px 20px'}}/>
 
@@ -64,14 +73,6 @@ const ProductCard = () =>{
 
         </div>
 
-    );
-};
-
-export default function ProductDetail() {
-    return(
-        <>
-            <Section>
-          <ProductCard />
             </Section>
         </>
         )

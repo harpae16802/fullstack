@@ -284,6 +284,9 @@ const ProductsList = () => {
               <div className={`${styles.formWrapper}`}>
               <h2 className={`${styles.formTitle}`}>產品列表</h2>
               {/* 搜索框 */}
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-11 col-9">
                 <input
                   type="text"
                   className="form-control"
@@ -294,16 +297,19 @@ const ProductsList = () => {
                   }
                 />
                   {/* 清除搜索词按钮 */}
-                <div className="input-group-append">
+                  </div>
+                  <div className="col-md-1 col-3">
                   <button
-                    className="btn btn-outline-primary"
+                    className={`${styles.btnoutline}`}
                     type="button"
                     onClick={() => setSearchTerm("")}
                   >
                     <i className="bi bi-x-lg"></i>
                   </button>
                 </div>
+                </div>
                 {/* 清除搜索词按钮 */}
+              </div>
                 {/* 搜索框 */}
               <br></br>
               {/* 篩選 */}
@@ -311,7 +317,7 @@ const ProductsList = () => {
                 <div className="col-12" >
                   <div className="row">
                     {/*  類別篩選 */}
-                    <div className="col-4 mb-3">
+                    <div className="col-md-4 col-12 mb-3">
                       <select
                         className="form-control"
                         onChange={(e) => {
@@ -336,7 +342,7 @@ const ProductsList = () => {
                     </div>
 
                     {/* 價格篩選 */}
-                    <div className="col-4 mb-3">
+                    <div className="col-md-4 col-12 mb-3">
                       <select
                         className="form-control"
                         onChange={(e) => {
@@ -362,7 +368,7 @@ const ProductsList = () => {
                     </div>
 
                     {/* 狀態篩選 */}
-                    <div className="col-4 mb-3">
+                    <div className="col-md-4 col-12 mb-3">
                       <select
                         className="form-control"
                         onChange={(e) =>
@@ -415,6 +421,7 @@ const ProductsList = () => {
                   ))}
                 </tbody>
               </table>
+              <br></br>
               {/* <button onClick={() => {}}>批量上下架</button> */}
               {/* 分頁 */}
               <nav>

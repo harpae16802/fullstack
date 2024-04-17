@@ -305,51 +305,33 @@ $mobile-width: 480px;
     }
   }
 }
-
-
-
 //表格
-// 表格基本樣式
 .table {
-  // border-collapse: separate;
   border-spacing: 0 0.5rem;
   width: 100%;
-      border-radius: 10px;
-  th {
-    border-radius: 10px;
-    border-bottom: 2px solid $primary-red;
-  }
+  border-radius: 50px; // 給予table圓角效果
 
   thead th {
-    // background-color: $background-light-red;
-    color: $primary-red;
+    color: black; // 將字體顏色改為黑色
     font-weight: bold;
     padding: 1.25em;
     border: 1px solid $primary-red;
-    border-radius: 10px;
+    background-color: $background-light-red; // 如果需要，將背景顏色保持原樣
     border-bottom-width: 3px;
+    border-radius: 10px; // 給予表頭圓角效果
   }
 
   tbody tr {
     background-color: #fff;
     margin-bottom: 1.25rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); // 調整陰影大小和顏色
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 
     td {
       padding:1rem;
       border: 1px solid $primary-red;
-      text-align: center; // 根據設計圖可能需要調整
-      border-radius: 10px;
-      &:first-child {
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
-        border-radius: 10px;
-      }
-      &:last-child {
-        border-top-right-radius: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
-        border-radius: 10px;
-      }
+      text-align: center;
+      color: black; // 將字體顏色改為黑色
+      // 刪除td的圓角設置，因為table的border-radius已經足夠
     }
   }
 }
@@ -388,9 +370,13 @@ $mobile-width: 480px;
 }
 
 // 按鈕樣式
-.btn-outline-primary {
+.btnoutline {
   color: $primary-red;
   border-color: $primary-red;
+  border-radius: 20%;
+  width: 50px;
+  height: 50px;
+
   &:hover {
     color: #fff;
     background-color: $primary-red;
