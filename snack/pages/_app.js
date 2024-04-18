@@ -2,11 +2,12 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { SellerProvider } from '../contexts/SellerContext'
+import { CustomContextProvider } from '@/contexts/custom-context'
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
 import { useEffect } from 'react'
 import Sesson from '@/components/layout/section'
-import '../styles/form.css';
+import '../styles/form.css'
 import '@/styles/globals.scss'
 import '@/styles/index.scss'
 import '@/styles/login.scss'
@@ -18,9 +19,15 @@ function MyApp({ Component, pageProps }) {
     import('bootstrap/dist/js/bootstrap')
   }, [])
   const getLayout =
-    Component.getLayout || ((page) => <MainLayout><>{page}</></MainLayout>)
+    Component.getLayout ||
+    ((page) => (
+      <MainLayout>
+        <>{page}</>
+      </MainLayout>
+    ))
 
   return getLayout(
+    <CustomContextProvider>
     <SellerProvider>
       <AuthChecker>
         <Component {...pageProps} />
@@ -31,6 +38,7 @@ function MyApp({ Component, pageProps }) {
         ></script>
       </AuthChecker>
     </SellerProvider>
+    </CustomContextProvider>
   )
 }
 
