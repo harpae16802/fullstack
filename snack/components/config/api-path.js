@@ -14,3 +14,8 @@ export const FAVORITE_STORE = `${SHOP_PRODUCTS}/toggle-like-shop`
 export const FAVORITE_PRODUCTS = `${SHOP_PRODUCTS}/toggle-like-products`
 // 取得評論
 export const COMMENT_DATA = `${SHOP_PRODUCTS}/comment`
+
+// === market
+export const MARKET = `${API_SERVER}/market`
+// 搜尋
+export const MARKET_SEARCH = `${SHOP_PRODUCTS}/search`

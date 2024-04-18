@@ -1,7 +1,7 @@
 // utils/db.js
 
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
 dotenv.config(); // Load environment variables from dev.env file
 
@@ -12,6 +12,7 @@ const db = mysql.createPool({
   user: DB_USER,
   password: DB_PASS,
   database: DB_NAME,
+  port: 8889,
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,

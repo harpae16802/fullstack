@@ -92,24 +92,7 @@ import { FaSistrix } from 'react-icons/fa'
 
 export default function SearchBar() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('')
-  const [searchTerm, setSearchTerm] = useState('') // 用於保存搜索條件的狀態
-
-  // 處理搜索提交的函數
-  const handleSearchSubmit = async (e) => {
-    e.preventDefault() // 阻止表單默認提交行為
-    try {
-      const response = await axios.get(`/api/search/${searchTerm}`) // 使用 axios 發起搜索請求
-      // 導航到顯示詳細資訊的頁面，並帶上返回的數據
-      router.push({
-        pathname: '/nightmarket-info', // 假設這是顯示夜市資訊的路由
-        query: { data: JSON.stringify(response.data) }, // 將夜市資訊作為查詢參數
-      })
-    } catch (error) {
-      console.error('搜索出錯:', error)
-      // 可以在這裡處理錯誤，例如顯示消息給用戶
-    }
-  }
+  const [activeTab, setActiveTab] = useState('') // active 狀態
 
   useEffect(() => {
     // 根據當前路由設置活動選項卡
@@ -188,10 +171,7 @@ export default function SearchBar() {
             aria-labelledby="nav-profile-tab"
           >
             <div className="search-bar">
-              <form
-                className="d-flex justify-content-between"
-                onSubmit={handleSearchSubmit} // 表單提交時調用 handleSearchSubmit
-              >
+              <form className="d-flex justify-content-between">
                 <div className="search-icon">
                   <FaSistrix className="fa-sistrix" />
                 </div>
@@ -200,8 +180,6 @@ export default function SearchBar() {
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)} // 當輸入值變化時更新 searchTerm 狀態
                 />
                 <button className="btn btn-primary rounded-pill" type="submit">
                   搜尋

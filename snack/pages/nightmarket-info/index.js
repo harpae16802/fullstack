@@ -1,47 +1,51 @@
-import React from "react";
+import React from 'react'
+import { useRouter } from 'next/router'
 // 元件
-import SectionNopaddin from "@/components/layout/section-nopaddin";
-import SearchBar from "@/components/common/search-bar";
-import CategoryCard from "@/components/nightmarket-info/category/category-card";
-import Night from "@/components/nightmarket-info/night/night";
-import ShopCard from "@/components/nightmarket-info/shop-card/shop-card";
+import SectionNopaddin from '@/components/layout/section-nopaddin'
+import SearchBar from '@/components/common/search-bar'
+import CategoryCard from '@/components/nightmarket-info/category/category-card'
+import Night from '@/components/nightmarket-info/night/night'
+import ShopCard from '@/components/nightmarket-info/shop-card/shop-card'
 // 樣式
-import style from "./nightmarket-info.module.scss";
+import style from './nightmarket-info.module.scss'
+import { useEffect } from 'react/cjs/react.production.min'
 
 export default function NightmarketInfo() {
+  const router = useRouter()
+
   // 食物分類物件，寫死
   const categories = [
     {
-      imgUrl: "/images/category-main.png",
-      title: "主食",
-      imgStyle: { top: "-50px", left: "-56px" },
+      imgUrl: '/images/category-main.png',
+      title: '主食',
+      imgStyle: { top: '-50px', left: '-56px' },
     },
     {
-      imgUrl: "/images/category-snack.png",
-      title: "小吃",
-      imgStyle: { top: "-60px", left: "-56px" },
+      imgUrl: '/images/category-snack.png',
+      title: '小吃',
+      imgStyle: { top: '-60px', left: '-56px' },
     },
     {
-      imgUrl: "/images/category-soup.png",
-      title: "湯品",
-      imgStyle: { top: "-30px", left: "-64px" },
+      imgUrl: '/images/category-soup.png',
+      title: '湯品',
+      imgStyle: { top: '-30px', left: '-64px' },
     },
     {
-      imgUrl: "/images/category-sweet.png",
-      title: "甜品",
-      imgStyle: { top: "-50px", left: "-56px" },
+      imgUrl: '/images/category-sweet.png',
+      title: '甜品',
+      imgStyle: { top: '-50px', left: '-56px' },
     },
     {
-      imgUrl: "/images/category-saltynacks.png",
-      title: "點心",
-      imgStyle: { top: "-46px", left: "-50px" },
+      imgUrl: '/images/category-saltynacks.png',
+      title: '點心',
+      imgStyle: { top: '-46px', left: '-50px' },
     },
     {
-      imgUrl: "/images/category-drink.png",
-      title: "飲料",
-      imgStyle: { top: "-40px", left: "-52px" },
+      imgUrl: '/images/category-drink.png',
+      title: '飲料',
+      imgStyle: { top: '-40px', left: '-52px' },
     },
-  ];
+  ]
 
   return (
     <SectionNopaddin>
@@ -100,9 +104,9 @@ export default function NightmarketInfo() {
                     </div>
                   ))}
               </div>
-            );
+            )
           })}
       </div>
     </SectionNopaddin>
-  );
+  )
 }
