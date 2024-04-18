@@ -1,20 +1,12 @@
-$black: #070505;
-$primary: rgb(163, 44, 45);
-$secondary: rgb(225, 209, 178);
-$success: rgb(41, 162, 30);
-$warning: rgb(255, 201, 64);
-$danger: rgb(255, 1, 1);
-$light-primary: rgb(234, 105, 106);
-$deep-primary: rgb(98, 27, 27);
-$deep-gray: rgb(183, 180, 177);
-$gray: rgb(229, 225, 221);
+// 全站配色
+// 引入變數使用
+@import "variable";
 
 // @import '~bootstrap/scss/bootstrap';
 
 // Search Bar的設定
 .kv,
-.section ,
-.section-nopaddin{
+.section {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -649,42 +641,3 @@ $gray: rgb(229, 225, 221);
     }
   }
 }
-
-
-
-// dondon
-// 縮小版
-  .search-bar-small {
-    @media (max-width: 992px) {
-      width: 100%;
-      padding: 5px;
-    }
-    background-color: #fff;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    form {
-      width: 100%;
-      justify-content: center;
-      align-items: center;
-      input {
-        border: none;
-      }
-      :focus {
-        border: none;
-        box-shadow: none;
-      }
-    }
-    .search-icon {
-      @media (max-width: 992px) {
-        padding-right: 10px;
-      }
-      padding-left: 10px;
-    }
-  }
-  .fa-sistrix {
-    color: $primary;
-    font-size: 25px;
-  }

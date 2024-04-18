@@ -127,7 +127,7 @@ input[type='number']::-webkit-inner-spin-button {
 }
 /* input, ( 會有內外框線，所以先註解掉 - tung ) */
 select {
-  border: 2px solid #a32c2d !important;
+  border: 2px solid #a32c2d;
 }
 .border-0 {
   border: 0;
