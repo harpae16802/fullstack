@@ -394,6 +394,7 @@
 //   );
 // }
 import React from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import {
   FaBars,
@@ -410,11 +411,11 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="/">
               <Image src="/activity.svg" alt="" width={30} height={24} />
             </a>
             <div className="right-icons">
-              <a className="navbar-brand min-cart" href="#">
+              <a className="navbar-brand min-cart" href="/">
                 <FaShoppingCart className="fa-solid fa-cart-shopping" />
               </a>
               <button
@@ -435,28 +436,28 @@ export default function Navbar() {
             <ul className="navbar-nav mb-0 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" href="/market-map">
                     夜市導覽
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/nightmarket-info/index">
                     美味商城
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/game/game-select">
                     趣味遊戲
-                  </a>
+                  </Link>
                 </li>
               </div>
               {/* 手機版的選單 開始 */}
               <div className="nav-min-types">
                 {/* 未登入版 開始*/}
                 <li className="nav-item dropdown">
-                  <a
+                  <Link
                     className="nav-link"
-                    href="#"
+                    href="/"
                     id="navbarDropdown"
                     role="button"
                     data-bs-toggle="dropdown"
@@ -467,27 +468,27 @@ export default function Navbar() {
                       <FaAngleDown className="faangle faangledown" />
                       <FaAngleUp className="faangle faangleup" />
                     </div>
-                  </a>
+                  </Link>
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="#">
+                    <Link  className="dropdown-item" href="/login/login-custom">
                         一般會員註冊
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link  className="dropdown-item" href="/login/login-seller">
                         商家會員註冊
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
                 <li className="nav-item dropdown">
-                  <a
+                  <Link
                     className="nav-link"
-                    href="#"
+                    href="/"
                     id="navbarDropdown"
                     role="button"
                     data-bs-toggle="dropdown"
@@ -498,20 +499,20 @@ export default function Navbar() {
                       <FaAngleDown className="faangle faangledown" />
                       <FaAngleUp className="faangle faangleup" />
                     </div>
-                  </a>
+                  </Link>
                   <ul
                     className="dropdown-menu login-border"
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/login/login-custom">
                         一般會員登入
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/login/login-seller">
                         商家會員登入
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -606,9 +607,9 @@ export default function Navbar() {
                   <div className="nav-icons">
                     {/* 未登入 Start */}
                     <div className="dropdown">
-                      <a
+                      <Link
                         className="dropdown-webbar"
-                        href="#"
+                        href="/"
                         role="button"
                         id="dropdownMenuLink"
                         data-bs-toggle="dropdown"
@@ -616,21 +617,21 @@ export default function Navbar() {
                       >
                         <FaBars className="fa-solid fa-bars" />
                         <FaUser className="fa-solid fa-user" />
-                      </a>
+                      </Link>
                       <ul
                         className="dropdown-menu"
                         aria-labelledby="dropdownMenuLink"
                       >
                         <div className="triangle" />
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a className="dropdown-item" href="/login/login-custom">
                             一般會員【登入/註冊】
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link className="dropdown-item" href="/login/login-seller">
                             商家會員【登入/註冊】
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -690,11 +691,11 @@ export default function Navbar() {
                   </div>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/">
                     <div className="nav-icons">
                       <FaShoppingCart className="fa-solid fa-cart-shopping" />
                     </div>
-                  </a>
+                  </Link>
                 </li>
               </div>
               {/* 網頁版的浮動視窗 結束 */}
