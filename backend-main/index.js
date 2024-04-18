@@ -7,6 +7,7 @@ import sellerRouter from "./routes/sellerRouter.js";
 import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
+import marketRouter from "./routes/market.js";
 import path from "path";
 import cors from "cors";
 import db from "./utils/db.js";
@@ -41,6 +42,9 @@ app.get("/market-data", async (req, res) => {
 
 // 店家產品路由
 app.use("/shop-products", shopRouter);
+
+// 夜市路由
+app.use("/market", marketRouter);
 
 // 會員路由
 app.use("/images", express.static(path.join(__dirname, "public/images")));

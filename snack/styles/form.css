@@ -2,13 +2,13 @@
   color: #a32c2d !important;
 }
 
-.text-m-color{
+.text-m-color {
   color: #000000;
 }
-.text-end{
+.text-end {
   text-align: right;
 }
-.width50{
+.width50 {
   width: 50%;
 }
 .content-column-center {
@@ -44,9 +44,9 @@
 .full30-width {
   width: 350px;
 }
-.xl-close{
+.xl-close {
   display: block;
- }
+}
 .btn-m-secondary {
   background-color: #a32c2d;
   color: white;
@@ -67,7 +67,7 @@
   color: #000000;
   font-size: 30px;
 }
-input,
+/* input, ( 會有內外框線，所以先註解掉 - tung ) */
 select {
   border: 2px solid #a32c2d !important;
 }
@@ -109,12 +109,14 @@ select.inputErr {
   top: -2em;
 }
 /* memeberList */
-.memeberList .accordion-button,.memeberList .accordion-item{
+.memeberList .accordion-button,
+.memeberList .accordion-item {
   background-color: white !important;
 }
-div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after  {
+div.accordion-item:not(.accordion-drop)
+  .accordion-button:not(.collapsed)::after {
   background-image: none !important;
- }
+}
 
 /* imgicon */
 
@@ -242,7 +244,7 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
 /* 自訂義進度 */
 .progressParmary {
   font-weight: bold;
-  background-color: rgb(173, 173, 173); 
+  background-color: rgb(173, 173, 173);
   color: #a32c2d;
 }
 .progressParmary.active {
@@ -346,7 +348,6 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
   color: rgb(255, 255, 255);
 }
 
- 
 @media (max-width: 1100px) {
   body {
     /* background-color: red; */
@@ -428,19 +429,16 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
   .xl-full-width {
     width: 100%;
   }
- /* .xl-close{
+  /* .xl-close{
   display: none;
  } */
- .xl-full-width.col-xl-9 {
-  width: 100%;
- }
- .selectMenuPostion {
-  position: relative;
-  top: 0;
-}
+  .xl-full-width.col-xl-9 {
+    width: 100%;
+  }
+  .selectMenuPostion {
+    position: relative;
+    top: 0;
+  }
 }
 @media (max-width: 500px) {
-
-
-
 }

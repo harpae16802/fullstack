@@ -116,7 +116,7 @@ router.get("/toggle-like-products/:product_id", async (req, res) => {
 });
 
 // 檢視評論
-router.get("/comments/:seller_id", async (req, res) => {
+router.get("/comment/:seller_id", async (req, res) => {
   const seller_id = req.params.seller_id;
   const order_id = seller_id === "4" ? 1 : 2;
 

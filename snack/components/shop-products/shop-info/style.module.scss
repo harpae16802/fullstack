@@ -36,6 +36,7 @@ $white: #fff;
 }
 
 .modal {
+  max-height: 40rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -92,10 +93,14 @@ $white: #fff;
       }
     }
 
-    .icon {
-      margin-top: -3px;
-      margin-right: 4px;
-      color: $main;
+    .likes {
+      margin-top: 7px;
+
+      .icon {
+        margin-top: -3px;
+        margin-right: 4px;
+        color: $main;
+      }
     }
   }
 
@@ -116,8 +121,4 @@ $white: #fff;
   right: 0;
   bottom: 0;
   background: rgb(7, 5, 5, 0.4);
-}
-
-.zz {
-  border: 1px solid #000;
 }

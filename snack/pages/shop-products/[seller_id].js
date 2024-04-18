@@ -8,7 +8,7 @@ import ProductCard from '@/components/shop-products/product-card/product-card'
 import ProductCard2 from '@/components/shop-products/product-card2/product-card2'
 // icons
 import { FaShoppingCart } from 'react-icons/fa'
-// fetch 網址
+// api-path
 import { SELLER_DATA, PRODUCTS_DATA } from '@/components/config/api-path'
 
 // 樣式
@@ -26,8 +26,8 @@ export default function ShopProducts() {
   const [sweet, setSweet] = useState([]) // 渲染過濾的商品
   const [drink, setDrink] = useState([]) // 渲染過濾的商品
 
-  // 撈 seller 資料
   useEffect(() => {
+    // 撈 seller 資料
     const fetchData = async () => {
       try {
         const r = await fetch(`${SELLER_DATA}/${seller_id}`)
@@ -39,11 +39,8 @@ export default function ShopProducts() {
         console.error('撈取 seller 資料錯誤:', error)
       }
     }
-    fetchData()
-  }, [seller_id])
 
-  // 撈 products 資料跟分類
-  useEffect(() => {
+    // 撈 products 資料跟分類
     const fetchProducts = async () => {
       try {
         const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
@@ -81,6 +78,7 @@ export default function ShopProducts() {
       }
     }
 
+    fetchData()
     fetchProducts()
   }, [seller_id])
 
