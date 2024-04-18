@@ -5,11 +5,10 @@ import bcrypt from "bcryptjs";
 //JWT
 import jwt from "jsonwebtoken";
 import db from "../utils/db.js";
-import multer from "multer";
 
 // postman 測試路由 : http://localhost:3002/custom-auth/login-jwt
 const customAuthRouter = express.Router();
-const upload = multer();
+
 
 customAuthRouter.post("/login-jwt", async (req, res) => {
   let { account, password } = req.body || {};
@@ -20,7 +19,7 @@ customAuthRouter.post("/login-jwt", async (req, res) => {
     // postData: req.body,
     //當success變為true要的資料
     data: {
-      id: 0,
+      custom_id: 0,
       account: "",
       nickname: "",
       token: "",
@@ -56,7 +55,7 @@ customAuthRouter.post("/login-jwt", async (req, res) => {
       process.env.JWT_SECRET
     );
     output.data = {
-      id: row.custom_id ,
+      custom_id: row.custom_id ,
       account: row.custom_account ,
       nickname: row.custom_nickname,
       token,

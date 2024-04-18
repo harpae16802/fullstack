@@ -10,7 +10,7 @@ const CustomContext = createContext()
 
 // 預設的狀態, 沒有登入
 const emptyAuth = {
-  id: 0,
+  custom_id: 0,
   account: '',
   nickname: '',
   token: '',
@@ -47,29 +47,29 @@ export function CustomContextProvider({ children }) {
   // 登出的功能
   const logout = () => {
     //從localStorage移除
-    localStorage.removeItem(storageKey)
+    // localStorage.removeItem(storageKey)
     setAuth(emptyAuth)
   }
 
   //加最愛的功能,傳送getAuthHeader
-  const getAuthHeader = () => {
-    if (auth.token) {
-      return { Authorization: 'Bearer ' + auth.token }
-    } else {
-      return {}
-    }
-  }
+  // const getAuthHeader = () => {
+  //   if (auth.token) {
+  //     return { Authorization: 'Bearer ' + auth.token }
+  //   } else {
+  //     return {}
+  //   }
+  // }
 
   //處理重整後葉面直接登出,由 localStorage 讀取登入狀態
-  useEffect(() => {
-    const str = localStorage.getItem(storageKey)
-    try {
-      const data = JSON.parse(str)
-      if (data) {
-        setAuth(data)
-      }
-    } catch (ex) {}
-  }, [])
+  // useEffect(() => {
+  //   const str = localStorage.getItem(storageKey)
+  //   try {
+  //     const data = JSON.parse(str)
+  //     if (data) {
+  //       setAuth(data)
+  //     }
+  //   } catch (ex) {}
+  // }, [])
 
   return (
     // login & logout 是function 傳出的是promise

@@ -6,6 +6,7 @@ import NavbarCustom from './navbar-custom'
 import NavbarSeller from './navbar-seller'
 import Footer from './footer'
 import Section from './section'
+import Navbars from '../navbars'
 
 export default function MainLayout({ children }) {
   return (
@@ -18,7 +19,8 @@ export default function MainLayout({ children }) {
       </Head>
       <div className="my-container-fluid">
         <header className="row">
-          <NavbarLogout />
+          {/* <NavbarLogout /> */}
+          <Navbars />
           {/* <NavbarCustom /> */}
           {/* <NavbarSeller /> */}
         </header>
