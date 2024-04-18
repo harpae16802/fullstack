@@ -1,7 +1,8 @@
+// components/layout/navbar-custom.js
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/custom-context'
+// import { useAuth } from '@/contexts/custom-context'
 import {
   FaBars,
   FaUser,
@@ -11,7 +12,8 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
-  const { auth,logout ,login} = useAuth()
+
+  // const { auth,logout ,login} = useAuth()
 
   return (
     <>
