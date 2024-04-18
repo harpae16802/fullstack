@@ -1,4 +1,4 @@
-// pages/seller-basic-data/index.js
+// pages/seller-basic-data/addProduct.js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
@@ -111,7 +111,7 @@ export default function AddProducts() {
 
     // 請求
     try {
-      const response = await axios.post(`${PRODUCTS_API}add`, formData, {
+      const response = await axios.post(`${PRODUCTS_API}/add`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -1,4 +1,4 @@
-// pages/seller-basic-data/index.js
+// pages/seller-basic-data/bank.js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'

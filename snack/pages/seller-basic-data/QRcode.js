@@ -1,4 +1,4 @@
-// pages/seller-basic-data/index.js
+// pages/seller-basic-data/QRcode.js
 import React, { useEffect, useState, useContext, useRef } from "react";
 import Link from "next/link";
 import axios from "axios";
@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Section from "@/components/layout/section";
 import styles from "../../styles/navbar-seller.module.scss";
 
-export default function SellerBasicData() {
+export default function QRcode() {
   // 使用 useRouter
   const router = useRouter();
 

@@ -157,7 +157,7 @@ const handleProfilePictureChange = async (e) => {
     updateSeller({ profilePicture: response.data.imageUrl });
   } catch (error) {
     console.error("頭像上船失敗", error);
-    alert("頭像更新失敗");
+    // alert("頭像更新失敗");
   }
 };
   // 生成24小時時間選項
@@ -213,7 +213,7 @@ const handleProfilePictureChange = async (e) => {
               >
                 <ul className="list-unstyled">
                   <li className={styles.navListItem}> 
-                    <Link href="/seller-basic-data/" passHref>
+                    <Link href="/seller-basic-data/" > 
                       <span className={styles.navLink}>商家基本資料</span>
                     </Link>
                   </li>

@@ -23,6 +23,7 @@ $mobile-width: 480px;
   padding: 1rem; // 添加內邊距
   border-radius: 8px; // 圓角
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // 添加陰影
+  
 }
 
 
@@ -30,12 +31,14 @@ $mobile-width: 480px;
   border: 1px solid red; // 外層紅色框線
   padding: 1rem; // 根據需要添加間距
   position: relative;
+  
+  
   &:before {
     content: '';
     position: absolute;
     top: -1rem; // 根據需要調整位置
     right: -1rem; // 根據需要調整位置
-    background-color: rgba(255, 0, 0, 0.2); // 透明紅色背景
+    background-color: rgba(255, 0, 0, 0.1); // 透明紅色背景
     width: calc(100% + 2rem); // 背景寬度大於容器寬度
     height: calc(100% + 2rem); // 背景高度大於容器高度
     z-index: -1; // 保證在容器後面
@@ -47,6 +50,7 @@ $mobile-width: 480px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  
 }
 // 按钮组样式
 .buttonGroup {
@@ -155,12 +159,14 @@ $mobile-width: 480px;
   margin-bottom: 20px;
   position: relative;
   box-shadow: none;
+  
 }
 .profileContainer {
   display: flex; // 使用flex布局
   flex-direction: column; // 子元素縱向排列
   align-items: center; // 子元素在橫軸上居中
   margin-top: 20px; // 保持與頁面頂部一定的距離
+  
 }
 .profileWrapper {
   display: flex;
@@ -280,6 +286,7 @@ $mobile-width: 480px;
     margin-right: -15px;
     padding-left: 15px; // 保持原始内边距
     padding-right: 15px;
+    text-decoration: none;
   }
 
   // 表单包裹器内元素样式调整

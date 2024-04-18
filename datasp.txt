@@ -158,7 +158,7 @@ VALUES
 ├── public 
  │       ├── seller(用來裝賣家上傳的頭貼與商店資料夾)
  │       ├── products(用來上傳產品圖片的資料夾)
- │       ├── images(用來裝會員上傳的頭貼)
+ │       ├── images(用來裝賣家上傳的商店圖片資料夾)
 ├── routers
  │       ├── productsRouter.js
  │       ├── sellerRouter.js
@@ -199,7 +199,7 @@ VALUES
  │       │       ├── addProduct.js(新增商品頁)
  │       │       ├── bank.js(賣家基本資料的銀行頁面)
  │       │       ├── basic.js(賣家基本資料主頁面 index.js)
- │       │       ├── modify.js(修改產品資料頁面)
+ │       │       ├── [productId].js(修改產品資料頁面)
  │       │       ├── orderList.js(訂單列表頁面
  │       │       ├── producutsList.js(產品列表頁面)
  │       │       ├── QRcode.js(QRcode掃描頁面)
@@ -236,19 +236,32 @@ VALUES
   "dependencies": {
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "braintree": "^3.23.0",
+    "classnames": "^2.5.1",
+    "dayjs": "^1.11.10",
+    "immer": "^10.0.4",
+    "leaflet": "^1.9.4",
+    "lodash": "^4.17.21",
     "next": "14.1.4",
+    "prop-types": "^15.8.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.3",
     "react-icons": "^5.0.1",
-    "scss": "^0.2.4"
+    "react-leaflet": "^4.2.1",
+    "react-responsive": "^10.0.0",
+    "react-slick": "^0.30.2",
+    "scss": "^0.2.4",
+    "slick-carousel": "^1.8.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
-    "sass": "^1.74.1"
+    "sass": "^1.75.0"
   }
 }
-
 
 
 // hello.js
