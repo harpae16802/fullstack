@@ -20,8 +20,8 @@ export default function MainLayout({ children }) {
       <div className="my-container-fluid">
         <header className="row">
           {/* <NavbarLogout /> */}
-          <Navbars />
-          {/* <NavbarCustom /> */}
+          {/* <Navbars /> */}
+          <NavbarCustom />
           {/* <NavbarSeller /> */}
         </header>
         <main className="row">

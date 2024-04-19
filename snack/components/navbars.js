@@ -5,9 +5,9 @@ import { useAuth } from '@/contexts/custom-context'
 
 export default function Navbars() {
 
-  const { auth, login, logout } = useAuth();
+  const { auth,logout } = useAuth();
 
-  console.log(auth);
+  // console.log(auth);
 
   return (
 
