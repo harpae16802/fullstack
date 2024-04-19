@@ -9,7 +9,6 @@ import {
   FaAngleUp,
 } from 'react-icons/fa'
 
-
 export default function NavbarLogout() {
   return (
     <>
@@ -18,7 +17,7 @@ export default function NavbarLogout() {
         <div className="container-fluid">
           <div className="inline-nav">
             <a className="navbar-brand" href="#">
-              <Image src="/activity.svg" alt="" width={30} height={24} />
+              <Image src="/logo-o.svg" alt="" width={180} height={70} />
             </a>
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="#">
@@ -42,7 +41,11 @@ export default function NavbarLogout() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" href="/market-map">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    href="/market-map"
+                  >
                     夜市導覽
                   </Link>
                 </li>

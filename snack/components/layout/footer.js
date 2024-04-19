@@ -50,7 +50,7 @@ export default function Footer() {
             <div className="icon-pic">
               {' '}
               <Image
-                src="/images/layout/icons.png"
+                src="/images/layout/logo-foot.svg"
                 alt="web-icon"
                 className="web-icon"
                 width={250}
