@@ -32,7 +32,7 @@ export default function Night({
           <div className={`row`}>
             {store_image.map((imgUrl, index) => {
               return (
-                <div className={`col-4 ${style.zz}`}>
+                <div className={`col-4 ${style}`}>
                   <img
                     src={`/images/seller/${imgUrl}`}
                     alt={`商店圖片 ${index}`}
