@@ -19,33 +19,31 @@ export default function creditComponts() {
     const handleResize = () => {
       setIsBigScreen(window.innerWidth >1200);
       setIsTabletOrMobile(window.innerWidth <= 1200);
-    };
-
+    }; 
     // 監聽視窗大小變化
     window.addEventListener('resize', handleResize);
     // 初始設置一次
-    handleResize();
-
+    handleResize(); 
     return () => {
       window.removeEventListener('resize', handleResize);
-    };
-
+    }; 
   }, [])
 
   return (
-    <div className='form'>
-    <div className={classNames("d-flex  border-0 justify-content-between align-items-center ", styles["mb-0"], styles["border-1"])} data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+    <div  className={classNames('form',styles["navbar-top"])}>
+    <div className={classNames("d-flex   border-0 justify-content-between align-items-center ", styles["navbar-top"], styles["border-1"])} data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
     <div
-      className={classNames("d-flex px-3 py-3 border-0 qrcodeProduct", styles["mx-full"], styles["btn-parmary-transparent"])} type="button" data-toggle="collapse">
-      <div className='d-flex align-content-end pe-1 w75  ' >
-        <FaHome className={classNames("fahome pt-1", styles["text-color"])} />
+      className={classNames("d-flex border-0 qrcodeProduct", styles["mx-full"], styles["btn-parmary-transparent"])} type="button" data-toggle="collapse">
+      <div className='d-flex align-content-end pe-1 w80  sm-w80' >
+        <FaHome className={classNames("fahome pt-1 smt-1", styles["text-color"])} />
         <h3 className='sm-h3'> 士林夜市&nbsp;&nbsp;豪大雞排 </h3>
       </div>
-      <div className='w25 w-auto text-end d-flex justify-content-end'>
-        <button className={classNames(styles['border-1'], " mb-1 choosebtn  ",qrcodeStyles["smbtn"])}  >已選擇</button>
-        <IoIosArrowDown   />
-      </div>
-    </div>
+      <div className='w-auto d-flex justify-content-end   text-end'>
+        <button className={classNames(styles['border-1'], "px-3 ms-1 choosebtn  ",qrcodeStyles["smbtn"])}  >已選擇</button>
+        <IoIosArrowDown className="align-self-center"   />
+     
+        </div>
+    </div> 
   </div>
       {/* 這裡是內容*/}
       <div className={classNames("collapse")} id="collapseExample1">
@@ -64,9 +62,7 @@ export default function creditComponts() {
                   </div>
  
                   <div className={classNames("md-content", qrcodeStyles["postion-a4"])}>
-                  {isBigScreen &&(<FaTrash className='text-color' />)}  
-                  {isTabletOrMobile &&(  <button type="submit" className={classNames("btn  mx-2 text-color border-1 classbtn ma-0", styles["btn-parmary"])}>選擇商品 </button>)}
-                  
+                  兌換 : 5
                   </div>
                  
                 </div>

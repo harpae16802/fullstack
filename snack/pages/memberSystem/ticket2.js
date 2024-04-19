@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Ticket from "@/components/memberS/ticket/ticket2"
-import TicketMobile from "@/components/memberS/ticket/mobile/ticket2"
-import SelectMenu from "@/components/memberS/person/selectMenu";
+ import SelectMenu from "@/components/memberS/person/selectMenu";
 import classNames from 'classnames' 
 import styles from"@/styles/form.module.css";
+import Section from "@/components/layout/section";
 
 export default function ticket() { 
   const [isBigScreen, setIsBigScreen] = useState(false);
@@ -25,22 +25,22 @@ export default function ticket() {
   
   },[])
   return (
-    <>
+    <Section>
       <div className="container">
         <div className="row">
-          <div className="col-12 col-xl-3 ">
-            <SelectMenu />
-          </div>
-          <div className="col-12 col-xl-9">
+        <div className="col-12 col-md-4 ">
+        <SelectMenu />
+      </div>
+
+          <div className="col-12 col-xl-8">
           <div className={classNames("", styles["main-O-baground"])}> 
           <h4 className="text-title">[我的遊戲紀錄]</h4>
-            {isBigScreen &&  <Ticket />}
-          {isTabletOrMobile &&   <TicketMobile />}  
+             <Ticket /> 
           </div>
           </div>
         </div>
 
       </div>
-    </>
+      </Section>
   )
 }
