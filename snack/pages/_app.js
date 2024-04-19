@@ -7,7 +7,6 @@ import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
 import { useEffect } from 'react'
 import Sesson from '@/components/layout/section'
-import '../styles/form.css'
 import '@/styles/globals.scss'
 import '../styles/form.css';
 import '@/styles/index.scss'
@@ -27,12 +26,12 @@ function MyApp({ Component, pageProps }) {
       </MainLayout>
     ))
 
-  return getLayout(
-
+  return (
+    <CustomContextProvider>
     <SellerProvider>
       <AuthChecker>
 
-        <Component {...pageProps} />
+       {getLayout( <Component {...pageProps} />)}
         <script
           src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
           integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -41,7 +40,7 @@ function MyApp({ Component, pageProps }) {
 
       </AuthChecker>
     </SellerProvider>
-
+    </CustomContextProvider>
 
   )
 }

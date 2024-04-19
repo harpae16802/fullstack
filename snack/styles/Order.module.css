@@ -1,11 +1,12 @@
 
 
-/* page1 */
+/* product */
 .outerFrame{
     width: calc( 100% - 80px );
     height: 2679px;
     background-color:rgb(246, 242, 219);
     border-radius: 20px;
+    
 }
 
 .orderTitle{
@@ -235,19 +236,19 @@
 }
 
 .discountContent{
-   margin-left: 50px;
-   margin-top: 80px;
+   margin-left: 180px;
+   margin-top: 50px;
 }
 
 .leftArrow{
     margin-top: 200px;
-    margin-left: 10px;
+    margin-left: 70px;
     font-size: xx-large;
 }
 
 .rightArrow{
     margin-top: 200px;
-    margin-left: 60px;
+    margin-left: 150px;
     font-size: xx-large;
 }
 
