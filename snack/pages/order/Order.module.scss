@@ -1,12 +1,22 @@
+$black:#000;
+$white: #fff;
+$red:rgb(163, 44, 45);
+$gray:rgb(177, 175, 175);
+$brown:rgb(102, 50, 4);
+$light-red:#ff2828;
 
+
+@import '~bootstrap/scss/bootstrap';
 
 /* product */
+
 .outerFrame{
     width: calc( 100% - 80px );
     height: 2679px;
     background-color:rgb(246, 242, 219);
     border-radius: 20px;
     
+
 }
 
 .orderTitle{
@@ -236,19 +246,19 @@
 }
 
 .discountContent{
-   margin-left: 180px;
-   margin-top: 50px;
+   margin-left: 50px;
+   margin-top: 80px;
 }
 
 .leftArrow{
     margin-top: 200px;
-    margin-left: 70px;
+    margin-left: 10px;
     font-size: xx-large;
 }
 
 .rightArrow{
     margin-top: 200px;
-    margin-left: 150px;
+    margin-left: 60px;
     font-size: xx-large;
 }
 
