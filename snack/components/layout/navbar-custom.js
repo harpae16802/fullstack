@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-// import { useAuth } from '@/contexts/custom-context'
+import { useAuth } from '@/contexts/custom-context'
 import {
   FaBars,
   FaUser,
@@ -12,8 +12,7 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
-
-  // const { auth,logout ,login} = useAuth()
+  const { auth, logout, login } = useAuth()
 
   return (
     <>
@@ -146,7 +145,14 @@ export default function NavbarCustom() {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              logout()
+                            }}
+                          >
                             登出
                           </a>
                         </li>
