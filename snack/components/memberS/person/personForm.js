@@ -20,6 +20,7 @@ export default function PersonForm() {
   const [birthY, setBirthY] = useState([]);
   const [birthM, setBirthM] = useState([]);
   const [birthD, setBirthD] = useState([]);
+  const [birthgety,setbirthgety]= useState("ooo");
 
   useEffect(() => {
     setBirthY(dataBirth.years());
@@ -27,7 +28,7 @@ export default function PersonForm() {
   }, [])
  
   const selectChange = (e) => {  
-    const dateD = dataBirth.date(yearVal.current.value, e.target.value);
+    const dateD = dataBirth.date(birthgety, e.target.value);
     setBirthD(dateD)
   }
 
@@ -43,7 +44,7 @@ export default function PersonForm() {
   }; 
 
   const password = React.useRef({});
-  password.current = watch("passwordErr", "");
+  password.current = watch("custom_password", "");
   const repasswordErr=  {
     name: "repasswordErr",
     setting: {
@@ -128,6 +129,18 @@ export default function PersonForm() {
         message: "請填寫"
       }
     },
+  }  
+  const sexErr={
+    name: "sexErr",
+    setting: {
+      
+    },
+  } 
+  const addressErr={
+    name: "dateErr",
+    setting: {
+      
+    },
   } 
 
 
@@ -148,7 +161,7 @@ export default function PersonForm() {
             <div className={`col-12 col-md-12`}>
               <label htmlFor="exampleInputId" className="form-label">帳號</label>
               <input type="text"
-                {...register("idInputErr", idInputErr.setting)}
+                {...register("custom_account", idInputErr.setting)}
                 // onInput={handleSubmit(onSubmit)}
                 // className={(errors.idInputErr && "inputErr") +" form-control"} 
                 className={classNames(errors.idInputErr?"inputErr":"","form-control")}
@@ -163,7 +176,7 @@ export default function PersonForm() {
               <input type="text"  id="exampleInputPassword"
                 ref={passwordErrVal}
                 className={classNames(errors.passwordErr?"inputErr":"","form-control")}
-                {...register("passwordErr", passwordErr.setting) }
+                {...register("custom_password", passwordErr.setting) }
                 // onInput={handleSubmit(onSubmit)}
                 aria-describedby="passwordHelp" />
               {errors.passwordErr && <div className="form-text"  style={{ color: "red" }}>{errors["passwordErr"]?.message}</div>}
@@ -187,7 +200,7 @@ export default function PersonForm() {
               className={classNames(errors.nameErr?"inputErr":"","form-control")}
               
               id="exampleInputName"
-              {...register("nameErr", nameErr.setting) } 
+              {...register("custom_name", nameErr.setting) } 
              
                 aria-describedby="nameErr" />
               {errors.nameErr && <div className="form-text"> {errors["passwordErr"]?.message}</div>}
@@ -195,7 +208,7 @@ export default function PersonForm() {
             <div className="col-12 col-md-6">
               <label htmlFor="exampleInputEmail1" className="form-label" >暱稱</label>
               <input type="text"
-              {...register("nickErr", nickErr.setting) }  
+              {...register("custom_nickname", nickErr.setting) }  
                 className={classNames(errors.nickErr?"inputErr":"","form-control")}
                 id="exampleInputEmail1" aria-describedby="emailHelp" />
               {errors.nickErr && <div className="form-text" style={{ color: "red" }}> {errors["nickErr"]?.message}</div>}
@@ -205,27 +218,28 @@ export default function PersonForm() {
 
 
           <label htmlFor="inputGroupSelect01" className="form-label" >生日</label>
-            <div className="col-12 col-md-4">
-              <div className="face.input-group pa-1 " style={{ paddingRight: 0 }}>
+          <div className="col-12 col-md-4">
+          <div className="face.input-group pa-1 " style={{ paddingRight: 0 }}>
+            <select className="form-select pa-0" ref={yearVal}
+            {...register("custom_year", yearErr.setting) } 
+            onChange={(e)=>{selectChange(e)
+              setbirthgety(e.target.value);
+            
+            }} defaultValue="年" id="inputGroupSelect02">
+              <option value="年">年</option> 
+              {birthY.map((v, i) => {
+                return <option value={v} key={v}>{v}</option>
+                  ;
+              })}
+            </select>
+            {errors.yearErr && <div className="form-text" style={{ color: "red" }}> {errors["yearErr"]?.message}</div>}
 
-                <select className="form-select pa-0"
-                {...register("yearErr", yearErr.setting) } 
-                ref={yearVal} defaultValue="年" id="inputGroupSelect01">
-
-                  <option value='ooo'>年</option>
-                  {birthY.map((v, i) => { 
-                    return <option value={v} key={v}>{v}</option>
-                      ;
-                  })}
-                  
-                </select>  
-                {errors.yearErr && <div className="form-text" style={{ color: "red" }}> {errors["yearErr"]?.message}</div>}
-              </div>
-            </div>
+          </div>
+        </div>
             <div className="col-12 col-md-4">
               <div className="face.input-group pa-1 " style={{ paddingRight: 0 }}>
                 <select className="form-select pa-0" ref={monthVal}
-                {...register("monthErr", monthErr.setting) } 
+                {...register("custom_month", monthErr.setting) } 
                 onChange={(e)=>selectChange(e)} defaultValue="月" id="inputGroupSelect02">
                   <option value="月">月</option>
 
@@ -241,7 +255,7 @@ export default function PersonForm() {
             <div className="col-12 col-md-4">
               <div className="face.input-group pa-1 " style={{ paddingRight: 0 }}>
                 <select className="form-select pa-0" 
-                {...register("dateErr", dateErr.setting) } 
+                {...register("custom_date", dateErr.setting) } 
                 defaultValue="Choose..." id="inputGroupSelect03">
                   <option >日</option>
                   {birthD.map((v, i) => {
@@ -259,17 +273,19 @@ export default function PersonForm() {
               <label htmlFor="sexGroupSelect01" className="form-label">性別</label>
               <select  
               className={classNames(""," form-select pa-0")}
-              
+              {...register("custom_sex", sexErr.setting) }   
               defaultValue="0" id="sexGroupSelect01">
                 <option value="0">不透漏</option>
                 <option value="2">男</option>
                 <option value="2">女</option>
               </select>
+              {errors.sexErr}
+
             </div>
             <div className={`col-12 col-md-6`}>
               <label htmlFor="exampleInputphone" className="form-label">電話</label>
               <input type="text"  
-              {...register("phoneErr", phoneErr.setting) }   
+              {...register("custom_phone", phoneErr.setting) }   
               className={classNames(errors.phoneErr?"inputErr":""," form-control")}
                 id="exampleInputphone" aria-describedby="emailHelp" />
               {errors.phoneErr && <div id="emailHelp" className="form-text" style={{ color: "red" }}>{errors["phoneErr"]?.message}</div>}
@@ -279,8 +295,11 @@ export default function PersonForm() {
           <div className="row">
             <div className={`col-12 col-md-12`}>
               <label htmlFor="exampleInputAddress" className="form-label">地址(選填)</label>
-              <input type="text" className="form-control" id="exampleInputAddress" aria-describedby="emailHelp" />
-            </div>
+              <input type="text" 
+              {...register("custom_address", addressErr.setting) }   
+              className="form-control" id="exampleInputAddress" aria-describedby="emailHelp" />
+              {errors.phoneErr }
+              </div>
           </div>
           <div className="row mt-4 justify-content-center"><button className='fxbtngrey'>送出</button></div>
         </form>

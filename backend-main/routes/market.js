@@ -3,6 +3,7 @@ import db from "../utils/db.js";
 
 const router = express.Router();
 
+// search
 router.get("/search/:market_name", async (req, res) => {
   try {
     const market_name = req.params.market_name;
@@ -17,6 +18,17 @@ router.get("/search/:market_name", async (req, res) => {
     }
   } catch (error) {
     console.log(`後端 /search/:market_name 錯誤 : ${error}`);
+  }
+});
+
+router.get("/seller/:market_id", async (req, res) => {
+  try {
+    const market_id = req.params.market_id;
+    const sql = `SELECT * FROM seller WHERE market_id = ?`;
+    const [row] = await db.query(sql, [market_id]);
+    res.json(row);
+  } catch (error) {
+    console.log(`後端 /seller/:market_id 錯誤 : ${error}`);
   }
 });
 

@@ -31,28 +31,14 @@ export default function Home() {
             <h2 className="accordion-header" id="headingOne">
               {v.href &&
                 <Link href={v.href}>
+                
                   <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${i}`} aria-expanded="true" aria-controls={`#collapse${i}`}>
                     {v.title}
                   </button>
                 </Link>
               }
-              {!v.href &&
-                  <button className={classNames("accordion-button")} type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${i}`} aria-expanded="true" aria-controls={`#collapse${i}`}>
-                    {v.title}
-                  </button>
-              }
-            </h2>
-            {v.list &&
-              v.list.map((v2, i2) => (
-
-                <div id={`collapse${i}`} key={v2.type} className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <Link href={v2.href}>
-                  <div className="accordion-body" id="accordion-title">
-                    {v2.title}
-                    </div>
-                    </Link>
-                </div>
-              ))}
+              
+            </h2> 
 
           </div>
         ))}

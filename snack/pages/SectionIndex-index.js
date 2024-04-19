@@ -134,11 +134,11 @@ discount"
             />
           </svg>
 
+              {/* 商品詳細談窗 */}
           <div className="card-store-index-group">
             <div className="card-store-index">
               <div className="store-name">月氏激蛋葱油餅</div>
               <div className="store-market">寧夏夜市</div>
-              {/* 商品詳細葉 */}
               <button type="button" className="btn btn-light">
                 看更多
               </button>
@@ -163,7 +163,7 @@ discount"
               <button type="button" className="btn btn-light">
                 看更多
               </button>
-              {/* 商品詳細葉 */}
+               {/* 商品詳細談窗 */}
             </div>
           </div>
           <svg
