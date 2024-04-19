@@ -14,7 +14,7 @@ export const FAVORITE_STORE = `${SHOP_PRODUCTS}/toggle-like-shop`
 export const FAVORITE_PRODUCTS = `${SHOP_PRODUCTS}/toggle-like-products`
 // 檢查收藏
 export const C_FAVORITE_STORE = `${SHOP_PRODUCTS}/check-like-shop`
-
+export const C_FAVORITE_PRODUCTS = `${SHOP_PRODUCTS}/check-like-products`
 // 取得評論
 export const COMMENT_DATA = `${SHOP_PRODUCTS}/comment`
 
