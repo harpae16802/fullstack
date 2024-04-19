@@ -18,7 +18,6 @@ export const COMMENT_DATA = `${SHOP_PRODUCTS}/comment`
 // === market
 export const MARKET = `${API_SERVER}/market`
 // 搜尋
-export const MARKET_SEARCH = `${SHOP_PRODUCTS}/search`
+export const MARKET_SEARCH = `${MARKET}/search`
 
-export const JWT_LOGIN_POST = `${API_SERVER}/custom-auth/login-jwt`;
-
+export const JWT_LOGIN_POST = `${API_SERVER}/custom-auth/login-jwt`

@@ -89,10 +89,33 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { FaSistrix } from 'react-icons/fa'
+// api-path
+import { MARKET_SEARCH } from '@/components/config/api-path'
 
 export default function SearchBar() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('') // active 狀態
+  const [activeTab, setActiveTab] = useState('') // active 狀態 - tung
+  const [searchQuery, setSearchQuery] = useState('') // 用戶搜尋 - tung
+
+  const handleSearch = async (e) => {
+    e.preventDefault()
+
+    try {
+      const r = await fetch(
+        `${MARKET_SEARCH}/${encodeURIComponent(searchQuery)}`
+      )
+      const data = await r.json()
+
+      if (data) {
+        router.push({
+          pathname: '/nightmarket-info',
+          query: { data: JSON.stringify(data) },
+        })
+      }
+    } catch (error) {
+      console.log(`執行搜尋錯誤 : ${error}`)
+    }
+  }
 
   useEffect(() => {
     // 根據當前路由設置活動選項卡
@@ -146,7 +169,10 @@ export default function SearchBar() {
             aria-labelledby="nav-home-tab"
           >
             <div className="search-bar">
-              <form className="d-flex justify-content-between">
+              <form
+                className="d-flex justify-content-between"
+                onSubmit={handleSearch}
+              >
                 <div className="search-icon">
                   <FaSistrix className="fa-sistrix" />
                 </div>
@@ -155,6 +181,8 @@ export default function SearchBar() {
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button className="btn btn-primary rounded-pill" type="submit">
                   搜尋

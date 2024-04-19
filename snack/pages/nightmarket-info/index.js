@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 // 元件
 import SectionNopaddin from '@/components/layout/section-nopaddin'
@@ -8,10 +8,21 @@ import Night from '@/components/nightmarket-info/night/night'
 import ShopCard from '@/components/nightmarket-info/shop-card/shop-card'
 // 樣式
 import style from './nightmarket-info.module.scss'
-import { useEffect } from 'react/cjs/react.production.min'
+// import { useEffect } from 'react/cjs/react.production.min'
 
 export default function NightmarketInfo() {
   const router = useRouter()
+  const { data } = router.query
+
+  // 解析数据（如果有必要）
+  let marketData
+  if (data) {
+    try {
+      marketData = JSON.parse(data)
+    } catch (error) {
+      console.error('解析数据錯誤 : ', error)
+    }
+  }
 
   // 食物分類物件，寫死
   const categories = [
@@ -71,7 +82,11 @@ export default function NightmarketInfo() {
 
         <div className={`row`}>
           <div className="col">
-            <Night />
+            <Night
+              nightName={marketData.market_name}
+              introduction={marketData.market_introduction}
+              nightImg={marketData.market_img}
+            />
           </div>
         </div>
 
