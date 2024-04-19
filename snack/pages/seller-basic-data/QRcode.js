@@ -8,10 +8,14 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import CameraQRScanner from '@/components/CameraQRScanner'
 
 export default function QRcode() {
   // 使用 useRouter
   const router = useRouter()
+  // const CameraQRScanner = dynamic(() => import('@/components/CameraQRScanner'), {
+  //   ssr: false
+  // });
 
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
@@ -28,9 +32,26 @@ export default function QRcode() {
     profilePicture: '',
   })
 
+  //QRcode
+  const [showScanner, setShowScanner] = useState(false)
+  const [qrCode, setQrCode] = useState('')
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
+  }
+
+  //  QRcode掃描觸發
+  const handleScanClick = () => {
+    setShowScanner((prev) => !prev) //切換顯示 類似toggle
+  }
+
+  // QRcode 資料
+  const handleCodeDetected = (data) => {
+    console.log('掃描到的數據：', data)
+    setQrCode(data)
+    const parsedData = JSON.parse(atob(data)); // 假设数据是 base64 编码的JSON字符串
+    console.log("解構後的數據", parsedData);
   }
 
   // 修改前 如果拿取到seller_id執行這裡
@@ -167,44 +188,93 @@ export default function QRcode() {
           </div>
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
-
           {/* 表單 */}
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
-              <form className={styles.formWrapper}>
+              <div className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>QRcode掃描區</h2>
-
-                {/* 按鈕樣式 */}
-                <div className={styles.buttonGroup}>
-                  <Link href="/seller-basic-data/">
-                    <button className={styles.btnPrimary}>掃描QRcode</button>
-                  </Link>
                 {/* 下拉是選單 */}
                 <div className={styles.selectGroup}>
+                  {/* 按鈕 */}
                   <div className="col-auto">
-                    <label htmlFor="" className={styles.selectLabel}>
-                      選擇產品兌換狀態
+                    <button
+                      onClick={handleScanClick}
+                      className={styles.btnPrimary}
+                    >
+                      掃描QRcode
+                    </button>
+                  </div>
+
+                  <div className="col-auto">
+                    <label className={styles.selectLabel}>
+                      選擇產品兌換狀態:
                     </label>
                   </div>
-                  <div className="col-auto">
+
+                  <div className="col-4">
                     <select
                       className={`form-select ${styles.customSelect}`}
                       id=""
                       name=""
                     >
-                      <option value="1">以兌換</option>
                       <option value="0">處裡中</option>
+                      <option value="1">以兌換</option>
                     </select>
                   </div>
                 </div>
-                </div>
+                {/* QRcode */}
+                {showScanner && (
+                  <CameraQRScanner
+                    onCodeDetected={handleCodeDetected}
+                    shouldDisplay={showScanner}
+                  />
+                )}
+                {/* {qrCode && (
+                  <div className={styles.qrCodeDisplay}>
+                    掃描到的資料：{qrCode}
+                  </div>
+                )} */}
 
-
-              </form>
+                <br></br>
+                {/* 表格 */}
+                <table className={`${styles.table}`}>
+                  <thead>
+                    <tr>
+                      <th>產品名稱</th>
+                      <th>產品數量</th>
+                      <th>產品狀態</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* {products.map((product) => (
+                    <tr key={product.product_id}>
+                      <td>{product.productName}</td>
+                      <td>{product.stockQuantity}</td>
+                      <td>{product.category}</td>
+                      <td>{product.price}</td>
+                      <td>{product.status}</td>
+                      <td>
+                        <Link
+                          href={`/seller-basic-data/[productId]`}
+                          as={`/seller-basic-data/${product.product_id}`}
+                        >
+                          修改
+                        </Link>
+                      </td>
+                      {/* <td>
+                        <input
+                          type="checkbox"
+                          onChange={() => {}}
+                          value={product.product_id}
+                        />
+                      </td>
+                    </tr> 
+                  ))}*/}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-
-          
         </div>
       </div>
     </Section>

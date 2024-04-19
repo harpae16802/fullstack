@@ -125,7 +125,7 @@ $mobile-width: 480px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
 }
@@ -447,4 +447,14 @@ $mobile-width: 480px;
   &:hover {
     color: #fff;
   }
+}
+
+// QRcode
+.qrCodeDisplay {
+  border: 2px solid $border-color; // 紅色邊框
+  border-radius: 8px; // 圓角
+  padding: 20px; // 內邊距
+  margin-top: 20px; // 上邊距
+  background-color: #ffffff; // 白色背景
+  color: #000000; // 黑色文字
 }
