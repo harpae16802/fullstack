@@ -8,6 +8,7 @@ export default function Night({
   nightName = '',
   introduction = '',
   nightImg = '',
+  store_image = '',
 }) {
   return (
     <div className={`${style.container}`}>
@@ -30,7 +31,7 @@ export default function Night({
           <div className="row">
             <div className="col-4">
               <img
-                src="/images/shop02.jpg"
+                src={`/images/seller/${encodeURIComponent(store_image)}`}
                 alt="商店一"
                 className={style.smallImage}
               />

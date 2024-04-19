@@ -10,7 +10,6 @@ import ProductCard2 from '@/components/shop-products/product-card2/product-card2
 import { FaShoppingCart } from 'react-icons/fa'
 // api-path
 import { SELLER_DATA, PRODUCTS_DATA } from '@/components/config/api-path'
-
 // 樣式
 import style from './shop-products.module.scss'
 import { useRouter } from 'next/router'
