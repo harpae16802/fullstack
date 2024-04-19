@@ -28,28 +28,19 @@ export default function Night({
             alt={nightImg}
             className={style.bigImage}
           />
-          <div className="row">
-            <div className="col-4">
-              <img
-                src={`/images/seller/${encodeURIComponent(store_image)}`}
-                alt="商店一"
-                className={style.smallImage}
-              />
-            </div>
-            <div className="col-4">
-              <img
-                src="/images/shop02.jpg"
-                alt="商店二"
-                className={style.smallImage}
-              />
-            </div>
-            <div className="col-4">
-              <img
-                src="/images/shop02.jpg"
-                alt="商店三"
-                className={style.smallImage}
-              />
-            </div>
+
+          <div className={`row`}>
+            {store_image.map((imgUrl, index) => {
+              return (
+                <div className={`col-4 ${style.zz}`}>
+                  <img
+                    src={`/images/seller/${imgUrl}`}
+                    alt={`商店圖片 ${index}`}
+                    className={`${style.smallImage}`}
+                  />
+                </div>
+              )
+            })}
           </div>
         </div>
         {/* 手機版 */}

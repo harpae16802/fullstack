@@ -50,7 +50,6 @@ export default function NightmarketInfo() {
   ]
 
   const router = useRouter()
-  const { market_id } = router.query
   const { data } = router.query
 
   // 解析数据（如果有必要）
@@ -64,12 +63,12 @@ export default function NightmarketInfo() {
   }
 
   useEffect(() => {
-    // 因為 market_id 是固定的，這裡不再檢查它的值
-    fetch(`${MARKET_SELLER}/1`) // 直接使用市場ID為1
+    fetch(`${MARKET_SELLER}/1`)
       .then((r) => r.json())
       .then((data) => {
-        setFeaturedShops(data.slice(0, 3)) // 只取前三個作為特色商家
-        setAllShops(data) // 設置所有商家的數據
+        const shopImages = data.map((shop) => shop.store_image)
+        setFeaturedShops(shopImages.slice(0, 3)) // 只取前三個作為特色商家圖片
+        setAllShops(shopImages) // 設置所有商家的圖片路徑
       })
       .catch((error) => {
         console.error('獲取商家數據失敗:', error)
@@ -104,7 +103,7 @@ export default function NightmarketInfo() {
               nightName={marketData.market_name}
               introduction={marketData.market_introduction}
               nightImg={marketData.market_img}
-              store_image={featuredShops.map((shop) => shop.store_image)}
+              store_image={featuredShops}
             />
           </div>
         </div>
