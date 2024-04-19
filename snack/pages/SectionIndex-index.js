@@ -8,6 +8,12 @@ import SearchBarIndex from '@/components/common/search-bar-index'
 
 
 export default function SectionIndex() {
+
+// 搜尋後 跳轉至 夜市資訊 || 地圖導覽
+  const handlesearch = ()=>{
+
+  }
+
   return (
     <>
       {' '}
@@ -66,6 +72,7 @@ discount"
             {/* <CustomSlider /> */}
 
             <div className="slide-item">
+              {/* 點圖片要到 咚咚的 商家葉面 */}
               <Image
                 src="/images/layout/P_20240224_194256.jpg"
                 alt="discount-img"
@@ -99,6 +106,7 @@ discount"
                 width={500}
                 height={300}
               />
+               {/* 點圖片要到 咚咚的 商家葉面 */}
               <div className="discount-text discount-store">
                 士林夜市 林藤茶坊
               </div>
@@ -110,6 +118,7 @@ discount"
       <div className="section-index index-nop index-store">
         <div className="index-title">店家</div>
         {/* <StoreSlider/> */}
+        
         <div className="store-index-gruop">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +138,7 @@ discount"
             <div className="card-store-index">
               <div className="store-name">月氏激蛋葱油餅</div>
               <div className="store-market">寧夏夜市</div>
+              {/* 商品詳細葉 */}
               <button type="button" className="btn btn-light">
                 看更多
               </button>
@@ -153,6 +163,7 @@ discount"
               <button type="button" className="btn btn-light">
                 看更多
               </button>
+              {/* 商品詳細葉 */}
             </div>
           </div>
           <svg
@@ -186,11 +197,12 @@ discount"
               stroke="#070505"
             />
           </svg>
-
+                {/* 商品詳細葉 && 購物車連結*/}
           <div className="card-product-index-group">
             <div className="card-product-index">
               <div className="product-top">
                 <div className="product-title">
+                     {/* 商品詳細葉 && 購物車連結*/}
                   <div className="product-name">姊姊抓的餅</div>
                   <div className="product-name">豬排蛋</div>
                 </div>
@@ -311,6 +323,8 @@ discount"
               allowFullScreen=""
             />
           </div>
+
+                          {/* 商品詳細葉 && 購物車連結*/}
           <div className="qr-about col-12 col-md-5">
             <div className="accordion" id="accordionExample">
               <div className="accordion-item">
