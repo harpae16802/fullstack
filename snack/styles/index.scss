@@ -1,12 +1,14 @@
 // 全站配色
 // 引入變數使用
-@import "variable";
+@import 'variable';
 
 // @import '~bootstrap/scss/bootstrap';
 
 // Search Bar的設定
 .kv,
-.section {
+.section,
+// tung
+.section-nopaddin {
   display: flex;
   align-items: center;
   justify-content: center;
