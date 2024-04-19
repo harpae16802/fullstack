@@ -7,16 +7,17 @@ import Setimgicon from "@/components/memberS/imgicon/setimgicon";
 import styles from "@/styles/form.module.css"
 import { FaSearch } from "react-icons/fa";
 import classNames from "classnames";
+import Section from "@/components/layout/section";
 
 export default function Home() {
   return (
-    <>
+    <Section>
       <div className="container">
         <div className="row">
-          <div className="col-12 col-xl-3 ">
+          <div className="col-12 col-xl-4 ">
             <SelectMenu />
           </div>
-          <div className="col-12 col-xl-9">
+          <div className="col-12 col-xl-8">
             <div className={classNames("", styles["main-O-baground"])}>
               <div className={classNames("row", styles["main-O-baground-border50"], styles["setMdGrid"])}>
                 <div className="col-12 col-xl-9 xl-full-width">
@@ -34,6 +35,6 @@ export default function Home() {
         </div>
 
       </div>
-    </>
+    </Section>
   );
 }

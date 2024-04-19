@@ -1,15 +1,9 @@
 import Section from '@/components/layout/section'
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
-import { IoSearchOutline } from "react-icons/io5";
-import SearchBar from '@/components/common/search-bar'
-import { FaShopify } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoMdTrash } from "react-icons/io";
-import { MdArrowBackIosNew } from "react-icons/md";
-import { MdArrowForwardIos } from "react-icons/md";
-import { IoCart } from "react-icons/io5";
+import OrderCheck from '@/components/Order/orderCheck2'
+
 
 
 export default function Order() {
@@ -24,8 +18,8 @@ export default function Order() {
             <div className={styles.stepBorder}>
                 
                   {/* 步驟圓圈&長條 */}
-                  <div>
-                  <div className={styles.step1} style={{marginTop:'60px',marginLeft:'350px'}}>1</div>
+                  <div  className="container">
+                  <div className={styles.step1} style={{marginTop:'60px',marginLeft:'293px'}}>1</div>
                   <div className={styles.connect2}></div>
                   <div className={styles.step1}>2</div>
                   <div className={styles.connect1}></div>
@@ -37,9 +31,9 @@ export default function Order() {
 
                   {/* 步驟文字 */}
                   <div className={styles.textContainer}>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'330px'}}>訂單資訊</div>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'145px'}}>訂單優惠</div>
-                    <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'145px'}}>付款方式</div>
+                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'435px'}}>訂單資訊</div>
+                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'120px'}}>訂單優惠</div>
+                    <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'125px'}}>付款方式</div>
                     <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'145px'}}>完成</div>
                     {/* textContainer */}
                   </div>
@@ -50,127 +44,19 @@ export default function Order() {
           <div className={styles.orderBorder} style={{height:'1180px'}}>
 
            {/* 訂單詳細 外層容器 */}
-            <div className={styles.orderContainer} style={{height:'714px'}}>
+            <div className={styles.orderContainer} style={{height:'775px'}}>
              
              
              {/*訂單詳細 */}
-             <div className={styles.orderDetail}>
-             <Image src="/images/鹹酥雞.jpg" width={100} height={100}
-              className={styles.orderPicture} style={{marginTop:'25px'}} 
-             />
-  
-                <div className={styles.productText}>海苔雞排</div>
-            
-             <div>
-                <div className={styles.applyDiscount}>Size: medium, Material: 珍珠、鮮奶、伊斯蘭卡紅茶</div>
-                <div className={styles.applyDiscount}>優惠:滿十送一</div>
-             </div>
-
-            <div className={styles.buyText}>購買數量: 5</div>
-           
-
-             <div className={styles.productText} style={{marginBottom:'12px'}}>$80</div>
-
-         
-
-
-             </div>
-
+             <OrderCheck /> 
              <hr/>
-
-             <div className={styles.orderDetail}>
-             <Image src="/images/鹹酥雞.jpg" width={100} height={100}
-              className={styles.orderPicture}  
-             />
-  
-                <div className={styles.productText}>海苔雞排</div>
-            
-             <div>
-                <div className={styles.applyDiscount}>Size: medium, Material: 珍珠、鮮奶、伊斯蘭卡紅茶</div>
-                <div className={styles.applyDiscount}>優惠:滿十送一</div>
-             </div>
-
-            <div className={styles.buyText}>購買數量: 5</div>
-           
-
-             <div className={styles.productText} style={{marginBottom:'12px'}}>$80</div>
-
-         
-
-
-             </div>
-
+             <OrderCheck /> 
              <hr/>
-
-             <div className={styles.orderDetail}>
-             <Image src="/images/鹹酥雞.jpg" width={100} height={100}
-              className={styles.orderPicture}  
-             />
-  
-                <div className={styles.productText}>海苔雞排</div>
-            
-             <div>
-                <div className={styles.applyDiscount}>Size: medium, Material: 珍珠、鮮奶、伊斯蘭卡紅茶</div>
-                <div className={styles.applyDiscount}>優惠:滿十送一</div>
-             </div>
-
-            <div className={styles.buyText}>購買數量: 5</div>
-           
-
-             <div className={styles.productText} style={{marginBottom:'12px'}}>$80</div>
-
-         
-
-
-             </div>
-
+             <OrderCheck /> 
              <hr/>
-
-             <div className={styles.orderDetail}>
-             <Image src="/images/鹹酥雞.jpg" width={100} height={100}
-              className={styles.orderPicture}  
-             />
-  
-                <div className={styles.productText}>海苔雞排</div>
-            
-             <div>
-                <div className={styles.applyDiscount}>Size: medium, Material: 珍珠、鮮奶、伊斯蘭卡紅茶</div>
-                <div className={styles.applyDiscount}>優惠:滿十送一</div>
-             </div>
-
-            <div className={styles.buyText}>購買數量: 5</div>
-           
-
-             <div className={styles.productText} style={{marginBottom:'12px'}}>$80</div>
-
-         
-
-
-             </div>
-
+             <OrderCheck /> 
              <hr/>
-
-             <div className={styles.orderDetail}>
-             <Image src="/images/鹹酥雞.jpg" width={100} height={100}
-              className={styles.orderPicture}  
-             />
-  
-                <div className={styles.productText}>海苔雞排</div>
-            
-             <div>
-                <div className={styles.applyDiscount}>Size: medium, Material: 珍珠、鮮奶、伊斯蘭卡紅茶</div>
-                <div className={styles.applyDiscount}>優惠:滿十送一</div>
-             </div>
-
-            <div className={styles.buyText}>購買數量: 5</div>
-           
-
-             <div className={styles.productText} style={{marginBottom:'12px'}}>$80</div>
-
-         
-
-
-             </div>
+             <OrderCheck /> 
              <hr/>
 
           {/* 結帳金額 */}
@@ -201,18 +87,7 @@ export default function Order() {
               {/* orderContainer */}
             </div>
 
-            
-           
 
-
-
-
-
-
-
-   
-
- 
             {/* orderBorder */}
           </div>
           
@@ -245,11 +120,8 @@ export default function Order() {
                     <p className={styles.paymentText}>ECPay繳費</p>
                     </div>
 
-
-
          </div>
-
-              
+    
           </div>
 
        {/* '上一步 下一步'按鈕 */}

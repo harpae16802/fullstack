@@ -1,8 +1,12 @@
+// pages/login/seller-login.js
 import Section from '@/components/layout/section'
 import React from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
+import {useRouter} from 'next/router'
 import Link from 'next/link'
+import LoginForm from "../../components/loginForm";
+
 // 用在分頁的icon
 import {
   FaAngleDoubleLeft,
@@ -12,6 +16,18 @@ import {
 } from 'react-icons/fa'
 
 export default function LoginSeller() {
+
+  // const [formData, setFormData] = useState({ email: '', password: '' });
+
+  // const handleFormChange = (newData) => {
+  //   setFormData(prev => ({ ...prev, ...newData }));
+  // };
+  const router = useRouter();
+
+  const handleSuccess = () => {
+    router.push("/seller-basic-data");
+  };
+  
   return (
     <>
       <Section>
@@ -98,174 +114,6 @@ export default function LoginSeller() {
                     </form>
                   </div>
 
-                  {/* <div className="seller-input-group step-2">
-                    <form>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label"
-                        >
-                          <span>E-MAIL</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                        />
-                        <div id="emailHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
-                          <span>密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
-                          <span>再次確認密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <button
-                        type="submit"
-                        className="btn btn-primary mt-5 mb-5"
-                      >
-                        註冊
-                      </button>
-                    </form>
-                  </div> */}
-                  {/* <div className="seller-input-group step-3">
-                    <form>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label"
-                        >
-                          <span>E-MAIL</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                        />
-                        <div id="emailHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
-                          <span>密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
-                          <span>再次確認密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <button
-                        type="submit"
-                        className="btn btn-primary mt-5 mb-5"
-                      >
-                        註冊
-                      </button>
-                    </form>
-                  </div> */}
-                  {/* <div className="seller-input-group step-4">
-                    <form>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label"
-                        >
-                          <span>E-MAIL</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                        />
-                        <div id="emailHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
-                          <span>密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
-                          <span>再次確認密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword1"
-                        />
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <button
-                        type="submit"
-                        className="btn btn-primary mt-5 mb-5"
-                      >
-                        註冊
-                      </button>
-                    </form>
-                  </div> */}
                 </div>
                 <div
                   className="tab-pane fade show active"
@@ -280,13 +128,14 @@ export default function LoginSeller() {
                     </button>
                   </div>
                   <div className="seller-input-group">
-                    <form>
-                      <div className="mb-3">
+                 
+                    <LoginForm onSuccess={handleSuccess} />
+                      {/* <div className="mb-3">
                         <label
                           htmlFor="exampleInputEmail1"
                           className="form-label"
                         >
-                          帳號
+                          帳號?
                         </label>
                         <input
                           type="email"
@@ -309,16 +158,16 @@ export default function LoginSeller() {
                           id="exampleInputPassword1"
                         />
                         <div id="passwordHelp" className="form-text"></div>
-                      </div>
+                      </div> */}
                       <div className="forget-text">
                         <Link href="/opt" className="forget-p">
                           <p>忘記密碼？</p>
                         </Link>
                       </div>
-                      <button type="submit" className="btn btn-primary mb-5">
+                      {/* <button type="submit" className="btn btn-primary mb-5">
                         登入
-                      </button>
-                    </form>
+                      </button> */}
+            
                   </div>
                 </div>
               </div>
@@ -338,35 +187,7 @@ export default function LoginSeller() {
         {/* 以下是min版 */}
         <div className="seller-page-min">
           <div className="seller-min-group">
-            {/* 商家會員註冊 */}
-            {/* <div className="seller-min-register">
-              <div className="login-title">
-                <span>商家會員註冊</span>
-                <button type="button" className="btn btn-outline-primary">
-                  切換一般
-                </button>
-              </div>
-              <div className="seller-input-group">
-                <form>
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputMobile" className="form-label">
-                      <span>手機號碼</span>
-                      <span className="must-text">*必填項目</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="exampleInputMobile"
-                      aria-describedby="mobileHelp"
-                    />
-                    <div id="mobileHelp" className="form-text"></div>
-                  </div>
-                  <button type="submit" className="btn btn-primary mt-5 ">
-                    下一步
-                  </button>
-                </form>
-              </div>
-            </div> */}
+         
             {/* 商家會員登入 */}
             <div className="seller-min-login">
               <div className="login-title">
@@ -376,8 +197,8 @@ export default function LoginSeller() {
                 </button>
               </div>
               <div className="seller-input-group">
-                <form>
-                  <div className="mb-3">
+            
+                  {/* <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">
                       帳號
                     </label>
@@ -402,16 +223,18 @@ export default function LoginSeller() {
                       id="exampleInputPassword1"
                     />
                     <div id="passwordHelp" className="form-text"></div>
-                  </div>
+                  </div> */}
+                    <LoginForm onSuccess={handleSuccess} />
+
                   <div className="forget-text">
                     <Link href="/opt" className="forget-p">
                       <p>忘記密碼？</p>
                     </Link>
                   </div>
-                  <button type="submit" className="btn btn-primary">
+                  {/* <button type="submit" className="btn btn-primary">
                     登入
-                  </button>
-                </form>
+                  </button> */}
+              
               </div>
             </div>
           </div>

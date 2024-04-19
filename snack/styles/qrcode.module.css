@@ -1,0 +1,154 @@
+/* .qrcodeProduct */
+.qrcodeProduct {
+  align-items: center;
+  border-bottom: 1px grey;
+  display: flex;
+  justify-content: space-between;
+}
+
+.qrcodeRecord:hover {
+  background-color: white;
+  color: #a32c2d;
+}
+.qrcodeRecord h3 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.choosebtn {
+  color: #a32c2d;
+  background-color: white;
+  border-radius: 30px;
+  max-height: 33px;
+  font-size: 16px;
+  text-align: end;
+}
+.wrap{
+  display: grid;
+  grid-template-columns: .5fr .5fr 1fr  1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    'a1  a2 a3  a4   a6'
+     ;
+  /* height: 100vh; */
+  width: 100%;
+  margin: 0 auto;
+}
+.wrap2 {
+    display: grid;
+    grid-template-columns: auto .1fr 1fr .5fr 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      'a1 . a2 a3 . a4   a6'
+       ;
+    /* height: 100vh; */
+    width: 100%;
+    margin: 0 auto;
+  }
+  .wrap3 {
+    display: grid;
+    grid-template-columns: auto  .1fr 1fr .5fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      'a1 . a2 . a4 '
+       ;
+    /* height: 100vh; */
+    width: 100%;
+    margin: 0 auto;
+  }
+
+
+
+
+  .postion-a1 {
+    grid-area: a1;
+  }
+  .postion-a6 {
+    grid-area: a6;
+  }
+  .postion-a2 {
+    grid-area: a2;
+  }
+  .postion-a3 {
+    grid-area: a3;
+  }
+  .postion-a4 {
+    grid-area: a4;
+  }
+
+ 
+
+@media (max-width: 1300px) {
+.smbtn{
+    padding: 0 !important;
+    font-size: 10px;
+    color: #a32c2d;
+    background-color: transparent;  
+}
+
+    .wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr ;
+        grid-template-areas:
+          'a1  a2'
+          'a1  a3'
+          'a6  a4';
+          justify-items: center;
+          text-align: center;
+          justify-content: space-between;
+        /* height: 100vh; */
+        width: 100%;
+        margin: 0 auto;
+      }
+      .wrap2 {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 1fr 1fr  0.5fr ;
+        grid-template-areas:
+          'a1  a2'
+          'a3  a3'
+          'a4  a4';
+          justify-items: center;
+          text-align: center;
+          justify-content: space-between;
+        
+        /* height: 100vh; */
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .wrap3 {
+        display: grid;
+        grid-template-columns: 2fr 1fr; 
+        grid-auto-rows: minmax(50px, auto); /* 设置自动生成的行的最小和最大高度 */
+        grid-template-areas:
+          'a1  a2' 
+          'a4  a4'; 
+        /* height: 100vh; */
+        width: 100%;
+        margin: 0 auto;
+        justify-items: center;
+        text-align: center;
+        justify-content: space-between;
+      }
+      .wrap4.postion-a3,.wrap2.postion-a3 {
+        grid-area: a3;
+        align-self: end; 
+      }
+      .wrap4.postion-a3{
+        grid-area: a4;
+        align-self: end; 
+      }
+   
+   
+      .wrap2 .postion-a4 button,  .wrap3 .postion-a4 button{
+        width: 100%;
+      }
+      .wrap2 .classbtn,  .wrap3 .classbtn{
+        width: 100%;
+      }
+      .wrap2 .postion-a1 img, .wrap3 .postion-a1 img{
+        text-align: start;
+      }
+}

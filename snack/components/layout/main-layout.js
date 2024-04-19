@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Head from 'next/head'
 import Image from 'next/image'
 import NavbarLogout from './navbar-logout'
@@ -7,8 +7,17 @@ import NavbarSeller from './navbar-seller'
 import Footer from './footer'
 import Section from './section'
 import Navbars from '../navbars'
+// import { useSeller } from "../../contexts/SellerContext"
 
 export default function MainLayout({ children }) {
+
+
+  // const { seller } = useSeller();
+  // const sellerId = seller?.id;
+
+  // if(sellerId){
+  //   //就渲染賣家
+  // }
   return (
     <>
       <Head>
@@ -19,9 +28,15 @@ export default function MainLayout({ children }) {
       </Head>
       <div className="my-container-fluid">
         <header className="row">
+<<<<<<< HEAD
           {/* <NavbarLogout /> */}
           {/* <Navbars /> */}
           <NavbarCustom />
+=======
+          <NavbarLogout />
+          {/* <Navbars /> */}
+          {/* <NavbarCustom /> */}
+>>>>>>> origin/main
           {/* <NavbarSeller /> */}
         </header>
         <main className="row">

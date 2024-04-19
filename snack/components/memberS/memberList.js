@@ -19,40 +19,26 @@ export default function Home() {
       }
     });
     setSelectpage(newSelectpage);
-  }, []); // 添加了空数组作为 useEffect 的第二个参数，确保 useEffect 只在组件挂载时执行一次
-
+  }, []); // 添加了空数组作为 useEffect 的第二个参数，确保 useEffect 
+  
   //  {/* select 表單選單 */}
   return (
-    <div className={classNames(styles["lg-open"])}>
+    <div >
       {/* select 表單選單 */}
-      <div className="accordion memeberList " id="accordionExample">
+      <div className={classNames(styles["border-1"],"accordion memeberList" )} id="accordionExample">
         {selectpage.map((v, i) => (
           <div className={`accordion-item ${v.list && 'accordion-drop'}`} key={i}>
             <h2 className="accordion-header" id="headingOne">
               {v.href &&
                 <Link href={v.href}>
+                
                   <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${i}`} aria-expanded="true" aria-controls={`#collapse${i}`}>
                     {v.title}
                   </button>
                 </Link>
               }
-              {!v.href &&
-                  <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${i}`} aria-expanded="true" aria-controls={`#collapse${i}`}>
-                    {v.title}
-                  </button>
-              }
-            </h2>
-            {v.list &&
-              v.list.map((v2, i2) => (
-
-                <div id={`collapse${i}`} key={v.title} className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <Link href={v2.href}>
-                  <div className="accordion-body">
-                    {v2.title}
-                    </div>
-                    </Link>
-                </div>
-              ))}
+              
+            </h2> 
 
           </div>
         ))}

@@ -1,0 +1,439 @@
+/* 產品列表頁 */
+.center{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+   
+}
+
+.container {
+    width: var(--container-width, 1742px);
+    height: var(--container-height, 3000px);
+
+   
+    /* background-color: var(--container-color, #D2B48C); */
+  }
+
+ 
+
+  /* 產品分類:外層容器 */
+  .categoryContainer {
+   
+    overflow-x: hidden;
+    justify-content: space-between;
+    margin-top: 30px;
+
+    text-align: center;
+    
+    
+  }
+
+   .categoryText{
+     font-size: 16px;
+     font-weight: bold;
+   }
+
+   @media(max-width:375px){ 
+    .categoryText{
+      font-size: 12px;
+    }
+   }
+  
+   .categoryPicInterval{
+     margin-top: 30px;
+     justify-content: space-between;
+     
+   }
+
+   @media(max-width:375px){ 
+    .categoryPicInterval{
+      margin-top: 10px;
+      margin-right: -50px;
+      
+    }
+  }
+
+  /* 產品分類:圖片設定 */
+  .categoryImage { 
+    border-radius: 20px;
+  }
+  @media(max-width:375px){ 
+    .categoryImage{
+      width: 66px;
+      height: 67px;   
+    }
+   }
+
+  /* 人氣商品:外層容器 */
+  .popularContainer{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between; 
+  }
+
+  .popularIcon{
+     margin-bottom: 8px;
+  }
+
+  @media(max-width:375px){ 
+    .popularIcon{
+      width: 25px;
+      height: 35px;   
+    }
+   }
+
+  /* 人氣商品:圖片 文字設定 */
+  .popularProduct { 
+    margin-left:  50px;
+   font-weight: bolder;
+    color:rgb(0, 0, 0) ;
+  }
+  @media(max-width:375px){ 
+    .popularProduct{
+      margin-left:  -10px;
+      margin-top: 15px; 
+    }
+   }
+
+  .bestSellerText{
+    font-size: 28px;
+    color:#A32C2D;
+    margin-bottom: 3px;
+    margin-left: 8px;
+    font-weight: bolder;
+  }
+
+  @media(max-width:375px){ 
+    .bestSellerText{
+      font-size: 16px; 
+    }
+   }
+
+   .popularImage{
+    width: 100%;
+  } 
+  @media(max-width:375px){ 
+    .popularImage{
+      width: 306px;
+      height: 196px;
+    }
+   }
+
+   .bestSeller{
+    font-size: 16px;
+    font-weight: bolder;
+   }
+   @media(max-width:375px){ 
+    .bestSeller{
+      font-size: 12px;
+    }
+   }
+
+   .bestProduct{
+    font-size: 28px;
+    margin-top: -20px;
+    color: rgb(0,0,0) ;
+    font-weight: bolder;
+   }
+   @media(max-width:375px){ 
+    .bestProduct{
+      font-size: 16px;
+    }
+   }
+
+   .collectIcon{
+    font-weight: bolder;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    color: rgb(163, 44, 45);
+   }
+   @media(max-width:375px){ 
+    .collectIcon{
+      font-size: 16px;
+      margin-top: 3px;
+      margin-left: 10px;
+    }
+   }
+
+   .seeMoreButton{
+    width: 128px;
+    height: 38px;
+    border:solid 3px #A32C2D;
+    margin-top: -10px;
+    margin-left: 205px;
+    font-size: 16px;
+    border-radius: 20px;
+    color: #A32C2D;
+    font-weight: bolder;
+   }
+   @media(max-width:375px){ 
+    .seeMoreButton{
+      width: 92px;
+      height: 27px;
+      border:solid 2px #A32C2D;
+      font-size: 12px;
+      margin-left: 210px;
+    }
+   }
+
+
+  /* .image{
+    flex: 1;
+    max-width: calc((100% - 10px) / 4); 
+    margin-right: 20px; 
+  }
+
+  .image:last-child {
+    margin-right: 0;
+  } */
+
+  .popularProduct > p {
+    font-weight: bolder;
+    color:rgb(0, 0, 0) ;
+  }
+
+  .popularInfo {
+   
+    display: flex;
+     align-items: center; 
+     
+  }
+
+  .recommendContainer{
+    margin-top: 100px;
+    margin-right: 500px;
+    display: flex;
+    justify-content: left;
+    font-weight: bolder;
+   
+  }
+
+  .recommendTitle{
+    margin-left: 60px;
+    font-size: 30px;
+    color:rgb(163, 44, 45);
+    font-weight: bolder;
+  }
+
+  .recommendProduct{
+    font-weight: bolder;
+    font-size: 20px;
+  }
+
+
+  .recommendName{
+    margin-top: 4px;
+    margin-left: 2px;
+    font-weight: bolder;
+    font-size: 28px;
+  }
+
+  .productScore{
+    width: 53px;
+    height: 54px;
+    margin-top: 8px;
+    margin-left: 100px;
+    padding-top: 5px;
+    padding-left: 5px;
+    background-color: #E5E1DD;
+    border-radius: 50%;
+    padding-top: 15px;
+    padding-left: 15px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  /* '產品篩選'彈窗 */
+  .paymentSize{
+    width: 491px;
+    height: 436px;
+    background-color: #fff;
+    border-radius: 20px;
+    position: absolute;
+    top: 30%;
+    left: 70%;
+     transform: translate(-50%, -50%);
+  }
+  @media(max-width:375px){ 
+    .paymentSize{
+      width: 100%;
+      height: 378px;
+      position: absolute;
+      top:86%;
+      left: 40%;
+     transform: translate(-50%, -50%);
+      
+    }
+   }
+/* 商品篩選:叉叉 */
+   .filterCross{
+    margin-top: 25px;
+    margin-left: 450px;
+     color: rgb(163, 44, 45);
+     font-size: 22px;
+     font-weight: 100;
+   }
+   @media(max-width:375px){ 
+    .filterCross{
+      margin-top: 15px;
+      margin-left: 350px;
+      font-size: 10px;
+    }
+   }
+
+
+  .filterTitle{
+    margin-top: 20px;
+    margin-left: 31px;
+     font-size: 20px;
+     font-weight: bolder;
+  }
+  @media(max-width:375px){ 
+    .filterTitle{
+      font-size: 16px;
+      font-weight: bolder;
+    }
+   }
+
+
+  .filterCircle{
+    width: 16px;
+    height: 16px;
+    color: #fff;
+    border:solid 4px #A32C2D;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 15px;
+    font-weight: bolder;
+  }
+  @media(max-width:375px){ 
+    .filterCircle{
+      font-size: 16px;
+      font-weight: bolder;
+ 
+    }
+   }
+
+  .filterText{
+    font-size: 16px;
+    font-weight: bolder;
+    margin-top: 6px;
+    margin-left: 5px;
+  }
+  @media(max-width:375px){ 
+    .filterText{
+      font-size: 12px;
+      font-weight: bolder;
+      margin-top: 10px;
+    }
+   }
+
+   .filterButtonInterval{
+    display: flex;
+    margin-top: 40px;
+    margin-left: 140px;
+   }
+   @media(max-width:375px){ 
+    .filterButtonInterval{
+      margin-top: 40px;
+      margin-left: 90px;
+    }
+   }
+
+   .filterConditionButton{
+    width: 150px;
+    height: 32px;
+    color: #fff;
+    background-color: #A32C2D;
+    font-weight: bold;
+    border-radius: 20px;
+    border: none;
+    font-size: 16px;
+    margin-left: 1200px;
+   }
+
+   @media(max-width:375px){ 
+    .filterConditionButton{
+      width: 106px;
+      height: 25.5px;
+      font-size: 12px;
+      margin-left: 200px;
+    }
+   }
+
+   .filterIcon{
+    font-size: 24px;
+    margin-left: 5px;
+   }
+
+   @media(max-width:375px){ 
+    .filterIcon{
+      font-size: 18px;
+    }
+   }
+
+   /* .filterButton{
+    width: 92px;
+    height: 32px;
+    padding-top: 3px;
+    font-weight: bolder;
+    font-size: 16;
+    border-radius: 20px;
+    justify-content: center;
+    text-align: center;
+   }
+   @media(max-width:375px){ 
+    .filterText{
+     
+      font-size: 12px;
+    }
+   } */
+
+   
+
+  .wbButton{
+    color: #A32C2D;
+    background-color: #fff;
+    font-weight: bolder;
+    border:solid 2px #A32C2D;
+    border-radius: 20px;
+    justify-content: center;
+    text-align: center;
+  }
+
+ .rbButton{
+  color: #fff;
+  background-color: #A32C2D;
+  font-weight: bolder;
+  border-radius: 20px;
+  justify-content: center;
+  text-align: center;
+  border: none;
+ }
+
+ .bbButton{
+  color: #fff;
+  background-color: rgb(0, 0, 0);
+  border-radius: 20px;
+  justify-content: center;
+  text-align: center;
+  border: none;
+ }
+
+ .gbButton{
+  width: 37px;
+  height: 37px;
+  text-align: center;
+  margin-left: 1px;
+  background-color: #E5E1DD;
+  border: none;
+ }
+
+ .discountInformation{
+  width: 319px;
+  height: 314px;
+  border-radius: 20px;
+
+ }
