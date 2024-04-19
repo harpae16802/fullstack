@@ -12,7 +12,11 @@ import {
   FaStar,
 } from 'react-icons/fa'
 // api-path
-import { FAVORITE_STORE, COMMENT_DATA } from '@/components/config/api-path'
+import {
+  FAVORITE_STORE,
+  COMMENT_DATA,
+  C_FAVORITE_STORE,
+} from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -55,8 +59,8 @@ export default function ShopInfo({
     setIsModalOpen(false)
   }
 
-  // 撈 comment 資料
   useEffect(() => {
+    // 撈 comment 資料
     const fetchComments = async () => {
       try {
         const r = await fetch(`${COMMENT_DATA}/${seller_id}`)
@@ -68,6 +72,17 @@ export default function ShopInfo({
         console.error('撈取 comment 資料錯誤:', error)
       }
     }
+
+    // 检查收藏状态
+    const checkFavoriteStatus = async () => {
+      const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`)
+      const data = await r.json()
+      if (data.isFavorite !== undefined) {
+        setIsFavorite(data.isFavorite)
+      }
+    }
+
+    checkFavoriteStatus()
     fetchComments()
   }, [seller_id])
 

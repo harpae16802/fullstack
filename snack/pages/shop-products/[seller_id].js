@@ -99,11 +99,11 @@ export default function ShopProducts() {
             {seller && (
               <ShopInfo
                 seller_id={seller.seller_id}
-                shopName={seller.store_name} // 确保从状态动态传递 store_name
-                time1="周一到周六" // 如果这些信息也应该是动态的，请替换为对应的状态
-                time2="下午5:00到上午2:00" // 同上
-                score="4.2" // 如果有动态数据，请替换
-                comment="169則留言" // 如果有动态数据，请替换
+                shopName={seller.store_name} 
+                time1="周一到周六" 
+                time2="下午5:00到上午2:00" 
+                score="4.2"
+                comment="169則留言" 
               />
             )}
           </div>

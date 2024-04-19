@@ -1,7 +1,7 @@
 import React from "react";
 import { FaSistrix } from "react-icons/fa";
 
-export default function SearchBarSmaller() {
+export default function SearchBarNobutton() {
   return (
     <>
       <div className="search-item">
@@ -23,6 +23,9 @@ export default function SearchBarSmaller() {
                   placeholder="Search"
                   aria-label="Search"
                 />
+                <button className="btn btn-primary rounded-pill" type="submit">
+                  搜尋
+                </button>
               </form>
             </div>
           </div>
@@ -32,7 +35,7 @@ export default function SearchBarSmaller() {
             role="tabpanel"
             aria-labelledby="nav-profile-tab"
           >
-            <div className="search-bar">
+            <div className="search-bar-small">
               <form className="d-flex justify-content-between">
                 <div className="search-icon">
                   <FaSistrix className="fa-sistrix" />
@@ -43,6 +46,9 @@ export default function SearchBarSmaller() {
                   placeholder="Search"
                   aria-label="Search"
                 />
+                <button className="btn btn-primary rounded-pill" type="submit">
+                  搜尋
+                </button>
               </form>
             </div>
           </div>
