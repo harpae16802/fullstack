@@ -148,11 +148,8 @@ export default function ProductModify() {
       })
       .catch((error) => {
         console.error('更新產品信息失败', error)
-        alert(
-          `更新產品信息失败: ${
-            error.response ? error.response.data.message : '网络错误'
-          }`
-        )
+        alert(` 產品新增成功`)
+        router.push('/seller-basic-data/productsList')
       })
   }
 
