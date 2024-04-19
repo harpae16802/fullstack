@@ -1,6 +1,6 @@
 import mainApi from "./api";
 const formUpdate=(formdata)=>{
-  fetch(`${mainApi.API_URL}/backRoute/insertMemberForm`, {
+  fetch(`${mainApi.API_URL}/updateMemberForm`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -23,5 +23,6 @@ const formUpdate=(formdata)=>{
     console.error('非 JSON 响应:', error.response);
 });
 }
+ 
 
 export default {formUpdate}

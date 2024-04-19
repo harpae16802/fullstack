@@ -4,14 +4,21 @@ import SelectMenu from "@/components/memberS/person/selectMenu";
 import QrcodeRecord from "@/components/memberS/qrcode/qrcodeRecord3"
 import StepComputer from "@/components/memberS/qrcode/step/stepComputer";
 import Search from "@/components/memberS/qrcode/searchbar"
+import qrcodeStyle from "@/styles/qrcode.module.css" 
 import styles from "@/styles/form.module.css"
 import Pagination from "@/components/memberS/others/pagination"
 import QrcodeCurrent from "@/components/modal/qrcodeCurrent";
 import { useState, useEffect } from "react";
 import classNames from 'classnames'
 import Image from "next/image";
-
+import Section from "@/components/layout/section";
+import { useRouter } from "next/router"; 
 export default function QrcodeselectMobile2() {
+  const router = useRouter();
+
+  const pages = (url) => {
+    router.push(`/memberSystem/${url}`); 
+  }
   const [isBigScreen, setIsBigScreen] = useState(false);
   const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
   useEffect(() => {
@@ -31,9 +38,11 @@ export default function QrcodeselectMobile2() {
 
   }, [])
   return (
+    <Section>
+
     <div className="container">
       <div className="row">
-        <div className="col-12 col-md-4 r">
+        <div className="col-12 col-md-4 ">
           <SelectMenu />
         </div>
 
@@ -45,26 +54,34 @@ export default function QrcodeselectMobile2() {
             <StepComputer stepLevel="3" />
             <div className=" mt-2 d-flex justify-content-center">
 
-              <Image src="/images.png" alt="Description" width={350} height={350} />
+              <Image src="/images.png" alt="Description" width={250} height={250} />
             </div>
 
 
             <h4 className='creditTitle credit   text-smtitle' style={{ border: 0 }}>我的商品</h4>
             <div className={classNames(styles['border-1'], "px-4 py-3 mt-4", styles["rd-2"])}>
               <QrcodeRecord />  
-            </div>
-            <Pagination />
-            <div className="d-flex justify-content-center align-items-center">
-              <QrcodeCurrent />
-              <button type="submit" className={classNames("btn  px-5 mx-2", styles["btn-parmary"], styles["rd-30"])}>上一步 </button>
-              <button type="submit" className={classNames("btn  px-5 mx-2", styles["btn-parmary"], styles["rd-30"])}>下一步 </button>
-            </div>
+            </div> 
+          
 
           </div>
+          <div className="d-flex justify-content-center align-items-center">
+            
+          { /* <QrcodeCurrent />*/}
+
+          <button type="button" onClick={() => pages("qrcodeSelect3")} className={classNames("btn btn-outline-primary",qrcodeStyle["qrcodeRecord"])}>
+            上一步
+          </button>
+
+          <button type="button" onClick={() => pages("qrcodeSelect4")} className={classNames("btn btn-outline-primary",qrcodeStyle["qrcodeRecord"])}>
+            下一步
+          </button>
+       </div>
         </div>
       </div>
 
     </div>
+    </Section>
   );
 }
 
