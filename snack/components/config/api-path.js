@@ -22,4 +22,4 @@ export const MARKET_SEARCH = `${MARKET}/search`
 // 搜尋
 export const MARKET_SELLER = `${MARKET}/seller`
 
-export const JWT_LOGIN_POST = `${API_SERVER}/custom-auth/login-jwt`
+export const JWT_LOGIN_POST = `${API_SERVER}/login-jwt`

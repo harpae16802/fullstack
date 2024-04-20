@@ -5,6 +5,10 @@ import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import db from "./utils/db.js";
+//hash
+import bcrypt from "bcryptjs";
+//JWT
+import jwt from "jsonwebtoken";
 
 import index from "./routes.js";
 import bodyParser from "body-parser";
@@ -31,7 +35,7 @@ app.use(express.json());
 
 // 自訂的頂層middleware
 app.use((req, res, next) => {
-  res.locals.title = "NightMarket Hunter"; //設定網站名稱
+  // res.locals.title = "NightMarket Hunter"; //設定網站名稱
 
   // 處理 JWT token
   const auth = req.get("Authorization");
@@ -48,8 +52,66 @@ app.use((req, res, next) => {
 });
 
 // 一般會員登入
-app.use("/custom-auth", customAuthRouter);
+app.post("/login-jwt", async (req, res) => {
+  let { account, password } = req.body || {};
+  const output = {
+    success: false,
+    error: "",
+    code: 0,
+    //當success變為true要的資料
+    data: {
+      custom_id: 0,
+      account: "",
+      nickname: "",
+      token: "",
+    },
+  };
+  if (!account || !password) {
+    output.error = "欄位資料不足";
+    output.code = 400;
+    return res.json(output);
+  }
+  account = account.trim();
+  password = password.trim();
+  const sql = "SELECT * FROM custom WHERE custom_account=?";
+  const [rows] = await db.query(sql, [account]);
+  if (!rows.length) {
+    // 帳號是錯的
+    output.error = "帳號或密碼錯誤";
+    output.code = 420;
+    return res.json(output);
+  }
+  const row = rows[0];
+  const result = await bcrypt.compare(password, row.custom_password);
+  if (result) {
+    // 帳號是對的, 密碼也是對的
+    output.success = true;
+    // 打包  JWT
+    const token = jwt.sign(
+      {
+        custom_id: row.custom_id ,
+        account: row.custom_account ,
+      },
+      // process.env.JWT_SECRET >> 去看 dev.env 檔
+      process.env.JWT_SECRET
+    );
+    output.data = {
+      custom_id: row.custom_id ,
+      account: row.custom_account ,
+      nickname: row.custom_nickname,
+      token,
+    };
+  } else {
+    // 密碼是錯的
+    output.error = "帳號或密碼錯誤";
+    output.code = 450;
+  }
+  res.json(output);
+});
 
+app.get("/jwt-data", async (req, res) => {
+  res.json(req.my_jwt);
+});
 
 
 // ==== 弘

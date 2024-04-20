@@ -1,5 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+
 
 export default function Footer() {
   return (
@@ -13,36 +15,36 @@ export default function Footer() {
           <div className="footer-top d-flex  flex-md-row">
             <ul className="left-footer col-6 d-flex flex-column flex-md-row">
               <li className="footer-item">
-                <a className="footer-link" href="#">
+                <Link className="footer-link" href="/market-map">
                   夜市導覽
-                </a>
+                </Link>
               </li>
               <li className="footer-item">
-                <a className="footer-link" href="#">
+                <Link className="footer-link" href="/nightmarket-info/index">
                   美味商城
-                </a>
+                </Link>
               </li>
               <li className="footer-item">
-                <a className="footer-link" href="#">
+                <Link className="footer-link" href="/game/game-select">
                   趣味遊戲
-                </a>
+                </Link>
               </li>
             </ul>
             <ul className="right-footer col-6 d-flex flex-column flex-md-row">
               <li className="footer-item">
-                <a className="footer-link" href="#">
+                <Link className="footer-link" href="/#discountnews">
                   最新消息
-                </a>
+                </Link>
               </li>
               <li className="footer-item">
-                <a className="footer-link" href="#">
+                <Link className="footer-link" href="/login/login-seller">
                   成為店家
-                </a>
+                </Link>
               </li>
               <li className="footer-item">
-                <a className="footer-link" href="#">
-                  聯絡我們
-                </a>
+                <Link className="footer-link" href="/#aboutme">
+                  關於我們
+                </Link>
               </li>
             </ul>
           </div>

@@ -66,13 +66,13 @@ export default function SectionIndex() {
         className="section-index index-nop 
 discount"
       >
-        <div className="index-title">最新消息</div>
+        <div className="index-title" id="discountnews">最新消息</div>
         <div className="slide-container">
           <div className="slide-group">
             {/* <CustomSlider /> */}
 
             <div className="slide-item">
-              {/* 點圖片要到 咚咚的 商家葉面 */}
+              {/* 點圖片要到 咚咚的 商家頁面 */}
               <Image
                 src="/images/layout/P_20240224_194256.jpg"
                 alt="discount-img"
@@ -106,7 +106,7 @@ discount"
                 width={500}
                 height={300}
               />
-               {/* 點圖片要到 咚咚的 商家葉面 */}
+               {/* 點圖片要到 咚咚的 商家頁面 */}
               <div className="discount-text discount-store">
                 士林夜市 林藤茶坊
               </div>
@@ -197,12 +197,12 @@ discount"
               stroke="#070505"
             />
           </svg>
-                {/* 商品詳細葉 && 購物車連結*/}
+                {/* 商品詳細頁 && 購物車連結*/}
           <div className="card-product-index-group">
             <div className="card-product-index">
               <div className="product-top">
                 <div className="product-title">
-                     {/* 商品詳細葉 && 購物車連結*/}
+                     {/* 商品詳細頁 && 購物車連結*/}
                   <div className="product-name">姊姊抓的餅</div>
                   <div className="product-name">豬排蛋</div>
                 </div>
@@ -309,8 +309,8 @@ discount"
           </svg>
         </div>
       </div>
-      <div className="section-index">
-        <div className="index-title">關於我們</div>
+      <div className="section-index" >
+        <div className="index-title" id="aboutme">關於我們</div>
         <div className="qr-text">
           <div className="qr-video col-12 col-md-7 mb-5 mb-md-0">
             <iframe
@@ -324,7 +324,7 @@ discount"
             />
           </div>
 
-                          {/* 商品詳細葉 && 購物車連結*/}
+                          {/* 商品詳細頁 && 購物車連結*/}
           <div className="qr-about col-12 col-md-5">
             <div className="accordion" id="accordionExample">
               <div className="accordion-item">
