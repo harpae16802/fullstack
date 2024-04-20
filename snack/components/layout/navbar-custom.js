@@ -1,5 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useAuth } from '@/contexts/custom-context'
 import {
   FaBars,
   FaUser,
@@ -9,6 +11,8 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
+  const { auth,logout ,login} = useAuth()
+
   return (
     <>
       {' '}
@@ -90,10 +94,18 @@ export default function NavbarCustom() {
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a
+                    className="nav-link"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      logout()
+                    }}
+                  >
                     登出
                   </a>
                 </li>
+
                 {/* 一般會員結束 */}
               </div>
               {/* 手機版的選單 結束 */}

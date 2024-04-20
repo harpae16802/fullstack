@@ -144,7 +144,7 @@ export default function LoginCustom() {
                         width={33}
                         height={33}
                       />
-                      <span>使用google帳戶註冊</span>
+                      <span>使用Google帳戶註冊</span>
                     </button>
                   </div>
                 </div>
@@ -161,25 +161,25 @@ export default function LoginCustom() {
                     </button>
                   </div>
                   <div className="custom-input-group">
-                    <form>
+                    <form name="form1" >
                       <div className="mb-3">
                         <label
-                          htmlFor="exampleInputEmail1"
+                          htmlFor="account"
                           className="form-label"
                         >
                           帳號
                         </label>
                         <input
-                          type="email"
+                          type="text"
                           className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
+                          id="account"
+            
                         />
                         <div id="emailHelp" className="form-text"></div>
                       </div>
                       <div className="mb-3">
                         <label
-                          htmlFor="exampleInputPassword1"
+                          htmlFor="password"
                           className="form-label"
                         >
                           密碼
@@ -187,7 +187,8 @@ export default function LoginCustom() {
                         <input
                           type="password"
                           className="form-control"
-                          id="exampleInputPassword1"
+                          id="password"
+                          name="password"
                         />
                         <div id="passwordHelp" className="form-text"></div>
                       </div>
@@ -208,7 +209,7 @@ export default function LoginCustom() {
                         width={33}
                         height={33}
                       />
-                      <span>使用google帳戶登入</span>
+                      <span>使用Google帳戶登入</span>
                     </button>
                   </div>
                 </div>
@@ -285,7 +286,7 @@ export default function LoginCustom() {
                     width={33}
                     height={33}
                   />
-                  <span>使用google帳戶註冊</span>
+                  <span>使用Google帳戶註冊</span>
                 </button>
               </div>
             </div> */}
@@ -342,7 +343,7 @@ export default function LoginCustom() {
                     width={33}
                     height={33}
                   />
-                  <span>使用google帳戶登入</span>
+                  <span>使用Google帳戶登入</span>
                 </button>
               </div>
             </div>

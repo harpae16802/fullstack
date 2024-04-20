@@ -4,6 +4,8 @@ import { FaSistrix, FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
 import SearchBar from '@/components/common/search-bar'
 import CustomSlider from '@/components/index/custom-slider'
 import StoreSlider from '@/components/index/store-slider'
+import SearchBarIndex from '@/components/common/search-bar-index'
+
 
 export default function SectionIndex() {
   return (
@@ -23,7 +25,7 @@ export default function SectionIndex() {
       </div>
       <div className="kv">
         <div className="kv-title">一鍵搜尋，最優惠夜市小吃輕鬆網羅</div>
-        <SearchBar />
+        <SearchBarIndex />
         <div className="card-publicity-group">
           <div className="card-publicity">
             <div className="publicity-top">
@@ -205,7 +207,7 @@ discount"
                     <button>
                       <FaPlus />
                     </button>
-                    <input type="text" min="1" />
+                    <input type="text" min="1" style={{border:'none'}} />
                     <button>
                       <FaMinus />
                     </button>

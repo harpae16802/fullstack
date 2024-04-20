@@ -1,16 +1,9 @@
 // 檔案位置: styles/global.scss
 // 變數覆蓋用 (Variable overrides)
+
 // // 全站配色 colors
-$black: #070505;
-$primary: rgb(163, 44, 45);
-$secondary: rgb(225, 209, 178);
-$success: rgb(41, 162, 30);
-$warning: rgb(255, 201, 64);
-$danger: rgb(255, 1, 1);
-$light-primary: rgb(234, 105, 106);
-$deep-primary: rgb(98, 27, 27);
-$deep-gray: rgb(183, 180, 177);
-$gray: rgb(229, 225, 221);
+// 引入變數使用
+@import 'variable';
 
 // ↑↑↑  變數覆蓋(Variable overrides) 要寫在這行"上面"  ↑↑↑
 // 導入所有 bootstrap 樣式
@@ -185,8 +178,8 @@ body {
       padding-bottom: 0px;
       border-radius: 0px;
       // border 手機版有奇怪的破圖才設的 沒效果可拿掉
-      // border-right: 2px solid $primary;
-      // border-left: 2px solid $primary;
+      border-right: 2px solid $primary;
+      border-left: 2px solid $primary;
     }
     align-self: stretch;
     padding-left: 20px;
@@ -521,7 +514,6 @@ body {
       //   border-radius: 70px 70px 0px 0px;
       //   background-color: $secondary;
       // }
-
       // 優惠輪播欄
       .simple-news {
         @media (max-width: 992px) {
@@ -598,7 +590,6 @@ body {
           padding: 20px 20px 60px 20px;
         }
         display: flex;
-
         padding: 80px 80px 150px 80px;
         align-self: stretch;
         position: relative;
@@ -631,7 +622,6 @@ body {
       .section {
         @media (max-width: 992px) {
           border: $primary solid 10px;
-          // border-bottom: $primary solid 20px;
           border-top: none;
           border-radius: 30px 30px 0px 0px;
           padding: 20px 20px 60px 20px;
@@ -665,7 +655,7 @@ body {
       position: relative;
       // height: 50vh;
       align-self: stretch;
-      z-index: 0;
+      z-index: 1;
       @media (max-width: 992px) {
         // border 手機版有奇怪的破圖才設的 或許可拿掉
         border-right: 12px solid $primary;
@@ -871,30 +861,3 @@ body {
     // 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'
 ;
 }
-
-     // 無邊距版本
-     .section-nopaddin {
-      @media (max-width: 992px) {
-        border: $primary solid 10px;
-        border-top: none;
-        border-radius: 30px 30px 0px 0px;
-        padding: 20px 20px 60px 20px;
-        margin-top: -10px;
-      }
-      overflow: hidden;
-      display: flex;
-      padding-bottom: 150px;
-      align-self: stretch;
-      position: relative;
-      background: $secondary;
-      background: linear-gradient(
-          0deg,
-          rgba(225, 209, 178, 0.8) 0%,
-          rgba(225, 209, 178, 0.8) 100%
-        ),
-        url(../public/images/layout/bgc.jpg), lightgray 50%;
-      border-radius: 70px 70px 0px 0px;
-      border: $primary solid 20px;
-      border-top: none;
-      flex-direction: column;
-    }

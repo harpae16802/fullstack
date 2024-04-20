@@ -7,3 +7,6 @@ export const MARKET_DATA = `${API_SERVER}/market-data`;
 export const SELLER_DATA = `${API_SERVER}/seller-data`;
 // 加入或移除最愛
 export const FAVORITE_STORE = `${API_SERVER}/shop-products/toggle-like`;
+
+export const JWT_LOGIN_POST = `${API_SERVER}/custom-auth/login-jwt`;
+
