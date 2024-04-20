@@ -1,11 +1,12 @@
 
 
-/* page1 */
+/* product */
 .outerFrame{
     width: calc( 100% - 80px );
     height: 2679px;
     background-color:rgb(246, 242, 219);
     border-radius: 20px;
+    
 }
 
 .orderTitle{
@@ -24,7 +25,10 @@
     border-radius: 20px;
 }
 
-
+.container{
+    display: flex;
+    flex-wrap: wrap;
+}
 
 .step1{
     display: inline-block;
@@ -38,6 +42,9 @@
     align-items: center;
     font-size: large;
     line-height: 40px;
+    position: relative;
+    z-index: 1;
+    margin: -5px;
 }
 
 
@@ -47,6 +54,8 @@
     width: 200px;
     height: 13px;
     background-color: rgb(177, 175, 175);
+    z-index: 2;
+    margin:-5px;
 }
 
 .connect2{
@@ -55,6 +64,8 @@
     width: 200px;
     height: 13px;
     background-color: rgb(163, 44, 45);
+    z-index: 2;
+    margin:-5px;
 }
 
 .step1Text{
@@ -71,11 +82,12 @@
     color:black;
     border-radius: 50%;
     text-align: center;
-    justify-content: center;
     align-items: center;
     font-size: large;
     line-height: 40px;
-
+    position: relative;
+    z-index: 1;
+    margin:-5px;
 }
 
 .textContainer{
@@ -183,8 +195,9 @@
 .productNumber{
     margin-top: 20px;
     margin-left: 3px;
-    width: 30px;
-    height: 30px;
+    padding-top: 5px;
+    width: 37px;
+    height: 37px;
     background-color: rgb(229, 226, 226);
     text-align: center;
     font-weight: bolder; 
@@ -223,19 +236,19 @@
 }
 
 .discountContent{
-   margin-left: 50px;
-   margin-top: 80px;
+   margin-left: 180px;
+   margin-top: 50px;
 }
 
 .leftArrow{
     margin-top: 200px;
-    margin-left: 10px;
+    margin-left: 70px;
     font-size: xx-large;
 }
 
 .rightArrow{
     margin-top: 200px;
-    margin-left: 60px;
+    margin-left: 150px;
     font-size: xx-large;
 }
 
@@ -452,7 +465,7 @@
 }
 
 /* 彈窗:消耗遊戲點數 */
-.numberButton{
+.cosumeButton{
     width: 30px;
     height: 30px;
     margin-left: 3px;

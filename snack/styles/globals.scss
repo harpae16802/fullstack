@@ -2,6 +2,17 @@
 // 變數覆蓋用 (Variable overrides)
 
 // // 全站配色 colors
+$black: #070505;
+$primary: rgb(163, 44, 45);
+$secondary: rgb(225, 209, 178);
+$success: rgb(41, 162, 30);
+$warning: rgb(255, 201, 64);
+$danger: rgb(255, 1, 1);
+$light-primary: rgb(234, 105, 106);
+$deep-primary: rgb(98, 27, 27);
+$deep-gray: rgb(183, 180, 177);
+$gray: rgb(229, 225, 221);
+$link-decoration: none;
 // 引入變數使用
 @import 'variable';
 
@@ -255,6 +266,12 @@ body {
         justify-content: center;
         text-align: center;
       }
+      .navbar-brand img{
+        @media (max-width: 992px) {
+          height: 50px;
+          width: 132px;
+      }
+    }
       .navbar-brand.min-cart {
         @media (max-width: 992px) {
           display: flex;
@@ -628,6 +645,32 @@ body {
         }
         display: flex;
         padding: 80px 80px 150px 80px;
+        align-self: stretch;
+        position: relative;
+        background: $secondary;
+        background: linear-gradient(
+            0deg,
+            rgba(225, 209, 178, 0.8) 0%,
+            rgba(225, 209, 178, 0.8) 100%
+          ),
+          url(../public/images/layout/bgc.jpg), lightgray 50%;
+        border-radius: 70px 70px 0px 0px;
+        border: $primary solid 20px;
+        border-top: none;
+        flex-direction: column;
+      }
+      // 無邊距版本
+      .section-nopaddin {
+        @media (max-width: 992px) {
+          border: $primary solid 10px;
+          border-top: none;
+          border-radius: 30px 30px 0px 0px;
+          padding: 20px 20px 60px 20px;
+          margin-top: -10px;
+        }
+        overflow: hidden;
+        display: flex;
+        padding-bottom: 150px;
         align-self: stretch;
         position: relative;
         background: $secondary;

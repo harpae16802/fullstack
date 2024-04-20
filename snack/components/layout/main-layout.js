@@ -7,6 +7,7 @@ import NavbarSeller from './navbar-seller'
 import Footer from './footer'
 import Section from './section'
 import Navbars from '../navbars'
+// import { useSeller } from "../../contexts/SellerContext"
 
 export default function MainLayout({ children }) {
 

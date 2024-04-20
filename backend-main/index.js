@@ -12,6 +12,7 @@ import sellerRouter from "./routes/sellerRouter.js";
 import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
+import marketRouter from "./routes/market.js";
 import customAuthRouter from "./routes/customAuthRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -72,16 +73,11 @@ app.get("/market-data", async (req, res) => {
   res.json(rows);
 });
 
-//店家商品路由
-app.get("/seller-data", async (req, res) => {
-  const sql = "SELECT * FROM seller";
-  const [rows] = await db.query(sql);
-
-  res.json(rows);
-});
-
-//店家產品路由
+// 店家產品路由
 app.use("/shop-products", shopRouter);
+
+// 夜市路由
+app.use("/market", marketRouter);
 
 
 // ==== 蓁

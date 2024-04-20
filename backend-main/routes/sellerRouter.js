@@ -25,29 +25,40 @@ const fileFilter = (req, file, cb) => {
     cb(new Error("只支持上傳圖片文件"), false);
   }
 };
+
+
 // 拿取
 sellerRouter.get("/:sellerId", async (req, res) => {
   const { sellerId } = req.params;
   try {
-    // 賣家資訊
+    // 卖家基本资料
     const sellerQuery = "SELECT * FROM seller WHERE seller_id = ?";
     const [sellerRows] = await db.query(sellerQuery, [sellerId]);
-
-    // 賣家帳號
-    const accountQuery =
-      "SELECT account, password FROM account WHERE seller_id = ?";
-    const [accountRows] = await db.query(accountQuery, [sellerId]);
-
+    
     if (sellerRows.length > 0) {
-      //帳號
+      // 卖家账号资料
+      const accountQuery = "SELECT account, password FROM account WHERE seller_id = ?";
+      const [accountRows] = await db.query(accountQuery, [sellerId]);
+      
+      // 卖家银行账户资料
+      const bankAccountQuery = "SELECT * FROM bank_account WHERE seller_id = ?";
+      const [bankAccounts] = await db.query(bankAccountQuery, [sellerId]);
+
+      // 组合卖家资料和银行账户资料
       const accountInfo = accountRows[0] || { account: "", password: "" };
-      res.json({ success: true, data: { ...sellerRows[0], ...accountInfo } });
+      const sellerData = {
+        ...sellerRows[0],
+        ...accountInfo,
+        bankAccounts: bankAccounts
+      };
+
+      res.json({ success: true, data: sellerData });
     } else {
-      res.status(404).json({ success: false, message: "沒有此賣家" });
+      res.status(404).json({ success: false, message: "没有此卖家" });
     }
   } catch (error) {
-    console.error("獲取賣家資訊錯誤:", error);
-    res.status(500).json({ success: false, message: "伺服器錯誤" });
+    console.error("获取卖家资讯错误:", error);
+    res.status(500).json({ success: false, message: "服务器错误" });
   }
 });
 
@@ -98,28 +109,83 @@ sellerRouter.put("/:sellerId/edit", upload.array(), async (req, res) => {
   }
 });
 
-// 編輯賣家頭像 (圖片上傳)
-sellerRouter.put(
-  "/:sellerId/edit/profilePicture",
-  upload.single("profilePicture"),
-  async (req, res) => {
-    const sellerId = req.params.sellerId;
-    const profilePicture = req.file ? req.file.filename : null; // 從 req.file 中取得上傳的頭像檔名
+// 更新卖家银行账户信息
+sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
+  const { sellerId } = req.params;
+  const { bankAccounts } = req.body;
 
-    try {
-      const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
-      await db.query(query, [profilePicture, sellerId]);
-      res.status(200).json({
-        success: true,
-        imageUrl: `/public/seller/${profilePicture}`, // 這裡假設你將文件保存在public/seller目錄下
-        message: "頭像編輯成功",
-      });
-    } catch (error) {
-      console.error("頭像編輯失敗", error);
-      res.status(500).json({ success: false, message: "頭像編輯失敗" });
-    }
+  try {
+    await db.getConnection().then(async (conn) => {
+      await conn.beginTransaction();
+      try {
+        // 這裡假設您要清空舊的銀行帳號並添加新的信息
+        await conn.query("DELETE FROM bank_account WHERE seller_id = ?", [sellerId]);
+
+        for (const account of bankAccounts) {
+          await conn.query("INSERT INTO bank_account (seller_id, account_number, bank_code) VALUES (?, ?, ?)", [
+            sellerId,
+            account.account_number,
+            account.bank_code
+          ]);
+        }
+
+        // 提交事务
+        await conn.commit();
+        res.json({ success: true, message: "银行账户更新成功" });
+      } catch (error) {
+        // 出现错误则回滚事务
+        await conn.rollback();
+        throw error;
+      } finally {
+        // 结束连接
+        conn.release();
+      }
+    });
+  } catch (error) {
+    console.error("更新银行账户失败:", error);
+    res.status(500).json({ success: false, message: "服务器错误" });
   }
-);
+});
+
+// 編輯賣家頭像 (圖片上傳)
+// sellerRouter.put(
+//   "/:sellerId/edit/profilePicture",
+//   upload.single("profilePicture"),
+//   async (req, res) => {
+//     const sellerId = req.params.sellerId;
+//     const profilePicture = req.file ? req.file.filename : null; // 從 req.file 中取得上傳的頭像檔名
+
+//     try {
+//       const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
+//       await db.query(query, [profilePicture, sellerId]);
+//       res.status(200).json({
+//         success: true,
+//         imageUrl: `/public/seller/${profilePicture}`, // 這裡假設你將文件保存在public/seller目錄下
+//         message: "頭像編輯成功",
+//       });
+//     } catch (error) {
+//       console.error("頭像編輯失敗", error);
+//       res.status(500).json({ success: false, message: "頭像編輯失敗" });
+//     }
+//   }
+// );
+sellerRouter.put("/:sellerId/edit/profilePicture", upload.single("profilePicture"), async (req, res) => {
+  const sellerId = req.params.sellerId;
+  const profilePicture = req.file ? req.file.filename : null; // 從 req.file 中取得上傳的頭像檔名
+
+  try {
+    const query = "UPDATE seller SET profile_picture=? WHERE seller_id=?";
+    await db.query(query, [profilePicture, sellerId]);
+    res.status(200).json({
+      success: true,
+      imageUrl: `/public/seller/${profilePicture}`, // 确保这是正确的路径
+      message: "頭像編輯成功",
+    });
+  } catch (error) {
+    console.error("頭像編輯失敗", error);
+    res.status(500).json({ success: false, message: "頭像編輯失敗" });
+  }
+});
 
 // 編輯賣家店家照片 (圖片上傳)
 sellerRouter.put(

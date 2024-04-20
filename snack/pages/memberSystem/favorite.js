@@ -2,16 +2,34 @@
 
 import SelectMenu from "@/components/memberS/person/selectMenu";
 import Favaite from "@/components/memberS/favaite/favrate"
-import FavaiteMobile from   "@/components/memberS/favaite/mobile/favrate"
-import Search from "@/components/memberS/qrcode/searchbar"
+ import Search from "@/components/memberS/qrcode/searchbar"
 import styles from "@/styles/form.module.css"
 import Pagination from "@/components/memberS/others/pagination"
-import QrcodeCurrent from "@/components/modal/qrcodeCurrent";
-
+import QrcodeCurrent from "@/components/modal/qrcodeCurrent"; 
 import classNames from 'classnames'
-
+import { useEffect, useState } from "react";
+import Section from "@/components/layout/section";
 export default function QrcodeselectMobile1() {
+  const [isBigScreen, setIsBigScreen] = useState(false);
+  const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
+  useEffect(()=>{
+  const handleResize = () => {
+    setIsBigScreen(window.innerWidth > 500);
+    setIsTabletOrMobile(window.innerWidth <= 500);
+  };
+  
+  // 監聽視窗大小變化
+  window.addEventListener('resize', handleResize);
+  // 初始設置一次
+  handleResize();
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+  
+  },[])
   return (
+    <Section>
     <div className="container">
       <div className="row">
         <div className="col-12 col-md-4 r">
@@ -26,9 +44,7 @@ export default function QrcodeselectMobile1() {
            <Search />
 
           <div className={classNames(styles['border-1'], "px-4 py-3 mt-4", styles["rd-2"])}>
-
-            <Favaite />
-            <FavaiteMobile />
+          <Favaite />  
 
 
           </div>
@@ -43,7 +59,8 @@ export default function QrcodeselectMobile1() {
         </div>
       </div>
 
-    </div>
+      </div>
+      </Section>
   );
 }
 

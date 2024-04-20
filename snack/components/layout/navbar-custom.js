@@ -1,3 +1,4 @@
+// components/layout/navbar-custom.js
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,7 +12,7 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
-  const { auth,logout ,login} = useAuth()
+  const { auth, logout, login } = useAuth()
 
   return (
     <>
@@ -20,7 +21,7 @@ export default function NavbarCustom() {
         <div className="container-fluid">
           <div className="inline-nav">
             <a className="navbar-brand" href="#">
-              <Image src="/activity.svg" alt="" width={30} height={24} />
+              <Image src="/logo-o.svg" alt="" width={180} height={70} />
             </a>
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="#">
@@ -144,7 +145,14 @@ export default function NavbarCustom() {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              logout()
+                            }}
+                          >
                             登出
                           </a>
                         </li>

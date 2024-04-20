@@ -16,7 +16,7 @@
   /* 產品分類:外層容器 */
   .categoryContainer {
     display: flex;
-    justify-content: space-between; /* 將六張圖片平均分佈在容器中 */
+    justify-content: space-between;
     margin-top: 30px;
   }
   
@@ -40,17 +40,63 @@
   .popularContainer{
     margin-top: 50px;
     display: flex;
-    justify-content: space-between; /* 將六張圖片平均分佈在容器中 */
-  
- 
+    justify-content: space-between; 
   }
 
+
+
   /* 人氣商品:圖片 文字設定 */
-  .popularProduct {
+  .popularProduct { 
     margin-left:  50px;
    font-weight: bolder;
     color:rgb(0, 0, 0) ;
   }
+
+   /* .popularImage{
+    width: 100%;
+    max-width: 345px;
+    height: auto;
+     margin-left: 20px; 
+  }  */
+
+ 
+
+  @media (max-width: 350px) {
+    .popularImage {
+      width: 100%;
+    }
+    
+  }
+
+  
+  @media (max-width: 576px) {
+    .popularImage {
+      width: 100%; /* 图片宽度为父容器宽度的 50% */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .popularImage {
+      width: 100%; /* 图片宽度为父容器宽度的 50% */
+    }
+  }
+
+  
+  @media (max-width: 992px) {
+    .popularImage {
+      width: 100%; /* 图片宽度为父容器宽度的 50% */
+    }
+  }
+
+  /* .image{
+    flex: 1;
+    max-width: calc((100% - 10px) / 4); 
+    margin-right: 20px; 
+  }
+
+  .image:last-child {
+    margin-right: 0;
+  } */
 
   .popularProduct > p {
     font-weight: bolder;
@@ -58,6 +104,7 @@
   }
 
   .popularInfo {
+   
     display: flex;
      align-items: center; 
   }

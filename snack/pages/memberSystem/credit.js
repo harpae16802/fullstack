@@ -3,11 +3,11 @@ import Image from "next/image";
 import SelectMenu from "@/components/memberS/person/selectMenu";
 //  import PersonForm from "@/components/personForm";
 import CreditComponts from "@/components/memberS/creditForm";
-
+import Section from "@/components/layout/section";
 
 export default function Home() {
  return (
-   <>
+   <Section>
      <div className="container">
        <div className="row">
          <div className="col-md-3">
@@ -20,6 +20,6 @@ export default function Home() {
          </div>
        </div>
      </div>
-   </>
+   </Section>
  );
 }

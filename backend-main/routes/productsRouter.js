@@ -152,54 +152,139 @@ productsRouter
   .post("/add", upload.single("image"), async (req, res) => {
     const {
       category,
+      category_id,
       productName,
       productDescription,
       price,
       stockQuantity,
-      sellerId,
+      productIngredient,
+      productNutrition,
+      seller_id,
     } = req.body;
-    const imageUrl = req.file ? `/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
+    console.log(req.body);
+
+    const imageUrl = req.file ? `/public/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
+    const status = 1; // 根據您的業務規則設置，例如，新建產品預設為上架狀態
+    const favoriteCount = 0; // 新建產品的初始蒐藏數為0
 
     try {
-      const query =
-        "INSERT INTO products (category, product_name, product_description, image_url, price, stock_quantity, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      const query = `
+        INSERT INTO products (
+          category, category_id, product_name, product_description, image_url,
+          price, stock_quantity, seller_id, status, favorite_count, 
+          product_ingredient, product_nutrition
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
       await db.query(query, [
         category,
+        category_id,
         productName,
         productDescription,
         imageUrl,
         price,
         stockQuantity,
-        sellerId,
+        seller_id,
+        status,
+        favoriteCount,
+        productIngredient,
+        productNutrition,
       ]);
-      res.status(200).json({ success: true, message: "產品新增成功" });
+      res.status(200).json({
+        success: true,
+        imageUrl: imageUrl, // 不需要添加前綴路徑，因為已經在 imageUrl 中包含了
+        message: "產品新增成功",
+      });
     } catch (error) {
       console.error("產品新增失敗", error);
       res.status(500).json({ success: false, message: "產品新增失敗" });
     }
-  })
-
-  // 編輯產品
-  .put("/edit/:productId", async (req, res) => {
-    const productId = req.params.productId;
-    const { category, productName, productDescription, price, stockQuantity } =
-      req.body;
-    try {
-      const query =
-        "UPDATE products SET category=?, product_name=?, product_description=?, price=?, stock_quantity=? WHERE product_id=?";
-      await db.query(query, [
-        category,
-        productName,
-        productDescription,
-        price,
-        stockQuantity,
-        productId,
-      ]);
-      res.status(200).json({ success: true, message: "產品編輯成功" });
-    } catch (error) {
-      console.error("產品編輯失敗", error);
-      res.status(500).json({ success: false, message: "產品編輯失敗" });
-    }
   });
+
+// 獲取單個產品的詳細信息
+productsRouter.get("/details/:productId", async (req, res) => {
+  const { productId } = req.params;
+
+  try {
+    const query = `
+      SELECT
+        product_id,
+        category,
+        product_name,
+        product_description,
+        image_url,
+        price,
+        stock_quantity,
+        status,
+        category_id,
+        product_ingredient,
+        product_nutrition,
+        seller_id,
+        favorite_count,
+        created_at
+      FROM products
+      WHERE product_id = ?;
+    `;
+    const [products] = await db.query(query, [productId]);
+
+    if (products.length > 0) {
+      res.json({ success: true, product: products[0] });
+    } else {
+      res.status(404).json({ success: false, message: "未找到該產品" });
+    }
+  } catch (error) {
+    console.error("獲取產品詳細信息失敗", error);
+    res.status(500).json({ success: false, message: "數據庫查詢錯誤" });
+  }
+});
+
+// 更新產品信息
+productsRouter.put("/update/:productId", upload.single("image"), async (req, res) => {
+  const { productId } = req.params;
+  console.log("Updating product with ID:", productId); 
+  const {
+    productName,
+    productDescription,
+    price,
+    stockQuantity,
+    status,
+    productNutrition,
+    productIngredient,
+  } = req.body;
+  const image_url = req.file ? `/public/products/${req.file.filename}` : undefined;
+
+  const query = `
+    UPDATE products SET
+    product_name = ?, 
+    product_description = ?,
+    price = ?,
+    stock_quantity = ?,
+    status = ?,
+    product_nutrition = ?,
+    product_ingredient = ?,
+    image_url = COALESCE(?, image_url)
+    WHERE product_id = ?;
+  `;
+  try {
+    const result = await db.query(query, [
+      productName,
+      productDescription,
+      price,
+      stockQuantity,
+      status,
+      productNutrition,
+      productIngredient,
+      image_url,
+      productId
+    ]);
+    if (result.affectedRows >= 0) {
+      res.json({ success: true, message: "產品信息已更新" });
+    } else {
+      res.status(404).json({ success: false, message: "未找到該產品，無法更新" });
+    }
+  } catch (error) {
+    console.error("更新產品信息失敗", error);
+    res.status(500).json({ success: false, message: "數據庫操作錯誤" });
+  }
+});
 
 export default productsRouter;

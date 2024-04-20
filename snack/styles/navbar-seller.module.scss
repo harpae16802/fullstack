@@ -23,6 +23,7 @@ $mobile-width: 480px;
   padding: 1rem; // 添加內邊距
   border-radius: 8px; // 圓角
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // 添加陰影
+  
 }
 
 
@@ -30,12 +31,14 @@ $mobile-width: 480px;
   border: 1px solid red; // 外層紅色框線
   padding: 1rem; // 根據需要添加間距
   position: relative;
+  
+  
   &:before {
     content: '';
     position: absolute;
     top: -1rem; // 根據需要調整位置
     right: -1rem; // 根據需要調整位置
-    background-color: rgba(255, 0, 0, 0.2); // 透明紅色背景
+    background-color: rgba(255, 0, 0, 0.1); // 透明紅色背景
     width: calc(100% + 2rem); // 背景寬度大於容器寬度
     height: calc(100% + 2rem); // 背景高度大於容器高度
     z-index: -1; // 保證在容器後面
@@ -47,6 +50,7 @@ $mobile-width: 480px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  
 }
 // 按钮组样式
 .buttonGroup {
@@ -155,12 +159,14 @@ $mobile-width: 480px;
   margin-bottom: 20px;
   position: relative;
   box-shadow: none;
+  
 }
 .profileContainer {
   display: flex; // 使用flex布局
   flex-direction: column; // 子元素縱向排列
   align-items: center; // 子元素在橫軸上居中
   margin-top: 20px; // 保持與頁面頂部一定的距離
+  
 }
 .profileWrapper {
   display: flex;
@@ -280,6 +286,7 @@ $mobile-width: 480px;
     margin-right: -15px;
     padding-left: 15px; // 保持原始内边距
     padding-right: 15px;
+    text-decoration: none;
   }
 
   // 表单包裹器内元素样式调整
@@ -308,76 +315,108 @@ $mobile-width: 480px;
 
 
 
+
+
+
+
+
+
 //表格
-// 表格基本樣式
+
 .table {
-  // border-collapse: separate;
-  border-spacing: 0 0.5rem;
+  border-collapse: separate;
+  border-spacing: 0 1rem; // 根据设计图调整行间距
   width: 100%;
-      border-radius: 10px;
-  th {
-    border-radius: 10px;
-    border-bottom: 2px solid $primary-red;
-  }
+  margin: 1rem 0; // 表格上下的间距
 
-  thead th {
-    // background-color: $background-light-red;
-    color: $primary-red;
-    font-weight: bold;
-    padding: 1.25em;
-    border: 1px solid $primary-red;
-    border-radius: 10px;
-    border-bottom-width: 3px;
-  }
-
-  tbody tr {
-    background-color: #fff;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); // 調整陰影大小和顏色
-
-    td {
-      padding:1rem;
+  thead {
+    th {
+      background-color: $sidebar-background;
+      color: black; // 将表头字体颜色设置为黑色
       border: 1px solid $primary-red;
-      text-align: center; // 根據設計圖可能需要調整
-      border-radius: 10px;
+      text-align: center;
+      padding: 0.75rem;
+      border-radius: 0.5rem; // 设计图中为圆角
       &:first-child {
         border-top-left-radius: 0.5rem;
         border-bottom-left-radius: 0.5rem;
-        border-radius: 10px;
       }
       &:last-child {
         border-top-right-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
-        border-radius: 10px;
       }
+    }
+  }
+
+  tbody {
+    tr {
+     background-color:$sidebar-background;
+     color: black; // 将表头字体颜色设置为黑色
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // 给予行阴影以提升层次感
+      transition: transform 0.1s ease-in-out; // 点击行时的交互效果
+
+      &:hover {
+        transform: scale(1.02); // 鼠标悬浮时微微放大
+      }
+
+      td {
+        border: 1px solid $primary-red;
+        text-align: center;
+        padding: 0.75rem;
+        color: #333; // 设计图中字体颜色为深色
+
+        // &:first-child {
+        //   border-left: none; // 移除最左侧边框
+        // }
+        // &:last-child {
+        //   border-right: none; // 移除最右侧边框
+        // }
+      }
+      // 为第一列的 td 添加左边框的圆角
+      td:first-child {
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+      }
+      // 为最后一列的 td 添加右边框的圆角
+      td:last-child {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+      
     }
   }
 }
 
-// 分頁控件樣式
-.pagination {
-  .page-item {
-    .page-link {
-      color: $primary-red;
-      background-color: #fff;
-      border: 1px solid $primary-red;
-      &:hover {
-        background-color: $background-light-red;
-      }
-      &.disabled, &:disabled {
-        color: #ccc;
-        pointer-events: none;
-        background-color: #fff;
-        border-color: #ccc;
-      }
-    }
-    &.active .page-link {
-      background-color: $primary-red;
-      border-color: $primary-red;
-      color: #fff;
-    }
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 搜索和篩選輸入框樣式
 .form-control {
@@ -388,9 +427,13 @@ $mobile-width: 480px;
 }
 
 // 按鈕樣式
-.btn-outline-primary {
+.btnoutline {
   color: $primary-red;
   border-color: $primary-red;
+  border-radius: 20%;
+  width: 50px;
+  height: 50px;
+
   &:hover {
     color: #fff;
     background-color: $primary-red;
