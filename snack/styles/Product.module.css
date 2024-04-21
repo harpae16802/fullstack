@@ -384,16 +384,14 @@
     width: 92px;
     height: 32px;
     padding-top: 2px;
-    font-weight: bolder;
+    font-weight: bold;
     font-size: 16px;
     border-radius: 20px;
     justify-content: center;
     text-align: center;
    }
-   @media(max-width:576px){ 
-    .filterText{
-      width: 84px;
-      height: 26px;
+   @media(max-width:375px){ 
+    .filterButton{
       font-size: 12px;
     }
    }
