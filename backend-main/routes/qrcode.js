@@ -41,7 +41,7 @@ QRrouter.get("/details/:order_id", async (req, res) => {
 .put("/update-status/:order_id", async (req, res) => {
   const { order_id } = req.params;
   const { status } = req.body; // 從請求體中獲取新的狀態
-console.log(status,order_id);
+
   try {
     const sql = `
             UPDATE qrcode_detail_record

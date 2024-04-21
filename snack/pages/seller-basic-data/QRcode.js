@@ -283,7 +283,7 @@ const handleCodeDetected = (data) => {
                         <td>{item.product_name}</td>
                         <td>{item.purchase_quantity}</td>
                         {/* <td>{item.total_sum}</td> */}
-                        <td>{item.status === 0 ? '未兌換' : '兌換成功'}</td>
+                        <td>{item.status === 0 ? '未兌換' : '兌換完成'}</td>
                       </tr>
                     ))}
                   </tbody>
