@@ -5,7 +5,6 @@ import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import db from "./utils/db.js";
-
 import index from "./routes.js";
 import bodyParser from "body-parser";
 import sellerRouter from "./routes/sellerRouter.js";
@@ -13,14 +12,18 @@ import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
-import customAuthRouter from "./routes/customAuthRouter.js";
-
+import customAuthRouter from "./routes/customAuthRouter.js"; 
+import QRrouter from "./routes/qrcode.js"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // 允许的前端源
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 允许的HTTP方法
+  credentials: true // 允许跨域带认证信息（cookies）
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -63,6 +66,10 @@ app.use("/products", productsRouter);
 app.use("/sellers", sellerRouter);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
+//QRcode 資輛查詢與變更
+ app.use("/QRcode", QRrouter)
+
+// ==== 弘
 
 // ==== 咚
 //店家地圖路由
@@ -79,12 +86,14 @@ app.use("/shop-products", shopRouter);
 // 夜市路由
 app.use("/market", marketRouter);
 
+// ==== 咚
 
 // ==== 蓁
 // 會員路由
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/backRoute", index);
 
+// ==== 蓁
 
 /*---其他路由放在這之前---*/
 

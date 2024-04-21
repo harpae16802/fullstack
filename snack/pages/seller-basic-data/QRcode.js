@@ -34,25 +34,52 @@ export default function QRcode() {
 
   //QRcode
   const [showScanner, setShowScanner] = useState(false)
-  const [qrCode, setQrCode] = useState('')
-
+  const [orderId, setOrderId] = useState('') // 解析的 資料
+  const [selectedStatus, setSelectedStatus] = useState('0') // 初始狀態為 "處理中"
+  const [orderDetails, setOrderDetails] = useState([])
   // 使用Ref
-  const handleImageClick = () => {
-    fileInputRef.current.click()
-  }
 
-  //  QRcode掃描觸發
-  const handleScanClick = () => {
-    setShowScanner((prev) => !prev) //切換顯示 類似toggle
-  }
+  const handleImageClick = () => fileInputRef.current.click()
 
-  // QRcode 資料
-  const handleCodeDetected = (data) => {
-    console.log('掃描到的數據：', data)
-    setQrCode(data)
-    const parsedData = JSON.parse(atob(data)); // 假设数据是 base64 编码的JSON字符串
-    console.log("解構後的數據", parsedData);
-  }
+  const handleScanClick = () => setShowScanner((prev) => !prev)
+
+
+  // QRcode 資料解析
+const handleCodeDetected = (data) => {
+    try {
+      const jsonData = JSON.parse(data);
+      if (jsonData.length > 0 && jsonData[0].order_id) {
+        setOrderId(jsonData[0].order_id); // 設置 orderId
+        fetchOrderDetails(jsonData[0].order_id);
+      } else {
+        console.error('解析的数据中没有order_id');
+      }
+    } catch (error) {
+      console.error('解析出錯:', error);
+    }
+  };
+
+  const fetchOrderDetails = async (orderId) => {
+    try {
+      const response = await axios.get(`http://localhost:3002/QRcode/details/${orderId}`);
+      setOrderDetails(response.data);
+    } catch (error) {
+      console.error('获取订单详情失败:', error);
+    }
+  };
+
+// 更新狀態 
+  const updateOrderStatus = async (newStatus) => {
+    try {
+      const response = await axios.put(`http://localhost:3002/QRcode/update-status/${orderId}`, {
+        status: newStatus,
+      });
+      console.log('訂單狀態更新成功:', response.data);
+      fetchOrderDetails(orderId);  // 重新获取更新后的订单详情
+    } catch (error) {
+      console.error('訂單狀態更新失敗:', error);
+    }
+  };
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
@@ -62,7 +89,6 @@ export default function QRcode() {
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
           const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
 
           setSellerData((prevData) => ({
             ...prevData,
@@ -74,6 +100,7 @@ export default function QRcode() {
           console.error('獲取賣家頭像失敗', error)
         })
     }
+
   }, [sellerId])
 
   // 更新賣家 頭貼 包含顯示
@@ -214,11 +241,13 @@ export default function QRcode() {
                   <div className="col-4">
                     <select
                       className={`form-select ${styles.customSelect}`}
-                      id=""
-                      name=""
+                      value={selectedStatus}
+                      onChange={(e) =>
+                        updateOrderStatus(orderId, e.target.value)
+                      }
                     >
-                      <option value="0">處裡中</option>
-                      <option value="1">以兌換</option>
+                      <option value="0">處理中</option>
+                      <option value="1">已兌換</option>
                     </select>
                   </div>
                 </div>
@@ -240,36 +269,23 @@ export default function QRcode() {
                 <table className={`${styles.table}`}>
                   <thead>
                     <tr>
+                      <th>購買帳號</th>
                       <th>產品名稱</th>
                       <th>產品數量</th>
+                      {/* <tr>總金額</tr> */}
                       <th>產品狀態</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {products.map((product) => (
-                    <tr key={product.product_id}>
-                      <td>{product.productName}</td>
-                      <td>{product.stockQuantity}</td>
-                      <td>{product.category}</td>
-                      <td>{product.price}</td>
-                      <td>{product.status}</td>
-                      <td>
-                        <Link
-                          href={`/seller-basic-data/[productId]`}
-                          as={`/seller-basic-data/${product.product_id}`}
-                        >
-                          修改
-                        </Link>
-                      </td>
-                      {/* <td>
-                        <input
-                          type="checkbox"
-                          onChange={() => {}}
-                          value={product.product_id}
-                        />
-                      </td>
-                    </tr> 
-                  ))}*/}
+                    {orderDetails.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.custom_account}</td>
+                        <td>{item.product_name}</td>
+                        <td>{item.purchase_quantity}</td>
+                        {/* <td>{item.total_sum}</td> */}
+                        <td>{item.status === 0 ? '未兌換' : '兌換成功'}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
