@@ -9,7 +9,9 @@ import {
   FaAngleUp,
 } from 'react-icons/fa'
 
-export default function NavbarLogout({ toggleRegister }) {
+export default function NavbarLogout(
+  // { toggleRegister }
+) {
   return (
     <>
       {' '}
@@ -83,7 +85,9 @@ export default function NavbarLogout({ toggleRegister }) {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link className="dropdown-item" href="/login/login-custom" onClick={() => toggleRegister(true)}>
+                      <Link className="dropdown-item" href="/login/login-custom" 
+                      // onClick={() => toggleRegister(true)}
+                      >
                         一般會員註冊
                       </Link>
                     </li>
@@ -114,7 +118,9 @@ export default function NavbarLogout({ toggleRegister }) {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link className="dropdown-item" href="/login/login-custom"  onClick={() => toggleRegister(false)}>
+                      <Link className="dropdown-item" href="/login/login-custom" 
+                      // onClick={() => toggleRegister(false)}
+                      >
                         一般會員登入
                       </Link>
                     </li>

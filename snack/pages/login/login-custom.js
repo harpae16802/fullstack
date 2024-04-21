@@ -14,22 +14,24 @@ import {
   FaAngleRight,
 } from 'react-icons/fa'
 
-export default function LoginCustom({toggleRegister}) {
+export default function LoginCustom(
+  // {toggleRegister}
+) {
   const router = useRouter()
 
   const { auth, login, logout } = useAuth()
 
   // 處理手機板的頁面呈現
-  const [isRegisterVisible, setIsRegisterVisible] = useState(false);
+  // const [isRegisterVisible, setIsRegisterVisible] = useState(false);
 
-  const handleToggleRegister  = () => {
-    if(toggleRegister){
-      setIsRegisterVisible(!isRegisterVisible);
-    }else{
-      setIsRegisterVisible(isRegisterVisible);
+  // const handleToggleRegister  = () => {
+  //   if(toggleRegister){
+  //     setIsRegisterVisible(!isRegisterVisible);
+  //   }else{
+  //     setIsRegisterVisible(isRegisterVisible);
 
-    }
-  };
+  //   }
+  // };
 
   return (
     <>
@@ -246,7 +248,9 @@ export default function LoginCustom({toggleRegister}) {
         <div className="custom-page-min">
           <div className="custom-min-group">
             {/* 一般會員註冊 */}
-            <div className="custom-min-register" style={{ display: isRegisterVisible ? 'block' : 'none' }}>
+            <div className="custom-min-register" 
+            // style={{ display: isRegisterVisible ? 'block' : 'none' }}
+            >
               <div className="login-title">
                 <span>一般會員註冊</span>
                 <button type="button" className="btn btn-outline-primary">
@@ -319,7 +323,9 @@ export default function LoginCustom({toggleRegister}) {
               </div>
             </div>
             {/* 一般會員登入 */}
-            <div className="custom-min-login" style={{ display: isRegisterVisible ? 'none' : 'block' }}>
+            <div className="custom-min-login" 
+            // style={{ display: isRegisterVisible ? 'none' : 'block' }}
+            >
               <div className="login-title">
                 <span>一般會員登入</span>
                 <button type="button" className="btn btn-outline-primary">
