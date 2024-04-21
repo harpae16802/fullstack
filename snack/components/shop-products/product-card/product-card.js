@@ -56,7 +56,7 @@ export default function ProductCard({
       </div>
       <div className={style.textDiv}>
         <div className={`d-flex align-items-center`}>
-          <h5 className={`fw-bold mb-0`}>{title}</h5>
+          <h5 className={`fw-bold mb-0 ${style.title}`}>{title}</h5>
           {isFavorite ? (
             <FaHeart
               className={`${style.icon}`}
