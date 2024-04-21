@@ -64,6 +64,15 @@ body {
     background-color: #fff;
     color: $primary;
   }
+  .btn-outline-primary a:hover{
+    color: #fff;
+  }
+  .btn-outline-primary:hover a{
+    color: #fff;
+  }
+  .btn-outline-primary a:active{
+    color: #fff;
+  }
 
   // 表單
   .form-label {

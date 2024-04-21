@@ -1,10 +1,12 @@
 import Section from '@/components/layout/section'
-import React, { useState } from 'react'
+import React, { useState,useContext  } from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
+import { MiniloginContext } from '@/contexts/minilogin-context'
+
 
 // 用在分頁的icon
 import {
@@ -22,16 +24,8 @@ export default function LoginCustom(
   const { auth, login, logout } = useAuth()
 
   // 處理手機板的頁面呈現
-  // const [isRegisterVisible, setIsRegisterVisible] = useState(false);
+  const { selectedContent,handleLinkClick } = useContext(MiniloginContext);
 
-  // const handleToggleRegister  = () => {
-  //   if(toggleRegister){
-  //     setIsRegisterVisible(!isRegisterVisible);
-  //   }else{
-  //     setIsRegisterVisible(isRegisterVisible);
-
-  //   }
-  // };
 
   return (
     <>
@@ -69,6 +63,7 @@ export default function LoginCustom(
                     role="tab"
                     aria-controls="home"
                     aria-selected="true"
+                    onClick={() => handleLinkClick('type1')}
                   >
                     一般會員註冊
                   </button>
@@ -83,6 +78,7 @@ export default function LoginCustom(
                     role="tab"
                     aria-controls="profile"
                     aria-selected="false"
+                    onClick={() => handleLinkClick('type2')}
                   >
                     一般會員登入
                   </button>
@@ -98,7 +94,7 @@ export default function LoginCustom(
                   <div className="login-title">
                     <span>一般會員註冊</span>
                     <button type="button" className="btn btn-outline-primary">
-                      切換商家會員
+                    <Link href="/login/login-seller">切換商家會員</Link>
                     </button>
                   </div>
                   <div className="custom-input-group">
@@ -249,7 +245,7 @@ export default function LoginCustom(
           <div className="custom-min-group">
             {/* 一般會員註冊 */}
             <div className="custom-min-register" 
-            // style={{ display: isRegisterVisible ? 'block' : 'none' }}
+            style={{ display: selectedContent === 'type1' ? 'block' : 'none' }}
             >
               <div className="login-title">
                 <span>一般會員註冊</span>
@@ -324,7 +320,7 @@ export default function LoginCustom(
             </div>
             {/* 一般會員登入 */}
             <div className="custom-min-login" 
-            // style={{ display: isRegisterVisible ? 'none' : 'block' }}
+            style={{ display: selectedContent === 'type2' ? 'block' : 'none' }}
             >
               <div className="login-title">
                 <span>一般會員登入</span>

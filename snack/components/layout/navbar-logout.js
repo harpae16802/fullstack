@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { MiniloginContext } from '@/contexts/minilogin-context'
 import {
   FaBars,
   FaUser,
@@ -10,8 +11,10 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarLogout(
+  
   // { toggleRegister }
 ) {
+  const { handleLinkClick } = useContext(MiniloginContext);
   return (
     <>
       {' '}
@@ -86,13 +89,15 @@ export default function NavbarLogout(
                   >
                     <li>
                       <Link className="dropdown-item" href="/login/login-custom" 
-                      // onClick={() => toggleRegister(true)}
+                      onClick={() => handleLinkClick('type1')}
                       >
                         一般會員註冊
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" href="/login/login-seller">
+                      <Link className="dropdown-item" href="/login/login-seller"
+                      onClick={() => handleLinkClick('type1')}
+                      >
                         商家會員註冊
                       </Link>
                     </li>
@@ -120,12 +125,15 @@ export default function NavbarLogout(
                     <li>
                       <Link className="dropdown-item" href="/login/login-custom" 
                       // onClick={() => toggleRegister(false)}
+                      onClick={() => handleLinkClick('type2')}
                       >
                         一般會員登入
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" href="/login/login-seller">
+                      <Link className="dropdown-item" href="/login/login-seller"
+                      onClick={() => handleLinkClick('type2')}
+                      >
                         商家會員登入
                       </Link>
                     </li>
