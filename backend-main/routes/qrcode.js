@@ -14,7 +14,8 @@ QRrouter.get("/details/:order_id", async (req, res) => {
                 product_name,
                 purchase_quantity,
                 total_sum,
-                status
+                status,
+                seller_id
             FROM
                 qrcodeview
             WHERE

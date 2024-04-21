@@ -57,15 +57,24 @@ export default function QRcode() {
       console.error('解析出錯:', error)
     }
   }
-
   const fetchOrderDetails = async (orderId) => {
     try {
       const response = await axios.get(
         `http://localhost:3002/QRcode/details/${orderId}`
       )
-      setOrderDetails(response.data)
-      // 假設response.data包含所有訂單詳情，並且每個訂單物件有一個'status'鍵
-      setSelectedStatus(response.data[0].status.toString()) // 更新下拉選單的選擇狀態
+      if (response.data.length > 0) {
+        const data = response.data[0]
+        if (data.seller_id.toString() === sellerId.toString()) {
+          setOrderDetails(response.data)
+          setSelectedStatus(data.status.toString()) // 假設status也在response中
+        } else {
+          alert('此訂單不存在或不屬於當前賣家')
+          setOrderDetails([]) // 清空不相關的訂單數據
+        }
+      } else {
+        alert('未找到訂單資訊')
+        setOrderDetails([])
+      }
     } catch (error) {
       console.error('获取订单详情失败:', error)
     }
@@ -86,7 +95,6 @@ export default function QRcode() {
     }
   }
 
-  
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
     console.log('index.js中的sellerId', sellerId)

@@ -14,6 +14,7 @@ import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import customAuthRouter from "./routes/customAuthRouter.js"; 
 import QRrouter from "./routes/qrcode.js"
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
