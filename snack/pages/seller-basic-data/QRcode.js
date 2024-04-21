@@ -43,44 +43,50 @@ export default function QRcode() {
 
   const handleScanClick = () => setShowScanner((prev) => !prev)
 
-
   // QRcode 資料解析
-const handleCodeDetected = (data) => {
+  const handleCodeDetected = (data) => {
     try {
-      const jsonData = JSON.parse(data);
+      const jsonData = JSON.parse(data)
       if (jsonData.length > 0 && jsonData[0].order_id) {
-        setOrderId(jsonData[0].order_id); // 設置 orderId
-        fetchOrderDetails(jsonData[0].order_id);
+        setOrderId(jsonData[0].order_id) // 設置 orderId
+        fetchOrderDetails(jsonData[0].order_id)
       } else {
-        console.error('解析的数据中没有order_id');
+        console.error('解析的数据中没有order_id')
       }
     } catch (error) {
-      console.error('解析出錯:', error);
+      console.error('解析出錯:', error)
     }
-  };
+  }
 
   const fetchOrderDetails = async (orderId) => {
     try {
-      const response = await axios.get(`http://localhost:3002/QRcode/details/${orderId}`);
-      setOrderDetails(response.data);
+      const response = await axios.get(
+        `http://localhost:3002/QRcode/details/${orderId}`
+      )
+      setOrderDetails(response.data)
+      // 假設response.data包含所有訂單詳情，並且每個訂單物件有一個'status'鍵
+      setSelectedStatus(response.data[0].status.toString()) // 更新下拉選單的選擇狀態
     } catch (error) {
-      console.error('获取订单详情失败:', error);
+      console.error('获取订单详情失败:', error)
     }
-  };
+  }
 
-// 更新狀態 
   const updateOrderStatus = async (newStatus) => {
     try {
-      const response = await axios.put(`http://localhost:3002/QRcode/update-status/${orderId}`, {
-        status: newStatus,
-      });
-      console.log('訂單狀態更新成功:', response.data);
-      fetchOrderDetails(orderId);  // 重新获取更新后的订单详情
+      const response = await axios.put(
+        `http://localhost:3002/QRcode/update-status/${orderId}`,
+        {
+          status: newStatus,
+        }
+      )
+      console.log('訂單狀態更新成功:', response.data)
+      fetchOrderDetails(orderId) // 重新獲取訂單詳情來更新 UI
     } catch (error) {
-      console.error('訂單狀態更新失敗:', error);
+      console.error('訂單狀態更新失敗:', error)
     }
-  };
+  }
 
+  
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
     console.log('index.js中的sellerId', sellerId)
@@ -100,7 +106,6 @@ const handleCodeDetected = (data) => {
           console.error('獲取賣家頭像失敗', error)
         })
     }
-
   }, [sellerId])
 
   // 更新賣家 頭貼 包含顯示
@@ -242,9 +247,10 @@ const handleCodeDetected = (data) => {
                     <select
                       className={`form-select ${styles.customSelect}`}
                       value={selectedStatus}
-                      onChange={(e) =>
-                        updateOrderStatus(orderId, e.target.value)
-                      }
+                      onChange={(e) => {
+                        setSelectedStatus(e.target.value) // 首先更新本地選擇狀態
+                        updateOrderStatus(e.target.value) // 然後更新後端數據
+                      }}
                     >
                       <option value="0">處理中</option>
                       <option value="1">已兌換</option>
@@ -283,7 +289,7 @@ const handleCodeDetected = (data) => {
                         <td>{item.product_name}</td>
                         <td>{item.purchase_quantity}</td>
                         {/* <td>{item.total_sum}</td> */}
-                        <td>{item.status === 0 ? '未兌換' : '兌換完成'}</td>
+                        <td>{item.status === 0 ? '未兌換' : '兌換成功'}</td>
                       </tr>
                     ))}
                   </tbody>
