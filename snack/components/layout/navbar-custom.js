@@ -3,6 +3,8 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
+import { useRouter } from 'next/router'
+
 import {
   FaBars,
   FaUser,
@@ -12,6 +14,8 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
+  const router = useRouter()
+
   const { auth, logout, login } = useAuth()
 
   return (
@@ -101,6 +105,7 @@ export default function NavbarCustom() {
                     onClick={(e) => {
                       e.preventDefault()
                       logout()
+                      router.replace(`/login/login-custom`)
                     }}
                   >
                     登出
@@ -151,6 +156,7 @@ export default function NavbarCustom() {
                             onClick={(e) => {
                               e.preventDefault()
                               logout()
+                              router.replace(`/login/login-custom`)
                             }}
                           >
                             登出
