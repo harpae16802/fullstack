@@ -5,32 +5,36 @@ import { IoIosArrowDown } from 'react-icons/io';
 import styles from '@/styles/Product.module.css'; // 確保引入了正確的樣式文件
 import { RxCross1 } from "react-icons/rx";
 
-const ProductDetailCard = () => {
+export default function ProductDetailCard({
+  imageUrl = "",
+  seller = "",
+  product = "",
+  description = "",
+  price = "",
+  ingredient = "",
+  nutrition=""
+}) { 
+
   return (
     <>
     
     <div className={styles.detailContainer}>
+      {/* 產品圖 */}
+       <Image src={imageUrl} width={759} height={726} className={styles.detailPic}/>
 
-
-       <Image src="/images/蛋塔.jpg" width={759} height={726} className={styles.detailPic}/>
-
-       
-
-      
      <div className={styles.detailTextArray}>
 
      <RxCross1 className={styles.detailCrossIcon}/>
 
+      {/* 店家名稱 */}
+      <div className={styles.detailSeller}>{seller}</div>
+      {/* 產品名稱 */}
+      <div className={styles.detailProductName}>{product}</div>
 
-      <div className={styles.detailSeller}>姊姊抓的餅</div>
-
-      <div className={styles.detailProductName}>豬排蛋</div>
-
-      
-
-    <div className={styles.detailIntroduce}>香噴噴的炸豬排，外酥內嫩，蛋汁滑嫩地流淌出來，與香氣四溢的抓餅完美融合。一口咬下，豬排的鮮美與蛋的滑嫩在口中交融，配上外皮香脆的抓餅，彷彿是一場口感盛宴，勾勒出濃郁的台灣街頭味道。</div>
-
-    <div className={styles.detailPrice}>$70</div>
+      {/* 產品描述 */}
+    <div className={styles.detailIntroduce}>{description}</div>
+   {/* 價格 */}
+    <div className={styles.detailPrice}>${price}</div>
 
     {/* '+ -'按鈕 */}
     <div className={styles.detailNumber}>
@@ -56,15 +60,15 @@ const ProductDetailCard = () => {
    <div className={styles.ingredientText}>成分</div>
 
     {/* 成分 */}
-    <div className={styles.detailIngredient}>含有：麵粉、麵粉、雞蛋、鹽</div>
+    <div className={styles.detailIngredient}>含有 : {ingredient}</div>
 
     <IoIosArrowDown className={styles.ingredientDown1}  />
 
     {/* 實線 */}
     <div className={styles.detailSolid}></div>
 
-         
-          <div className={styles.nutritionIngredient}>是否有營養成分表</div>
+        {/* 營養成分表 */}
+     <div className={styles.nutritionIngredient}>{nutrition}</div>
         <IoIosArrowDown className={styles.ingredientDown2}/>
         
 
@@ -73,9 +77,9 @@ const ProductDetailCard = () => {
     </div>
 
     <FiHeart  className={styles.detailProductCollect}/>
+    
     </>
  
   );
 };
 
-export default ProductDetailCard;

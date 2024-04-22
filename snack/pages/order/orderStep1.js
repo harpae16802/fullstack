@@ -4,7 +4,7 @@ import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
-import OrderDetailItem from '@/components/Order/orderCheck1'
+import OrderDetailItem from '@/components/Order/orderCheck1-seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 
 
