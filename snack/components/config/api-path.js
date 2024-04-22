@@ -1,5 +1,8 @@
 export const API_SERVER = 'http://localhost:3002'
 
+// === img
+export const IMAGES_PRODUCTS = `${API_SERVER}/images/products`
+
 // === map，取得 market-data
 export const MARKET_DATA = `${API_SERVER}/market-data`
 
@@ -25,4 +28,5 @@ export const MARKET_SEARCH = `${MARKET}/search`
 // 搜尋
 export const MARKET_SELLER = `${MARKET}/seller`
 
+// ===
 export const JWT_LOGIN_POST = `${API_SERVER}/custom-auth/login-jwt`

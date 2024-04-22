@@ -15,7 +15,7 @@ import { FaShoppingCart } from 'react-icons/fa'
 import {
   SELLER_DATA,
   PRODUCTS_DATA,
-  PRODUCTS_SEARCH,
+  IMAGES_PRODUCTS,
 } from '@/components/config/api-path'
 // 樣式
 import style from './shop-products.module.scss'
@@ -194,7 +194,7 @@ export default function ShopProducts() {
                       >
                         <ProductCard
                           product_id={product.product_id}
-                          imgUrl={`/images/products/${product.image_url}`}
+                          imgUrl={`${IMAGES_PRODUCTS}/${product.image_url}`}
                           title={product.product_name}
                           price={product.price}
                           percentage="4.3"
@@ -226,7 +226,7 @@ export default function ShopProducts() {
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`/images/products/${dish.image_url}`}
+                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -254,7 +254,7 @@ export default function ShopProducts() {
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`/images/products/${dish.image_url}`}
+                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -282,7 +282,7 @@ export default function ShopProducts() {
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`/images/products/${dish.image_url}`}
+                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -310,7 +310,7 @@ export default function ShopProducts() {
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`/images/products/${dish.image_url}`}
+                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>

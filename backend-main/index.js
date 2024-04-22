@@ -17,15 +17,13 @@ import customAuthRouter from "./routes/customAuthRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
-
 
 // ==== 如
 
@@ -50,8 +48,6 @@ app.use((req, res, next) => {
 // 一般會員登入
 app.use("/custom-auth", customAuthRouter);
 
-
-
 // ==== 弘
 // 賣家登入驗證帳戶
 app.use("/auth", authRouter);
@@ -62,7 +58,6 @@ app.use("/products", productsRouter);
 // 賣家資料
 app.use("/sellers", sellerRouter);
 app.use("/public", express.static(path.join(__dirname, "public")));
-
 
 // ==== 咚
 //店家地圖路由
@@ -79,15 +74,19 @@ app.use("/shop-products", shopRouter);
 // 夜市路由
 app.use("/market", marketRouter);
 
+// 用於前端渲染圖片
+app.get("/images/:imageName", (req, res) => {
+  const { imageName } = req.params;
+  const imagePath = path.join(IMAGES_DIR, imageName);
+  res.sendFile(imagePath);
+});
 
 // ==== 蓁
 // 會員路由
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/backRoute", index);
 
-
 /*---其他路由放在這之前---*/
-
 
 //處理路由
 app.use((req, res) => {
