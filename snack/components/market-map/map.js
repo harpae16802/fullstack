@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 // 套件
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
 // fetch 網址
-import { MARKET_DATA } from "@/components/config/api-path";
+import { MARKET_DATA, IMAGES_NIGHT } from '@/components/config/api-path'
 // 樣式
-import style from "./style.module.scss";
+import style from './style.module.scss'
 
 const MapComponent = () => {
   // 所有夜市
-  const [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState([])
 
   // 地圖預設顯示台灣中心點
-  const centerPosition = [23.973875, 120.982024];
+  const centerPosition = [23.973875, 120.982024]
 
   // 自定義地圖 maker
   const createCustomIcon = (market_name) => {
@@ -21,36 +21,36 @@ const MapComponent = () => {
       html: `<button class="${style.placeBtn}">${market_name}</button>`,
       iconSize: L.point(30, 30),
       iconAnchor: [30, 30],
-    });
-  };
+    })
+  }
 
   // 撈資料呈現
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const r = await fetch(MARKET_DATA);
+        const r = await fetch(MARKET_DATA)
         if (!r.ok) {
-          throw new Error("Network response 錯誤");
+          throw new Error('Network response 錯誤')
         }
-        const data = await r.json();
+        const data = await r.json()
         setPlaces(
           data.map((place) => ({
             ...place,
-            position: place.latitude_and_longitude.split(", ").map(Number),
+            position: place.latitude_and_longitude.split(', ').map(Number),
           }))
-        );
+        )
       } catch (error) {
-        console.log("fetch 錯誤:", error);
+        console.log('fetch 錯誤:', error)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
   return (
     <MapContainer
       center={centerPosition}
       zoom={8}
-      style={{ height: "72vh", width: "100%" }}
+      style={{ height: '72vh', width: '100%' }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -66,7 +66,7 @@ const MapComponent = () => {
           <Popup offset={L.point(46, -24)} className={style.popup}>
             <div className={style.card}>
               <img
-                src={`/images/night/${point.market_img}`}
+                src={`${IMAGES_NIGHT}/${point.market_img}`}
                 alt=""
                 className={style.img}
               />
@@ -88,7 +88,7 @@ const MapComponent = () => {
         </Marker>
       ))}
     </MapContainer>
-  );
-};
+  )
+}
 
-export default MapComponent;
+export default MapComponent

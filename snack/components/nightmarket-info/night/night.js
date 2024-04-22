@@ -1,6 +1,9 @@
 import React from 'react'
+import Link from 'next/link'
 // icons
 import { FaBusAlt } from 'react-icons/fa'
+// api-path
+import { IMAGES_NIGHT, IMAGES_SELLER } from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -24,17 +27,21 @@ export default function Night({
         {/* 桌面版 */}
         <div className={`col-lg-8 d-none d-lg-block ${style.left}`}>
           <img
-            src={`/images/night/${nightImg}`}
+            src={`${IMAGES_NIGHT}/${nightImg}`}
             alt={nightImg}
             className={style.bigImage}
           />
 
+          <Link href="#shopList" className={`btn btn-light ${style.shopList}`}>
+            店家列表
+          </Link>
+
           <div className={`row`}>
             {store_image.map((imgUrl, index) => {
               return (
-                <div className={`col-4 ${style}`}>
+                <div className={`col-4`}>
                   <img
-                    src={`/images/seller/${imgUrl}`}
+                    src={`${IMAGES_SELLER}/${imgUrl}`}
                     alt={`商店圖片 ${index}`}
                     className={`${style.smallImage}`}
                   />
