@@ -18,7 +18,10 @@ signUpRouter.post("/custom-sign", async function (req, res) {
   let result = {};
   const sql =
     "INSERT INTO custom (custom_account, custom_password) VALUES (?, ?)";
-  [result] = await db.query(sql, [email, hashedPassword]);
+  try {
+    [result] = await db.query(sql, [email, hashedPassword]);
+  } catch (ex) {}
+
   res.json(result);
 });
 
