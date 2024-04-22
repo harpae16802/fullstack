@@ -8,6 +8,8 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import OrderChart from '@/components/OrderChart'; // 確保路徑正確
+
 
 export default function Order() {
   // 使用 useRouter
@@ -171,7 +173,7 @@ export default function Order() {
               <div className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>定單管理系統</h2>
 
-                {/* 下拉是選單 */}
+                {/* 這裡要改成起始日期 */}
                 <div className={styles.selectGroup}>
                   <div className="col-auto">
                     <label htmlFor="" className={styles.selectLabel}>
@@ -189,14 +191,33 @@ export default function Order() {
                     </select>
                   </div>
                 </div>
-                {/* 搜索框 */}
+                <div className={styles.selectGroup}>
+                  <div className="col-auto">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      以日期選擇
+                    </label>
+                  </div>
+                  <div className="col-auto">
+                    <select
+                      className={`form-select ${styles.customSelect}`}
+                      id=""
+                      name=""
+                    >
+                      <option value="0">處裡中</option>
+                      <option value="1">以兌換</option>
+                    </select>
+                  </div>
+                </div>
+                {/* 這裡要改成結束日期 */}
+
+                {/* 這裡要能搜索產品名稱 */}
                 <div className="container">
                   <div className="row">
                     <div className="col-md-11 col-9">
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="請輸入訂單編號..."
+                        placeholder="產品名稱..."
                       />
                       {/* 清除搜索職按鈕 */}
                     </div>
@@ -208,11 +229,37 @@ export default function Order() {
                   </div>
                   {/* 清除搜索職按鈕 */}
                 </div>
-                {/* 搜索框 */}
+                {/* 這裡要能搜索產品名稱 */}
+
+                {/* 這裡要能夠抓取到產品分類 */}
+                <div className={styles.selectGroup}>
+                  <div className="col-auto">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      以日期選擇
+                    </label>
+                  </div>
+                  <div className="col-auto">
+                    <select
+                      className={`form-select ${styles.customSelect}`}
+                      id=""
+                      name=""
+                    >
+                      <option value="0">類別1</option>
+                      <option value="1">類別2</option>
+                    </select>
+                  </div>
+                </div>
+              {/* 這裡要能夠抓取到產品分類 */}
+
+              {/* 我在這裡要實現資料的顯示 */}
+              
+            
+              
+              {/* 我在這裡要實現資料的顯示 */}
+              
               </div>
             </div>
           </div>
-          {/* 表單 */}
         </div>
       </div>
     </Section>

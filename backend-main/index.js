@@ -18,6 +18,7 @@ import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import customAuthRouter from "./routes/customAuthRouter.js"; 
 import QRrouter from "./routes/qrcode.js"
+import orderDataRouter from "./routes/orderData.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -129,6 +130,9 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 //QRcode 資輛查詢與變更
 app.use("/QRcode", QRrouter)
+
+// order路由
+app.use("/order" , orderDataRouter)
 
 // ==== 咚
 //店家地圖路由

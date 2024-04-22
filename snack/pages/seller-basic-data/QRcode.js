@@ -48,7 +48,7 @@ export default function QRcode() {
     try {
       const jsonData = JSON.parse(data)
       if (jsonData.length > 0 && jsonData[0].qrcode_id) {
-        setqrcodeid(jsonData[0].qrcode_id) // 設置 qrcodid
+        setqrcodeid(jsonData[0].qrcode_id) // 設置 qrcodIid
         fetchOrderDetails(jsonData[0].qrcode_id)
       } else {
         console.error('解析的数据中没有qrcode_id')
