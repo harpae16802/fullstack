@@ -1,5 +1,5 @@
 import Section from '@/components/layout/section'
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import styles from '@/styles/Product.module.css'
 import SearchBar from '@/components/common/search-bar'
@@ -8,8 +8,12 @@ import  PopularProduct  from '@/components/Product/popularProduct';
 import ProductItem from '@/components/Product/recommendProduct';
 import DiscountInformation from '@/components/Product/discountInformation';
 import CategoryItem from '@/components/Product/productCategory'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 // import { Container, Row, Col } from 'react-bootstrap';
+
+
 
 export default function Product() {
   return (
@@ -26,6 +30,8 @@ export default function Product() {
 
         <div className={`row ${styles.categoryPicInterval}`} >
 
+      
+
         <div className="col-2"><CategoryItem /></div>
         <div className="col-2"><CategoryItem /></div>
         <div className="col-2"><CategoryItem /></div>
@@ -34,6 +40,7 @@ export default function Product() {
         <div className="col-2"><CategoryItem /></div>
 
         </div>
+
       </div>
       
 
@@ -43,10 +50,24 @@ export default function Product() {
     <div className="container-fluid">
       <div className={`row ${styles.popularContainer}`}>
 
+          <Swiper
+          spaceBetween={50}
+          slidesPerView={3}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
+          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
+          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
+          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
+          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
+          
+          </Swiper>
+
+          {/* <div className="col-12 col-md-3"><PopularProduct /></div>
           <div className="col-12 col-md-3"><PopularProduct /></div>
           <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div>
+          <div className="col-12 col-md-3"><PopularProduct /></div> */}
+
           </div>
 
     </div>
