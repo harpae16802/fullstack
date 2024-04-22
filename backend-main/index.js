@@ -21,6 +21,7 @@ import QRrouter from "./routes/qrcode.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;
@@ -31,9 +32,6 @@ app.use(cors({
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
-
 
 // ==== 如
 
@@ -129,10 +127,6 @@ app.use("/products", productsRouter);
 app.use("/sellers", sellerRouter);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-//QRcode 資輛查詢與變更
- app.use("/QRcode", QRrouter)
-
-// ==== 弘
 
 // ==== 咚
 //店家地圖路由
@@ -149,17 +143,14 @@ app.use("/shop-products", shopRouter);
 // 夜市路由
 app.use("/market", marketRouter);
 
-// ==== 咚
 
 // ==== 蓁
 // 會員路由
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/backRoute", index);
 
-// ==== 蓁
 
 /*---其他路由放在這之前---*/
-
 
 //處理路由
 app.use((req, res) => {

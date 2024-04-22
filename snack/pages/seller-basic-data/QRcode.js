@@ -34,7 +34,7 @@ export default function QRcode() {
 
   //QRcode
   const [showScanner, setShowScanner] = useState(false)
-  const [orderId, setOrderId] = useState('') // 解析的 資料
+  const [qrcodeid, setqrcodeid] = useState('') // 解析的 資料
   const [selectedStatus, setSelectedStatus] = useState('0') // 初始狀態為 "處理中"
   const [orderDetails, setOrderDetails] = useState([])
   // 使用Ref
@@ -47,20 +47,20 @@ export default function QRcode() {
   const handleCodeDetected = (data) => {
     try {
       const jsonData = JSON.parse(data)
-      if (jsonData.length > 0 && jsonData[0].order_id) {
-        setOrderId(jsonData[0].order_id) // 設置 orderId
-        fetchOrderDetails(jsonData[0].order_id)
+      if (jsonData.length > 0 && jsonData[0].qrcode_id) {
+        setqrcodeid(jsonData[0].qrcode_id) // 設置 qrcodid
+        fetchOrderDetails(jsonData[0].qrcode_id)
       } else {
-        console.error('解析的数据中没有order_id')
+        console.error('解析的数据中没有qrcode_id')
       }
     } catch (error) {
       console.error('解析出錯:', error)
     }
   }
-  const fetchOrderDetails = async (orderId) => {
+  const fetchOrderDetails = async (qrcodeid) => {
     try {
       const response = await axios.get(
-        `http://localhost:3002/QRcode/details/${orderId}`
+        `http://localhost:3002/QRcode/details/${qrcodeid}`
       )
       if (response.data.length > 0) {
         const data = response.data[0]
@@ -83,13 +83,13 @@ export default function QRcode() {
   const updateOrderStatus = async (newStatus) => {
     try {
       const response = await axios.put(
-        `http://localhost:3002/QRcode/update-status/${orderId}`,
+        `http://localhost:3002/QRcode/update-status/${qrcodeid}`,
         {
           status: newStatus,
         }
       )
       console.log('訂單狀態更新成功:', response.data)
-      fetchOrderDetails(orderId) // 重新獲取訂單詳情來更新 UI
+      fetchOrderDetails(qrcodeid) // 重新獲取訂單詳情來更新 UI
     } catch (error) {
       console.error('訂單狀態更新失敗:', error)
     }

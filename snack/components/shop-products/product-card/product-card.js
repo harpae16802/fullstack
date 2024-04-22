@@ -1,9 +1,12 @@
 // 內建
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // icons
 import { FaThumbsUp, FaPlus, FaRegHeart, FaHeart } from 'react-icons/fa'
 // fetch 網址
-import { FAVORITE_PRODUCTS } from '@/components/config/api-path'
+import {
+  FAVORITE_PRODUCTS,
+  C_FAVORITE_PRODUCTS,
+} from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -30,6 +33,19 @@ export default function ProductCard({
     }
   }
 
+  useEffect(() => {
+    // 检查收藏状态
+    const checkFavoriteStatus = async () => {
+      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`)
+      const data = await r.json()
+      if (data.isFavorite !== undefined) {
+        setIsFavorite(data.isFavorite)
+      }
+    }
+
+    checkFavoriteStatus()
+  }, [product_id])
+
   return (
     <div className={style.card}>
       <div className={style.imgDiv}>
@@ -40,7 +56,7 @@ export default function ProductCard({
       </div>
       <div className={style.textDiv}>
         <div className={`d-flex align-items-center`}>
-          <h5 className={`fw-bold mb-0`}>{title}</h5>
+          <h5 className={`fw-bold mb-0 ${style.title}`}>{title}</h5>
           {isFavorite ? (
             <FaHeart
               className={`${style.icon}`}

@@ -69,6 +69,26 @@ router.get("/toggle-like-shop/:seller_id", async (req, res) => {
 
   res.json(output);
 });
+// 检查收藏状态
+router.get("/check-like-shop/:seller_id", async (req, res) => {
+  const custom_id = 1;
+
+  try {
+    const sql =
+      "SELECT * FROM favorite_store WHERE `seller_id`=? AND `custom_id`=?";
+    const [rows] = await db.query(sql, [req.params.seller_id, custom_id]);
+
+    if (rows.length) {
+      // 如果找到记录，说明已收藏
+      res.json({ isFavorite: true });
+    } else {
+      // 没有记录，说明未收藏
+      res.json({ isFavorite: false });
+    }
+  } catch (error) {
+    console.error("Error checking favorite status:", error);
+  }
+});
 
 // 加入移除收藏 - 商品
 router.get("/toggle-like-products/:product_id", async (req, res) => {
@@ -113,6 +133,26 @@ router.get("/toggle-like-products/:product_id", async (req, res) => {
   }
 
   res.json(output);
+});
+// 检查收藏状态
+router.get("/check-like-products/:product_id", async (req, res) => {
+  const custom_id = 1;
+
+  try {
+    const sql =
+      "SELECT * FROM favorite_product WHERE `product_id`=? AND `custom_id`=?";
+    const [rows] = await db.query(sql, [req.params.product_id, custom_id]);
+
+    if (rows.length) {
+      // 如果找到记录，说明已收藏
+      res.json({ isFavorite: true });
+    } else {
+      // 没有记录，说明未收藏
+      res.json({ isFavorite: false });
+    }
+  } catch (error) {
+    console.error("Error checking favorite status:", error);
+  }
 });
 
 // 檢視評論

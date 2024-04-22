@@ -10,9 +10,14 @@ import {
   FaRegHeart,
   FaHeart,
   FaStar,
+  FaStarHalfAlt,
 } from 'react-icons/fa'
 // api-path
-import { FAVORITE_STORE, COMMENT_DATA } from '@/components/config/api-path'
+import {
+  FAVORITE_STORE,
+  COMMENT_DATA,
+  C_FAVORITE_STORE,
+} from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -29,6 +34,7 @@ export default function ShopInfo({
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
   const [modalIsOpen, setIsModalOpen] = useState(false) // 彈窗
   const [comments, setComments] = useState([]) // 渲染評論
+  const [averageScore, setAverageScore] = useState(0) // 店家評分
 
   // 加入收藏 - 店家
   const toggleFavoriteShop = async () => {
@@ -46,6 +52,29 @@ export default function ShopInfo({
     }
   }
 
+  // 用於渲染星星的函數
+  const renderStars = () => {
+    let score = parseFloat(averageScore)
+    let stars = []
+    for (let i = 0; i < 5; i++) {
+      if (score >= 1) {
+        stars.push(
+          <FaStar key={i} className={`${style.star} ${style.bigStar}`} />
+        )
+      } else if (score > 0) {
+        stars.push(
+          <FaStarHalfAlt key={i} className={`${style.star} ${style.bigStar}`} />
+        )
+      } else {
+        stars.push(
+          <FaRegStar key={i} className={`${style.star} ${style.bigStar}`} />
+        )
+      }
+      score -= 1
+    }
+    return stars
+  }
+
   // modal open
   const openModal = () => {
     setIsModalOpen(true)
@@ -55,8 +84,8 @@ export default function ShopInfo({
     setIsModalOpen(false)
   }
 
-  // 撈 comment 資料
   useEffect(() => {
+    // 撈 comment 資料
     const fetchComments = async () => {
       try {
         const r = await fetch(`${COMMENT_DATA}/${seller_id}`)
@@ -64,10 +93,29 @@ export default function ShopInfo({
         if (!r.ok) throw new Error('網絡回應錯誤')
         const data = await r.json()
         setComments(data)
+        // 計算平均分數
+        const totalScore = data.reduce(
+          (acc, curr) => acc + curr.store_rating,
+          0
+        )
+        const average =
+          data.length > 0 ? (totalScore / data.length).toFixed(1) : 0
+        setAverageScore(average) // 設定平均分數
       } catch (error) {
         console.error('撈取 comment 資料錯誤:', error)
       }
     }
+
+    // 检查收藏状态
+    const checkFavoriteStatus = async () => {
+      const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`)
+      const data = await r.json()
+      if (data.isFavorite !== undefined) {
+        setIsFavorite(data.isFavorite)
+      }
+    }
+
+    checkFavoriteStatus()
     fetchComments()
   }, [seller_id])
 
@@ -108,34 +156,22 @@ export default function ShopInfo({
           </div>
           <div className="d-flex flex-column">
             <div className={`d-flex align-items-end`}>
-              <h2 className="m-0 me-1">5</h2>
+              <h2 className="m-0 me-1">{averageScore}</h2>
               <p className="m-0">/ 5</p>
             </div>
             {/* star */}
-            <div>
-              {Array(5)
-                .fill(1)
-                .map((v) => {
-                  return (
-                    <FaStar
-                      key={v}
-                      className={`${style.star} ${style.bigStar}`}
-                    />
-                  )
-                })}
-            </div>
+            <div>{renderStars()}</div>
 
             {/* btn */}
             <div className={style.btnDiv}>
-              {Array(9)
-                .fill(1)
-                .map((v) => {
-                  return (
-                    <button key={v} className={style.searchBtn}>
-                      最新
-                    </button>
-                  )
-                })}
+              <button className={`${style.searchBtn}`}>全部(15)</button>
+              <button className={style.searchBtn}>五星(15)</button>
+              <button className={style.searchBtn}>四星(15)</button>
+              <button className={style.searchBtn}>三星(15)</button>
+              <button className={style.searchBtn}>一星(15)</button>
+              <button className={style.searchBtn}>附上照片(15)</button>
+              <button className={style.searchBtn}>最新</button>
+              <button className={style.searchBtn}>熱門</button>
             </div>
 
             {/* user comment */}

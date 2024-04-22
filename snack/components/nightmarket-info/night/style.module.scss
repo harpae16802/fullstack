@@ -16,7 +16,7 @@ $bdrs: 20px;
     .left,
     .right {
       .bigImage,
-      .smallImage,
+      // .smallImage,
       .mobileImg {
         width: 100%;
         height: auto;
@@ -97,4 +97,11 @@ $bdrs: 20px;
       }
     }
   }
+}
+
+.smallImage {
+  border: 1px solid red;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
