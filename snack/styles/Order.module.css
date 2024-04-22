@@ -126,7 +126,8 @@
     margin-top: 50px;
     margin-left: 50px;
     width: calc( 100% - 100px );
-    height: 401px;
+    height: auto;
+    /* 401px; */
     background-color: #fff;
 }
 
