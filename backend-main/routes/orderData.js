@@ -1,61 +1,67 @@
-import express from 'express';
-import db from '../utils/db.js';
+// orderData.js
+import express from "express";
+import db from "../utils/db.js"; // 引入数据库连接池
 
 const router = express.Router();
 
-// 獲取所有訂單
-router.get('/sales-total', async (req, res) => {
-    const { startDate, endDate } = req.query;
-    const sql = `
-        SELECT SUM(od.purchase_quantity * p.price) AS total_revenue
-        FROM order_detail od
-        JOIN order_data o ON od.order_id = o.order_id
-        JOIN products p ON od.product_id = p.product_id
-        WHERE o.payment_day BETWEEN ? AND ?
-    `;
-    try {
-        const [result] = await db.query(sql, [startDate, endDate]);
-        res.json(result[0]);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+router
+  .get("/", async (req, res) => {
+    const {
+      seller_id,
+      start_date,
+      end_date,
+      category_id,
+      product_name,
+      page = 1,
+      limit = 10,
+    } = req.query;
 
+    let query = `
+  SELECT o.*, p.product_name, p.category_id, c.category_name, od.purchase_quantity
+  FROM order_data o
+  JOIN order_detail od ON o.order_id = od.order_id
+  JOIN products p ON od.product_id = p.product_id
+  JOIN product_categories c ON p.category_id = c.category_id
+  WHERE o.seller_id = ?
+  `;
+    const params = [seller_id];
 
-router.get('/sales-by-category', async (req, res) => {
-    const { startDate, endDate } = req.query;
-    const sql = `
-        SELECT p.category, SUM(od.purchase_quantity) AS quantity_sold, SUM(od.purchase_quantity * p.price) AS revenue
-        FROM products p
-        JOIN order_detail od ON p.product_id = od.product_id
-        JOIN order_data o ON od.order_id = o.order_id
-        WHERE o.payment_day BETWEEN ? AND ?
-        GROUP BY p.category
-    `;
-    try {
-        const results = await db.query(sql, [startDate, endDate]);
-        res.json(results);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    if (start_date && end_date) {
+      query += " AND o.payment_day BETWEEN ? AND ?";
+      params.push(start_date, end_date);
     }
-});
 
-router.get('/sales-by-product', async (req, res) => {
-    const { productName, startDate, endDate } = req.query;
-    const sql = `
-        SELECT p.product_name, p.category, SUM(od.purchase_quantity) AS quantity_sold, SUM(od.purchase_quantity * p.price) AS revenue
-        FROM products p
-        JOIN order_detail od ON p.product_id = od.product_id
-        JOIN order_data o ON od.order_id = o.order_id
-        WHERE p.product_name LIKE ? AND o.payment_day BETWEEN ? AND ?
-        GROUP BY p.product_id
-    `;
-    try {
-        const results = await db.query(sql, [`%${productName}%`, startDate, endDate]);
-        res.json(results);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    if (category_id) {
+      query += " AND p.category_id = ?";
+      params.push(category_id);
     }
-});
+
+    if (product_name) {
+      query += " AND p.product_name LIKE ?";
+      params.push(`%${product_name}%`);
+    }
+
+    // 分页处理
+    const offset = (page - 1) * limit;
+    query += " LIMIT ? OFFSET ?";
+    params.push(parseInt(limit), offset);
+
+    try {
+      const [results] = await db.query(query, params);
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  })
+  .get("/categories", async (req, res) => {
+    try {
+      // 查询数据库获取产品种类信息
+      const query = "SELECT * FROM product_categories";
+      const [results] = await db.query(query);
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 export default router;

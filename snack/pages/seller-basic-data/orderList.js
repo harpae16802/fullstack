@@ -2,14 +2,13 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API, ORDERDETAIL } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
-import OrderChart from '@/components/OrderChart'; // 確保路徑正確
-
+import OrderChart from '@/components/OrderChart' // 確保路徑正確
 
 export default function Order() {
   // 使用 useRouter
@@ -30,6 +29,17 @@ export default function Order() {
     profilePicture: '',
   })
 
+  // 資料過濾
+  const [query, setQuery] = useState({
+    startDate: '',
+    endDate: '',
+    categoryId: '',
+    productName: '',
+  })
+  const [orders, setOrders] = useState([])
+  const [categories, setCategories] = useState([])
+  // 資料過濾
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -42,7 +52,8 @@ export default function Order() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data //   後端資料
+          const data = response.data.data // 注意确保这里的路径正确
+          console.log(data) // 查看数据结构
 
           setSellerData((prevData) => ({
             ...prevData,
@@ -50,11 +61,69 @@ export default function Order() {
           }))
         })
         .catch((error) => {
-          console.error('拿取頭貼失敗', error)
+          console.error('获取商家信息失败', error)
+        })
+      // 加载产品类别
+      axios
+        .get(`${ORDERDETAIL}/categories`)
+        .then((response) => {
+          setCategories(response.data)
+        })
+        .catch((error) => {
+          console.error('获取产品种类信息失败', error)
         })
     }
-  }, [sellerId])
+    loadOrders()
+  }, [
+    sellerId,
+    query.startDate,
+    query.endDate,
+    query.categoryId,
+    query.productName,
+  ])
 
+  // 載入資料
+  function loadOrders() {
+    axios
+      .get(`${ORDERDETAIL}/`, {
+        params: {
+          seller_id: sellerId,
+          start_date: query.startDate,
+          end_date: query.endDate,
+          category_id: query.categoryId,
+          product_name: query.productName,
+        },
+      })
+      .then((response) => {
+        setOrders(response.data) // 假设后端返回的是数组
+      })
+      .catch((error) => {
+        console.error('查询销售数据失败', error)
+      })
+  }
+
+  // 資料輸入
+  function handleInputChange(e) {
+    const { name, value } = e.target
+    setQuery((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+  // 執行查詢
+  function handleSearch() {
+    loadOrders() // 使用同一个函数来加载数据
+  }
+
+  // 初始化查詢
+  function resetSearch() {
+    setQuery({
+      startDate: '',
+      endDate: '',
+      categoryId: '',
+      productName: '',
+    })
+  }
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -175,88 +244,126 @@ export default function Order() {
 
                 {/* 這裡要改成起始日期 */}
                 <div className={styles.selectGroup}>
-                  <div className="col-auto">
+                  <div className="col-md-auto col-12">
                     <label htmlFor="" className={styles.selectLabel}>
-                      以日期選擇
+                      開始日期
                     </label>
                   </div>
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id=""
-                      name=""
-                    >
-                      <option value="0">處裡中</option>
-                      <option value="1">以兌換</option>
-                    </select>
+                  <div className="col-md-auto col-12">
+                    <input
+                      type="date"
+                      name="startDate"
+                      value={query.startDate}
+                      onChange={handleInputChange}
+                      className="form-control mb-2"
+                      placeholder="開始日期"
+                    />
                   </div>
-                </div>
-                <div className={styles.selectGroup}>
-                  <div className="col-auto">
+
+                  <div className="col-md-auto col-12">
                     <label htmlFor="" className={styles.selectLabel}>
-                      以日期選擇
+                      結束日期
                     </label>
                   </div>
-                  <div className="col-auto">
+                  <div className="col-md-auto col-12">
+                    <input
+                      type="date"
+                      name="endDate"
+                      value={query.endDate}
+                      onChange={handleInputChange}
+                      className="form-control mb-2"
+                      placeholder="結束日期"
+                    />
+                  </div>
+
+                  {/* 這裡要能夠抓取到產品分類 */}
+                  <div className="col-md-auto col-12">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      以類別選擇
+                    </label>
+                  </div>
+                  <div className="col-md-auto col-12">
                     <select
-                      className={`form-select ${styles.customSelect}`}
-                      id=""
-                      name=""
+                      name="categoryId"
+                      value={query.categoryId}
+                      onChange={handleInputChange}
+                      className="form-control mb-2"
                     >
-                      <option value="0">處裡中</option>
-                      <option value="1">以兌換</option>
+                      <option value="">所有類別</option>
+                      {categories.map((category) => (
+                        <option
+                          key={category.category_id}
+                          value={category.category_id}
+                        >
+                          {category.category_name}
+                        </option>
+                      ))}
                     </select>
                   </div>
+                  {/* 這裡要能夠抓取到產品分類 */}
                 </div>
+
                 {/* 這裡要改成結束日期 */}
 
+                <br></br>
                 {/* 這裡要能搜索產品名稱 */}
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-11 col-9">
+                    <div className="col-md-6 col-12">
                       <input
                         type="text"
-                        className="form-control"
+                        name="productName"
+                        value={query.productName}
+                        onChange={handleInputChange}
+                        className="form-control mb-2"
                         placeholder="產品名稱..."
                       />
-                      {/* 清除搜索職按鈕 */}
                     </div>
-                    <div className="col-md-1 col-3">
-                      <button className={`${styles.btnoutline}`} type="button">
-                        <i className="bi bi-x-lg"></i>
+                    <div className="col-md-3 col-12">
+                      <button
+                        onClick={handleSearch}
+                        className={styles.btnPrimary}
+                      >
+                        查詢銷售數據
                       </button>
                     </div>
+                    {/* 清除搜索職按鈕 */}
+                    <div className="col-md-3 col-12">
+                      <button
+                        onClick={resetSearch}
+                        className={styles.btnPrimary}
+                        type="button"
+                      >
+                        初始化搜索
+                      </button>
+                    </div>
+                    {/* 清除搜索職按鈕 */}
                   </div>
-                  {/* 清除搜索職按鈕 */}
                 </div>
                 {/* 這裡要能搜索產品名稱 */}
 
-                {/* 這裡要能夠抓取到產品分類 */}
-                <div className={styles.selectGroup}>
-                  <div className="col-auto">
-                    <label htmlFor="" className={styles.selectLabel}>
-                      以日期選擇
-                    </label>
-                  </div>
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id=""
-                      name=""
-                    >
-                      <option value="0">類別1</option>
-                      <option value="1">類別2</option>
-                    </select>
-                  </div>
-                </div>
-              {/* 這裡要能夠抓取到產品分類 */}
-
-              {/* 我在這裡要實現資料的顯示 */}
-              
-            
-              
-              {/* 我在這裡要實現資料的顯示 */}
-              
+                {/* 我在這裡要實現資料的顯示 */}
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>產品名稱</th>
+                      <th>產品類別</th>
+                      <th>銷售數量</th>
+                      <th>總收入</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order.order_id}>
+                        <td>{order.product_name}</td>
+                        <td>{order.category_name}</td>
+                        <td>{order.purchase_quantity}</td>
+                        <td>${order.total_sum}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {/* 我在這裡要實現資料的顯示 */}
               </div>
             </div>
           </div>
