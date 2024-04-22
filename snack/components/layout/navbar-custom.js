@@ -3,6 +3,8 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
+import { useRouter } from 'next/router'
+
 import {
   FaBars,
   FaUser,
@@ -12,6 +14,8 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
+  const router = useRouter()
+
   const { auth, logout, login } = useAuth()
 
   return (
@@ -20,11 +24,11 @@ export default function NavbarCustom() {
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <a className="navbar-brand" href="#">
+            <Link className="navbar-brand" href="/">
               <Image src="/logo-o.svg" alt="" width={180} height={70} />
-            </a>
+            </Link>
             <div className="right-icons">
-              <a className="navbar-brand min-cart" href="#">
+              <a className="navbar-brand min-cart" href="/">
                 <FaShoppingCart />
               </a>
               <button
@@ -45,19 +49,19 @@ export default function NavbarCustom() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" href="/market-map">
                     夜市導覽
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/nightmarket-info/night">
                     美味商城
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/game/game-select">
                     趣味遊戲
-                  </a>
+                  </Link>
                 </li>
               </div>
               {/* 手機版的選單 開始 */}
@@ -101,6 +105,7 @@ export default function NavbarCustom() {
                     onClick={(e) => {
                       e.preventDefault()
                       logout()
+                      router.replace(`/login/login-custom`)
                     }}
                   >
                     登出
@@ -151,6 +156,7 @@ export default function NavbarCustom() {
                             onClick={(e) => {
                               e.preventDefault()
                               logout()
+                              router.replace(`/login/login-custom`)
                             }}
                           >
                             登出

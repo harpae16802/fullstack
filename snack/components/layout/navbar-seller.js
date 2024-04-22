@@ -1,5 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+
 import {
   FaBars,
   FaUser,
@@ -15,9 +17,9 @@ export default function NavbarSeller() {
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <a className="navbar-brand" href="#">
+            <Link className="navbar-brand" href="/">
               <Image src="/logo-o.svg" alt="" width={180} height={70} />
-            </a>
+            </Link>
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="#">
                 <FaShoppingCart />
@@ -40,14 +42,14 @@ export default function NavbarSeller() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" href="/market-map">
                     夜市導覽
-                  </a>
+                  </Link>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
+                <li className="nav-item" style={{ border: 'none'}}>
+                  <Link className="nav-link" href="/nightmarket-info/index">
                     美味商城
-                  </a>
+                  </Link>
                 </li>
                 {/* <li className="nav-item">
                   <a className="nav-link" href="#">

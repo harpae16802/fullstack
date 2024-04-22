@@ -3,9 +3,9 @@ import Section from '@/components/layout/section'
 import React from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
-import LoginForm from "../../components/loginForm";
+import LoginForm from '../../components/loginForm'
 
 // 用在分頁的icon
 import {
@@ -16,18 +16,17 @@ import {
 } from 'react-icons/fa'
 
 export default function LoginSeller() {
-
   // const [formData, setFormData] = useState({ email: '', password: '' });
 
   // const handleFormChange = (newData) => {
   //   setFormData(prev => ({ ...prev, ...newData }));
   // };
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSuccess = () => {
-    router.push("/seller-basic-data");
-  };
-  
+    router.push('/seller-basic-data')
+  }
+
   return (
     <>
       <Section>
@@ -83,7 +82,7 @@ export default function LoginSeller() {
                   <div className="login-title">
                     <span>商家會員註冊</span>
                     <button type="button" className="btn btn-outline-primary">
-                      切換一般會員
+                      <Link href="/login/login-custom">切換一般會員</Link>
                     </button>
                   </div>
 
@@ -113,7 +112,6 @@ export default function LoginSeller() {
                       </button>
                     </form>
                   </div>
-
                 </div>
                 <div
                   className="tab-pane fade show active"
@@ -124,13 +122,12 @@ export default function LoginSeller() {
                   <div className="login-title">
                     <span>商家會員登入</span>
                     <button type="button" className="btn btn-outline-primary">
-                      切換一般會員
+                      <Link href="/login/login-custom">切換一般會員</Link>
                     </button>
                   </div>
                   <div className="seller-input-group">
-                 
                     <LoginForm onSuccess={handleSuccess} />
-                      {/* <div className="mb-3">
+                    {/* <div className="mb-3">
                         <label
                           htmlFor="exampleInputEmail1"
                           className="form-label"
@@ -159,15 +156,14 @@ export default function LoginSeller() {
                         />
                         <div id="passwordHelp" className="form-text"></div>
                       </div> */}
-                      <div className="forget-text">
-                        <Link href="/opt" className="forget-p">
-                          <p>忘記密碼？</p>
-                        </Link>
-                      </div>
-                      {/* <button type="submit" className="btn btn-primary mb-5">
+                    <div className="forget-text">
+                      <Link href="/opt" className="forget-p">
+                        <p>忘記密碼？</p>
+                      </Link>
+                    </div>
+                    {/* <button type="submit" className="btn btn-primary mb-5">
                         登入
                       </button> */}
-            
                   </div>
                 </div>
               </div>
@@ -187,18 +183,16 @@ export default function LoginSeller() {
         {/* 以下是min版 */}
         <div className="seller-page-min">
           <div className="seller-min-group">
-         
             {/* 商家會員登入 */}
             <div className="seller-min-login">
               <div className="login-title">
                 <span>商家會員登入</span>
                 <button type="button" className="btn btn-outline-primary">
-                  切換一般
+                <Link href="/login/login-custom">切換一般</Link>
                 </button>
               </div>
               <div className="seller-input-group">
-            
-                  {/* <div className="mb-3">
+                {/* <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">
                       帳號
                     </label>
@@ -224,17 +218,16 @@ export default function LoginSeller() {
                     />
                     <div id="passwordHelp" className="form-text"></div>
                   </div> */}
-                    <LoginForm onSuccess={handleSuccess} />
+                <LoginForm onSuccess={handleSuccess} />
 
-                  <div className="forget-text">
-                    <Link href="/opt" className="forget-p">
-                      <p>忘記密碼？</p>
-                    </Link>
-                  </div>
-                  {/* <button type="submit" className="btn btn-primary">
+                <div className="forget-text">
+                  <Link href="/opt" className="forget-p">
+                    <p>忘記密碼？</p>
+                  </Link>
+                </div>
+                {/* <button type="submit" className="btn btn-primary">
                     登入
                   </button> */}
-              
               </div>
             </div>
           </div>

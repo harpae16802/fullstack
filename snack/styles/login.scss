@@ -39,6 +39,21 @@
     }
   }
 }
+.pswinput{
+  position: relative;
+  .password-eye{
+    position: absolute;
+    color: $primary;
+    font-size: 25px;
+    top: 48px;
+    right: 14px;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .form-control{
+    padding: 12px 50px 12px 30px;
+  }
+}
 .custom-login-page {
   position: relative;
   .lamp-pic {
@@ -250,12 +265,18 @@
 }
 
 // 以下設定縮小版時
+
 .custom-page-min,.seller-page-min {
   @media (max-width: 992px) {
     display: block;
     width: 100%;
   }
   display: none;
+  .custom-input-group{
+    @media (max-width: 992px) {
+      margin-top: 40px;
+    }
+  }
   .custom-min-group,.seller-min-group {
     width: 100%;
     .custom-min-login,.custom-min-register,.seller-min-login,.seller-min-register {

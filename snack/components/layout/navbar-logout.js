@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { MiniloginContext } from '@/contexts/minilogin-context'
 import {
   FaBars,
   FaUser,
@@ -9,16 +10,20 @@ import {
   FaAngleUp,
 } from 'react-icons/fa'
 
-export default function NavbarLogout() {
+export default function NavbarLogout(
+  
+  // { toggleRegister }
+) {
+  const { handleLinkClick } = useContext(MiniloginContext);
   return (
     <>
       {' '}
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <a className="navbar-brand" href="#">
+            <Link className="navbar-brand" href="/">
               <Image src="/logo-o.svg" alt="" width={180} height={70} />
-            </a>
+            </Link>
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="#">
                 <FaShoppingCart />
@@ -50,14 +55,14 @@ export default function NavbarLogout() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/nightmarket-info/index">
                     美味商城
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" href="/game/game-select">
                     趣味遊戲
-                  </a>
+                  </Link>
                 </li>
               </div>
               {/* 手機版的選單 開始 */}
@@ -83,14 +88,18 @@ export default function NavbarLogout() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/login/login-custom" 
+                      onClick={() => handleLinkClick('type1')}
+                      >
                         一般會員註冊
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/login/login-seller"
+                      onClick={() => handleLinkClick('type1')}
+                      >
                         商家會員註冊
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -114,14 +123,19 @@ export default function NavbarLogout() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/login/login-custom" 
+                      // onClick={() => toggleRegister(false)}
+                      onClick={() => handleLinkClick('type2')}
+                      >
                         一般會員登入
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/login/login-seller"
+                      onClick={() => handleLinkClick('type2')}
+                      >
                         商家會員登入
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -152,14 +166,14 @@ export default function NavbarLogout() {
                       >
                         <div className="triangle" />
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link className="dropdown-item" href="/login/login-custom">
                             一般會員【登入/註冊】
-                          </a>
+                          </Link>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link className="dropdown-item" href="/login/login-seller">
                             商家會員【登入/註冊】
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>

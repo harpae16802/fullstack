@@ -9,6 +9,22 @@ import db from "../utils/db.js";
 // postman 測試路由 : http://localhost:3002/custom-auth/login-jwt
 const customAuthRouter = express.Router();
 
+// customAuthRouter.use((req, res, next) => {
+//   res.locals.title = "NightMarket Hunter"; //設定網站名稱
+
+//   // 處理 JWT token
+//   const auth = req.get("Authorization");
+//   if (auth && auth.indexOf("Bearer ") === 0) {
+//     const token = auth.slice(7); // 去掉 "Bearer "
+//     try {
+//       // res.locals.my_jwt(放在此比較安全但現在res.req不同)
+//       //要確認my_jwt沒用過,像req.body已經被使用了
+//       req.my_jwt = jwt.verify(token, process.env.JWT_SECRET);
+//     } catch (ex) {}
+//   }
+
+//   next(); //呼叫他才能往下 不然網頁會一直停留在讀取旋轉
+// });
 
 customAuthRouter.post("/login-jwt", async (req, res) => {
   let { account, password } = req.body || {};
@@ -48,7 +64,7 @@ customAuthRouter.post("/login-jwt", async (req, res) => {
     // 打包  JWT
     const token = jwt.sign(
       {
-        id: row.custom_id ,
+        custom_id: row.custom_id ,
         account: row.custom_account ,
       },
       // process.env.JWT_SECRET >> 去看 dev.env 檔
@@ -67,6 +83,24 @@ customAuthRouter.post("/login-jwt", async (req, res) => {
   }
   res.json(output);
 });
+
+// customAuthRouter.get("/jwt-data", async (req, res) => {
+//   // let payload = {};
+//   // const auth = req.get("Authorization");
+//   // //必須接auth(範例為Bearer (後面是token),indexOf是判斷切割部分為第0(沒有值會回傳-1,如果Bearer 在後面就不是0))
+//   // if (auth && auth.indexOf("Bearer ") === 0) {
+//   //   const token = auth.slice(7); // 去掉 "Bearer "
+//   //   //防止crash進行try catch(但不處理)
+//   //   try {
+//   //     // process.env.JWT_SECRET>>去看dev.env檔
+//   //     payload = jwt.verify(token, process.env.JWT_SECRET);
+//   //   } catch (ex) {}
+//   // }
+//   // res.json(payload);
+//   // 上面的部分移到top-middleware,這裡就單純接受到jwt.verify(token, process.env.JWT_SECRET就好
+//   res.json(req.my_jwt);
+// });
+
 
 // // 使用 multer().none() 表示不处理文件上传
 // customAuthRouter.post("/login", upload.none(), async (req, res) => {

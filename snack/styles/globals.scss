@@ -64,6 +64,15 @@ body {
     background-color: #fff;
     color: $primary;
   }
+  .btn-outline-primary a:hover{
+    color: #fff;
+  }
+  .btn-outline-primary:hover a{
+    color: #fff;
+  }
+  .btn-outline-primary a:active{
+    color: #fff;
+  }
 
   // 表單
   .form-label {
@@ -266,10 +275,15 @@ body {
         justify-content: center;
         text-align: center;
       }
+      .navbar-brand{
+        padding-top:0px;
+        padding-bottom:0px;
+        margin-right:0px;
+      }
       .navbar-brand img{
         @media (max-width: 992px) {
-          height: 50px;
-          width: 132px;
+          height: 40px;
+          width: 105px;
       }
     }
       .navbar-brand.min-cart {
