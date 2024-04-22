@@ -39,6 +39,21 @@
     }
   }
 }
+.pswinput{
+  position: relative;
+  .password-eye{
+    position: absolute;
+    color: $primary;
+    font-size: 25px;
+    top: 48px;
+    right: 14px;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .form-control{
+    padding: 12px 50px 12px 30px;
+  }
+}
 .custom-login-page {
   position: relative;
   .lamp-pic {

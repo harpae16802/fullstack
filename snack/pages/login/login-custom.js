@@ -1,12 +1,12 @@
 import Section from '@/components/layout/section'
-import React, { useState,useContext  } from 'react'
+import React, { useState, useContext } from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
 import { MiniloginContext } from '@/contexts/minilogin-context'
-
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 // 用在分頁的icon
 import {
@@ -16,16 +16,13 @@ import {
   FaAngleRight,
 } from 'react-icons/fa'
 
-export default function LoginCustom(
-  // {toggleRegister}
-) {
+export default function LoginCustom() {
   const router = useRouter()
-
+  // 會員登入登出的勾子
   const { auth, login, logout } = useAuth()
 
-  // 處理手機板的頁面呈現
-  const { selectedContent,handleLinkClick } = useContext(MiniloginContext);
-
+  // 處理手機板的註冊登入的頁面呈現
+  const { selectedContent, handleLinkClick } = useContext(MiniloginContext)
 
   return (
     <>
@@ -94,7 +91,7 @@ export default function LoginCustom(
                   <div className="login-title">
                     <span>一般會員註冊</span>
                     <button type="button" className="btn btn-outline-primary">
-                    <Link href="/login/login-seller">切換商家會員</Link>
+                      <Link href="/login/login-seller">切換商家會員</Link>
                     </button>
                   </div>
                   <div className="custom-input-group">
@@ -113,7 +110,7 @@ export default function LoginCustom(
                         />
                         <div id="emailHelp" className="form-text"></div>
                       </div>
-                      <div className="mb-3">
+                      <div className="mb-3 pswinput">
                         <label htmlFor="password3" className="form-label">
                           <span>密碼</span>
                           <span className="must-text">*必填項目</span>
@@ -124,9 +121,11 @@ export default function LoginCustom(
                           id="password3"
                           name="password3"
                         />
+                        {/* <FaEye /> */}
+                        <FaEyeSlash className="password-eye" />
                         <div id="passwordHelp" className="form-text"></div>
                       </div>
-                      <div className="mb-3">
+                      <div className="mb-3 pswinput">
                         <label htmlFor="password4" className="form-label">
                           <span>再次確認密碼</span>
                           <span className="must-text">*必填項目</span>
@@ -137,6 +136,8 @@ export default function LoginCustom(
                           id="password4"
                           name="password4"
                         />
+                        {/* <FaEye /> */}
+                        <FaEyeSlash className="password-eye" />
                         <div id="passwordHelp" className="form-text"></div>
                       </div>
                       <button
@@ -203,7 +204,7 @@ export default function LoginCustom(
                         />
                         <div id="emailHelp" className="form-text"></div>
                       </div>
-                      <div className="mb-3">
+                      <div className="mb-3 pswinput">
                         <label htmlFor="password" className="form-label">
                           密碼
                         </label>
@@ -213,6 +214,8 @@ export default function LoginCustom(
                           id="password"
                           name="password"
                         />
+                        {/* <FaEye /> */}
+                        <FaEyeSlash className="password-eye" />
                         <div id="passwordHelp" className="form-text"></div>
                       </div>
                       <div className="forget-text">
@@ -244,8 +247,11 @@ export default function LoginCustom(
         <div className="custom-page-min">
           <div className="custom-min-group">
             {/* 一般會員註冊 */}
-            <div className="custom-min-register" 
-            style={{ display: selectedContent === 'type1' ? 'block' : 'none' }}
+            <div
+              className="custom-min-register"
+              style={{
+                display: selectedContent === 'type1' ? 'block' : 'none',
+              }}
             >
               <div className="login-title">
                 <span>一般會員註冊</span>
@@ -269,11 +275,8 @@ export default function LoginCustom(
                     />
                     <div id="emailHelp" className="form-text"></div>
                   </div>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="password5"
-                      className="form-label"
-                    >
+                  <div className="mb-3 pswinput">
+                    <label htmlFor="password5" className="form-label">
                       <span>密碼</span>
                       <span className="must-text">*必填項目</span>
                     </label>
@@ -283,13 +286,12 @@ export default function LoginCustom(
                       id="password5"
                       name="password5"
                     />
+                     {/* <FaEye /> */}
+                     <FaEyeSlash className="password-eye" />
                     <div id="passwordHelp" className="form-text"></div>
                   </div>
                   <div className="mb-3">
-                    <label
-                      htmlFor="password6"
-                      className="form-label"
-                    >
+                    <label htmlFor="password6" className="form-label">
                       <span>再次確認密碼</span>
                       <span className="must-text">*必填項目</span>
                     </label>
@@ -319,35 +321,38 @@ export default function LoginCustom(
               </div>
             </div>
             {/* 一般會員登入 */}
-            <div className="custom-min-login" 
-            style={{ display: selectedContent === 'type2' ? 'block' : 'none' }}
+            <div
+              className="custom-min-login"
+              style={{
+                display: selectedContent === 'type2' ? 'block' : 'none',
+              }}
             >
               <div className="login-title">
                 <span>一般會員登入</span>
                 <button type="button" className="btn btn-outline-primary">
-                <Link href="/login/login-seller">切換商家</Link>
+                  <Link href="/login/login-seller">切換商家</Link>
                 </button>
               </div>
               <div className="custom-input-group">
-              <form
-                      name="form2"
-                      method="post"
-                      onSubmit={(e) => {
-                        e.preventDefault() // 防止表單預設行為
-                        const account = e.target.account2.value
-                        const password = e.target.password2.value
-                        login(account, password).then((result) => {
-                          if (result) {
-                            // 登入成功後的操作，例如導航到另一個頁面
-                            alert('登入成功')
-                            router.replace(`/`)
-                          } else {
-                            // 登入失敗，顯示錯誤訊息
-                            alert('登入失敗，請檢查帳號和密碼')
-                          }
-                        })
-                      }}
-                    >
+                <form
+                  name="form2"
+                  method="post"
+                  onSubmit={(e) => {
+                    e.preventDefault() // 防止表單預設行為
+                    const account = e.target.account2.value
+                    const password = e.target.password2.value
+                    login(account, password).then((result) => {
+                      if (result) {
+                        // 登入成功後的操作，例如導航到另一個頁面
+                        alert('登入成功')
+                        router.replace(`/`)
+                      } else {
+                        // 登入失敗，顯示錯誤訊息
+                        alert('登入失敗，請檢查帳號和密碼')
+                      }
+                    })
+                  }}
+                >
                   <div className="mb-3">
                     <label htmlFor="account2" className="form-label">
                       帳號
@@ -361,11 +366,8 @@ export default function LoginCustom(
                     />
                     <div id="emailHelp" className="form-text"></div>
                   </div>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="password2"
-                      className="form-label"
-                    >
+                  <div className="mb-3 pswinput">
+                    <label htmlFor="password2" className="form-label">
                       密碼
                     </label>
                     <input
@@ -374,6 +376,8 @@ export default function LoginCustom(
                       id="password2"
                       name="password2"
                     />
+                    {/* <FaEye /> */}
+                    <FaEyeSlash className="password-eye" />
                     <div id="passwordHelp" className="form-text"></div>
                   </div>
                   <div className="forget-text">
