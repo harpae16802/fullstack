@@ -127,6 +127,8 @@ app.use("/products", productsRouter);
 app.use("/sellers", sellerRouter);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
+//QRcode 資輛查詢與變更
+app.use("/QRcode", QRrouter)
 
 // ==== 咚
 //店家地圖路由
