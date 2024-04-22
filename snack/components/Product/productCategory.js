@@ -12,7 +12,7 @@ const CategoryItem = ({ imageUrl, categoryName }) => {
      
             <div className="col">
              
-              <Image src={"/images/主食.png"} width={119} height={119} className={styles.categoryImage} />
+              <Image src={"/images/主食.png"} width={144} height={119} className={styles.categoryImage} />
 
               <p className={styles.categoryText}>{"主食"}</p>
 

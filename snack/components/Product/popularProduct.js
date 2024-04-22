@@ -11,14 +11,14 @@ const PopularProduct = ({ imageUrl, market, sellerName, productName, buttonText 
     <div className={` ${styles.popularProduct}`} style={{ marginRight: '20px' }}>
 
       <div className={styles.popularInfo}>
-
+          {/* 火焰icon */}
         <Image src="/images/fire.png" width={45} height={55} className={styles.popularIcon} />
 
         <div className={styles.bestSellerText}>本週熱銷</div>
 
         <div className={styles.bestSellerText}>NO1</div>
       </div>
-
+      
       <Image src={"/images/大腸麵線.jpg"} width={345} height={275} className={styles.popularImage} />
 
       <p className={styles.bestSeller}  style={{marginTop: '10px' }}>{market}三和夜市</p>
