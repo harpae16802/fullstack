@@ -183,6 +183,35 @@ export default function LoginSeller() {
         {/* 以下是min版 */}
         <div className="seller-page-min">
           <div className="seller-min-group">
+           {/* 商家會員註冊 */}
+            {/* <div className="seller-min-register">
+              <div className="login-title">
+                <span>商家會員註冊</span>
+                <button type="button" className="btn btn-outline-primary">
+                  切換一般
+                </button>
+              </div>
+              <div className="seller-input-group">
+                <form>
+                  <div className="mb-3">
+                    <label htmlFor="exampleInputMobile" className="form-label">
+                      <span>手機號碼</span>
+                      <span className="must-text">*必填項目</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputMobile"
+                      aria-describedby="mobileHelp"
+                    />
+                    <div id="mobileHelp" className="form-text"></div>
+                  </div>
+                  <button type="submit" className="btn btn-primary mt-5 ">
+                    下一步
+                  </button>
+                </form>
+              </div>
+            </div> */}
             {/* 商家會員登入 */}
             <div className="seller-min-login">
               <div className="login-title">

@@ -17,7 +17,7 @@ import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
-import customAuthRouter from "./routes/customAuthRouter.js";
+import signUpRouter from "./routes/sign-up.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,8 +27,6 @@ const PORT = process.env.WEB_PORT || 3003;
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
 
 
 // ==== 如
@@ -112,6 +110,8 @@ app.post("/login-jwt", async (req, res) => {
 app.get("/jwt-data", async (req, res) => {
   res.json(req.my_jwt);
 });
+
+app.use("/sign-up", signUpRouter);
 
 
 // ==== 弘
