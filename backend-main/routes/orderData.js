@@ -27,7 +27,7 @@ router
     const params = [seller_id];
 
     if (start_date && end_date) {
-      query += " AND o.payment_day BETWEEN ? AND ?";
+      query += " AND o.payment_date BETWEEN ? AND ?";
       params.push(start_date, end_date);
     }
 
@@ -53,6 +53,7 @@ router
       res.status(500).json({ error: error.message });
     }
   })
+  
   .get("/categories", async (req, res) => {
     try {
       // 查询数据库获取产品种类信息

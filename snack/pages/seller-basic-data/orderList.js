@@ -84,6 +84,7 @@ export default function Order() {
 
   // 載入資料
   function loadOrders() {
+    console.log('Loading orders with', query);  //
     axios
       .get(`${ORDERDETAIL}/`, {
         params: {
@@ -95,6 +96,7 @@ export default function Order() {
         },
       })
       .then((response) => {
+        console.log('Orders loaded', response.data);  // 输出加载的订单数据
         setOrders(response.data) // 假设后端返回的是数组
       })
       .catch((error) => {

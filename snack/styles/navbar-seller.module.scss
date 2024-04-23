@@ -59,7 +59,7 @@ $mobile-width: 480px;
   gap: 30px;
 }
 .btnPrimary {
-  background-color: #de4f4f; // 範例紅色，根據設計調整
+  background-color: $primary-red; // 範例紅色，根據設計調整
   color: white;
   border: none;
   padding: 10px 20px;
