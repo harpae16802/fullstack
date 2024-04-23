@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { SIGN_UP_POST } from '@/components/config/api-path'
+import { z } from 'zod'
 
 // 用在分頁的icon
 import {
@@ -16,6 +17,10 @@ import {
   FaAngleLeft,
   FaAngleRight,
 } from 'react-icons/fa'
+
+// 註冊檢查用
+const schemaEmail = z.string().email({ message: '請填寫正確的E-MAIL格式' })
+const schemaPwd = z.string().min(6, { message: '請填寫正確的密碼格式' })
 
 export default function LoginCustom() {
   const router = useRouter()
@@ -64,7 +69,7 @@ export default function LoginCustom() {
     })
   }
 
-  // ==== 註冊的部分
+  // ==== 註冊的部分 ====
 
   // 狀態為物件，屬性對應到表單的欄位名稱
   const [user, setUser] = useState({
@@ -108,6 +113,17 @@ export default function LoginCustom() {
     // 信號值，代表是否有錯誤
     let hasErrors = false
 
+    const r1 = schemaEmail.safeParse(user.email)
+    if (!r1.success) {
+      hasErrors = true
+      newErrors.email = r1.error.issues[0].message
+    }
+    const r2 = schemaPwd.safeParse(user.password3)
+    if (!r2.success) {
+      hasErrors = true
+      newErrors.password3 = r2.error.issues[0].message
+    }
+
     if (!user.email) {
       newErrors.email = '請輸入E-MAIL'
       hasErrors = true
@@ -127,6 +143,8 @@ export default function LoginCustom() {
       newErrors.password4 = '密碼不相符'
       hasErrors = true
     }
+
+   
 
     // 呈現錯誤訊息
     setErrors(newErrors)
@@ -285,6 +303,7 @@ export default function LoginCustom() {
                           value={user.email}
                           onChange={handleFieldChange}
                           aria-describedby="emailHelp"
+                          placeholder="請輸入有效的E-MAIL"
                         />
                         <div
                           id="emailHelp"
@@ -309,6 +328,7 @@ export default function LoginCustom() {
                           name="password3"
                           value={user.password3}
                           onChange={handleFieldChange}
+                          placeholder="請輸入至少5字以上的密碼"
                         />
                         <div
                           className="password-eye"
@@ -343,6 +363,7 @@ export default function LoginCustom() {
                           name="password4"
                           value={user.password4}
                           onChange={handleFieldChange}
+                          placeholder="請再次輸入密碼"
                         />
                         <div
                           className="password-eye"
@@ -536,6 +557,7 @@ export default function LoginCustom() {
                       id="email2"
                       name="email2"
                       aria-describedby="emailHelp"
+                      placeholder="請輸入有效的E-MAIL"
                     />
                     <div id="emailHelp" className="form-text"></div>
                   </div>
@@ -549,6 +571,7 @@ export default function LoginCustom() {
                       className="form-control"
                       id="password5"
                       name="password5"
+                      placeholder="請輸入至少5字以上的密碼"
                     />
                     <div
                       className="password-eye"
@@ -572,6 +595,7 @@ export default function LoginCustom() {
                       className="form-control"
                       id="password6"
                       name="password6"
+                      placeholder="請再次輸入密碼"
                     />
                     <div
                       className="password-eye"
