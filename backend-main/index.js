@@ -16,7 +16,7 @@ import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
-import customAuthRouter from "./routes/customAuthRouter.js"; 
+import signUpRouter from "./routes/sign-up.js"; 
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
@@ -35,6 +35,9 @@ app.use(cors({
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+
+
 
 // ==== 如
 
@@ -117,6 +120,8 @@ app.post("/login-jwt", async (req, res) => {
 app.get("/jwt-data", async (req, res) => {
   res.json(req.my_jwt);
 });
+
+app.use("/sign-up", signUpRouter);
 
 
 // ==== 弘

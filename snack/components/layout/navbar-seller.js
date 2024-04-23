@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import {
   FaBars,
@@ -11,6 +12,8 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarSeller() {
+  // 導覽列的名稱樣式
+  const router = useRouter()
   return (
     <>
       {' '}
@@ -42,17 +45,30 @@ export default function NavbarSeller() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" href="/market-map">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/market-map' ? 'active' : ''
+                    }`}
+                    aria-current="page"
+                    href="/market-map"
+                  >
                     夜市導覽
                   </Link>
                 </li>
-                <li className="nav-item" style={{ border: 'none'}}>
-                  <Link className="nav-link" href="/nightmarket-info/index">
+                <li className="nav-item" style={{ border: 'none' }}>
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/nightmarket-info/index'
+                        ? 'active'
+                        : ''
+                    }`}
+                    href="/nightmarket-info/index"
+                  >
                     美味商城
                   </Link>
                 </li>
                 {/* <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a className={`nav-link ${router.pathname === '/game/game-select' ? 'active' : ''}`} href="#">
                     趣味遊戲
                   </a>
                 </li> */}

@@ -28,5 +28,10 @@ export const MARKET_SEARCH = `${MARKET}/search`
 // 搜尋
 export const MARKET_SELLER = `${MARKET}/seller`
 
+// 登入
 // ===
 export const JWT_LOGIN_POST = `${API_SERVER}/login-jwt`
+
+// 註冊
+export const SIGN_UP_POST = `${API_SERVER}/sign-up/custom-sign`
+

@@ -20,13 +20,14 @@ export default function MainLayout({ children }) {
   // }
   const { auth } = useAuth()
   const { seller } = useSeller()
-
+  const sellerId = seller?.id;
   // 根據用戶身份來決定要渲染哪一個導覽列
   const renderNavbar = () => {
     if (auth.custom_id) {
       // 一般會員
       return <NavbarCustom />
-    } else if (seller && seller.seller_id) {
+    } else if (sellerId) {
+      console.log(sellerId)
       // 商家會員
       return <NavbarSeller />
     } else {

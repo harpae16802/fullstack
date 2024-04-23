@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import {
   FaBars,
@@ -10,11 +11,11 @@ import {
   FaAngleUp,
 } from 'react-icons/fa'
 
-export default function NavbarLogout(
-  
-  // { toggleRegister }
-) {
-  const { handleLinkClick } = useContext(MiniloginContext);
+export default function NavbarLogout() {
+  // 顯示小版手機登入註冊導覽列傳值用的
+  const { handleLinkClick } = useContext(MiniloginContext)
+  // 導覽列的名稱樣式
+  const router = useRouter()
   return (
     <>
       {' '}
@@ -47,7 +48,9 @@ export default function NavbarLogout(
               <div className="view-nav-items">
                 <li className="nav-item">
                   <Link
-                    className="nav-link active"
+                    className={`nav-link ${
+                      router.pathname === '/market-map' ? 'active' : ''
+                    }`}
                     aria-current="page"
                     href="/market-map"
                   >
@@ -55,12 +58,24 @@ export default function NavbarLogout(
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/nightmarket-info/index">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/nightmarket-info/index'
+                        ? 'active'
+                        : ''
+                    }`}
+                    href="/nightmarket-info/index"
+                  >
                     美味商城
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/game/game-select">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/game/game-select' ? 'active' : ''
+                    }`}
+                    href="/game/game-select"
+                  >
                     趣味遊戲
                   </Link>
                 </li>
@@ -88,15 +103,19 @@ export default function NavbarLogout(
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link className="dropdown-item" href="/login/login-custom" 
-                      onClick={() => handleLinkClick('type1')}
+                      <Link
+                        className="dropdown-item"
+                        href="/login/login-custom"
+                        onClick={() => handleLinkClick('type1')}
                       >
                         一般會員註冊
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" href="/login/login-seller"
-                      onClick={() => handleLinkClick('type1')}
+                      <Link
+                        className="dropdown-item"
+                        href="/login/login-seller"
+                        onClick={() => handleLinkClick('type1')}
                       >
                         商家會員註冊
                       </Link>
@@ -123,16 +142,19 @@ export default function NavbarLogout(
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link className="dropdown-item" href="/login/login-custom" 
-                      // onClick={() => toggleRegister(false)}
-                      onClick={() => handleLinkClick('type2')}
+                      <Link
+                        className="dropdown-item"
+                        href="/login/login-custom"
+                        onClick={() => handleLinkClick('type2')}
                       >
                         一般會員登入
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" href="/login/login-seller"
-                      onClick={() => handleLinkClick('type2')}
+                      <Link
+                        className="dropdown-item"
+                        href="/login/login-seller"
+                        onClick={() => handleLinkClick('type2')}
                       >
                         商家會員登入
                       </Link>
@@ -166,12 +188,18 @@ export default function NavbarLogout(
                       >
                         <div className="triangle" />
                         <li>
-                          <Link className="dropdown-item" href="/login/login-custom">
+                          <Link
+                            className="dropdown-item"
+                            href="/login/login-custom"
+                          >
                             一般會員【登入/註冊】
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item" href="/login/login-seller">
+                          <Link
+                            className="dropdown-item"
+                            href="/login/login-seller"
+                          >
                             商家會員【登入/註冊】
                           </Link>
                         </li>
