@@ -267,7 +267,7 @@ const ProductsList = () => {
               {/* 搜索框 */}
               <div className="container">
                 <div className="row">
-                  <div className="col-md-11 col-9">
+                  <div className="col-md-9 col-12">
                     <input
                       type="text"
                       className="form-control"
@@ -279,13 +279,14 @@ const ProductsList = () => {
                     />
                     {/* 清除搜索词按钮 */}
                   </div>
-                  <div className="col-md-1 col-3">
+
+                  <div className="col-md-3 mt-1 col-12">
                     <button
-                      className={`${styles.btnoutline}`}
+                      className={styles.btnPrimary}
                       type="button"
                       onClick={() => setSearchTerm('')}
                     >
-                      <i className="bi bi-x-lg"></i>
+                    初始化搜尋
                     </button>
                   </div>
                 </div>

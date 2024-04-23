@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import OrderChart from '@/components/OrderChart' // 確保路徑正確
+import PaginationComponent from '@/components/page'
 
 export default function Order() {
   // 使用 useRouter
@@ -38,6 +39,10 @@ export default function Order() {
   })
   const [orders, setOrders] = useState([])
   const [categories, setCategories] = useState([])
+  // 在 Order 组件的顶部添加新的状态
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+
   // 資料過濾
 
   // 使用Ref
@@ -82,9 +87,8 @@ export default function Order() {
     query.productName,
   ])
 
-  // 載入資料
+  // 後端資料仔入
   function loadOrders() {
-    console.log('Loading orders with', query);  //
     axios
       .get(`${ORDERDETAIL}/`, {
         params: {
@@ -93,17 +97,23 @@ export default function Order() {
           end_date: query.endDate,
           category_id: query.categoryId,
           product_name: query.productName,
+          page: currentPage,
+          limit: 5,
         },
       })
       .then((response) => {
-        console.log('Orders loaded', response.data);  // 输出加载的订单数据
-        setOrders(response.data) // 假设后端返回的是数组
+        if (response.status === 200 && response.data.data) {
+          setOrders(response.data.data)
+          setTotalPages(response.data.totalPages)
+        } else {
+          console.log('Unexpected response structure:', response)
+          setOrders([])
+        }
       })
       .catch((error) => {
         console.error('查询销售数据失败', error)
       })
   }
-
   // 資料輸入
   function handleInputChange(e) {
     const { name, value } = e.target
@@ -112,10 +122,21 @@ export default function Order() {
       [name]: value,
     }))
   }
-  // 執行查詢
-  function handleSearch() {
-    loadOrders() // 使用同一个函数来加载数据
-  }
+  
+  const handleCategoryChange = (e) => {
+    const categoryId = e.target.value;
+    setQuery((prev) => ({
+      ...prev,
+      categoryId: categoryId,
+      // 在這裡手動清除其他條件
+      startDate: '',
+      endDate: '',
+      productName: '',
+    }));
+    // 發送新的請求
+    loadOrders();
+  };
+  
 
   // 初始化查詢
   function resetSearch() {
@@ -125,7 +146,45 @@ export default function Order() {
       categoryId: '',
       productName: '',
     })
+    setCurrentPage(1) // 重置回第一页
+    loadOrders() // 重新加载订单
   }
+
+  //分頁
+  const renderPageNumbers = () => {
+    if (totalPages <= 1) return null // 如果总页数为1或更少，不显示分页
+
+    const pageNumbers = []
+    let startPage = Math.max(currentPage - 2, 1)
+    let endPage = Math.min(startPage + 4, totalPages)
+
+    if (endPage - startPage < 4) {
+      startPage = Math.max(endPage - 4, 1)
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <li
+          key={i}
+          className={`page-item ${i === currentPage ? 'active' : ''}`}
+        >
+          <button className="page-link" onClick={() => setCurrentPage(i)}>
+            {i}
+          </button>
+        </li>
+      )
+    }
+
+    return pageNumbers
+  }
+  // 分頁
+  const handlePageChange = (newPage) => {
+    if (newPage !== currentPage) {
+      setCurrentPage(newPage)
+      loadOrders() // 重新加载数据
+    }
+  }
+
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -242,7 +301,7 @@ export default function Order() {
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>定單管理系統</h2>
+                <h2 className={`${styles.formTitle}`}>訂單管理系統</h2>
 
                 {/* 這裡要改成起始日期 */}
                 <div className={styles.selectGroup}>
@@ -288,7 +347,7 @@ export default function Order() {
                     <select
                       name="categoryId"
                       value={query.categoryId}
-                      onChange={handleInputChange}
+                      onChange={handleCategoryChange}
                       className="form-control mb-2"
                     >
                       <option value="">所有類別</option>
@@ -311,7 +370,7 @@ export default function Order() {
                 {/* 這裡要能搜索產品名稱 */}
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-6 col-12">
+                    <div className="col-md-9 col-12">
                       <input
                         type="text"
                         name="productName"
@@ -321,16 +380,16 @@ export default function Order() {
                         placeholder="產品名稱..."
                       />
                     </div>
-                    <div className="col-md-3 col-12">
+                    {/* <div className="col-md-3 col-12">
                       <button
                         onClick={handleSearch}
                         className={styles.btnPrimary}
                       >
                         查詢銷售數據
                       </button>
-                    </div>
+                    </div> */}
                     {/* 清除搜索職按鈕 */}
-                    <div className="col-md-3 col-12">
+                    <div className="col-md-3 mt-1 col-12">
                       <button
                         onClick={resetSearch}
                         className={styles.btnPrimary}
@@ -345,7 +404,7 @@ export default function Order() {
                 {/* 這裡要能搜索產品名稱 */}
 
                 {/* 我在這裡要實現資料的顯示 */}
-                <table className="table">
+                <table className={`${styles.table}`}>
                   <thead>
                     <tr>
                       <th>產品名稱</th>
@@ -355,17 +414,51 @@ export default function Order() {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map((order) => (
-                      <tr key={order.order_id}>
-                        <td>{order.product_name}</td>
-                        <td>{order.category_name}</td>
-                        <td>{order.purchase_quantity}</td>
-                        <td>${order.total_sum}</td>
-                      </tr>
-                    ))}
+                    {Array.isArray(orders) &&
+                      orders.map((order) => (
+                        <tr key={order.order_id}>
+                          <td>{order.product_name}</td>
+                          <td>{order.category_name}</td>
+                          <td>{order.purchase_quantity}</td>
+                          <td>${order.total_sum}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
                 {/* 我在這裡要實現資料的顯示 */}
+
+                {/* 分頁 */}
+                <nav>
+                  <ul className="pagination justify-content-center">
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <i className="bi bi-chevron-left"></i>
+                      </button>
+                    </li>
+                    {renderPageNumbers()}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <i className="bi bi-chevron-right"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+
+                {/* 分頁 */}
               </div>
             </div>
           </div>
