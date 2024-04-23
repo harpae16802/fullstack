@@ -14,6 +14,7 @@ import {
 export default function NavbarLogout() {
   // 顯示小版手機登入註冊導覽列傳值用的
   const { handleLinkClick } = useContext(MiniloginContext)
+
   // 導覽列的名稱樣式
   const router = useRouter()
   return (
