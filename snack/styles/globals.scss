@@ -664,7 +664,7 @@ body {
         }
         overflow: hidden;
         display: flex;
-        padding-bottom: 150px;
+        // padding-bottom: 150px;
         align-self: stretch;
         position: relative;
         background: $secondary;
@@ -678,6 +678,7 @@ body {
         border: $primary solid 20px;
         border-top: none;
         flex-direction: column;
+        z-index: 0;
       }
     }
 

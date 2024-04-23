@@ -98,7 +98,7 @@ const MapComponent = () => {
     <MapContainer
       center={centerPosition}
       zoom={8}
-      style={{ height: '72vh', width: '100%' }}
+      style={{ height: '80vh', width: '100%' }}
     >
       <MapUpdater mapPosition={mapPosition} /> {/* 新增的組件來更新地圖 */}
       <TileLayer
