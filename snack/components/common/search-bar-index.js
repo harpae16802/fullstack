@@ -19,8 +19,7 @@ export default function SearchBarIndex() {
 
       if (data) {
         router.push({
-          pathname: '/nightmarket-info',
-          query: { data: JSON.stringify(data) },
+          pathname: `/nightmarket-info/${data.market_id}`,
         })
       }
     } catch (error) {

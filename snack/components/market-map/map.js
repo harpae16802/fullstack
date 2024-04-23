@@ -13,6 +13,7 @@ import style from './style.module.scss'
 // 創建一個新的組件用來更新地圖的位置
 function MapUpdater({ mapPosition }) {
   const map = useMap() // 使用useMap hook獲取地圖實例
+  const router = useRouter()
 
   useEffect(() => {
     if (mapPosition.lat && mapPosition.lng) {
@@ -20,6 +21,7 @@ function MapUpdater({ mapPosition }) {
       map.panTo(newPosition)
 
       const details = mapPosition.details
+
       const popupContent = `
       <div class=${style.card}>
       <img
@@ -30,9 +32,9 @@ function MapUpdater({ mapPosition }) {
       <div class="d-flex justify-content-between ${style.text}">
         <div>
           <h4 class="fw-bold">${details.market_name}</h4>
-          <a href="#" class="text-decoration-none ${style.a}">
+          <button id="seeMoreButton" class="text-decoration-none ${style.seeMore}" >
             看更多夜市介紹
-          </a>
+          </button>
         </div>
         <div
           class="d-flex justify-content-center align-items-center ${style.score}"
@@ -44,12 +46,20 @@ function MapUpdater({ mapPosition }) {
       `
 
       // 使用傳入的消息創建並顯示Popup
-      L.popup({ className: style.popup })
+      const popup = L.popup({ className: style.popup })
         .setLatLng(newPosition)
         .setContent(popupContent)
         .openOn(map)
+
+      // 添加点击事件处理程序，导航到相应的夜市信息页面
+      popup
+        .getElement()
+        .querySelector('#seeMoreButton')
+        .addEventListener('click', () => {
+          router.push(`/nightmarket-info/${details.market_id}`) // 导航到目标 URL
+        })
     }
-  }, [map, mapPosition])
+  }, [map, mapPosition, router])
 
   return null // 這個組件不渲染任何jsx元素
 }
