@@ -19,6 +19,32 @@
  
 
   /* 產品分類:外層容器 */
+  .content {
+    margin-top: 40px;
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+  @media (max-width: 576px) {
+    .content{
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    }
+  }
+
+  .category {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+  }
+    @media (max-width: 576px) {
+      .category{
+      margin-bottom: 20px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+   }
+
   .categoryContainer {
    
     overflow-x: hidden;
@@ -77,7 +103,7 @@
     border-radius: 20px;
     border: none;
     font-size: 16px;
-    margin-left: 1200px;
+    margin-left: 1550px;
    }
 
    @media(max-width:576px){ 
@@ -110,7 +136,7 @@
   /* 人氣商品:圖片 文字設定 */
   .popularProduct { 
     margin-left:  50px;
-   font-weight: bolder;
+    font-weight: bolder;
     color:rgb(0, 0, 0) ;
   }
   @media(max-width:576px){ 
@@ -135,8 +161,8 @@
    }
 
    .popularImage{
-    width: 100%;
-    max-width: 100%;
+    width: 345;
+    height: 275px;;
   } 
   @media(max-width:576px){ 
     .popularImage{
@@ -225,13 +251,14 @@
      
   }
 
-  .recommendContainer{
+  .recommendOuter{
     margin-top: 100px;
-    margin-right: 500px;
+    margin-left: -20px;
+  }
+
+  .recommendContainer{
     display: flex;
-    justify-content: left;
-    font-weight: bolder;
-   
+    justify-content:left;
   }
 
   .recommendTitle{

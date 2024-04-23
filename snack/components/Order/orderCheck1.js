@@ -8,9 +8,16 @@ import { IoIosArrowDown } from "react-icons/io";
 
 
 
-const OrderDetailItem = ({ imageUrl, productName, productPrice }) => {
-  return (
+export default function OrderDetailItem ({
+   nightmarket = "",
+   seller = "",
+   imageUrl = "",
+   product = "",
+   price = "",
+   }) {
 
+
+  return (
 
     <div className={styles.orderContainerAdd}>
     {/* 上層: 夜市 店家名稱 */}
@@ -89,4 +96,3 @@ const OrderDetailItem = ({ imageUrl, productName, productPrice }) => {
   );
 };
 
-export default OrderDetailItem;
