@@ -9,8 +9,10 @@ export const IMAGES_SELLER = `${API_SERVER}/images/seller`
 export const MARKET_MAP = `${API_SERVER}/market-map`
 // 取得 market-data
 export const MARKET_DATA = `${MARKET_MAP}/market-data`
+// 地圖搜尋
+export const MARKET_MAP_SEARCH = `${MARKET_MAP}/search`
 
-// === shop-products
+// === shop-products 店家商品
 export const SHOP_PRODUCTS = `${API_SERVER}/shop-products`
 // 取得 seller
 export const SELLER_DATA = `${SHOP_PRODUCTS}/seller`
