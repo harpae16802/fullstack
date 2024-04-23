@@ -2,11 +2,6 @@ import Section from '@/components/layout/section'
 import React, { createContext, useContext } from 'react'
 import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
-import { IoSearchOutline } from "react-icons/io5";
-import { FaShopify } from "react-icons/fa";
-import { IoCart } from "react-icons/io5";
-
-
 
 
 export default function Order() {
@@ -24,9 +19,9 @@ export default function Order() {
                   {/* 步驟圓圈&長條 */}
                   <div className="container" >
                   <div className={styles.step1} style={{marginTop:'60px',marginLeft:'293px'}}>1</div>
-                  <div className={styles.connect2}></div>
+                  <div className={styles.connectRed}></div>
                   <div className={styles.step1}>2</div>
-                  <div className={styles.connect2}></div>
+                  <div className={styles.connectRed}></div>
                   <div className={styles.step1}>3</div>
                 </div>
                   <br />
@@ -45,7 +40,7 @@ export default function Order() {
           <div className={styles.orderBorder} style={{height:'1180px'}}>
 
            {/* 訂單詳細 外層容器 */}
-            <div className={styles.orderContainer} style={{height:'714px'}}>
+            <div className={styles.order4Container} style={{height:'714px'}}>
              
              
              {/*訂單詳細 */}
