@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 // 套件
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
@@ -54,6 +55,7 @@ function MapUpdater({ mapPosition }) {
 }
 
 const MapComponent = () => {
+  const router = useRouter()
   const { mapPosition } = useMapContext()
 
   // 所有夜市
@@ -121,9 +123,14 @@ const MapComponent = () => {
               <div className={`d-flex justify-content-between ${style.text}`}>
                 <div>
                   <h4 className="fw-bold">{point.market_name}</h4>
-                  <a href="#" className={`text-decoration-none ${style.a}`}>
+                  <button
+                    className={`text-decoration-none ${style.seeMore}`}
+                    onClick={() =>
+                      router.push(`/nightmarket-info/${point.market_id}`)
+                    }
+                  >
                     看更多夜市介紹
-                  </a>
+                  </button>
                 </div>
                 <div
                   className={`d-flex justify-content-center align-items-center ${style.score}`}
