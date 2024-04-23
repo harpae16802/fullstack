@@ -167,6 +167,7 @@ export default function LoginCustom() {
     const result = await r.json()
     if (result.success) {
       //
+      alert('註冊成功')
       router.push(`/`)
     } else {
       //
@@ -501,7 +502,10 @@ export default function LoginCustom() {
                           請輸入密碼
                         </div>
                       </div>
-                      <button type="submit" className="btn btn-primary mb-4 mt-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary mb-4 mt-4"
+                      >
                         登入
                       </button>
                       <div className="forget-text">

@@ -12,7 +12,7 @@
   border-radius: 50px 50px 0px 0px;
   //包住方向鍵和內容的階層
   .slick-slider.slick-initialized {
-    // transform: rotate(-45deg);
+    transform: rotate(-45deg);
     .slick-arrow {
       display: none !important;
     }
@@ -21,17 +21,19 @@
     .slick-list {
       // transform: rotate(-45deg);
       background-color: #fff;
-      width: 100vw;
+      overflow: visible;
+      // width: calc(100% + 50px);
       .slick-track {
         //(全部圖片串接起來的部分 )
-
+        width: 9000px;
         background-color: #8c3dac;
         .slick-slide {
           background-color: aqua;
-          // transform: rotate(45deg);
+          transform: rotate(45deg);
           // 一組的內容的外層
-          padding-left: 50px;
-       
+
+          margin-top: 300px;
+          margin-left: 300px;
 
           .slide-item {
             background-color: #ad5252;
