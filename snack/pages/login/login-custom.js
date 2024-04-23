@@ -328,7 +328,7 @@ export default function LoginCustom() {
                           name="password3"
                           value={user.password3}
                           onChange={handleFieldChange}
-                          placeholder="請輸入至少5字以上的密碼"
+                          placeholder="請輸入至少6字以上的密碼"
                         />
                         <div
                           className="password-eye"
@@ -571,7 +571,7 @@ export default function LoginCustom() {
                       className="form-control"
                       id="password5"
                       name="password5"
-                      placeholder="請輸入至少5字以上的密碼"
+                      placeholder="請輸入至少6字以上的密碼"
                     />
                     <div
                       className="password-eye"
