@@ -24,8 +24,7 @@ export default function Order() {
                   <div className={styles.step1}>2</div>
                   <div className={styles.connect1}></div>
                   <div className={styles.step2}>3</div>
-                  <div className={styles.connect1}></div>
-                  <div className={styles.step2}>4</div>
+                  
                 </div>
                   <br />
 
@@ -34,7 +33,6 @@ export default function Order() {
                     <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'435px'}}>訂單資訊</div>
                     <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'120px'}}>訂單優惠</div>
                     <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'125px'}}>付款方式</div>
-                    <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'145px'}}>完成</div>
                     {/* textContainer */}
                   </div>
                  

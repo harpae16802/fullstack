@@ -1,68 +1,110 @@
-
-
 /* product */
+
+/* 最外層容器 */
 .outerFrame{
     width: calc( 100% - 80px );
     height: 2679px;
-    background-color:rgb(246, 242, 219);
-    border-radius: 20px;
-    
+    background-color:rgba(255, 255, 255,0.5);
+    border-radius: 20px; 
 }
-
+@media (max-width: 576px) {
+    .outerFrame{
+        width: 100%;
+        height: auto;
+        background-color:rgba(246, 242, 219, 0);
+    }
+  }
+/* '結帳頁面'標題 */
 .orderTitle{
     text-align: center;
     margin-top: 50px;
     color:rgb(102, 50, 4);
-    font-weight: bolder;
+    font-weight: bold;
+    font-size: 40px;
 }
+@media (max-width: 576px) {
+    .orderTitle{
+       font-size: 20px;
+      margin-top: 16px;
+    }
+  }
 
 .stepBorder{
     margin-top: 30px;
     margin-left: 70px;
-    width: calc( 100% - 150px );
+    width: 1417px;
     height: 288px;
     border: solid 3px rgb(163, 44, 45);
     border-radius: 20px;
 }
+@media (max-width: 576px) {
+    .stepBorder{
+       width: 299px;
+       height: 113px;
+       margin-top: 16px;
+       margin-left: 10px;
+       background-color: rgba(255, 255, 255,0.5);
+    }
+  }
 
 .container{
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
 }
 
+/* 步驟:紅底白字圓圈 */
 .step1{
     display: inline-block;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: rgb(163, 44, 45);
     color:white;
     border-radius: 50%;
     text-align: center;
-    justify-content: center;
-    align-items: center;
-    font-size: large;
+    padding-top: 3px;
+    font-size: 28px;
+    font-weight: bold;
     line-height: 40px;
     position: relative;
     z-index: 1;
     margin: -5px;
+    margin-top: 70px;
+    margin-left: 303px;
 }
+@media (max-width: 576px) {
+    .step1{
+       width: 40px;
+       height: 40px;
+       margin-top: 20px;
+       margin-left: 35px;
+       padding-top: 1px;
+      font-size: 16px;
+    }
+  }
 
-
-.connect1{
+/* 連接線:灰 */
+.connectGrey{
     display: inline-block;
     vertical-align: middle;
-    width: 200px;
-    height: 13px;
-    background-color: rgb(177, 175, 175);
+    width: 290px;
+    height: 15px;
+    background-color: #B1B7B5;
     z-index: 2;
     margin:-5px;
 }
+@media (max-width: 576px) {
+    .connectGrey{
+       width: 60px;
+       height: 6px;
+       margin-left: -5px;
+    }
+  }
 
 .connect2{
     display: inline-block;
     vertical-align: middle;
-    width: 200px;
-    height: 13px;
+    width: 290px;
+    height: 15px;
     background-color: rgb(163, 44, 45);
     z-index: 2;
     margin:-5px;
@@ -73,34 +115,54 @@
     font-weight: bolder;
     font-size: x-large;
 }
+@media (max-width: 576px) {
+    .step1Text{
+       font-size: 16px;
+    }
+  }
 
+
+
+/* 步驟:灰底白字圓圈 */
 .step2{
-    display: inline-block; 
-    width: 40px;
-    height: 40px;
-    background-color: rgb(177, 175, 175);
-    color:black;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-color: #B1B7B5;
+    color:white;
     border-radius: 50%;
     text-align: center;
-    align-items: center;
-    font-size: large;
+    padding-top: 3px;
+    font-size: 28px;
+    font-weight: bold;
     line-height: 40px;
     position: relative;
     z-index: 1;
-    margin:-5px;
+    margin: -5px;
 }
+@media (max-width: 576px) {
+    .step2{
+        width: 40px;
+       height: 40px;
+       padding-top: 1px;
+       font-size: 16px;
+    }
+  }
 
 .textContainer{
-    display: flex;
-    
+    display: flex;  
 }
 
 .step2Text{
-   
     color:rgb(177, 175, 175);
     font-weight: bolder;
     font-size: x-large;
 }
+@media (max-width: 576px) {
+    .step2Text{
+       font-size: 16px;
+    }
+  }
 
 .step4Text{
     margin-top:50px ;

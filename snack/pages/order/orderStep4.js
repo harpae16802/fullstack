@@ -5,7 +5,7 @@ import styles from '@/styles/Order.module.css'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaShopify } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
-import { Container, Row, Col } from 'react-bootstrap';
+
 
 export default function Order() {
   return (
@@ -25,8 +25,6 @@ export default function Order() {
                   <div className={styles.step1}>2</div>
                   <div className={styles.connect2}></div>
                   <div className={styles.step1}>3</div>
-                  <div className={styles.connect2}></div>
-                  <div className={styles.step1}>4</div>
                 </div>
                   <br />
 
@@ -35,7 +33,6 @@ export default function Order() {
                     <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'435px'}}>訂單資訊</div>
                     <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'120px'}}>訂單優惠</div>
                     <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'125px'}}>付款方式</div>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'145px'}}>完成</div>
                     {/* textContainer */}
                   </div>
                  
