@@ -12,6 +12,7 @@ import '@/styles/globals.scss'
 import '../styles/form.css'
 import '@/styles/index.scss'
 import '@/styles/login.scss'
+import '@/styles/carousel.scss'
 import '@/styles/game.scss'
 
 function MyApp({ Component, pageProps }) {

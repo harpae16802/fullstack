@@ -43,50 +43,49 @@ const CustomNextArrow = (props) => {
     </div>
   )
 }
-function CustomSlider() {
+function MultipleItems() {
   const settings = {
-    dots: false, // 指示點
-    infinite: true, //最後一張回到第一張
-    speed: 800,
-    slidesToShow: 3, //一次顯示幾張
-    slidesToScroll: 1, //滑動顯示幾張
-    // autoplay: true, // 自動輪播功能
-    prevArrow: null,
-    nextArrow: null, 
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
   }
 
   return (
-    <div className="slider-container discount-index-gruop ss">
+    <div className="slider-container store-index-gruop">
       <Slider {...settings}>
-        <div className="slide-item">
-          <div className="store-name">月氏激蛋葱AAA油餅</div>
-          <div className="store-market">寧夏夜市</div>
-          <button type="button" className="btn btn-light">
-            看更多
-          </button>
-        </div>
-        <div className="slide-item">
+        <div className="card-store-index">
           <div className="store-name">月氏激蛋葱油餅</div>
           <div className="store-market">寧夏夜市</div>
           <button type="button" className="btn btn-light">
             看更多
           </button>
         </div>
-        <div className="slide-item">
+        <div className="card-store-index">
           <div className="store-name">月氏激蛋葱油餅</div>
           <div className="store-market">寧夏夜市</div>
           <button type="button" className="btn btn-light">
             看更多
           </button>
         </div>
-        <div className="slide-item">
+        <div className="card-store-index">
           <div className="store-name">月氏激蛋葱油餅</div>
           <div className="store-market">寧夏夜市</div>
           <button type="button" className="btn btn-light">
             看更多
           </button>
         </div>
-        <div className="slide-item">
+        <div className="card-store-index">
+          <div className="store-name">月氏激蛋葱油餅</div>
+          <div className="store-market">寧夏夜市</div>
+          <button type="button" className="btn btn-light">
+            看更多
+          </button>
+        </div>
+        <div className="card-store-index">
           <div className="store-name">月氏激蛋葱油餅</div>
           <div className="store-market">寧夏夜市</div>
           <button type="button" className="btn btn-light">
@@ -98,4 +97,4 @@ function CustomSlider() {
   )
 }
 
-export default CustomSlider
+export default MultipleItems

@@ -4,12 +4,12 @@ import { FaSistrix, FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
 import SearchBar from '@/components/common/search-bar'
 import CustomSlider from '@/components/index/custom-slider'
 import StoreSlider from '@/components/index/store-slider'
+import ProductSlider from '@/components/index/product-slider'
 import SearchBarIndex from '@/components/common/search-bar-index'
-
+import MultipleItems from '@/components/index/multipleItems'
 
 export default function SectionIndex() {
-
-// 搜尋後 跳轉至 夜市資訊 || 地圖導覽
+  // 搜尋後 跳轉至 夜市資訊 || 地圖導覽
   // const handlesearch = ()=>{
 
   // }
@@ -62,255 +62,24 @@ export default function SectionIndex() {
           </div>
         </div>
       </div>
-      <div
-        className="section-index index-nop 
-discount"
-      >
-        <div className="index-title" id="discountnews">最新消息</div>
-        <div className="slide-container">
-          <div className="slide-group">
-            {/* <CustomSlider /> */}
-
-            <div className="slide-item">
-              {/* 點圖片要到 咚咚的 商家頁面 */}
-              <Image
-                src="/images/layout/P_20240224_194256.jpg"
-                alt="discount-img"
-                className="discount-img"
-                width={500}
-                height={300}
-              />
-              <div className="discount-text discount-store">
-                士林夜市 林藤茶坊
-              </div>
-              <div className="discount-text discount-name">滿百折三十</div>
-            </div>
-            <div className="slide-item">
-              <Image
-                src="/images/layout/P_20240224_194256.jpg"
-                alt="discount-img"
-                className="discount-img"
-                width={500}
-                height={300}
-              />
-              <div className="discount-text discount-store">
-                士林夜市 林藤茶坊
-              </div>
-              <div className="discount-text discount-name">滿百折三十</div>
-            </div>
-            <div className="slide-item">
-              <Image
-                src="/images/layout/P_20240224_194256.jpg"
-                alt="discount-img"
-                className="discount-img"
-                width={500}
-                height={300}
-              />
-               {/* 點圖片要到 咚咚的 商家頁面 */}
-              <div className="discount-text discount-store">
-                士林夜市 林藤茶坊
-              </div>
-              <div className="discount-text discount-name">滿百折三十</div>
-            </div>
-          </div>
+      <div className="section-index index-nop discount">
+        <div className="index-title" id="discountnews">
+          最新消息
         </div>
+        <CustomSlider />
       </div>
       <div className="section-index index-nop index-store">
         <div className="index-title">店家</div>
-        {/* <StoreSlider/> */}
-        
-        <div className="store-index-gruop">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={29}
-            height={162}
-            viewBox="0 0 29 162"
-            fill="none"
-            className="fa-arrow pre-arrow"
-          >
-            <path
-              d="M28.1426 1L0.869039 81.1429L28.1426 161.285"
-              stroke="#070505"
-            />
-          </svg>
-
-              {/* 商品詳細談窗 */}
-          <div className="card-store-index-group">
-            <div className="card-store-index">
-              <div className="store-name">月氏激蛋葱油餅</div>
-              <div className="store-market">寧夏夜市</div>
-              <button type="button" className="btn btn-light">
-                看更多
-              </button>
-            </div>
-            <div className="card-store-index">
-              <div className="store-name">月氏激蛋葱油餅</div>
-              <div className="store-market">寧夏夜市</div>
-              <button type="button" className="btn btn-light">
-                看更多
-              </button>
-            </div>
-            <div className="card-store-index">
-              <div className="store-name">月氏激蛋葱油餅</div>
-              <div className="store-market">寧夏夜市</div>
-              <button type="button" className="btn btn-light">
-                看更多
-              </button>
-            </div>
-            <div className="card-store-index">
-              <div className="store-name">月氏激蛋葱油餅</div>
-              <div className="store-market">寧夏夜市</div>
-              <button type="button" className="btn btn-light">
-                看更多
-              </button>
-               {/* 商品詳細談窗 */}
-            </div>
-          </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={29}
-            height={162}
-            viewBox="0 0 29 162"
-            fill="none"
-            className="fa-arrow next-arrow"
-          >
-            <path
-              d="M1.14258 1L28.4161 81.1429L1.14258 161.285"
-              stroke="#070505"
-            />
-          </svg>
-        </div>
+        <StoreSlider />
       </div>
       <div className="section-index index-nop">
         <div className="index-title">商品</div>
-        <div className="product-index-gruop">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={29}
-            height={162}
-            viewBox="0 0 29 162"
-            fill="none"
-            className="fa-arrow pre-arrow"
-          >
-            <path
-              d="M28.1426 1L0.869039 81.1429L28.1426 161.285"
-              stroke="#070505"
-            />
-          </svg>
-                {/* 商品詳細頁 && 購物車連結*/}
-          <div className="card-product-index-group">
-            <div className="card-product-index">
-              <div className="product-top">
-                <div className="product-title">
-                     {/* 商品詳細頁 && 購物車連結*/}
-                  <div className="product-name">姊姊抓的餅</div>
-                  <div className="product-name">豬排蛋</div>
-                </div>
-                <div className="product-img">
-                  <button type="button" className="btn btn-light">
-                    看更多
-                  </button>
-                </div>
-              </div>
-              <div className="product-text">
-                <div className="price">$70</div>
-                <div className="butinput">
-                  <div className="quantity">
-                    <button>
-                      <FaPlus />
-                    </button>
-                    <input type="text" min="1" style={{border:'none'}} />
-                    <button>
-                      <FaMinus />
-                    </button>
-                  </div>
-                  <button type="button" className="btn btn-primary">
-                    <span className="cart-text">加入購物車</span>{' '}
-                    <FaShoppingCart className="fa-cart" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="card-product-index">
-              <div className="product-top">
-                <div className="product-title">
-                  <div className="product-name">姊姊抓的餅</div>
-                  <div className="product-name">豬排蛋</div>
-                </div>
-                <div className="product-img">
-                  <button type="button" className="btn btn-light">
-                    看更多
-                  </button>
-                </div>
-              </div>
-              <div className="product-text">
-                <div className="price">$70</div>
-                <div className="butinput">
-                  <div className="quantity">
-                    <button>
-                      <FaPlus />
-                    </button>
-                    <input type="text" min="1" />
-                    <button>
-                      <FaMinus />
-                    </button>
-                  </div>
-                  <button type="button" className="btn btn-primary">
-                    <span className="cart-text">加入購物車</span>{' '}
-                    <FaShoppingCart className="fa-cart" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="card-product-index">
-              <div className="product-top">
-                <div className="product-title">
-                  <div className="product-name">姊姊抓的餅</div>
-                  <div className="product-name">豬排蛋</div>
-                </div>
-                <div className="product-img">
-                  <button type="button" className="btn btn-light">
-                    看更多
-                  </button>
-                </div>
-              </div>
-              <div className="product-text">
-                <div className="price">$70</div>
-                <div className="butinput">
-                  <div className="quantity">
-                    <button>
-                      <FaPlus />
-                    </button>
-                    <input type="text" min="1" />
-                    <button>
-                      <FaMinus />
-                    </button>
-                  </div>
-                  <button type="button" className="btn btn-primary">
-                    <span className="cart-text">加入購物車</span>{' '}
-                    <FaShoppingCart className="fa-cart" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={29}
-            height={162}
-            viewBox="0 0 29 162"
-            fill="none"
-            className="fa-arrow next-arrow"
-          >
-            <path
-              d="M1.14258 1L28.4161 81.1429L1.14258 161.285"
-              stroke="#070505"
-            />
-          </svg>
-        </div>
+        <ProductSlider />
       </div>
-      <div className="section-index" >
-        <div className="index-title" id="aboutme">關於我們</div>
+      <div className="section-index">
+        <div className="index-title" id="aboutme">
+          關於我們
+        </div>
         <div className="qr-text">
           <div className="qr-video col-12 col-md-7 mb-5 mb-md-0">
             <iframe
@@ -324,7 +93,7 @@ discount"
             />
           </div>
 
-                          {/* 商品詳細頁 && 購物車連結*/}
+          {/* 商品詳細頁 && 購物車連結*/}
           <div className="qr-about col-12 col-md-5">
             <div className="accordion" id="accordionExample">
               <div className="accordion-item">
