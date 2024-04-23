@@ -19,6 +19,8 @@ import marketRouter from "./routes/market.js";
 import customAuthRouter from "./routes/customAuthRouter.js"; 
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
+import commentRouter from './routes/comment.js'
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -133,6 +135,12 @@ app.use("/QRcode", QRrouter)
 
 // order路由
 app.use("/order" , orderDataRouter)
+
+//賣家評論路由
+app.use("/comment", commentRouter)
+
+
+
 
 // ==== 咚
 //店家地圖路由
