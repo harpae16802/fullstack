@@ -10,9 +10,9 @@ import SearchBarIndex from '@/components/common/search-bar-index'
 export default function SectionIndex() {
 
 // 搜尋後 跳轉至 夜市資訊 || 地圖導覽
-  const handlesearch = ()=>{
+  // const handlesearch = ()=>{
 
-  }
+  // }
 
   return (
     <>

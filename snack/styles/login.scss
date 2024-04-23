@@ -235,7 +235,7 @@
       }
     }
     .seller-input-group form {
-      padding-top: 80px;
+      padding-top: 60px;
       flex-direction: column;
       border-bottom: none;
       z-index: 1;
@@ -278,7 +278,7 @@
     width: 100%;
   }
   display: none;
-  .custom-input-group{
+  .custom-input-group,.seller-input-group{
     @media (max-width: 992px) {
       margin-top: 40px;
     }

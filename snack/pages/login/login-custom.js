@@ -144,8 +144,6 @@ export default function LoginCustom() {
       hasErrors = true
     }
 
-   
-
     // 呈現錯誤訊息
     setErrors(newErrors)
 
@@ -503,14 +501,14 @@ export default function LoginCustom() {
                           請輸入密碼
                         </div>
                       </div>
+                      <button type="submit" className="btn btn-primary mb-4 mt-4">
+                        登入
+                      </button>
                       <div className="forget-text">
-                        <Link href="/opt" className="forget-p">
+                        <Link href="/opt" className="forget-p mb-5">
                           <p>忘記密碼？</p>
                         </Link>
                       </div>
-                      <button type="submit" className="btn btn-primary mb-5">
-                        登入
-                      </button>
                     </form>
                     <button className="google-login mt-5">
                       <Image
@@ -541,7 +539,12 @@ export default function LoginCustom() {
               <div className="login-title">
                 <span>一般會員註冊</span>
                 <button type="button" className="btn btn-outline-primary">
-                  切換商家
+                  <Link
+                    href="/login/login-seller"
+                    onClick={() => handleLinkClick('type1')}
+                  >
+                    切換商家
+                  </Link>
                 </button>
               </div>
               <div className="custom-input-group">
@@ -636,7 +639,12 @@ export default function LoginCustom() {
               <div className="login-title">
                 <span>一般會員登入</span>
                 <button type="button" className="btn btn-outline-primary">
-                  <Link href="/login/login-seller">切換商家</Link>
+                  <Link
+                    href="/login/login-seller"
+                    onClick={() => handleLinkClick('type2')}
+                  >
+                    切換商家
+                  </Link>
                 </button>
               </div>
               <div className="custom-input-group">
@@ -725,14 +733,14 @@ export default function LoginCustom() {
                       請輸入密碼
                     </div>
                   </div>
+                  <button type="submit" className="btn btn-primary mb-4 mt-4">
+                    登入
+                  </button>
                   <div className="forget-text">
                     <Link href="/opt" className="forget-p">
                       <p>忘記密碼？</p>
                     </Link>
                   </div>
-                  <button type="submit" className="btn btn-primary mb-4">
-                    登入
-                  </button>
                 </form>
                 <button className="google-login mt-4">
                   <Image

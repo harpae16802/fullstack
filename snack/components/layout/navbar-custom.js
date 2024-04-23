@@ -49,17 +49,35 @@ export default function NavbarCustom() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" href="/market-map">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/market-map' ? 'active' : ''
+                    }`}
+                    aria-current="page"
+                    href="/market-map"
+                  >
                     夜市導覽
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/nightmarket-info/night">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/nightmarket-info/index'
+                        ? 'active'
+                        : ''
+                    }`}
+                    href="/nightmarket-info/night"
+                  >
                     美味商城
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/game/game-select">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/game/game-select' ? 'active' : ''
+                    }`}
+                    href="/game/game-select"
+                  >
                     趣味遊戲
                   </Link>
                 </li>
