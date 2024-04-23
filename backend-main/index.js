@@ -16,6 +16,7 @@ import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
+import marketMapRouter from "./routes/market-map.js";
 import signUpRouter from "./routes/sign-up.js"; 
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
@@ -148,19 +149,14 @@ app.use("/comment", commentRouter)
 
 
 // ==== 咚
-//店家地圖路由
-app.get("/market-data", async (req, res) => {
-  const sql = "SELECT * FROM market_data";
-  const [rows] = await db.query(sql);
-
-  res.json(rows);
-});
-
 // 店家產品路由
 app.use("/shop-products", shopRouter);
 
 // 夜市路由
 app.use("/market", marketRouter);
+
+// 夜市地圖路由
+app.use("/market-map", marketMapRouter);
 
 
 // ==== 蓁

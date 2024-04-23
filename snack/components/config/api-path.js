@@ -2,11 +2,17 @@ export const API_SERVER = 'http://localhost:3002'
 
 // === img
 export const IMAGES_PRODUCTS = `${API_SERVER}/images/products`
+export const IMAGES_NIGHT = `${API_SERVER}/images/night`
+export const IMAGES_SELLER = `${API_SERVER}/images/seller`
 
-// === map，取得 market-data
-export const MARKET_DATA = `${API_SERVER}/market-data`
+// === map
+export const MARKET_MAP = `${API_SERVER}/market-map`
+// 取得 market-data
+export const MARKET_DATA = `${MARKET_MAP}/market-data`
+// 地圖搜尋
+export const MARKET_MAP_SEARCH = `${MARKET_MAP}/search`
 
-// === shop-products
+// === shop-products 店家商品
 export const SHOP_PRODUCTS = `${API_SERVER}/shop-products`
 // 取得 seller
 export const SELLER_DATA = `${SHOP_PRODUCTS}/seller`
@@ -27,6 +33,8 @@ export const MARKET = `${API_SERVER}/market`
 export const MARKET_SEARCH = `${MARKET}/search`
 // 搜尋
 export const MARKET_SELLER = `${MARKET}/seller`
+// 分類篩選
+export const CATEGORY = `${MARKET}/category`
 
 // 登入
 // ===
