@@ -42,6 +42,7 @@ export default function Order() {
   // 在 Order 组件的顶部添加新的状态
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
+  const [totalSum, setTotalSum] = useState(0); //總金額
 
   // 資料過濾
 
@@ -77,6 +78,7 @@ export default function Order() {
         .catch((error) => {
           console.error('获取产品种类信息失败', error)
         })
+      loadTotalSum()
     }
     loadOrders()
   }, [
@@ -114,6 +116,8 @@ export default function Order() {
         console.error('查询销售数据失败', error)
       })
   }
+
+
   // 資料輸入
   function handleInputChange(e) {
     const { name, value } = e.target
@@ -122,9 +126,40 @@ export default function Order() {
       [name]: value,
     }))
   }
+// 處裡日期變更
+  function handleDateChange(field, value) {
+    setQuery((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
+
+  // 總金額
+  function loadTotalSum() {
+    axios
+      .get(`${ORDERDETAIL}/revenue/${sellerId}`, {
+        params: {
+          start_date: query.startDate,
+          end_date: query.endDate,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.total_revenue) {
+          setTotalSum(response.data.total_revenue);
+        } else {
+          console.log('Unexpected response structure:', response)
+          setTotalSum(0)
+        }
+      })
+      .catch((error) => {
+        console.error('获取订单总金额失败', error)
+        setTotalSum(0)
+      })
+  }
   
+// 類別
   const handleCategoryChange = (e) => {
-    const categoryId = e.target.value;
+    const categoryId = e.target.value
     setQuery((prev) => ({
       ...prev,
       categoryId: categoryId,
@@ -132,11 +167,10 @@ export default function Order() {
       startDate: '',
       endDate: '',
       productName: '',
-    }));
+    }))
     // 發送新的請求
-    loadOrders();
-  };
-  
+    loadOrders()
+  }
 
   // 初始化查詢
   function resetSearch() {
@@ -302,7 +336,6 @@ export default function Order() {
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>訂單管理系統</h2>
-
                 {/* 這裡要改成起始日期 */}
                 <div className={styles.selectGroup}>
                   <div className="col-md-auto col-12">
@@ -315,7 +348,9 @@ export default function Order() {
                       type="date"
                       name="startDate"
                       value={query.startDate}
-                      onChange={handleInputChange}
+                      onChange={(e) =>
+                        handleDateChange('startDate', e.target.value)
+                      }
                       className="form-control mb-2"
                       placeholder="開始日期"
                     />
@@ -331,7 +366,9 @@ export default function Order() {
                       type="date"
                       name="endDate"
                       value={query.endDate}
-                      onChange={handleInputChange}
+                      onChange={(e) =>
+                        handleDateChange('endDate', e.target.value)
+                      }
                       className="form-control mb-2"
                       placeholder="結束日期"
                     />
@@ -363,9 +400,8 @@ export default function Order() {
                   </div>
                   {/* 這裡要能夠抓取到產品分類 */}
                 </div>
-zz
+                
                 {/* 這裡要改成結束日期 */}
-
                 <br></br>
                 {/* 這裡要能搜索產品名稱 */}
                 <div className="container">
@@ -402,7 +438,6 @@ zz
                   </div>
                 </div>
                 {/* 這裡要能搜索產品名稱 */}
-
                 {/* 我在這裡要實現資料的顯示 */}
                 <table className={`${styles.table}`}>
                   <thead>
@@ -410,7 +445,7 @@ zz
                       <th>產品名稱</th>
                       <th>產品類別</th>
                       <th>銷售數量</th>
-                      <th>總收入</th>
+                      <th>訂單收入</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -426,7 +461,11 @@ zz
                   </tbody>
                 </table>
                 {/* 我在這裡要實現資料的顯示 */}
-
+                {/* 在这里添加订单总金额显示 */}
+                <div className="col-md-3 mt-1 col-12">
+                <p>{`訂單總金額: ${totalSum}`}</p>
+                </div>
+                {/* 在这里添加订单总金额显示 */}
                 {/* 分頁 */}
                 <nav>
                   <ul className="pagination justify-content-center">
@@ -457,7 +496,6 @@ zz
                     </li>
                   </ul>
                 </nav>
-
                 {/* 分頁 */}
               </div>
             </div>
