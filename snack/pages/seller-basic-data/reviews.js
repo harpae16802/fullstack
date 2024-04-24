@@ -10,6 +10,8 @@ import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
+import ReplyModal from '@/components/ReplyModal'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 export default function Reviews() {
   // 使用 useRouter
@@ -35,6 +37,10 @@ export default function Reviews() {
 
   // 評論區的篩選
   const [filterRating, setFilterRating] = useState('')
+
+  // 回覆系統的初始直
+  const [showModal, setShowModal] = useState(false)
+  const [selectedCommentId, setSelectedCommentId] = useState(null)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -96,6 +102,25 @@ export default function Reviews() {
   // 篩選評論
   const handleRatingChange = (event) => {
     setFilterRating(event.target.value)
+  }
+
+  // 回覆系統
+  const handleReplyClick = (commentId) => {
+    setSelectedCommentId(commentId)
+    setShowModal(true)
+  }
+  const submitReply = async (commentId, reply) => {
+    try {
+      await axios.post(`${COMMENT}/reply/${commentId}`, {
+        seller_id: sellerId,
+        reply,
+      })
+      alert('回复提交成功')
+      fetchData()
+    } catch (error) {
+      console.error('回复提交失败', error)
+      alert('回复提交失败')
+    }
   }
 
   // 更新賣家 頭貼 包含顯示
@@ -256,18 +281,20 @@ export default function Reviews() {
                               {new Date(comment.datetime).toLocaleDateString()}
                             </small>
                           </p>
-                          <Link
-                            href={`/comments/${comment.commentId}`}
-                            className="btn btn-primary"
-                          >
-                            查看詳情
-                          </Link>
+                          <Button onClick={() => handleReplyClick(comment.id)}>
+                            回復
+                          </Button>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-
+                <ReplyModal
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                  commentId={selectedCommentId}
+                  submitReply={submitReply}
+                />
                 {/* 篩選 */}
               </div>
             </div>
