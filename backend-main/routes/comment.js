@@ -29,6 +29,18 @@ router.get('/:seller_id', async (req, res) => {
     console.error("Error fetching comments:", error);
     res.status(500).json({ error: "Error fetching comments" });
   }
+})
+.post('/reply/:comment_id', async (req, res) => {
+  try {
+    const { comment_id } = req.params;
+    const { seller_id, reply } = req.body;
+    const sql = 'INSERT INTO comment_replies (comment_id, seller_id, reply) VALUES (?, ?, ?)';
+    const [result] = await db.query(sql, [comment_id, seller_id, reply]);
+    res.json({ success: true, message: 'Reply posted' });
+  } catch (error) {
+    console.error("Error posting reply:", error);
+    res.status(500).json({ error: "Error posting reply" });
+  }
 });
 
 export default router;

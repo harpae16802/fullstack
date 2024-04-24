@@ -10,4 +10,7 @@ const SELLER_LOCATION="http://localhost:3000/seller-basic-data/modify"
 // 訂單管理路由 
 const ORDERDETAIL="http://localhost:3002/order"
 
-export {SELLER_API,PRODUCTS_API,SELLER_LOCATION,ORDERDETAIL}
+// 賣家評論路由
+const COMMENT="http://localhost:3002/comment"
+
+export {SELLER_API,PRODUCTS_API,SELLER_LOCATION,ORDERDETAIL,COMMENT}

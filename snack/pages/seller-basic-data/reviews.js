@@ -2,12 +2,14 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API, COMMENT } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 export default function Reviews() {
   // 使用 useRouter
@@ -28,6 +30,12 @@ export default function Reviews() {
     profilePicture: '',
   })
 
+  // 評論區
+  const [comments, setComments] = useState([])
+
+  // 評論區的篩選
+  const [filterRating, setFilterRating] = useState('')
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -46,16 +54,50 @@ export default function Reviews() {
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
-
           }))
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
     }
+    fetchData()
   }, [sellerId])
 
- 
+  // 過濾評論
+  const filteredComments = comments.filter((comment) =>
+    filterRating ? comment.store_rating === parseInt(filterRating) : true
+  )
+  // 星星圖標
+  const renderStars = (count) => {
+    let stars = ''
+    for (let i = 0; i < count; i++) {
+      stars += '★'
+    }
+    return stars
+  }
+  // 評論區星星
+  const renderCommentStars = (count) => {
+    let stars = []
+    for (let i = 0; i < count; i++) {
+      stars.push(<FontAwesomeIcon icon={faStar} key={i} />)
+    }
+    return <>{stars}</>
+  }
+
+  // 拿取評論
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${COMMENT}/${sellerId}`)
+      setComments(response.data) //設定評論
+    } catch (error) {
+      console.error('獲取評論失敗:', error)
+    }
+  }
+  // 篩選評論
+  const handleRatingChange = (event) => {
+    setFilterRating(event.target.value)
+  }
+
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -172,9 +214,61 @@ export default function Reviews() {
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
+                <h2 className={`${styles.formTitle}`}>賣家評論區</h2>
+                {/* 篩選 */}
+                <div className={styles.selectGroup}>
+                  <div className="col-md-auto col-12">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      以星級篩選
+                    </label>
+                  </div>
+                  <div className="col-md-auto col-12">
+                    <select
+                      className="form-select"
+                      value={filterRating}
+                      onChange={handleRatingChange}
+                    >
+                      <option value="">選擇星級</option>
+                      <option value="1">{renderStars(1)}</option>
+                      <option value="2">{renderStars(2)}</option>
+                      <option value="3">{renderStars(3)}</option>
+                      <option value="4">{renderStars(4)}</option>
+                      <option value="5">{renderStars(5)}</option>
+                    </select>
+                  </div>
+                </div>
+                {/* 篩選 */}
+                <div className="row">
+                  {filteredComments.map((comment, index) => (
+                    <div className="col-md-4 mb-4" key={index}>
+                      <div className="card">
+                        <div className="card-body">
+                          <h5 className="card-title">
+                            用戶：{comment.custom_account}
+                          </h5>
+                          <h6 className="card-subtitle mb-2 text-muted">
+                            評分：{renderCommentStars(comment.store_rating)}
+                          </h6>
+                          <p className="card-text">{comment.comment}</p>
+                          <p className="card-text">
+                            <small className="text-muted">
+                              評論日期：
+                              {new Date(comment.datetime).toLocaleDateString()}
+                            </small>
+                          </p>
+                          <Link
+                            href={`/comments/${comment.commentId}`}
+                            className="btn btn-primary"
+                          >
+                            查看詳情
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-    
+                {/* 篩選 */}
               </div>
             </div>
           </div>

@@ -24,9 +24,9 @@ router
       JOIN products p ON od.product_id = p.product_id
       WHERE o.seller_id = ?
     `;
-    let countParams = [seller_id]; // 参数数组
+    let countParams = [seller_id]; // 用seller_id  查詢
 
-    // 添加筛选条件
+    // 用日期篩選
     if (start_date && end_date) {
       countQuery += " AND o.payment_date BETWEEN ? AND ?";
       countParams.push(start_date, end_date);
