@@ -41,6 +41,8 @@ export default function Reviews() {
   // 回覆系統的初始直
   const [showModal, setShowModal] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState(null)
+  const [commentContent, setCommentContent] = useState('') 
+
 
   // 使用Ref
   const handleImageClick = () => {
@@ -105,8 +107,9 @@ export default function Reviews() {
   }
 
   // 回覆系統
-  const handleReplyClick = (commentId) => {
+  const handleReplyClick = (commentId, commentContent) => {
     setSelectedCommentId(commentId)
+    setCommentContent(commentContent)
     setShowModal(true)
   }
   const submitReply = async (commentId, reply) => {
@@ -115,11 +118,9 @@ export default function Reviews() {
         seller_id: sellerId,
         reply,
       })
-      alert('回复提交成功')
       fetchData()
     } catch (error) {
       console.error('回复提交失败', error)
-      alert('回复提交失败')
     }
   }
 
@@ -281,7 +282,7 @@ export default function Reviews() {
                               {new Date(comment.datetime).toLocaleDateString()}
                             </small>
                           </p>
-                          <Button onClick={() => handleReplyClick(comment.id)}>
+                          <Button onClick={() => handleReplyClick(comment.id,comment.comment)}>
                             回復
                           </Button>
                         </div>
@@ -293,6 +294,7 @@ export default function Reviews() {
                   show={showModal}
                   onHide={() => setShowModal(false)}
                   commentId={selectedCommentId}
+                  commentContent={commentContent}
                   submitReply={submitReply}
                 />
                 {/* 篩選 */}
