@@ -21,7 +21,7 @@ import signUpRouter from "./routes/sign-up.js";
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
-
+import adRouter from "./routes/adRouter.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -145,7 +145,8 @@ app.use("/order" , orderDataRouter)
 //賣家評論路由
 app.use("/comment", commentRouter)
 
-
+//賣家廣告路由
+app.use("/ad", adRouter)
 
 
 // ==== 咚
