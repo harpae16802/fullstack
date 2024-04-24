@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API, ADROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -25,9 +25,13 @@ export default function Ad() {
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
-
     profilePicture: '',
   })
+  // 廣告類型
+  const [adType, setAdType] = useState('')
+
+  // 儲存狀態
+  const [file, setFile] = useState(null)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -55,7 +59,48 @@ export default function Ad() {
         })
     }
   }, [sellerId])
+
+  // 廣告類型
+  const handleAdTypeClick = (type) => {
+    setAdType(type)
+  }
+  // 處裡文件
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+  }
+
+  // 上傳廣告
+  const handleUpload = async () => {
+    if (!file || !adType) {
+      alert('请选择广告类型并上传文件。');
+      return;
+    }
   
+    const uploadPath = adType === 'type1' ? '/uploadType1' : '/uploadType2';
+    const apiEndpoint = `${ADROUTER}${uploadPath}`;
+  
+    const formData = new FormData();
+    formData.append('adImage', file);
+    formData.append('seller_id', sellerId);
+    formData.append('ad_type', adType);  // 确保后端也处理这个字段
+  
+    try {
+      const response = await axios.post(apiEndpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data);
+      setFile(null); // 清空已选文件
+      setAdType(''); // 重置广告类型选择
+      alert('广告上传成功');
+    } catch (error) {
+      console.error('广告上传失败', error);
+      alert('广告上传失败');
+    }
+  };
+  
+
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -172,8 +217,94 @@ export default function Ad() {
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
-              <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
-               
+                <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
+                {/* 廣告系統 */}
+
+                <div className="container mt-5">
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div
+                        className={`card ${
+                          adType === 'type1' ? styles.adCardActive : ''
+                        }`}
+                      >
+                        <img
+                          className="card-img-top"
+                          src="/adimg/ad_type1.jpg"                         //   圖片在這
+                          alt="Ad Type 1"
+                        />
+                        <div className="card-body">
+                          <button
+                            onClick={() => setAdType('type1')}
+                            className={`btn ${
+                              adType === 'type1'
+                                ? 'btn-primary'
+                                : 'btn-outline-primary'
+                            }`}
+                          >
+                            首頁懸浮廣告
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 廣告類型2 */}
+                    <div className="col-md-6">
+                      <div
+                        className={`card ${
+                          adType === 'type2' ? styles.adCardActive : ''
+                        }`}
+                      >
+                        <img
+                          className="card-img-top"
+                          src="/adimg/ad_type1.jpg"                          //   圖片在這
+                          alt="Ad Type 2"
+                        />
+                        <div className="card-body">
+                          <button
+                            onClick={() => setAdType('type2')}
+                            className={`btn ${
+                              adType === 'type2'
+                                ? 'btn-primary'
+                                : 'btn-outline-primary'
+                            }`}
+                          >
+                            商店懸浮廣告
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 圖片上傳 */}
+                <div className="mb-3">
+                  <label htmlFor="adImage" className="form-label">
+                    上傳廣告圖片
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="adImage"
+                    name="adImage"
+                    onChange={handleFileChange}
+                  />
+                </div>
+                {file && (
+                  <div className="preview-container">
+                    <p>文件名称: {file.name}</p>
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt="Preview"
+                      className="img-preview"
+                    />
+                  </div>
+                )}
+                {/* 上传按钮 */}
+                <button onClick={handleUpload} className={styles.btnPrimary}>
+                  上傳廣告
+                </button>
+                {/* 廣告系統 */}
               </div>
             </div>
           </div>

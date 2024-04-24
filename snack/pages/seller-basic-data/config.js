@@ -13,4 +13,7 @@ const ORDERDETAIL="http://localhost:3002/order"
 // 賣家評論路由
 const COMMENT="http://localhost:3002/comment"
 
-export {SELLER_API,PRODUCTS_API,SELLER_LOCATION,ORDERDETAIL,COMMENT}
+// 廣告上船路由
+const ADROUTER="http://localhost:3002/ad"
+
+export {SELLER_API,PRODUCTS_API,SELLER_LOCATION,ORDERDETAIL,COMMENT ,ADROUTER}
