@@ -8,7 +8,7 @@ import { MARKET_SEARCH, MARKET_MAP_SEARCH } from '@/components/config/api-path'
 
 export default function SearchBarIndex() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('') // active 狀態 - tung
+  const [activeTab, setActiveTab] = useState('info') // active 狀態 - tung
   const [searchQuery, setSearchQuery] = useState('') // 用戶搜尋 - tung
   // 使用來自context的更新地圖位置方法
   const { updateMapPosition } = useMapContext()
@@ -25,6 +25,11 @@ export default function SearchBarIndex() {
           market_img: data.market_img,
           market_id: data.market_id,
         })
+        // 跳轉到地圖顯示頁面，傳遞經緯度和市場ID等參數
+        router.push({
+          pathname: '/market-map',
+          query: { lat: data.lat, lng: data.lng, id: data.market_id },
+        })
       } else {
         console.error('API返回格式错误或未包含经纬度信息')
       }
@@ -35,14 +40,13 @@ export default function SearchBarIndex() {
 
   const handleSearch = async (e) => {
     e.preventDefault()
-
     if (activeTab === 'info') {
       try {
         const r = await fetch(
           `${MARKET_SEARCH}/${encodeURIComponent(searchQuery)}`
         )
         const data = await r.json()
-
+        console.log('地點搜索數據:', data)
         if (data) {
           router.push({
             pathname: `/nightmarket-info/${data.market_id}`,
@@ -72,32 +76,32 @@ export default function SearchBarIndex() {
         <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist">
             <button
-              className="nav-link active"
-              // className={`nav-link ${
-              //   activeTab === 'info' ? 'show active' : ''
-              // }`}
+              // className="nav-link active"
+              className={`nav-link ${
+                activeTab === 'info' ? 'show active' : ''
+              }`}
               id="nav-home-tab"
               data-bs-toggle="tab"
               data-bs-target="#nav-home"
               type="button"
               role="tab"
               aria-controls="nav-home"
-              aria-selected="true"
+              aria-selected={activeTab === 'info'}
+              onClick={() => setActiveTab('info')}
             >
               以地點搜尋
             </button>
             <button
-              className="nav-link"
-              //   className={`nav-link ${
-              //   activeTab === 'map' ? 'show active' : ''
-              // }`}
+              // className="nav-link"
+              className={`nav-link ${activeTab === 'map' ? 'show active' : ''}`}
               id="nav-profile-tab"
               data-bs-toggle="tab"
               data-bs-target="#nav-profile"
               type="button"
               role="tab"
               aria-controls="nav-profile"
-              aria-selected="false"
+              aria-selected={activeTab === 'map'}
+              onClick={() => setActiveTab('map')}
             >
               以地圖搜尋
             </button>
