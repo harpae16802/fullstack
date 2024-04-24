@@ -580,7 +580,7 @@ body {
           display: flex;
           flex-direction: row;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
           .vol{
             @media (max-width: 992px) {
               display: none;

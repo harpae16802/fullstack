@@ -18,6 +18,7 @@ import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import signUpRouter from "./routes/sign-up.js";
+import indexInfoRouter from "./routes/indexinfo.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -112,6 +113,7 @@ app.get("/jwt-data", async (req, res) => {
 });
 
 app.use("/sign-up", signUpRouter);
+app.use("/index-info", indexInfoRouter);
 
 
 // ==== 弘

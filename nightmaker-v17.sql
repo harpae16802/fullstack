@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-04-20 19:08:00
+-- 產生時間： 2024-04-24 12:12:07
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.0.30
 
@@ -101,6 +101,27 @@ INSERT INTO `achievement_category` (`achievement_id`, `level_id`, `clear_times`,
 (5, 5, 3, 1, 'fist3'),
 (6, 1, 3, 1, 'fist4'),
 (7, 2, 3, 1, 'fist5');
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `advertisements`
+--
+
+CREATE TABLE `advertisements` (
+  `ad_id` int(11) NOT NULL,
+  `seller_id` int(11) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `advertisements`
+--
+
+INSERT INTO `advertisements` (`ad_id`, `seller_id`, `image_path`, `created_at`, `updated_at`) VALUES
+(1, 4, 'public\\adimg\\adImage-1713953279896-542946181.png', '2024-04-24 10:07:59', '2024-04-24 10:07:59');
 
 -- --------------------------------------------------------
 
@@ -334,6 +355,20 @@ INSERT INTO `comment` (`id`, `order_id`, `night_rating`, `store_rating`, `produc
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `comment_replies`
+--
+
+CREATE TABLE `comment_replies` (
+  `id` int(11) NOT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `seller_id` int(11) DEFAULT NULL,
+  `reply` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `custom`
 --
 
@@ -342,7 +377,7 @@ CREATE TABLE `custom` (
   `custom_name` varchar(50) DEFAULT NULL,
   `custom_sex` varchar(3) DEFAULT NULL,
   `custom_descript` varchar(300) DEFAULT NULL,
-  `custom_year` datetime(6) DEFAULT NULL,
+  `custom_year` varchar(6) DEFAULT NULL,
   `custom_image` longblob DEFAULT NULL,
   `custom_password` varchar(255) DEFAULT NULL,
   `custom_account` varchar(255) DEFAULT NULL,
@@ -350,49 +385,52 @@ CREATE TABLE `custom` (
   `photo_url` varchar(255) DEFAULT NULL,
   `custom_month` int(3) DEFAULT NULL,
   `custom_date` int(3) DEFAULT NULL,
-  `custom_nickname` varchar(50) DEFAULT NULL
+  `custom_nickname` varchar(50) DEFAULT NULL,
+  `custom month` int(11) NOT NULL,
+  `custom_address` varchar(500) NOT NULL,
+  `custom_phone` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `custom`
 --
 
-INSERT INTO `custom` (`custom_id`, `custom_name`, `custom_sex`, `custom_descript`, `custom_year`, `custom_image`, `custom_password`, `custom_account`, `google_uid`, `photo_url`, `custom_month`, `custom_date`, `custom_nickname`) VALUES
-(1, '張紹涵', 'mda', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe123', 'acdefac', NULL, NULL, 0, 0, ''),
-(2, '王安石', 'mfa', '1', '2024-02-02 11:43:02.000000', NULL, 'CdaAe124', 'adfa', NULL, NULL, 0, 0, ''),
-(3, '周潤發', 'de1', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe125', 'vdfad', NULL, NULL, 0, 0, ''),
-(4, '裝闊', 'mec', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe126', 'ewewef', NULL, NULL, 0, 0, ''),
-(5, '梁文因', 'mcd', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe127', 'amdey', NULL, NULL, 0, 0, ''),
-(6, '周小小', 'mdw', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe128', 'deaefm', NULL, NULL, 0, 0, ''),
-(7, '王永慶', 'dfl', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe129', 'calde', NULL, NULL, 0, 0, ''),
-(8, '張伯勳', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe130', 'lafcm', NULL, NULL, 0, 0, ''),
-(9, '林俊傑', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe131', 'aewek', NULL, NULL, 0, 0, ''),
-(10, '黃以林', 'acd', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe132', 'lqedaf', NULL, NULL, 0, 0, ''),
-(11, '將萬安', 'dca', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe133', 'dowe', NULL, NULL, 0, 0, ''),
-(12, '柯文哲', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe134', 'dmae', NULL, NULL, 0, 0, ''),
-(13, '林光頭', 'dad', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe135', 'amcae', NULL, NULL, 0, 0, ''),
-(14, '周杰倫', 'fav', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe136', 'epafd', NULL, NULL, 0, 0, ''),
-(15, '周曉倫', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe137', 'amadle', NULL, NULL, 0, 0, ''),
-(16, '周曉曉', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe138', 'aopeqe', NULL, NULL, 0, 0, ''),
-(17, '琦君', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe139', 'afjma', NULL, NULL, 0, 0, ''),
-(18, '蔡依林', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe140', 'aofijael', NULL, NULL, 0, 0, ''),
-(19, '蔡英文', 'dad', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe141', 'almflae', NULL, NULL, 0, 0, ''),
-(20, '李連杰', 'nfr', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe142', 'smfpe', NULL, NULL, 0, 0, ''),
-(21, '李延義', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe143', 'afmla', NULL, NULL, 0, 0, ''),
-(22, '劉冠良', 'daa', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe144', 'dlamfdl', NULL, NULL, 0, 0, ''),
-(23, '林俊毅', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe145', 'dfamlfe', NULL, NULL, 0, 0, ''),
-(24, '王金娟', 'dad', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe146', 'almflae', NULL, NULL, 0, 0, ''),
-(25, '林鳳珠', 'htd', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe147', 'ldkf', NULL, NULL, 0, 0, ''),
-(26, '黃美秋', 'iut', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe148', 'faem', NULL, NULL, 0, 0, ''),
-(27, '楊俊彥', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe149', 'mdaea', NULL, NULL, 0, 0, ''),
-(28, '陳靜揚', 'd54', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe150', 'mewf', NULL, NULL, 0, 0, ''),
-(29, '富昱薇', 'bds', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe151', 'dapw', NULL, NULL, 0, 0, ''),
-(30, '張倩彥', 'fda', '1', '2024-02-02 11:48:26.000000', 0xffd8ffe000104a46494600010100000100010000ffdb008400090607131211121312131515121615171a191817181516181a181816181618171515181d2820191a251b171621312125292b302e2e171f3338332c37282d2e2b010a0a0a0e0d0e1a1010172d1d20262d2f2d2f2d2d2d2d2d2d2d2e2d2b2d2d2d2d2d2d2d2d2d2d2d2d2d2b2d2d2d2d352d2d2d2d2d2f2d2d2d2e2b2e2d2e2d352dffc0001108012f00a603012200021101031101ffc4001b00010003010101010000000000000000000001020503040607ffc4003810000201010407080201020603000000000001021103213141045161718191a105122232b1c1d1f013e1f182b22333425272c24392a2ffc4001a010101010101010100000000000000000000010504020603ffc40029110100020200050304020300000000000000010203041112132131054151718191b13361222332ffda000c03010002110311003f00fdc4000000000000000000000000000449d155dc919d69dacabe18b6b5b74e4b1e7438769695df7dd5e54efdad7b2f5dc674ed31a5e963f0b6997b3bb316e5c7f91f47a2e951b45762b14f14773e6ece6e2d4a2e8d7da3d68d9d074f8da2d52d5af6c5e68fdf5b6e327f8dbb4fec7ac007680000000000000000000000001c748d26305e274d4b16f723876869bdcf0c7cefa2d6cc76eadb6eade2de2716cee4639e5af791edb7ed39bf2f856da37f0ba9e6969f68d77652a57524abc57e8e656d1aa5f81976d9cb6f3695e089c6ea2fbb098bbae1675a2a94b27935474aef79f5f53f014ee24ef554b656e6db545d391d2d25755529ce9b684d9e2deda705fba93dc55ad1540eb0b7b44bcf2e75f5353b2f4994fbca57b54bf0b9d71e4cc8161a63b39785c6f5475bf0bd60d531675ebeccd2f13699e03e941cb459ca504e4a8de5e97657640dc89e31c51d40050000000000000396936ca11727965ade4b99d4c5ed8b76e6a2b08e3b5b5ecbd4fc3632f4b1cdbf03c368e4db93756dd5e1d3861b9131927f7d84655d8f515b48e0d629fdbcf9f9999eeae8735e67b953a92ad171d4c4a38358905caca29e2aa445bad197288483655cf257bfb8b23b95c5f0cbf64050efca292ad6ab34ab77b266f689a04614ce5af57fc56478fb1eceb294b524971c7d17335cd7d1c158af5263bca0003440000000000000038697a4ab38d5def25ad92d68ac71915d374a5671d72782f77b0f9dfcaf09349b79bab6dbc52a66cf45ada39372962fed16c39ce355430b6b62735bb788f0aabb2bd3ef3e9f07439f7e9e6e693a7e8e87288946a56cdd56dbd722e739dcd3e0f8e1d7d4037495faa8b7d7deee45a534b12b6de57f78168c12fe5bf5022c5522b71700a34bb15f9d6d4f9aa7b334cc3ecdb5eeda2d52b9efc575bbfa8dc3734af16c511f08000eb000000000000112745578181a55bfe49396584777cbc796a3d1da7a6f79bb38e0b17ae8f05b13c7ed7c4646eec734f257c4795800067aa96be57b8b5035529f8a3a971bdf364474224ab89c9b516b049e587144a7de6f52ebfafd80b08aa573abbf1cf5e67500a0000a9b34dca2963de8d39a75e18f03e90caec8b0ab737ba3eefdb83354dad1c735c7c67dde4001da00000000078fb4f48ee468bcd2b96c59bfb9b47b0c1d3adbbf692792f0ae18f5af2472ede5e9e3ede67b0f2ca175d7530d8233c9dcfee0f32e4355c4c1549495a258b4428b583bb6df4dc5a11a576ff004a75c0aca592c7a2fba83b35abe39164a980158c2fab75e5ec251beab1e858aca692af2dbb1015efb4ef55bb2cbe732ca699308d37e64c9571029f96f7a9678de5d3ae17d6e5bddcba9118d1511e8eceb052b58ba797c4fd1578dfc19fa63a4def15f91b96366a3151582542e01f4711c3b20002800000044a4926ddc962079bb4749ee42ef33b97cf0f8d66059d55da92fbd0f46936ee72727c16a5f39ff000709c706b15f6860ede7eadfb788f0ab829193ab4f675fe0b9cca0394db7549e0baeafbac95079c9f4f82225da2def65e4775bc5f0577379978aa12073959c526daad35def9b1085f569274cbdde781729659eaaddf7781d0005512c92ab7725b4ddd0746fc71a63277b7b766c467f6459a7393ff6a54feaaaaf25d4d835b430c457a93e65e64001a200000000065f6be91ff8d6f97b2f7fe4f7e936ca11727965ade4b99f3ee4db6ddedbabde706f67e4af24799fd0000c77a71b48f895ed3a637e5d33cf596f16c7cd7c931c5bd577bfbf42e445611a2a1600aa0000a5a61be8b9ba1648adae5bd7ad7dba97220002abd7d92ffc5df175e0d53d5f3368cbec6b3be72dd15eafd572350dcd2acc618e2f2000eb0000000f1f69e91dd85179a572d8b37f7368f37bc52b369f619fda9a439ca917e18bde9cb06f861ccf1d25ad727f259224f9dcb92725a6d2aa5fb1f41f916de4cb83f31c7f251efcaf4f555278ac0ec739799717edee7400002a800039e32dd4e77d78d29cce8523736b2c79fdf52e44086c93b68565deb48ac9789ee5fba1ee959bda2b1ee36342b1ee4231ce97ef77beacee01f49588ac444200028000018bdab3ada53fda92e2ef7d3bbc8da3e7bb45b56d6975de1dfe5596a387d427862fb8e65653a6fd5995fc95f2dfaefa70c0984699d5eb3154ef3d5cdfc5446793b9faee61da259fc7164b49ed405655ad695bb8f5e1c88568eaea9f0bcb7e25ab9553e68461475ab02d19549290c65c3d1172a843624e85316aec2b8addac889b3cdebc372faf99700aa1a5d8b67e796d4b92afbf4334dbecb8d2ca3b6af9b6fdcedd0af1cbc7e2125ea001b4800000000187da7fe6cb72f4370f9fd3ed17e69adabfb56070fa84ff00aa3ea3910c894a85559e72bdf3a6c462aab14d51552f57c1fece918d125a87e35a972456caeb9f0ddfaf803a005652a1555b454bead65752f223096726b65cfd8b45377be0b56fda5888e747de55be97f3bb0d7762753959dd73c5e78d7e371d40000aaa39ea55a703e8741ff2acff00e11f447ced9d5d699ba476b7fba9f4f670a24b524b91a5e9b1ded2f2b000d50000000003e6edfc529377a72972aba74a1f41a45af761296a4df247ce415125b0ccf51b7fcd48230a6be379600cb7a0e6bccf72f57fa3a159453c527bc22939a6d2ae74b9dfd0b46cd2bf17ad90955ec5ebfabce840292964b1e8bf7b0b9cecb0aeb75f65d10112852fbdb5f5aa605e334f069962b282788162968f2cdddf3d0883a5cf86d5f24ffab72f57fa0343b22c2b272ca172ded7b2fee360f0f63aff000ebae52e8fbbec7b8dfd4a45715787bf7fca0003a4000000006676dda35dd5845d5bdea945eaf81987d2ca29e2ab9f132bb534451f1c552ae8d657e7bebea666e6b5a667244fd87800065bd05272c963e9b589bc962fa2d64c62960444c55150900aa14b1f2adc88b4beed69fb2bb997222400554495712aa2955dfd5973d3d9da3f7e757e58def7e4bdf82d67bc78e725a2b08d5d0ac7b96718bc697ef77bead9dc03e8eb1158888400050000000003c9dad1ad94a9951f0524df44cf590d5713cdebcd59afc8f98f16c5cdfc0a3d6b82f9677d26c7b9271c961b9e1f1c0e67cddab35998955230a66defa172b68e8aec72de47e3daf99e443b4d8e9af2255a2fa9d39964852ea64073b49a4d5eb573a5e7528eceea7eefad6f10956b5c9817001553083934a2aadfdabd48ded12c1422a2b8bd6f3679fb22ca90ef67275e0ae5c33e27b8dad3d78a579e7ccbc8003b4000000000000000066f6d42e84b6b5c1aaffd51986f69b61df838ac715bd5e8c0fbf2998dbf4e1939be5615b4cb7ff3d2a5ca4bccb73e777c32e7000052d1dd762eefd954efd705c5dc898468b9f575252a5c49110cf668fd9b2979bc31ff00ebf5f6e3a7645855b9bcae8efcdfb73358d3d5d3adab17bfe0446292495c91201aa80000000000000000000019bda5a157c7057ffa96bdab6eccfd7481f9e5c55c95e5b0f96ad5ad97f3aa5ee7435f4becd8c9b947c3278ea7bd7bfa9976d63283a49536e29ee66266d5be2f3de3e554296993d4ff005ee5cacd5ceb76dd5b4e716224c8b37547a341b2ef5a4564bc4ffa70eb43d52b37b4563dc6d68b65dc8463a95fbf37cea7500fa488888e108000a000000000000000000000000056d2cd49352554cb01e47cfe97a3bb395314ef4f5adbb57c1c271aae5d1d4dfd3b47efc1aff52bd6ff00de1c4c14cc2dbc1d2bf6f12b0884aabeeb34fb161e796e5c955faae464f75a6e946b5614c30eba8daec4f24b2f1bfed8974638e681a0003710000000000000000000000000000000003e7f4c8776d26b6d79aef3ead9f406069b69deb49bdb4ffd6e7d6a707a870e9c7d4871357b1bc92ff9ff00d62651add8d1f049eb93e8947d5339343f97ecb2f7800da4000000000000000000000000000000000c1d3aca96ad46aeb474db26eee7ea6f1ce561172526bc4b07f789cfb183ab588fec6042159a8cab1f124f5aafcddccfa1b3828a492a2471d2f428da79aa9eb5733d079d6d7e8cdbdffbf70001d4000000000000000000003fffd9, 'acdaAe152', 'afmla', NULL, NULL, 0, 0, ''),
-(31, '權凱聿', 'dac', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe153', 'amcad', NULL, NULL, 0, 0, ''),
-(32, '邱宜靜', 'dad', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe154', 'acme', NULL, NULL, 0, 0, ''),
-(33, '陳志玟', 'fsd', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe155', 'aewmfa', NULL, NULL, 0, 0, ''),
-(34, '藍水年', 'afd', '1', '2024-02-02 11:43:02.000000', NULL, 'acdaAe156', 'afekw', NULL, NULL, 0, 0, ''),
-(35, '測試王', '女', '密碼:234567', NULL, NULL, '$2a$10$2fAzSf05JOGIoEkVK3CBOOgrY0/kupnpM1CK5SqCLpf0nxVoeH6ou', 'luki@gg.com', NULL, NULL, NULL, NULL, 'LUKI');
+INSERT INTO `custom` (`custom_id`, `custom_name`, `custom_sex`, `custom_descript`, `custom_year`, `custom_image`, `custom_password`, `custom_account`, `google_uid`, `photo_url`, `custom_month`, `custom_date`, `custom_nickname`, `custom month`, `custom_address`, `custom_phone`) VALUES
+(1, '張紹涵', 'mda', '1', '2024-0', 0x687474703a2f2f3132372e302e302e313a333030362f696d616765732f31373133373532373131343335356630313164663933323535373864366338656338626431653063336233313034383330363331376637343134356666623963316436636130646264386535332e706e67, 'acdaAe123', 'acdefac', NULL, NULL, 0, 0, '', 0, '', 0),
+(2, '王安石', 'mfa', '1', '2024-0', NULL, 'CdaAe124', 'adfa', NULL, NULL, 0, 0, '', 0, '', 0),
+(3, '周潤發', 'de1', '1', '2024-0', NULL, 'acdaAe125', 'vdfad', NULL, NULL, 0, 0, '', 0, '', 0),
+(4, '裝闊', 'mec', '1', '2024-0', NULL, 'acdaAe126', 'ewewef', NULL, NULL, 0, 0, '', 0, '', 0),
+(5, '梁文因', 'mcd', '1', '2024-0', NULL, 'acdaAe127', 'amdey', NULL, NULL, 0, 0, '', 0, '', 0),
+(6, '周小小', 'mdw', '1', '2024-0', NULL, 'acdaAe128', 'deaefm', NULL, NULL, 0, 0, '', 0, '', 0),
+(7, '王永慶', 'dfl', '1', '2024-0', NULL, 'acdaAe129', 'calde', NULL, NULL, 0, 0, '', 0, '', 0),
+(8, '張伯勳', 'dac', '1', '2024-0', NULL, 'acdaAe130', 'lafcm', NULL, NULL, 0, 0, '', 0, '', 0),
+(9, '林俊傑', 'dac', '1', '2024-0', NULL, 'acdaAe131', 'aewek', NULL, NULL, 0, 0, '', 0, '', 0),
+(10, '黃以林', 'acd', '1', '2024-0', NULL, 'acdaAe132', 'lqedaf', NULL, NULL, 0, 0, '', 0, '', 0),
+(11, '將萬安', 'dca', '1', '2024-0', NULL, 'acdaAe133', 'dowe', NULL, NULL, 0, 0, '', 0, '', 0),
+(12, '柯文哲', 'dac', '1', '2024-0', NULL, 'acdaAe134', 'dmae', NULL, NULL, 0, 0, '', 0, '', 0),
+(13, '林光頭', 'dad', '1', '2024-0', NULL, 'acdaAe135', 'amcae', NULL, NULL, 0, 0, '', 0, '', 0),
+(14, '周杰倫', 'fav', '1', '2024-0', NULL, 'acdaAe136', 'epafd', NULL, NULL, 0, 0, '', 0, '', 0),
+(15, '周曉倫', 'dac', '1', '2024-0', NULL, 'acdaAe137', 'amadle', NULL, NULL, 0, 0, '', 0, '', 0),
+(16, '周曉曉', 'dac', '1', '2024-0', NULL, 'acdaAe138', 'aopeqe', NULL, NULL, 0, 0, '', 0, '', 0),
+(17, '琦君', 'dac', '1', '2024-0', NULL, 'acdaAe139', 'afjma', NULL, NULL, 0, 0, '', 0, '', 0),
+(18, '蔡依林', 'dac', '1', '2024-0', NULL, 'acdaAe140', 'aofijael', NULL, NULL, 0, 0, '', 0, '', 0),
+(19, '蔡英文', 'dad', '1', '2024-0', NULL, 'acdaAe141', 'almflae', NULL, NULL, 0, 0, '', 0, '', 0),
+(20, '李連杰', 'nfr', '1', '2024-0', NULL, 'acdaAe142', 'smfpe', NULL, NULL, 0, 0, '', 0, '', 0),
+(21, '李延義', 'dac', '1', '2024-0', NULL, 'acdaAe143', 'afmla', NULL, NULL, 0, 0, '', 0, '', 0),
+(22, '劉冠良', 'daa', '1', '2024-0', NULL, 'acdaAe144', 'dlamfdl', NULL, NULL, 0, 0, '', 0, '', 0),
+(23, '林俊毅', 'dac', '1', '2024-0', NULL, 'acdaAe145', 'dfamlfe', NULL, NULL, 0, 0, '', 0, '', 0),
+(24, '王金娟', 'dad', '1', '2024-0', NULL, 'acdaAe146', 'almflae', NULL, NULL, 0, 0, '', 0, '', 0),
+(25, '林鳳珠', 'htd', '1', '2024-0', NULL, 'acdaAe147', 'ldkf', NULL, NULL, 0, 0, '', 0, '', 0),
+(26, '黃美秋', 'iut', '1', '2024-0', NULL, 'acdaAe148', 'faem', NULL, NULL, 0, 0, '', 0, '', 0),
+(27, '楊俊彥', 'dac', '1', '2024-0', NULL, 'acdaAe149', 'mdaea', NULL, NULL, 0, 0, '', 0, '', 0),
+(28, '陳靜揚', 'd54', '1', '2024-0', NULL, 'acdaAe150', 'mewf', NULL, NULL, 0, 0, '', 0, '', 0),
+(29, '富昱薇', 'bds', '1', '2024-0', NULL, 'acdaAe151', 'dapw', NULL, NULL, 0, 0, '', 0, '', 0),
+(30, '張倩彥', 'fda', '1', '2024-0', 0xffd8ffe000104a46494600010100000100010000ffdb008400090607131211121312131515121615171a191817181516181a181816181618171515181d2820191a251b171621312125292b302e2e171f3338332c37282d2e2b010a0a0a0e0d0e1a1010172d1d20262d2f2d2f2d2d2d2d2d2d2d2e2d2b2d2d2d2d2d2d2d2d2d2d2d2d2d2b2d2d2d2d352d2d2d2d2d2f2d2d2d2e2b2e2d2e2d352dffc0001108012f00a603012200021101031101ffc4001b00010003010101010000000000000000000001020503040607ffc4003810000201010407080201020603000000000001021103213141045161718191a105122232b1c1d1f013e1f182b22333425272c24392a2ffc4001a010101010101010100000000000000000000010504020603ffc40029110100020200050304020300000000000000010203041112132131054151718191b13361222332ffda000c03010002110311003f00fdc4000000000000000000000000000449d155dc919d69dacabe18b6b5b74e4b1e7438769695df7dd5e54efdad7b2f5dc674ed31a5e963f0b6997b3bb316e5c7f91f47a2e951b45762b14f14773e6ece6e2d4a2e8d7da3d68d9d074f8da2d52d5af6c5e68fdf5b6e327f8dbb4fec7ac007680000000000000000000000001c748d26305e274d4b16f723876869bdcf0c7cefa2d6cc76eadb6eade2de2716cee4639e5af791edb7ed39bf2f856da37f0ba9e6969f68d77652a57524abc57e8e656d1aa5f81976d9cb6f3695e089c6ea2fbb098bbae1675a2a94b27935474aef79f5f53f014ee24ef554b656e6db545d391d2d25755529ce9b684d9e2deda705fba93dc55ad1540eb0b7b44bcf2e75f5353b2f4994fbca57b54bf0b9d71e4cc8161a63b39785c6f5475bf0bd60d531675ebeccd2f13699e03e941cb459ca504e4a8de5e97657640dc89e31c51d40050000000000000396936ca11727965ade4b99d4c5ed8b76e6a2b08e3b5b5ecbd4fc3632f4b1cdbf03c368e4db93756dd5e1d3861b9131927f7d84655d8f515b48e0d629fdbcf9f9999eeae8735e67b953a92ad171d4c4a38358905caca29e2aa445bad197288483655cf257bfb8b23b95c5f0cbf64050efca292ad6ab34ab77b266f689a04614ce5af57fc56478fb1eceb294b524971c7d17335cd7d1c158af5263bca0003440000000000000038697a4ab38d5def25ad92d68ac71915d374a5671d72782f77b0f9dfcaf09349b79bab6dbc52a66cf45ada39372962fed16c39ce355430b6b62735bb788f0aabb2bd3ef3e9f07439f7e9e6e693a7e8e87288946a56cdd56dbd722e739dcd3e0f8e1d7d4037495faa8b7d7deee45a534b12b6de57f78168c12fe5bf5022c5522b71700a34bb15f9d6d4f9aa7b334cc3ecdb5eeda2d52b9efc575bbfa8dc3734af16c511f08000eb000000000000112745578181a55bfe49396584777cbc796a3d1da7a6f79bb38e0b17ae8f05b13c7ed7c4646eec734f257c4795800067aa96be57b8b5035529f8a3a971bdf364474224ab89c9b516b049e587144a7de6f52ebfafd80b08aa573abbf1cf5e67500a0000a9b34dca2963de8d39a75e18f03e90caec8b0ab737ba3eefdb83354dad1c735c7c67dde4001da00000000078fb4f48ee468bcd2b96c59bfb9b47b0c1d3adbbf692792f0ae18f5af2472ede5e9e3ede67b0f2ca175d7530d8233c9dcfee0f32e4355c4c1549495a258b4428b583bb6df4dc5a11a576ff004a75c0aca592c7a2fba83b35abe39164a980158c2fab75e5ec251beab1e858aca692af2dbb1015efb4ef55bb2cbe732ca699308d37e64c9571029f96f7a9678de5d3ae17d6e5bddcba9118d1511e8eceb052b58ba797c4fd1578dfc19fa63a4def15f91b96366a3151582542e01f4711c3b20002800000044a4926ddc962079bb4749ee42ef33b97cf0f8d66059d55da92fbd0f46936ee72727c16a5f39ff000709c706b15f6860ede7eadfb788f0ab829193ab4f675fe0b9cca0394db7549e0baeafbac95079c9f4f82225da2def65e4775bc5f0577379978aa12073959c526daad35def9b1085f569274cbdde781729659eaaddf7781d0005512c92ab7725b4ddd0746fc71a63277b7b766c467f6459a7393ff6a54feaaaaf25d4d835b430c457a93e65e64001a200000000065f6be91ff8d6f97b2f7fe4f7e936ca11727965ade4b99f3ee4db6ddedbabde706f67e4af24799fd0000c77a71b48f895ed3a637e5d33cf596f16c7cd7c931c5bd577bfbf42e445611a2a1600aa0000a5a61be8b9ba1648adae5bd7ad7dba97220002abd7d92ffc5df175e0d53d5f3368cbec6b3be72dd15eafd572350dcd2acc618e2f2000eb0000000f1f69e91dd85179a572d8b37f7368f37bc52b369f619fda9a439ca917e18bde9cb06f861ccf1d25ad727f259224f9dcb92725a6d2aa5fb1f41f916de4cb83f31c7f251efcaf4f555278ac0ec739799717edee7400002a800039e32dd4e77d78d29cce8523736b2c79fdf52e44086c93b68565deb48ac9789ee5fba1ee959bda2b1ee36342b1ee4231ce97ef77beacee01f49588ac444200028000018bdab3ada53fda92e2ef7d3bbc8da3e7bb45b56d6975de1dfe5596a387d427862fb8e65653a6fd5995fc95f2dfaefa70c0984699d5eb3154ef3d5cdfc5446793b9faee61da259fc7164b49ed405655ad695bb8f5e1c88568eaea9f0bcb7e25ab9553e68461475ab02d19549290c65c3d1172a843624e85316aec2b8addac889b3cdebc372faf99700aa1a5d8b67e796d4b92afbf4334dbecb8d2ca3b6af9b6fdcedd0af1cbc7e2125ea001b4800000000187da7fe6cb72f4370f9fd3ed17e69adabfb56070fa84ff00aa3ea3910c894a85559e72bdf3a6c462aab14d51552f57c1fece918d125a87e35a972456caeb9f0ddfaf803a005652a1555b454bead65752f223096726b65cfd8b45377be0b56fda5888e747de55be97f3bb0d7762753959dd73c5e78d7e371d40000aaa39ea55a703e8741ff2acff00e11f447ced9d5d699ba476b7fba9f4f670a24b524b91a5e9b1ded2f2b000d50000000003e6edfc529377a72972aba74a1f41a45af761296a4df247ce415125b0ccf51b7fcd48230a6be379600cb7a0e6bccf72f57fa3a159453c527bc22939a6d2ae74b9dfd0b46cd2bf17ad90955ec5ebfabce840292964b1e8bf7b0b9cecb0aeb75f65d10112852fbdb5f5aa605e334f069962b282788162968f2cdddf3d0883a5cf86d5f24ffab72f57fa0343b22c2b272ca172ded7b2fee360f0f63aff000ebae52e8fbbec7b8dfd4a45715787bf7fca0003a4000000006676dda35dd5845d5bdea945eaf81987d2ca29e2ab9f132bb534451f1c552ae8d657e7bebea666e6b5a667244fd87800065bd05272c963e9b589bc962fa2d64c62960444c55150900aa14b1f2adc88b4beed69fb2bb997222400554495712aa2955dfd5973d3d9da3f7e757e58def7e4bdf82d67bc78e725a2b08d5d0ac7b96718bc697ef77bead9dc03e8eb1158888400050000000003c9dad1ad94a9951f0524df44cf590d5713cdebcd59afc8f98f16c5cdfc0a3d6b82f9677d26c7b9271c961b9e1f1c0e67cddab35998955230a66defa172b68e8aec72de47e3daf99e443b4d8e9af2255a2fa9d39964852ea64073b49a4d5eb573a5e7528eceea7eefad6f10956b5c9817001553083934a2aadfdabd48ded12c1422a2b8bd6f3679fb22ca90ef67275e0ae5c33e27b8dad3d78a579e7ccbc8003b4000000000000000066f6d42e84b6b5c1aaffd51986f69b61df838ac715bd5e8c0fbf2998dbf4e1939be5615b4cb7ff3d2a5ca4bccb73e777c32e7000052d1dd762eefd954efd705c5dc898468b9f575252a5c49110cf668fd9b2979bc31ff00ebf5f6e3a7645855b9bcae8efcdfb73358d3d5d3adab17bfe0446292495c91201aa80000000000000000000019bda5a157c7057ffa96bdab6eccfd7481f9e5c55c95e5b0f96ad5ad97f3aa5ee7435f4becd8c9b947c3278ea7bd7bfa9976d63283a49536e29ee66266d5be2f3de3e554296993d4ff005ee5cacd5ceb76dd5b4e716224c8b37547a341b2ef5a4564bc4ffa70eb43d52b37b4563dc6d68b65dc8463a95fbf37cea7500fa488888e108000a000000000000000000000000056d2cd49352554cb01e47cfe97a3bb395314ef4f5adbb57c1c271aae5d1d4dfd3b47efc1aff52bd6ff00de1c4c14cc2dbc1d2bf6f12b0884aabeeb34fb161e796e5c955faae464f75a6e946b5614c30eba8daec4f24b2f1bfed8974638e681a0003710000000000000000000000000000000003e7f4c8776d26b6d79aef3ead9f406069b69deb49bdb4ffd6e7d6a707a870e9c7d4871357b1bc92ff9ff00d62651add8d1f049eb93e8947d5339343f97ecb2f7800da4000000000000000000000000000000000c1d3aca96ad46aeb474db26eee7ea6f1ce561172526bc4b07f789cfb183ab588fec6042159a8cab1f124f5aafcddccfa1b3828a492a2471d2f428da79aa9eb5733d079d6d7e8cdbdffbf70001d4000000000000000000003fffd9, 'acdaAe152', 'afmla', NULL, NULL, 0, 0, '', 0, '', 0),
+(31, '權凱聿', 'dac', '1', '2024-0', NULL, 'acdaAe153', 'amcad', NULL, NULL, 0, 0, '', 0, '', 0),
+(32, '邱宜靜', 'dad', '1', '2024-0', NULL, 'acdaAe154', 'acme', NULL, NULL, 0, 0, '', 0, '', 0),
+(33, '陳志玟', 'fsd', '1', '2024-0', NULL, 'acdaAe155', 'aewmfa', NULL, NULL, 0, 0, '', 0, '', 0),
+(34, '藍水年', 'afd', '1', '2024-0', NULL, 'acdaAe156', 'afekw', NULL, NULL, 0, 0, '', 0, '', 0),
+(35, '測試王', '女', '密碼:234567', NULL, NULL, '$2a$10$2fAzSf05JOGIoEkVK3CBOOgrY0/kupnpM1CK5SqCLpf0nxVoeH6ou', 'luki@gg.com', NULL, NULL, NULL, NULL, 'LUKI', 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -549,7 +587,8 @@ INSERT INTO `order_data` (`order_id`, `order_number`, `custom_id`, `seller_id`, 
 (1, 1, 1, 4, 5, 4, 100, '2024-04-20 16:41:24'),
 (2, 1, 1, 4, 1, 5, 100, '2024-04-20 16:43:12'),
 (10, 2, 2, 16, 0, 0, 160, '2024-04-20 16:56:46'),
-(11, 2, 2, 16, 0, 0, 140, '2024-04-20 17:01:44');
+(11, 2, 2, 16, 0, 0, 140, '2024-04-20 17:01:44'),
+(12, 3, 3, 6, 0, 0, 120, '2024-04-21 08:40:01');
 
 -- --------------------------------------------------------
 
@@ -561,18 +600,19 @@ CREATE TABLE `order_detail` (
   `order_detail_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `purchase_quantity` int(255) NOT NULL
+  `purchase_quantity` int(255) NOT NULL,
+  `remain_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `order_detail`
 --
 
-INSERT INTO `order_detail` (`order_detail_id`, `order_id`, `product_id`, `purchase_quantity`) VALUES
-(1, 1, 2, 1),
-(2, 1, 2, 1),
-(3, 2, 3, 160),
-(4, 2, 6, 140);
+INSERT INTO `order_detail` (`order_detail_id`, `order_id`, `product_id`, `purchase_quantity`, `remain_count`) VALUES
+(2, 1, 2, 100, 100),
+(3, 2, 3, 4, -15),
+(4, 2, 6, 30, 5),
+(5, 12, 10, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -784,8 +824,8 @@ INSERT INTO `product_categories` (`category_id`, `category_name`) VALUES
 -- (請參考以下實際畫面)
 --
 CREATE TABLE `qrcodeview` (
-`QRcode_id` int(11)
-,`status` tinyint(11)
+`status` tinyint(11)
+,`qrcode_id` int(11)
 ,`order_id` int(11)
 ,`custom_account` varchar(255)
 ,`custom_id` int(10)
@@ -807,26 +847,70 @@ CREATE TABLE `qrcodeview` (
 --
 
 CREATE TABLE `qrcode_detail_record` (
-  `QRcode_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
+  `QRcode_detail_id` int(11) NOT NULL,
   `product_id` varchar(20) NOT NULL,
-  `count` int(11) NOT NULL,
-  `create_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `count` int(255) NOT NULL,
   `status` tinyint(11) NOT NULL DEFAULT 0,
-  `date` timestamp NULL DEFAULT NULL,
-  `custom_id` int(11) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `purchase_quantity` int(255) NOT NULL,
-  `remain_count` int(255) NOT NULL,
-  `custom_account` varchar(255) NOT NULL
+  `qrcode_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- 傾印資料表的資料 `qrcode_detail_record`
 --
 
-INSERT INTO `qrcode_detail_record` (`QRcode_id`, `order_id`, `product_id`, `count`, `create_date`, `status`, `date`, `custom_id`, `product_name`, `purchase_quantity`, `remain_count`, `custom_account`) VALUES
-(1, 1, '1', 1, '2024-04-18 02:22:53', 0, NULL, 0, '', 0, 0, '');
+INSERT INTO `qrcode_detail_record` (`QRcode_detail_id`, `product_id`, `count`, `status`, `qrcode_id`) VALUES
+(1, '3', 2, 0, 4),
+(2, '6', 5, 0, 4),
+(3, '3', 4, 0, 5),
+(4, '6', 4, 0, 5),
+(5, '3', 3, 0, 6),
+(6, '6', 7, 0, 6),
+(7, '3', 3, 0, 7),
+(8, '6', 7, 0, 7),
+(9, '3', 1, 0, 8),
+(10, '6', 2, 0, 8),
+(11, '3', 2, 0, 9),
+(12, '6', 2, 0, 9),
+(13, '3', 1, 0, 9),
+(14, '6', 1, 0, 9),
+(15, '3', 1, 0, 10),
+(16, '6', 1, 0, 10),
+(17, '3', 2, 0, 11),
+(18, '6', 1, 0, 11),
+(19, '3', 2, 0, 12),
+(20, '6', 1, 0, 12),
+(21, '3', 2, 0, 13),
+(22, '6', 2, 0, 13);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `qrcode_record`
+--
+
+CREATE TABLE `qrcode_record` (
+  `qrcode_id` int(11) NOT NULL,
+  `custom_id` int(11) NOT NULL,
+  `qrcode_redeemDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `order_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `qrcode_record`
+--
+
+INSERT INTO `qrcode_record` (`qrcode_id`, `custom_id`, `qrcode_redeemDate`, `order_id`) VALUES
+(4, 1, '2024-04-22 08:23:43', 2),
+(5, 1, '2024-04-22 08:25:58', 2),
+(6, 1, '2024-04-22 08:26:53', 2),
+(7, 1, '2024-04-22 08:27:01', 2),
+(8, 1, '2024-04-22 08:27:43', 2),
+(9, 1, '2024-04-22 08:30:06', 2),
+(10, 1, '2024-04-22 08:31:08', 2),
+(11, 1, '2024-04-22 08:31:46', 2),
+(12, 1, '2024-04-22 08:42:06', 2),
+(13, 1, '2024-04-22 08:44:37', 2),
+(14, 1, '2024-04-22 08:55:10', 2);
 
 -- --------------------------------------------------------
 
@@ -857,41 +941,41 @@ CREATE TABLE `seller` (
 --
 
 INSERT INTO `seller` (`seller_id`, `store_name`, `contact_number`, `email`, `company_address`, `company_description`, `store_image`, `opening_hours`, `closing_hours`, `created_at`, `rest_day`, `profile_picture`, `favorite_count`, `market_id`, `ad_id`) VALUES
-(1, '阿嬤的鹹酥雞', '0922-111111', NULL, '台北市中正區忠孝東路一段1號', '好吃的鹹酥雞，香脆多汁，來一份不夠吃！', '1.阿嬤的鹹酥雞.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(2, '阿宗的麵線', '0933-222222', NULL, '台中市西屯區市政北二路75號', '台中最有名的麵線攤販，湯頭鮮美，深受學生歡迎。', '2.阿宗的麵線.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(3, '阿財的豆花', '0955-333333', NULL, '高雄市鼓山區美術南二路30號', '超滑嫩的豆花，配上珍珠、紅豆，清涼解暑的最佳選擇。', '3.阿財的豆花.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(4, '小七的滷肉飯', '0911-444444', 'text12324@gmail.com', '台北市大安區信義路四段218號', '香氣四溢的滷肉飯，讓你一試再愛上。', '4.小七的滷肉飯.jpg', NULL, NULL, '2024-03-31 10:11:42', '6', NULL, NULL, 1, NULL),
-(5, '阿昌的大腸包小腸', '0988-555555', NULL, '新竹市東區介壽路168號', '道地的新竹味，酥脆的大腸包裹著Q彈的小腸，必點美食。', '5.阿昌的大腸包小腸.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(6, '老王的珍珠奶茶', '0933-666666', NULL, '台南市中西區忠義路12號', '香濃的奶茶搭配Q彈珍珠，一口一顆珍珠，滿滿的幸福感。', '6.老王的珍珠奶茶.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(7, '阿美的芋頭球', '0977-777777', NULL, '彰化縣彰化市光復路二段66號', '外酥內軟的芋頭球，外表金黃酥脆，內裡芋頭香氣滿溢。', '7.阿美的芋頭球.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(8, '小龍的蚵仔煎', '0922-888888', NULL, '嘉義市西區民生北路99號', '嘉義最道地的蚵仔煎，酥脆外皮，鮮嫩多汁的蚵仔，美味無比。', '8.小龍的蚵仔煎.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(9, '阿姨的冰淇淋', '0955-999999', NULL, '宜蘭縣宜蘭市民族路一段28號', '宜蘭的冰淇淋必吃攤販，多種口味任你挑選，冰涼爽口。', '9.阿姨的冰淇淋.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(10, '老張的滷味', '0911-101010', NULL, '桃園市中壢區中山東路168號', '滷味大碗，鹹甜適中，讓你停不下來。', '10.老張的滷味.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(11, '小貝的章魚燒', '0933-111111', NULL, '新北市板橋區文化路一段88號', '酥脆外皮，內餡Q彈，章魚燒中的經典口味。', '11.小貝的章魚燒.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(12, '阿成的烤玉米', '0988-121212', NULL, '苗栗縣苗栗市中正路55號', '香甜多汁的烤玉米，吃了停不下來的好滋味。', '12.阿成的烤玉米.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(13, '老媽的魯肉飯', '0922-131313', NULL, '台北市士林區文林路125號', '醇厚的魯肉，搭配軟綿的米飯，家的味道就是這樣。', '13.老媽的魯肉飯.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(14, '小雯的香腸', '0933-141414', NULL, '新竹市北區民權路188號', '嚼勁十足的台式香腸，炒飯、泡麵的好夥伴。', '14.小雯的香腸.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(15, '阿哲的豬血糕', '0955-151515', NULL, '台中市北區太原路99號', 'Q彈爽口的豬血糕，沾著辣椒醬更是美味。', '15.阿哲的豬血糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(16, '老李的麻辣鍋', '0911-161616', NULL, '台南市北區成功路66號', '麻辣鍋中的巔峰之作，辣中帶鮮，讓你食指大動。', '16.老李的麻辣鍋.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(17, '小美的臭豆腐', '0988-171717', NULL, '彰化縣彰化市進化路55號', '獨門的臭味配上香脆外皮，是台灣味道的代表。', '17.小美的臭豆腐.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(18, '阿德的潤餅', '0933-181818', NULL, '新竹市東區光復路168號', '香脆的潤餅皮，搭配豐富的餡料，一口咬下滿滿幸福感。', '18.阿德的潤餅.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(19, '老王的蘿蔔糕', '0955-191919', NULL, '高雄市鳳山區文化路二段88號', '彈牙的蘿蔔糕，外脆內軟，老少咸宜的美味。', '19.老王的蘿蔔糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(20, '小李的鴨血糕', '0911-202020', NULL, '台北市松山區八德路三段99號', '獨特的口感，沾上醬料更是美味可口。', '20.小李的鴨血糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(21, '阿青的鹹豆漿', '0988-212121', NULL, '台中市西屯區惠中路88號', '濃郁的鹹豆漿，搭配煎餅或油條，早餐首選。', '21.阿青的鹹豆漿.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(22, '老吳的蜜餞', '0933-222222', NULL, '彰化縣鹿港鎮頂番路55號', '香甜可口的蜜餞，各式水果滿足你的味蕾。', '22.老吳的蜜餞.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(23, '小陳的鴨腿', '0955-232323', NULL, '新北市三重區重新路168號', '香嫩多汁的鴨腿，外皮酥脆，是肉食者的最愛。', '23.小陳的鴨腿.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(24, '阿美的芝麻湯圓', '0911-242424', NULL, '台南市安南區海佃路88號', '熱騰騰的湯圓，包裹著濃郁的芝麻餡，冬天的最愛。', '24.阿美的芝麻湯圓.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(25, '老王的油飯', '0988-252525', NULL, '桃園市桃園區成功路99號', '香氣撲鼻的油飯，米粒飽滿，讓你回味無窮。', '25.老王的油飯.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(26, '小林的貢丸湯', '0933-262626', NULL, '高雄市鳳山區文衡路55號', '嚼勁十足的貢丸，搭配清甜的湯頭，下飯好幫手。', '26.小林的貢丸湯.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(27, '阿珍的炸雞排', '0955-272727', NULL, '台北市中山區長安東路168號', '酥脆多汁的炸雞排，是街頭美食中的經典之作。', '27.阿珍的炸雞排.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(28, '老張的炒米粉', '0911-282828', NULL, '新竹市東區民生路88號', '熱騰騰的炒米粉，香氣四溢，令人垂涎三尺。', '28.老張的炒米粉.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(29, '小劉的珍珠粉圓', '0988-292929', NULL, '苗栗縣苗栗市中山路55號', 'Q彈的珍珠，配上香甜的粉圓，一口一顆，停不下來。', '29.小劉的珍珠粉圓.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(30, '阿花的米糕', '0933-303030', NULL, '台中市南區建國南路99號', '綿密香甜的米糕，搭配花生粉或紅豆，口感十足。', '30.阿花的米糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(31, '老王的香腸', '0955-313131', NULL, '台南市南區文化路一段88號', '台式香腸的經典味道，配上一杯啤酒最爽快。', '31.老王的香腸.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(32, '小劉的擔仔麵', '0911-323232', NULL, '高雄市前鎮區民權二路168號', '濃郁的麵湯，配上香嫩的肉片，讓你一口接一口。', '32.小劉的擔仔麵.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(33, '阿美的蔥油餅', '0988-333333', NULL, '台北市大同區迪化街55號', '外酥內軟的蔥油餅，鹹香可口，美味十足。', '33.阿美的蔥油餅.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(34, '老張的肉圓', '0933-343434', NULL, '桃園市中壢區中央西路99號', '外酥內嫩的肉圓，沾上甜辣醬，一口接一口停不下來。', '34.老張的肉圓.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
-(35, '小張的涼粉', '0955-353535', NULL, '新北市永和區永和路168號', '清涼解暑的涼粉，搭配醬料和辣椒，酸辣可口。', '35.小張的涼粉.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL);
+(1, '阿嬤的鹹酥雞', '0922-111111', NULL, '台北市中正區忠孝東路一段1號', '好吃的鹹酥雞，香脆多汁，來一份不夠吃！', '阿嬤的鹹酥雞.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(2, '阿宗的麵線', '0933-222222', NULL, '台中市西屯區市政北二路75號', '台中最有名的麵線攤販，湯頭鮮美，深受學生歡迎。', '阿宗的麵線.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(3, '阿財的豆花', '0955-333333', NULL, '高雄市鼓山區美術南二路30號', '超滑嫩的豆花，配上珍珠、紅豆，清涼解暑的最佳選擇。', '阿財的豆花.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(4, '小七的滷肉飯', '0911-444444', 'text12324@gmail.com', '台北市大安區信義路四段218號', '香氣四溢的滷肉飯，讓你一試再愛上。', '小七的滷肉飯.jpg', NULL, NULL, '2024-03-31 10:11:42', '6', NULL, NULL, 1, NULL),
+(5, '阿昌的大腸包小腸', '0988-555555', NULL, '新竹市東區介壽路168號', '道地的新竹味，酥脆的大腸包裹著Q彈的小腸，必點美食。', '阿昌的大腸包小腸 .jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(6, '老王的珍珠奶茶', '0933-666666', NULL, '台南市中西區忠義路12號', '香濃的奶茶搭配Q彈珍珠，一口一顆珍珠，滿滿的幸福感。', '老王的珍珠奶茶.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(7, '阿美的芋頭球', '0977-777777', NULL, '彰化縣彰化市光復路二段66號', '外酥內軟的芋頭球，外表金黃酥脆，內裡芋頭香氣滿溢。', '阿美的芋頭球.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(8, '小龍的蚵仔煎', '0922-888888', NULL, '嘉義市西區民生北路99號', '嘉義最道地的蚵仔煎，酥脆外皮，鮮嫩多汁的蚵仔，美味無比。', '小龍的蚵仔煎.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(9, '阿姨的冰淇淋', '0955-999999', NULL, '宜蘭縣宜蘭市民族路一段28號', '宜蘭的冰淇淋必吃攤販，多種口味任你挑選，冰涼爽口。', '阿姨的冰淇淋.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(10, '老張的滷味', '0911-101010', NULL, '桃園市中壢區中山東路168號', '滷味大碗，鹹甜適中，讓你停不下來。', '老張的滷味.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(11, '小貝的章魚燒', '0933-111111', NULL, '新北市板橋區文化路一段88號', '酥脆外皮，內餡Q彈，章魚燒中的經典口味。', '小貝的章魚燒.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(12, '阿成的烤玉米', '0988-121212', NULL, '苗栗縣苗栗市中正路55號', '香甜多汁的烤玉米，吃了停不下來的好滋味。', '阿成的烤玉米.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(13, '老媽的魯肉飯', '0922-131313', NULL, '台北市士林區文林路125號', '醇厚的魯肉，搭配軟綿的米飯，家的味道就是這樣。', '老媽的滷肉飯.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(14, '小雯的香腸', '0933-141414', NULL, '新竹市北區民權路188號', '嚼勁十足的台式香腸，炒飯、泡麵的好夥伴。', '小雯的香腸.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(15, '阿哲的豬血糕', '0955-151515', NULL, '台中市北區太原路99號', 'Q彈爽口的豬血糕，沾著辣椒醬更是美味。', '阿哲的豬血糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(16, '老李的麻辣鍋', '0911-161616', NULL, '台南市北區成功路66號', '麻辣鍋中的巔峰之作，辣中帶鮮，讓你食指大動。', '老李的麻辣鍋.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(17, '小美的臭豆腐', '0988-171717', NULL, '彰化縣彰化市進化路55號', '獨門的臭味配上香脆外皮，是台灣味道的代表。', '小美的臭豆腐.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(18, '阿德的潤餅', '0933-181818', NULL, '新竹市東區光復路168號', '香脆的潤餅皮，搭配豐富的餡料，一口咬下滿滿幸福感。', '阿德的潤餅.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(19, '老王的蘿蔔糕', '0955-191919', NULL, '高雄市鳳山區文化路二段88號', '彈牙的蘿蔔糕，外脆內軟，老少咸宜的美味。', '老王的蘿蔔糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(20, '小李的鴨血糕', '0911-202020', NULL, '台北市松山區八德路三段99號', '獨特的口感，沾上醬料更是美味可口。', '小李的鴨血糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(21, '阿青的鹹豆漿', '0988-212121', NULL, '台中市西屯區惠中路88號', '濃郁的鹹豆漿，搭配煎餅或油條，早餐首選。', '阿青的鹹豆漿.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(22, '老吳的蜜餞', '0933-222222', NULL, '彰化縣鹿港鎮頂番路55號', '香甜可口的蜜餞，各式水果滿足你的味蕾。', '老吳的蜜餞.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(23, '小陳的鴨腿', '0955-232323', NULL, '新北市三重區重新路168號', '香嫩多汁的鴨腿，外皮酥脆，是肉食者的最愛。', '小陳的鴨腿.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(24, '阿美的芝麻湯圓', '0911-242424', NULL, '台南市安南區海佃路88號', '熱騰騰的湯圓，包裹著濃郁的芝麻餡，冬天的最愛。', '阿美的芝麻湯圓.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(25, '老王的油飯', '0988-252525', NULL, '桃園市桃園區成功路99號', '香氣撲鼻的油飯，米粒飽滿，讓你回味無窮。', '老王的油飯.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(26, '小林的貢丸湯', '0933-262626', NULL, '高雄市鳳山區文衡路55號', '嚼勁十足的貢丸，搭配清甜的湯頭，下飯好幫手。', '小林的貢丸湯.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(27, '阿珍的炸雞排', '0955-272727', NULL, '台北市中山區長安東路168號', '酥脆多汁的炸雞排，是街頭美食中的經典之作。', '阿珍的炸雞排.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(28, '老張的炒米粉', '0911-282828', NULL, '新竹市東區民生路88號', '熱騰騰的炒米粉，香氣四溢，令人垂涎三尺。', '老張的炒米粉.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(29, '小劉的珍珠粉圓', '0988-292929', NULL, '苗栗縣苗栗市中山路55號', 'Q彈的珍珠，配上香甜的粉圓，一口一顆，停不下來。', '小劉的珍珠粉圓.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(30, '阿花的米糕', '0933-303030', NULL, '台中市南區建國南路99號', '綿密香甜的米糕，搭配花生粉或紅豆，口感十足。', '阿花的米糕.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(31, '老王的香腸', '0955-313131', NULL, '台南市南區文化路一段88號', '台式香腸的經典味道，配上一杯啤酒最爽快。', '老王的香腸.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(32, '小劉的擔仔麵', '0911-323232', NULL, '高雄市前鎮區民權二路168號', '濃郁的麵湯，配上香嫩的肉片，讓你一口接一口。', '小劉的擔仔麵.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(33, '阿美的蔥油餅', '0988-333333', NULL, '台北市大同區迪化街55號', '外酥內軟的蔥油餅，鹹香可口，美味十足。', '阿美的蔥油餅.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(34, '老張的肉圓', '0933-343434', NULL, '桃園市中壢區中央西路99號', '外酥內嫩的肉圓，沾上甜辣醬，一口接一口停不下來。', '老張的肉圓.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL),
+(35, '小張的涼粉', '0955-353535', NULL, '新北市永和區永和路168號', '清涼解暑的涼粉，搭配醬料和辣椒，酸辣可口。', '小張的涼粉.jpg', NULL, NULL, '2024-03-31 10:11:42', NULL, NULL, NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -940,7 +1024,7 @@ CREATE TABLE `view_order_full_details` (
 ,`custom_name` varchar(50)
 ,`custom_sex` varchar(3)
 ,`custom_descript` varchar(300)
-,`custom_year` datetime(6)
+,`custom_year` varchar(6)
 ,`custom_image` longblob
 ,`custom_nickname` varchar(50)
 );
@@ -966,7 +1050,7 @@ CREATE TABLE `view_order_full_details2` (
 ,`custom_name` varchar(50)
 ,`custom_sex` varchar(3)
 ,`custom_descript` varchar(300)
-,`custom_year` datetime(6)
+,`custom_year` varchar(6)
 ,`custom_image` longblob
 ,`custom_nickname` varchar(50)
 );
@@ -978,7 +1062,7 @@ CREATE TABLE `view_order_full_details2` (
 --
 DROP TABLE IF EXISTS `qrcodeview`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qrcodeview`  AS SELECT `qr`.`QRcode_id` AS `QRcode_id`, `qr`.`status` AS `status`, `od`.`order_id` AS `order_id`, `c`.`custom_account` AS `custom_account`, `c`.`custom_id` AS `custom_id`, `s`.`seller_id` AS `seller_id`, `od`.`total_sum` AS `total_sum`, `od`.`payment_date` AS `payment_date`, `odt`.`order_detail_id` AS `order_detail_id`, `odt`.`product_id` AS `product_id`, `odt`.`purchase_quantity` AS `purchase_quantity`, `c`.`custom_name` AS `custom_name`, `p`.`product_name` AS `product_name`, `s`.`store_name` AS `store_name` FROM (((((`order_data` `od` join `order_detail` `odt` on(`od`.`order_id` = `odt`.`order_id`)) join `custom` `c` on(`od`.`custom_id` = `c`.`custom_id`)) join `products` `p` on(`odt`.`product_id` = `p`.`product_id`)) join `seller` `s` on(`s`.`seller_id` = `p`.`seller_id`)) join `qrcode_detail_record` `qr` on(`qr`.`order_id` = `odt`.`order_id` = `qr`.`order_id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qrcodeview`  AS SELECT `qdr`.`status` AS `status`, `qr`.`qrcode_id` AS `qrcode_id`, `od`.`order_id` AS `order_id`, `c`.`custom_account` AS `custom_account`, `c`.`custom_id` AS `custom_id`, `s`.`seller_id` AS `seller_id`, `od`.`total_sum` AS `total_sum`, `od`.`payment_date` AS `payment_date`, `odt`.`order_detail_id` AS `order_detail_id`, `odt`.`product_id` AS `product_id`, `odt`.`purchase_quantity` AS `purchase_quantity`, `c`.`custom_name` AS `custom_name`, `p`.`product_name` AS `product_name`, `s`.`store_name` AS `store_name` FROM ((((((`order_data` `od` join `order_detail` `odt` on(`od`.`order_id` = `odt`.`order_id`)) join `custom` `c` on(`od`.`custom_id` = `c`.`custom_id`)) join `products` `p` on(`odt`.`product_id` = `p`.`product_id`)) join `seller` `s` on(`s`.`seller_id` = `p`.`seller_id`)) join `qrcode_record` `qr` on(`odt`.`order_id` = `qr`.`order_id`)) join `qrcode_detail_record` `qdr` on(`qr`.`qrcode_id` = `qdr`.`qrcode_id`)) ;
 
 -- --------------------------------------------------------
 
@@ -1016,6 +1100,12 @@ ALTER TABLE `achievement_category`
   ADD PRIMARY KEY (`achievement_id`);
 
 --
+-- 資料表索引 `advertisements`
+--
+ALTER TABLE `advertisements`
+  ADD PRIMARY KEY (`ad_id`);
+
+--
 -- 資料表索引 `balloon_data`
 --
 ALTER TABLE `balloon_data`
@@ -1044,6 +1134,12 @@ ALTER TABLE `clear_data`
 -- 資料表索引 `comment`
 --
 ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 資料表索引 `comment_replies`
+--
+ALTER TABLE `comment_replies`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1099,7 +1195,8 @@ ALTER TABLE `order_data`
 -- 資料表索引 `order_detail`
 --
 ALTER TABLE `order_detail`
-  ADD PRIMARY KEY (`order_detail_id`);
+  ADD PRIMARY KEY (`order_detail_id`),
+  ADD KEY `fk_order_detail_order_id` (`order_id`);
 
 --
 -- 資料表索引 `payment`
@@ -1123,7 +1220,14 @@ ALTER TABLE `product_categories`
 -- 資料表索引 `qrcode_detail_record`
 --
 ALTER TABLE `qrcode_detail_record`
-  ADD PRIMARY KEY (`QRcode_id`);
+  ADD PRIMARY KEY (`QRcode_detail_id`),
+  ADD KEY `fk_qrcode_id` (`qrcode_id`);
+
+--
+-- 資料表索引 `qrcode_record`
+--
+ALTER TABLE `qrcode_record`
+  ADD PRIMARY KEY (`qrcode_id`);
 
 --
 -- 資料表索引 `seller`
@@ -1154,6 +1258,12 @@ ALTER TABLE `achievement_category`
   MODIFY `achievement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `advertisements`
+--
+ALTER TABLE `advertisements`
+  MODIFY `ad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `balloon_data`
 --
 ALTER TABLE `balloon_data`
@@ -1182,6 +1292,12 @@ ALTER TABLE `clear_data`
 --
 ALTER TABLE `comment`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `comment_replies`
+--
+ALTER TABLE `comment_replies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom`
@@ -1229,13 +1345,13 @@ ALTER TABLE `market_data`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_data`
 --
 ALTER TABLE `order_data`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `payment`
@@ -1253,7 +1369,13 @@ ALTER TABLE `products`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `qrcode_detail_record`
 --
 ALTER TABLE `qrcode_detail_record`
-  MODIFY `QRcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `QRcode_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `qrcode_record`
+--
+ALTER TABLE `qrcode_record`
+  MODIFY `qrcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `seller`
@@ -1282,6 +1404,18 @@ ALTER TABLE `account`
 --
 ALTER TABLE `bank_account`
   ADD CONSTRAINT `bank_account_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `seller` (`seller_id`);
+
+--
+-- 資料表的限制式 `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD CONSTRAINT `fk_order_detail_order_id` FOREIGN KEY (`order_id`) REFERENCES `order_data` (`order_id`);
+
+--
+-- 資料表的限制式 `qrcode_detail_record`
+--
+ALTER TABLE `qrcode_detail_record`
+  ADD CONSTRAINT `fk_qrcode_id` FOREIGN KEY (`qrcode_id`) REFERENCES `qrcode_record` (`qrcode_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

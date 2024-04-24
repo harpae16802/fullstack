@@ -25,7 +25,7 @@
       width: initial;
       padding: 30px 0px 70px 0px;
     }
-    padding: 180px 0px;
+    padding: 160px 0px;
     width: 2500px;
     transform: translate(-14%, 0%) rotate(-30deg);
     // background: #d2ddbf;
@@ -61,8 +61,8 @@
           }
           // background-color: aqua;
           // 一組的內容的外層
-          padding-right: 100px;
-          padding-left: 100px;
+          padding-right: 60px;
+          padding-left: 60px;
 
           a:focus,
           a:active {
@@ -189,7 +189,7 @@
           align-items: center;
         }
         display: flex;
-        gap: 20px;
+        gap: 40px;
 
         // 調整小版的中心
         .slick-slide.slick-center .card-store-index {
