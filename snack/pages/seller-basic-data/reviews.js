@@ -11,6 +11,7 @@ import styles from '../../styles/navbar-seller.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import ReplyModal from '@/components/ReplyModal'
+import ReplySuccessModal from '@/components/ReplySuccessModal'
 import { Modal, Button, Form } from 'react-bootstrap'
 
 export default function Reviews() {
@@ -42,6 +43,7 @@ export default function Reviews() {
   const [showModal, setShowModal] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState(null)
   const [commentContent, setCommentContent] = useState('') 
+  const [replySuccess, setReplySuccess] = useState(false);
 
 
   // 使用Ref
@@ -119,6 +121,7 @@ export default function Reviews() {
         reply,
       })
       fetchData()
+      setReplySuccess(true);
     } catch (error) {
       console.error('回复提交失败', error)
     }
@@ -297,6 +300,7 @@ export default function Reviews() {
                   commentContent={commentContent}
                   submitReply={submitReply}
                 />
+                <ReplySuccessModal show={replySuccess} onHide={() => setReplySuccess(false)} />
                 {/* 篩選 */}
               </div>
             </div>

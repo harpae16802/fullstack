@@ -5,9 +5,13 @@ function ReplyModal({ show, onHide, commentId, submitReply ,commentContent}) {
   const [reply, setReply] = useState('')
 
   const handleSubmit = () => {
-    submitReply(commentId, reply)
-    setReply('')
-    onHide()
+    if (reply.trim() === '') {
+      // 如果回复内容为空，则不执行提交回复的操作
+      return;
+    }
+    submitReply(commentId, reply);
+    setReply('');
+    onHide();
   }
 
   return (
