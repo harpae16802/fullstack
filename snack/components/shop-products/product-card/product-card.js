@@ -7,6 +7,8 @@ import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
 } from '@/components/config/api-path'
+// context
+import { useCartContext } from '@/contexts/cartContext'
 // 樣式
 import style from './style.module.scss'
 
@@ -18,7 +20,23 @@ export default function ProductCard({
   percentage = '',
   pepole = '',
 }) {
+  const { addToCart } = useCartContext()
+
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
+
+  // 添加到购物车的事件处理器
+  const handleAddToCart = () => {
+    // 创建一个代表商品的对象
+    const product = {
+      product_id,
+      imgUrl,
+      title,
+      price: parseFloat(price),
+      percentage,
+      pepole,
+    }
+    addToCart(product) // 调用addToCart函数更新购物车
+  }
 
   // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
@@ -50,7 +68,7 @@ export default function ProductCard({
     <div className={style.card}>
       <div className={style.imgDiv}>
         <img src={imgUrl} className={style.img} />
-        <button className={style.addBtn}>
+        <button className={style.addBtn} onClick={handleAddToCart}>
           <FaPlus />
         </button>
       </div>

@@ -26,6 +26,10 @@ export const C_FAVORITE_STORE = `${SHOP_PRODUCTS}/check-like-shop`
 export const C_FAVORITE_PRODUCTS = `${SHOP_PRODUCTS}/check-like-products`
 // 取得評論
 export const COMMENT_DATA = `${SHOP_PRODUCTS}/comment`
+// 加入購物車
+export const CART_ADD = `${SHOP_PRODUCTS}/cart-add`
+// 獲取購物車數據
+export const CART = `${SHOP_PRODUCTS}/cart`
 
 // === market
 export const MARKET = `${API_SERVER}/market`

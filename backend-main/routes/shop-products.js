@@ -257,7 +257,9 @@ router.post("/cart-edit", async (req, res) => {
 
     const currentQuantity = current[0].quantity;
     if (currentQuantity < quantity) {
-      return res.status(400).json({ error: "减少的数量大于购物车中的商品数量" });
+      return res
+        .status(400)
+        .json({ error: "减少的数量大于购物车中的商品数量" });
     }
 
     if (currentQuantity === quantity) {
@@ -293,7 +295,10 @@ router.post("/cart-edit", async (req, res) => {
     const [cartInfo] = await db.query(cartInfoSql, [custom_id]);
 
     // 计算总金额
-    const totalAmount = cartInfo.reduce((acc, item) => acc + item.total_price, 0);
+    const totalAmount = cartInfo.reduce(
+      (acc, item) => acc + item.total_price,
+      0
+    );
 
     // 返回成功响应
     res.json({
@@ -307,5 +312,15 @@ router.post("/cart-edit", async (req, res) => {
   }
 });
 
+// 獲取購物車數據
+router.post("/cart", async (req, res) => {
+  try {
+    const sql = `SELECT * FROM cart`;
+    const [row] = await db.query(sql);
+    res.json(row);
+  } catch (error) {
+    console.log("獲取購物車數據錯誤: " + error);
+  }
+});
 
 export default router;

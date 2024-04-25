@@ -9,8 +9,7 @@ import ShopInfo from '@/components/shop-products/shop-info/shop-info'
 import SearchBarSmaller from '@/components/common/search-bar-smaller'
 import ProductCard from '@/components/shop-products/product-card/product-card'
 import ProductCard2 from '@/components/shop-products/product-card2/product-card2'
-// icons
-import { FaShoppingCart } from 'react-icons/fa'
+import Cart from '@/components/shop-products/cart/cart'
 // api-path
 import {
   SELLER_DATA,
@@ -322,7 +321,8 @@ export default function ShopProducts() {
 
             {/* cart */}
             <div className="d-none col-0 d-md-block col-md-3">
-              <div
+              <Cart />
+              {/* <div
                 className={`d-flex justify-content-center align-items-center flex-column sticky-top ${style.cart}`}
               >
                 <FaShoppingCart className={`${style.icon}`} />
@@ -331,7 +331,7 @@ export default function ShopProducts() {
                   <p>總計</p>
                   <p>0</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
