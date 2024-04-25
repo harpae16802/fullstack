@@ -8,12 +8,11 @@ const productsRouter = express.Router();
 // Multer 配置
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/products/"); // 檔案儲存路徑
+    cb(null, "public/products/");  // 正確的檔案儲存路徑
   },
   filename: function (req, file, cb) {
-    // 生成唯一的文件名
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname)); // 使用原始文件的擴展名
+    cb(null, uniqueSuffix + path.extname(file.originalname));  // 使用原始文件的擴展名
   },
 });
 
@@ -26,6 +25,9 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+
+
 productsRouter.put(
   "/edit-profile-picture/:sellerId",
   upload.single("profilePicture"),
@@ -149,7 +151,7 @@ productsRouter
   })
 
   // 新增產品包含上船圖檔
-  .post("/add", upload.single("image"), async (req, res) => {
+  productsRouter.post("/add", upload.single("image"), async (req, res) => {
     const {
       category,
       category_id,
@@ -161,9 +163,8 @@ productsRouter
       productNutrition,
       seller_id,
     } = req.body;
-    console.log(req.body);
 
-    const imageUrl = req.file ? `/public/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
+    const imageUrl = req.file ? `/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
     const status = 1; // 根據您的業務規則設置，例如，新建產品預設為上架狀態
     const favoriteCount = 0; // 新建產品的初始蒐藏數為0
 
@@ -191,14 +192,15 @@ productsRouter
       ]);
       res.status(200).json({
         success: true,
-        imageUrl: imageUrl, // 不需要添加前綴路徑，因為已經在 imageUrl 中包含了
+        imageUrl: imageUrl,
         message: "產品新增成功",
       });
     } catch (error) {
       console.error("產品新增失敗", error);
       res.status(500).json({ success: false, message: "產品新增失敗" });
     }
-  });
+});
+
 
 // 獲取單個產品的詳細信息
 productsRouter.get("/details/:productId", async (req, res) => {
