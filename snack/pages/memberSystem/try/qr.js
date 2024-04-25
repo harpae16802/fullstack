@@ -1,17 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import QRCode from 'qrcode.react';
-import { useQrcode } from '@/data/context/QrcodeContext';
 
-import classNames from 'classnames';
+const QRCodeGenerator = ({ jsonData }) => {
+  const jsonString = JSON.stringify(jsonData);
 
-export default function QrWithQRCodeGenerator() {
-  const { QRcodeData, setQRcodeData,QRcodeDataCreate } = useQrcode(); 
-
- 
   return (
-    <div> 
-      <QRCode value={QRcodeDataCreate} />
-      <p>{QRcodeData}</p>
+    <div>
+      <h2>QR 码生成器</h2>
+      <QRCode value={jsonString} />
+      <p>{jsonString}</p>
     </div>
   );
-}
+};
+
+const Qr = () => {
+  const jsonData = {
+    name: '张三',
+    age: 30,
+    email: 'zhangsan@example.com'
+  };
+
+  return (
+    <div>
+      <QRCodeGenerator jsonData={jsonData} />
+    </div>
+  );
+};
+
+export default Qr;

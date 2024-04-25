@@ -1,132 +1,123 @@
 import db from "../utils/db.js";
-import { ISOtodate } from "../utils/day.js"; 
+import {ISOtodate} from '../utils/day.js'; 
 
- 
-  export const recordSearch = async (req, res) => { 
-    const result = { success: false, data: [] }; 
-    const data = "SELECT a.*, b.*, (SELECT p.product_name FROM products p WHERE p.product_id = b.product_id) AS product_name FROM `order_data` a JOIN order_detail b ON a.order_id = b.order_id WHERE a.custom_id = 1;";
 
-    let [rows] = (await db.query(data));
-    rows.map((v, i) => {
-      v.payment_date = ISOtodate(v.payment_date)
-      return v
-    })
+export async function recordSearch(req, res) {
+  const result = { success: false, data: [] };
+  const data = "SELECT DISTINCT o.order_id FROM orders o JOIN order_details od ON o.order_id = od.order_id JOIN products p ON od.product_id = p.product_id where o.custom_id=1";
+  let [rows] = await db.query(data);
+
+  for (const v of rows) {
+    const data2 = `SELECT o.order_id, o.custom_Id, od.order_quantity, od.product_id, p.product_name FROM orders o JOIN order_details od ON o.order_id = od.order_id JOIN products p ON od.product_id = p.product_id where o.custom_id=1 && o.order_id=${v.order_id}`;
+    let [row2] = await db.query(data2);
+    console.log(row2);
+    result.data.push([...row2]);
+  }
+  res.send(result);
+}
+export async function myProduct(req, res) {
+  try {
+    const result = { success: false, data: [] };
+    const data = `
+      SELECT a.*, b.*, (SELECT product_name FROM products WHERE products.product_id = a.product_id) AS product_name
+      FROM order_detail a
+      JOIN order_data b ON a.order_id = b.order_id
+    `;
+    let [rows] = await db.query(data);
+
+    const newData = await Promise.all(rows.map(async (row) => {
+      let totalcount = 0;
+      const qrcorded = `
+        SELECT SUM(count) AS sumcount
+        FROM qrcode_detail_record
+        WHERE order_id = ${row.order_id} AND product_id = ${row.product_id}
+        ORDER BY count
+      `;
+      let [rowsa] = await db.query(qrcorded);
+      if (+rowsa[0].sumcount > 0) {
+        totalcount = +row.purchase_quantity - (+rowsa[0].sumcount);
+      } else {
+        totalcount = row.purchase_quantity;
+      }
+      row.payment_date = ISOtodate(row.payment_date);
+      return { ...row, sumcount: rowsa[0].sumcount, totalcount };
+    }));
+
+    result.data = newData;
     result.success = true;
-    result.data = rows
-    res.send(result)
+    res.send(result);
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send({ success: false, message: "Internal server error" });
   }
-  export const myProduct = async (req, res) => {
+}
+export async function myProduct2(req, res) {
+  try {
+    const result = { success: false, data: [] };
+    const product_id = 2;  // Assuming this should be dynamic in future implementations
+    const data = `
+      SELECT a.*, b.*, (SELECT product_name FROM products WHERE products.product_id = ?) AS product_name
+      FROM order_detail a JOIN order_data b ON a.order_id = b.order_id
+      WHERE a.product_id = ?
+    `;
+    let [rows] = await db.query(data, [product_id, product_id]);
 
- 
-    const custom_id = req.body.custom_id || 1;
-    try {
-      const result = { success: false, data: [], title: [] };
-      const data = `
-      SELECT 
-      a.*,
-      b.*, 
-        (SELECT p.store_name FROM seller p WHERE p.seller_id = a.seller_id) AS seller_name,
-      (SELECT p.product_name FROM products p WHERE p.product_id = b.product_id) AS product_name
-        FROM 
-            order_data a 
-        JOIN 
-            order_detail b 
-        ON 
-            a.order_id = b.order_id 
-        WHERE 
-            a.custom_id = ${custom_id}
-        ORDER BY 
-            a.order_id;
-          `;
-      let [rows] = await db.query(data);
+    const newData = await Promise.all(rows.map(async (row) => {
+      let totalcount = 0;
+      const qrcorded = `
+        SELECT SUM(count) AS sumcount
+        FROM qrcode_detail_record
+        WHERE order_id = ? AND product_id = ?
+        ORDER BY count
+      `;
+      let [rowsa] = await db.query(qrcorded, [row.order_id, product_id]);
+      totalcount = rowsa[0].sumcount ? row.purchase_quantity - (+rowsa[0].sumcount) : row.purchase_quantity;
+      row.payment_date = ISOtodate(row.payment_date);
+      let rowCountarr = Array(totalcount).fill(1).map((v, i) => i + 1);
 
-      let array = [];
-      rows.forEach(v => {
-        let index = array.findIndex(a => a.length > 0 && a[0].order_id === v.order_id);
-        if (index === -1) {
-          index = array.length;
-          array.push([]);
-          result.title.push({ order_id: v.order_id, ...v })
-        }
-        array[index].push({ order_id: v.order_id, ...v });
-      });
-      result.success = true;
-      result.data = array
+      return { ...row, sumcount: rowsa[0].sumcount, rowCountarr, totalcount };
+    }));
 
-      res.send(result);
-    } catch (error) {
-      console.error("Error occurred:", error);
-      res.status(500).send({ success: false, message: "Internal server error" });
-    }
+    result.data = newData;
+    result.success = true;
+    res.send(result);
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send({ success: false, message: "Internal server error" });
   }
-  export const myProduct2 = async (req, res) => { 
-    try {
-      const result = { success: false, data: [] };
-      const order_id = req.body.order_id;
-      console.log(order_id)
-      const data = `
-      SELECT 
-      a.*,
-      b.*, 
-        (SELECT p.store_name FROM seller p WHERE p.seller_id = a.seller_id) AS seller_name,
-      (SELECT p.product_name FROM products p WHERE p.product_id = b.product_id) AS product_name
-        FROM 
-            order_data a 
-        JOIN 
-            order_detail b 
-        ON 
-            a.order_id = b.order_id 
-        WHERE   a.order_id=?
-        
-          `;
-      let [rows] = await db.query(data, order_id);
-      console.log(rows)
+}
+export async function insertProduct(req, res) {
+  try {
+    const result = { success: false, data: [] };
+    // 更改 custom_id=1 。a.product_id=2
+    const data = `SELECT a.*, b.*, (SELECT product_name FROM products WHERE products.product_id = a.product_id) AS product_name FROM order_detail a JOIN order_data b ON a.order_id = b.order_id where a.product_id=2`;
+    let [rows] = await db.query(data);
+    const newData = await Promise.all(rows.map(async (row) => {
+      let totalcount = 0;
+      const qrcorded = `
+                  SELECT SUM(count) AS sumcount
+                  FROM qrcode_detail_record
+                  WHERE order_id = ${row.order_id} AND product_id = 2
+                  ORDER BY count
+              `;
+      let [rowsa] = await db.query(qrcorded);
+      if (+rowsa[0].sumcount > 0) {
+        totalcount = +row.purchase_quantity - (+rowsa[0].sumcount);
+      } else {
+        totalcount = row.purchase_quantity
+      }
+      row.payment_date = ISOtodate(row.payment_date);
+      let rowCountarr = Array(totalcount).fill(1).map((v, i) => i + 1);
 
-
-      result.data = rows;
-      result.success = true;
-
-      res.send(result);
-    } catch (error) {
-      console.error("Error occurred:", error);
-      res.status(500).send({ success: false, message: "Internal server error" });
-    }
+      return { ...row, sumcount: rowsa[0].sumcount, rowCountarr, totalcount };
+    }));
+    // 将结果添加到 result.data
+    result.data = newData;
+    result.success = true;
+    // 返回结果
+    res.send(result);
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send({ success: false, message: "Internal server error" });
   }
-  export const insertProduct = async (req, res) => {  
- 
-    let result = { success: false, data: [] };
-    console.log(req.body)
-    const [qr_id] =await max();
-    async function max() {
-      const max_id = `SELECT max(qrcode_id)as max FROM qrcode_record WHERE 1`;
-      const [MaxidResult] = await db.query(max_id);
-      return MaxidResult ;
-    }
-    try {
-      const data2 = `INSERT INTO qrcode_record ( order_id, custom_id) VALUES (?, ?)`;
-      const [insertResult] = await db.query(data2, [req.body[0].order_id, req.body[0].custom_id]);
-
-      await Promise.all(req.body.map(async (v, i) => { 
-
-          const data4 = `UPDATE order_detail    SET remain_count = ? WHERE order_id = ? and product_id=?;`;
-          const countData = +v.remain_count - (+v.isvalue)
-          const insertResult2 = await db.query(data4, [countData, v.order_id, v.product_id]);
-
-          if (insertResult2) {
-            const dataI = `INSERT INTO qrcode_detail_record (qrcode_id, product_id,count) VALUES (?, ?,?)`;
-            console.log(qr_id,v.product_id,v.isvalue);
-            const [insertResult] = await db.query(dataI,[qr_id.max,v.product_id,v.isvalue]);
-        }
-        else {
-          return result;
-        }  
-      }))  
-      result.data=[{qrcode_id:qr_id.max}];
-      result.success = true;
-      res.send(result);
-    } catch (error) {
-      console.error("Error occurred:", error);
-      res.status(500).send({ success: false, message: "Internal server error" });
-    }
-  }
- 
+}

@@ -1,15 +1,7 @@
 import mainApi from "./api";
 
 const ticket01Select01 = () => {
-    return fetch(`${mainApi.API_URL}/ticket/ticket01Select01`,{
-        method: 'POST', // 指定請求方法為POST
-        headers: {
-          'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
-          // 如果有需要，還可以添加其他的請求頭
-        },
-        // body: JSON.stringify(data), // 將需要發送的資料轉換為JSON字符串並作為請求體發送
-       
-      })
+    return fetch(`${mainApi.API_URL}/ticket/ticket01Select01`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('網路請求失敗');
@@ -26,15 +18,7 @@ const ticket01Select01 = () => {
         });
 }
 const ticket01Select02 = () => {
-    return fetch(`${mainApi.API_URL}/ticket/ticket01Select02`,{
-        method: 'POST', // 指定請求方法為POST
-        headers: {
-          'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
-          // 如果有需要，還可以添加其他的請求頭
-        },
-        // body: JSON.stringify(data), // 將需要發送的資料轉換為JSON字符串並作為請求體發送
-       
-      })
+    return fetch(`${mainApi.API_URL}/ticket/ticket01Select02`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('網路請求失敗');
@@ -51,15 +35,7 @@ const ticket01Select02 = () => {
         });
 }
 const ticket01Select03 = () => {
-    return fetch(`${mainApi.API_URL}/ticket/ticket01Select03`,{
-        method: 'POST', // 指定請求方法為POST
-        headers: {
-          'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
-          // 如果有需要，還可以添加其他的請求頭
-        },
-        // body: JSON.stringify(data), // 將需要發送的資料轉換為JSON字符串並作為請求體發送
-       
-      })
+    return fetch(`${mainApi.API_URL}/ticket/ticket01Select03`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('網路請求失敗');

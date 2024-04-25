@@ -1,12 +1,5 @@
 /*  */
 
-
-.form input,
-.form select {
-  border: 2px solid #a32c2d !important;
-}
-
-
 .text-color {
   color: #a32c2d; 
 }
@@ -73,7 +66,7 @@
 /* nputErr */
 /* 內容外框 */
 .main-O-baground {
-  min-height: 800px;
+  min-height: 950px;
   padding: 3em;
   border-radius: 50px;
 
@@ -170,7 +163,7 @@ input.imgIcon {
 .btn-parmary:hover,
 .btn-parmary.active {
   font-weight: bold;
-  background-color: rgb(148, 148, 148) !important;
+  /* background-color: white; */
   color: #a32c2d !important;
 }
 .nav-tabs .nav-link.active,
@@ -234,30 +227,14 @@ input.imgIcon {
 .md-open {
   display: none;
 }
-@media  (max-width:1100px) {
- .setPersonFormGrid{
-   height: 210px; 
-    position: relative;
-    top:-50px
-  }
-}
  
 @media (max-width:500px) {
-  .iconReverse{
-    display: flex;
-    flex-direction: column-reverse;
-
-  }
   .main-O-baground {
       min-height: 950px;
       padding: 0;
       border-radius: 50px;
     
       background-color: transparent;
-    }
-    .nav-item a {
-      display: block;
-      width: 100%;
     }
     
 }

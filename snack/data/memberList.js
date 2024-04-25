@@ -10,7 +10,35 @@ const data = [
 
     title: "商品與QRcode",
     type: "productQrcode1", 
-    href: "/memberSystem/qrcodeSelect"  
+
+    list: [
+      {
+        title: "Qrcode兌換",
+        type: "qrcodeExchange1",
+        href: "/memberSystem/qrcodeSelect"
+
+      },
+      {
+        title: "Qrcode確認",
+        type: "qrcodeExchange2",
+        href: "/memberSystem/qrcodeSelect2"
+
+      },
+      {
+        title: "已兌換產品",
+        type: "qrcodeExchange3",
+        href: "/memberSystem/qrcodeSelect3"
+
+      },
+      {
+        title: "已兌換產品二",
+        href: "/home2",
+        type: "qrcodeExchanged4",
+        href: "/memberSystem/qrcodeSelect4"
+ 
+      }
+    ]
+
   }
   ,
   {

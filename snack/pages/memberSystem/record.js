@@ -3,7 +3,7 @@ import Record from "@/components/memberS/record/record"
 import SelectMenu from "@/components/memberS/person/selectMenu";
 import classNames from 'classnames'
 import styles from "@/styles/form.module.css";
-import Section from "@/components/layout/section"; 
+import Section from "@/components/layout/section";
 
 export default function ticket() {
   const [isBigScreen, setIsBigScreen] = useState(false);
@@ -27,14 +27,13 @@ export default function ticket() {
   return (
     <Section>
       <div className="container">
-        <div className="row" >
-          <div className="col-12 col-xl-4 " style={{paddingTop:" 110px"}}>
-            <SelectMenu />       
+        <div className="row">
+          <div className="col-12 col-xl-4 ">
+            <SelectMenu />
           </div>
           <div className="col-12 col-xl-8">
             <div className={classNames("", styles["main-O-baground"])}>
-              <h4 className="text-title">[我的留言] </h4>
-    
+              <h4 className="text-title">[我的留言]</h4>
               <Record />
 
             </div>

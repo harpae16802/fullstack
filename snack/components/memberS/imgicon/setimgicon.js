@@ -3,8 +3,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/form.module.css"
 import classNames from "classnames";
-import memberFormUpdate from '@/api/memberFormUpdate';
-import { useIcon } from '@/data/context/ImgContext';
+
 import { useEffect, useState,useRef } from "react"; 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,12 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 // 選擇圖片
 export default function Setimg() {
   const [file, setFile] = useState(null); 
-  const fileInputRef = useRef(null);   
-  let  { previewUrl,setPreviewUrl } = useIcon(); 
-
+  const fileInputRef = useRef(null); 
    // 選中的檔案
    const [selectedFile, setSelectedFile] = useState(null)
    // 預覽圖片(呼叫URL.createObjectURL得到的網址)
+   const [previewUrl, setPreviewUrl] = useState("/face/ch.jpeg")
  
    // 選擇檔案有變動時的處理函式
    const handleFileChange = (e) => {
@@ -36,7 +34,6 @@ export default function Setimg() {
        setPreviewUrl('')
      }
    }
- 
  
    // 上傳到伺服器 
    const handleFileUpload = async (event) => {

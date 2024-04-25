@@ -1,5 +1,10 @@
+// components/layout/navbar-custom.js
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useAuth } from '@/contexts/custom-context'
+import { useRouter } from 'next/router'
+
 import {
   FaBars,
   FaUser,
@@ -9,17 +14,21 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarCustom() {
+  const router = useRouter()
+
+  const { auth, logout, login } = useAuth()
+
   return (
     <>
       {' '}
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <a className="navbar-brand" href="#">
-              <Image src="/activity.svg" alt="" width={30} height={24} />
-            </a>
+            <Link className="navbar-brand" href="/">
+              <Image src="/logo-o.svg" alt="" width={180} height={70} />
+            </Link>
             <div className="right-icons">
-              <a className="navbar-brand min-cart" href="#">
+              <a className="navbar-brand min-cart" href="/">
                 <FaShoppingCart />
               </a>
               <button
@@ -40,19 +49,37 @@ export default function NavbarCustom() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/market-map' ? 'active' : ''
+                    }`}
+                    aria-current="page"
+                    href="/market-map"
+                  >
                     夜市導覽
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/nightmarket-info/index'
+                        ? 'active'
+                        : ''
+                    }`}
+                    href="/nightmarket-info/night"
+                  >
                     美味商城
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link
+                    className={`nav-link ${
+                      router.pathname === '/game/game-select' ? 'active' : ''
+                    }`}
+                    href="/game/game-select"
+                  >
                     趣味遊戲
-                  </a>
+                  </Link>
                 </li>
               </div>
               {/* 手機版的選單 開始 */}
@@ -90,10 +117,19 @@ export default function NavbarCustom() {
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a
+                    className="nav-link"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      logout()
+                      router.replace(`/login/login-custom`)
+                    }}
+                  >
                     登出
                   </a>
                 </li>
+
                 {/* 一般會員結束 */}
               </div>
               {/* 手機版的選單 結束 */}
@@ -132,7 +168,15 @@ export default function NavbarCustom() {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              logout()
+                              router.replace(`/login/login-custom`)
+                            }}
+                          >
                             登出
                           </a>
                         </li>

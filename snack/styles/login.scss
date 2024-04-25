@@ -1,15 +1,8 @@
-$black: #070505;
-$primary: rgb(163, 44, 45);
-$secondary: rgb(225, 209, 178);
-$success: rgb(41, 162, 30);
-$warning: rgb(255, 201, 64);
-$danger: rgb(255, 1, 1);
-$light-primary: rgb(234, 105, 106);
-$deep-primary: rgb(98, 27, 27);
-$deep-gray: rgb(183, 180, 177);
-$gray: rgb(229, 225, 221);
+// 全站配色
+// 引入變數使用
+@import "variable";
 
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
 
 // 燈籠動畫的設定
 @keyframes swing {
@@ -44,6 +37,24 @@ $gray: rgb(229, 225, 221);
     :hover {
       animation: swing 1s linear infinite;
     }
+  }
+}
+.pswinput{
+  position: relative;
+  .password-eye{
+    @media (max-width: 992px) {
+    top: 36px;
+    }
+    position: absolute;
+    color: $primary;
+    font-size: 25px;
+    top: 40px;
+    right: 35px;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .form-control{
+    padding: 12px 60px 12px 30px;
   }
 }
 .custom-login-page {
@@ -115,7 +126,7 @@ $gray: rgb(229, 225, 221);
       overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: end;
+      justify-content: flex-end;
       border-radius: 20px 0px 0px 20px;
       border-top: 5px solid $primary;
       border-right: 5px solid $primary;
@@ -136,10 +147,16 @@ $gray: rgb(229, 225, 221);
       //   border-left: 5px solid $primary;
     }
     .login-title {
+      @media (max-width: 992px) {
+        justify-content: space-between;
+      }
       display: flex;
       align-items: center;
       justify-content: start;
       span {
+        @media (max-width: 992px) {
+          margin-right: 0px;
+        }
         color: #621b1b;
         font-size: 28px;
         font-weight: 700;
@@ -158,6 +175,9 @@ $gray: rgb(229, 225, 221);
       text-align: center;
       font-size: 16px;
       font-weight: 500;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
       .forget-p {
         text-decoration: none;
       }
@@ -215,7 +235,7 @@ $gray: rgb(229, 225, 221);
       }
     }
     .seller-input-group form {
-      padding-top: 80px;
+      padding-top: 60px;
       flex-direction: column;
       border-bottom: none;
       z-index: 1;
@@ -251,12 +271,18 @@ $gray: rgb(229, 225, 221);
 }
 
 // 以下設定縮小版時
+
 .custom-page-min,.seller-page-min {
   @media (max-width: 992px) {
     display: block;
     width: 100%;
   }
   display: none;
+  .custom-input-group,.seller-input-group{
+    @media (max-width: 992px) {
+      margin-top: 40px;
+    }
+  }
   .custom-min-group,.seller-min-group {
     width: 100%;
     .custom-min-login,.custom-min-register,.seller-min-login,.seller-min-register {
@@ -266,10 +292,16 @@ $gray: rgb(229, 225, 221);
       gap: 40px;
     }
     .login-title {
+      @media (max-width: 992px) {
+        justify-content: space-between;
+      }
       display: flex;
       align-items: center;
       justify-content: space-between;
       span {
+        @media (max-width: 992px) {
+          margin-right: 0px;
+        }
         color: #621b1b;
         font-size: 28px;
         font-weight: 700;
@@ -320,6 +352,9 @@ $gray: rgb(229, 225, 221);
       text-align: center;
       font-size: 16px;
       font-weight: 500;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
       .forget-p {
         text-decoration: none;
       }

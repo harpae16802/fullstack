@@ -8,14 +8,12 @@ import Pagination from '@/components/memberS/others/pagination'
 import { FaHeart } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import favStyle from "@/styles/fav.module.css";
-import favoriteApi from '@/api/favoriteApi'
 
 export default function ticket() {
-  const [tab, settab] = useState(1); 
+  const [tab, settab] = useState(1);
+  const [numberbtn, setnumberbtn] = useState(1);
   const [isBigScreen, setIsBigScreen] = useState(false);
   const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
-  const [products,setProducts]=useState([]);
-  const [stores,setStores]=useState([]);
   useEffect(() => {
     const handleResize = () => {
       setIsBigScreen(window.innerWidth > 1200);
@@ -32,19 +30,6 @@ export default function ticket() {
     };
 
   }, [])
-  useEffect(()=>{
-    (async function (){
-      const fav1=await favoriteApi.favoriteSearch01Product() 
-      if(fav1.success){
-        setProducts(fav1.data.data);
-      }
-      const fav2=await favoriteApi.favoriteSearch02Store()
-      console.log(fav2)
-      if(fav2.success){ 
-        setStores(fav2.data);
-      }
-    })();
-  },[])
 
 
 
@@ -61,12 +46,12 @@ export default function ticket() {
    
   </ul>
       {/* tab1*/}
-      {tab == 1 && (
+      {numberbtn == 1 && (
         <div className=" border1">
           <div className={classnames("itemgroup item1", styles["mb-0"])}>
 
             {/* flexBetween */}
-            {products.map((v, i) => {
+            {Array(4).fill(1).map((v, i) => {
               return (
                 <div className="creditItem number countGroup" key={i} >
                   <div className={classnames("itemgroup item1", styles["mb-0"])}>
@@ -76,8 +61,8 @@ export default function ticket() {
                         <Image src="/ch.jpeg" alt="Description" width={90} height={90} />
                       </div>
                       <div className={classnames(favStyle["postion-a2"])}>
-                        <small>{v.created_at}</small>
-                        <h6 className={classnames(styles['btn-parmary-transparent'])}>{v.product_name} { isTabletOrMobile && (<FaHeart className='text-color iconsize' />)}</h6>
+                        <small>2024/03/01</small>
+                        <h6 className={classnames(styles['btn-parmary-transparent'])}>海苔雞排 { isTabletOrMobile && (<FaHeart className='text-color iconsize' />)}</h6>
                        
                      
                         </div>
@@ -99,11 +84,12 @@ export default function ticket() {
         </div>
       )}
       {/* tab2*/}
-      {tab == 2 && (
+      {numberbtn == 2 && (
         <div className=" border1">
-          <div className={classnames("itemgroup item1", styles["mb-0"])}> 
+          <div className={classnames("itemgroup item1", styles["mb-0"])}>
+
             {/* flexBetween */}
-            {stores.map((v, i) => {
+            {Array(4).fill(1).map((v, i) => {
               return (
                 <div className="creditItem number countGroup" key={i} >
                   <div className={classnames("itemgroup item1", styles["mb-0"])}>
@@ -113,8 +99,8 @@ export default function ticket() {
                         <Image src="/ch.jpeg" alt="Description" width={90} height={90} />
                       </div>
                       <div className={classnames(favStyle["postion-a2"])}>
-                        <small>{v.created_at}</small>
-                        <h6 className={classnames(styles['btn-parmary-transparent'])}>{v.seller_id} { isTabletOrMobile && (<FaHeart className='text-color iconsize' />)}</h6>
+                        <small>2024/03/01</small>
+                        <h6 className={classnames(styles['btn-parmary-transparent'])}>海苔雞排 { isTabletOrMobile && (<FaHeart className='text-color iconsize' />)}</h6>
                       </div>
 
 

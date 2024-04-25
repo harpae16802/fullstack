@@ -1,179 +1,257 @@
-// pages/seller-basic-data/index.js
-import React, { useEffect, useState, useContext, useRef } from "react";
-import Link from "next/link";
-import axios from "axios";
-import { SELLER_API } from "./config";
-import { useRouter } from "next/router";
-import { useSeller } from "../../contexts/SellerContext";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Section from "@/components/layout/section";
-import styles from "../../styles/navbar-seller.module.scss";
+// pages/seller-basic-data/order.js
+import React, { useEffect, useState, useContext, useRef } from 'react'
+import Link from 'next/link'
+import axios from 'axios'
+import { SELLER_API, ORDERDETAIL } from './config'
+import { useRouter } from 'next/router'
+import { useSeller } from '../../contexts/SellerContext'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Section from '@/components/layout/section'
+import styles from '../../styles/navbar-seller.module.scss'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function SellerBasicData() {
+export default function Order() {
   // 使用 useRouter
-  const router = useRouter();
+  const router = useRouter()
 
   // 使用useRef 作為拿取DOM元素操作
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller();
-  const sellerId = seller?.id;
+  const { seller } = useSeller()
+  const sellerId = seller?.id
 
   // 賣家頭像 初始與更新
-  const [imageVersion, setImageVersion] = useState(0);
+  const [imageVersion, setImageVersion] = useState(0)
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
-    account: "",
-    password: "",
-    storeName: "",
-    contactNumber: "",
-    email: "",
-    companyAddress: "",
-    companyDescription: "",
-    openingHours: "09:00",
-    closingHours: "22:00",
-    restDay: "0",
-    profilePicture: "",
-  });
+    profilePicture: '',
+  })
+
+  // 載入動畫
+  const [loading, setLoading] = useState(false) // 新增 loading 狀態
+
+  // 資料過濾
+  const [query, setQuery] = useState({
+    startDate: '',
+    endDate: '',
+    categoryId: '',
+    productName: '',
+  })
+  const [orders, setOrders] = useState([])
+  const [categories, setCategories] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+  const [totalSum, setTotalSum] = useState(0)
+  // 資料過濾
 
   // 使用Ref
   const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
+    fileInputRef.current.click()
+  }
 
-  // 修改前 如果拿取到seller_id執行這裡
+  // 總查詢
   useEffect(() => {
-    console.log("index.js中的sellerId", sellerId);
+    console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data; // 注意确保这里的路径正确
-          console.log(data); // 查看数据结构
-
+          const data = response.data.data
           setSellerData((prevData) => ({
             ...prevData,
-            account: data.account || "",
-            password: data.password || "",
-            storeName: data.store_name || "",
-            contactNumber: data.contact_number || "",
-            email: data.email || "",
-            companyAddress: data.company_address || "",
-            companyDescription: data.company_description || "",
-            openingHours: data.opening_hours || "17:00",
-            closingHours: data.closing_hours || "23:00",
-            restDay: data.rest_day?.toString() || "6",
-            profilePicture: data.profile_picture || "",
-            // 其他字段...
-          }));
+            profilePicture: data.profile_picture || '',
+          }))
         })
         .catch((error) => {
-          console.error("获取商家信息失败", error);
-        });
+          console.error('获取商家信息失败', error)
+        })
+      // 產品類別
+      axios
+        .get(`${ORDERDETAIL}/categories`)
+        .then((response) => {
+          setCategories(response.data)
+        })
+        .catch((error) => {
+          console.error('获取产品种类信息失败', error)
+        })
+      loadTotalSum()
     }
-  }, [sellerId]);
+    loadOrders()
+  }, [
+    sellerId,
+    query.startDate,
+    query.endDate,
+    query.categoryId,
+    query.productName,
+  ])
 
-  // 修改 更新 賣家的 資料
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSellerData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  // 修改 更新 賣家所有資料 包含圖片
-  const handleFileChange = (e) => {
-    setSellerData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.files[0],
-    }));
-  };
-
-  // 驗證
-  const validateForm = () => {
-    let valid = true;
-    if (!sellerData.account || !sellerData.email) {
-      alert("請輸入資料");
-      valid = false;
-    }
-    // 可以添加更多的验证规则
-    return valid;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    const formData = new FormData();
-    formData.append("account", sellerData.account);
-    formData.append("password", sellerData.password);
-    formData.append("storeName", sellerData.storeName);
-    formData.append("contactNumber", sellerData.contactNumber);
-    formData.append("email", sellerData.email);
-    formData.append("companyAddress", sellerData.companyAddress);
-    formData.append("companyDescription", sellerData.companyDescription);
-    formData.append("restDay", sellerData.restDay);
-    // 文字部分
-    const storeImageInput = document.getElementById("store_image");
-    if (storeImageInput && storeImageInput.files && storeImageInput.files[0]) {
-      formData.append("store_image", storeImageInput.files[0]);
-    }
-
-    // 發送請求
+  // 後端資料仔入
+  function loadOrders() {
+    setLoading(true) // 動畫
     axios
-      .put(`${SELLER_API}${sellerId}/edit`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      .get(`${ORDERDETAIL}/`, {
+        params: {
+          seller_id: sellerId,
+          start_date: query.startDate,
+          end_date: query.endDate,
+          category_id: query.categoryId,
+          product_name: query.productName,
+          page: currentPage,
+          limit: 5,
         },
       })
       .then((response) => {
-        alert("更新成功");
-        // UI
+        if (response.status === 200 && response.data.data) {
+          setOrders(response.data.data)
+          setTotalPages(response.data.totalPages)
+        } else {
+          console.log('Unexpected response structure:', response)
+          setOrders([])
+        }
       })
       .catch((error) => {
-        console.error("更新失败", error);
-        alert("更新失败");
-      });
-  };
+        console.error('查询销售数据失败', error)
+      })
+      .finally(() => {
+        // 動畫
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
+      })
+  }
+
+  // 資料輸入
+  function handleInputChange(e) {
+    const { name, value } = e.target
+    setQuery((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+  // 處裡日期變更
+  function handleDateChange(field, value) {
+    setQuery((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  // 總金額
+  function loadTotalSum() {
+    axios
+      .get(`${ORDERDETAIL}/revenue/${sellerId}`, {
+        params: {
+          start_date: query.startDate,
+          end_date: query.endDate,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200 && response.data.total_revenue) {
+          setTotalSum(response.data.total_revenue)
+        } else {
+          console.log('Unexpected response structure:', response)
+          setTotalSum(0)
+        }
+      })
+      .catch((error) => {
+        console.error('获取订单总金额失败', error)
+        setTotalSum(0)
+      })
+  }
+
+  // 類別
+  const handleCategoryChange = (e) => {
+    const categoryId = e.target.value
+    setQuery((prev) => ({
+      ...prev,
+      categoryId: categoryId,
+      // 在這裡手動清除其他條件
+      startDate: '',
+      endDate: '',
+      productName: '',
+    }))
+    // 發送新的請求
+    loadOrders()
+  }
+
+  // 初始化查詢
+  function resetSearch() {
+    setQuery({
+      startDate: '',
+      endDate: '',
+      categoryId: '',
+      productName: '',
+    })
+    setCurrentPage(1) // 重置回第一页
+    loadOrders() // 重新加载订单
+  }
+
+  //分頁
+  const renderPageNumbers = () => {
+    if (totalPages <= 1) return null // 如果总页数为1或更少，不显示分页
+
+    const pageNumbers = []
+    let startPage = Math.max(currentPage - 2, 1)
+    let endPage = Math.min(startPage + 4, totalPages)
+
+    if (endPage - startPage < 4) {
+      startPage = Math.max(endPage - 4, 1)
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <li
+          key={i}
+          className={`page-item ${i === currentPage ? 'active' : ''}`}
+        >
+          <button className="page-link" onClick={() => setCurrentPage(i)}>
+            {i}
+          </button>
+        </li>
+      )
+    }
+
+    return pageNumbers
+  }
+  // 分頁
+  const handlePageChange = (newPage) => {
+    if (newPage !== currentPage) {
+      setCurrentPage(newPage)
+      loadOrders() // 重新加载数据
+    }
+  }
 
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const file = e.target.files[0]
+    if (!file) return
 
-    const formData = new FormData();
-    formData.append("profilePicture", file);
+    const formData = new FormData()
+    formData.append('profilePicture', file)
 
     axios
       .put(`${SELLER_API}${sellerId}/edit/profilePicture`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       })
       .then((response) => {
-        alert("頭像上傳成功");
-        setImageVersion((prevVersion) => prevVersion + 1); // 獲取頭貼
+        alert('頭像上傳成功')
+        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setSellerData((prevData) => ({
+          ...prevData,
+          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+        }))
       })
       .catch((error) => {
-        console.error("頭像上傳失敗", error);
-        alert("頭像上傳失敗");
-      });
-  };
-  // 生成24小時時間選項
-  const generateTimeOptions = () => {
-    const options = [];
-    for (let hour = 0; hour < 24; hour++) {
-      const value = `${hour.toString().padStart(2, "0")}:00`;
-      options.push(
-        <option key={hour} value={value}>
-          {value}
-        </option>
-      );
-    }
-    return options;
-  };
+        console.error('頭像上傳失敗', error)
+        alert('頭像上傳失敗')
+      })
+  }
+
   return (
     <Section className={styles.sellerBasicSection}>
       <div className={`container mt-5`}>
@@ -188,10 +266,10 @@ export default function SellerBasicData() {
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
-                    border: "2px solid black",
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50px",
+                    border: '2px solid black',
+                    width: '100px',
+                    height: '100px',
+                    borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
                 />
@@ -199,21 +277,20 @@ export default function SellerBasicData() {
                 <input
                   type="file"
                   id="profilePictureInput"
-                  style={{ display: "none" }}
+                  style={{ display: 'none' }}
                   ref={fileInputRef} // 將ref賦予到DOM元素
                   onChange={handleProfilePictureChange}
                 />
-                </div>
+              </div>
               {/* 這裡的賣家頭像直接連結伺服器 */}
               <div
                 className={styles.sellerSidebarWrapper}
-                
                 id="v-pills-tab"
                 role="tablist"
                 aria-orientation="vertical"
               >
                 <ul className="list-unstyled">
-                  <li className={styles.navListItem}> 
+                  <li className={styles.navListItem}>
                     <Link href="/seller-basic-data/" passHref>
                       <span className={styles.navLink}>商家基本資料</span>
                     </Link>
@@ -244,7 +321,7 @@ export default function SellerBasicData() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/seller-basic-data/qrCode">
+                    <Link href="/seller-basic-data/QRcode">
                       <span className={styles.navLink}>QRcode掃描區</span>
                     </Link>
                   </li>
@@ -262,195 +339,205 @@ export default function SellerBasicData() {
           {/* 表單 */}
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
-              <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
-
-                <div className="mb-3">
-                  <label htmlFor="account" className="form-label">
-                    使用帳號
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="account"
-                    name="account"
-                    placeholder="使用者帳號"
-                    value={sellerData.account || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    使用者密碼
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="使用者密碼"
-                    value={sellerData.password || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="storeName" className="form-label">
-                    商家店名
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="storeName"
-                    name="storeName"
-                    placeholder="攤位名稱"
-                    value={sellerData.storeName || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="contactNumber" className="form-label">
-                    商家連絡電話
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="contactNumber"
-                    name="contactNumber"
-                    placeholder="連絡電話"
-                    value={sellerData.contactNumber || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="電子郵件"
-                    value={sellerData.email || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="companyAddress" className="form-label">
-                    商家地址
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="companyAddress"
-                    name="companyAddress"
-                    placeholder="商家地址"
-                    value={sellerData.companyAddress || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="store_image" className="form-label">
-                    上傳商家圖片
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="store_image"
-                    name="store_image"
-                    onChange={handleFileChange} // 圖片
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="companyDescription" className="form-label">
-                    店家簡介
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="companyDescription"
-                    name="companyDescription"
-                    rows="3"
-                    placeholder="商家簡介"
-                    value={sellerData.companyDescription || ""}
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
-                {/* 下拉是選單 */}
+              <div className={styles.formWrapper}>
+                <h2 className={`${styles.formTitle}`}>訂單管理系統</h2>
+                {/* 這裡要改成起始日期 */}
                 <div className={styles.selectGroup}>
-                  <div className="col-auto">
-                    <label htmlFor="restDay" className={styles.selectLabel}>
-                      選擇公休日
+                  <div className="col-md-auto col-12">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      開始日期
                     </label>
                   </div>
-                  <div className="col-auto">
+                  <div className="col-md-auto col-12">
+                    <input
+                      type="date"
+                      name="startDate"
+                      value={query.startDate}
+                      onChange={(e) =>
+                        handleDateChange('startDate', e.target.value)
+                      }
+                      className="form-control mb-2"
+                      placeholder="開始日期"
+                    />
+                  </div>
+
+                  <div className="col-md-auto col-12">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      結束日期
+                    </label>
+                  </div>
+                  <div className="col-md-auto col-12">
+                    <input
+                      type="date"
+                      name="endDate"
+                      value={query.endDate}
+                      onChange={(e) =>
+                        handleDateChange('endDate', e.target.value)
+                      }
+                      className="form-control mb-2"
+                      placeholder="結束日期"
+                    />
+                  </div>
+
+                  {/* 這裡要能夠抓取到產品分類 */}
+                  <div className="col-md-auto col-12">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      以類別選擇
+                    </label>
+                  </div>
+                  <div className="col-md-auto col-12">
                     <select
-                      className={`form-select ${styles.customSelect}`}
-                      id="restDay"
-                      name="restDay"
-                      value={sellerData.restDay || ""}
-                      onChange={handleChange}
+                      name="categoryId"
+                      value={query.categoryId}
+                      onChange={handleCategoryChange}
+                      className="form-control mb-2"
                     >
-                      {[...Array(7).keys()].map((day) => (
-                        <option key={day} value={day}>
-                          {day === 0 ? "請選擇公休日" : `每週第${day}天`}
+                      <option value="">所有類別</option>
+                      {categories.map((category) => (
+                        <option
+                          key={category.category_id}
+                          value={category.category_id}
+                        >
+                          {category.category_name}
                         </option>
                       ))}
                     </select>
                   </div>
-                  <div className="col-auto">
-                    <label
-                      htmlFor="openingHours"
-                      className={styles.selectLabel}
-                    >
-                      開始營業時間
-                    </label>
-                  </div>
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id="openingHours"
-                      name="openingHours"
-                      value={sellerData.openingHours || ""}
-                      onChange={handleChange}
-                    >
-                      {generateTimeOptions()}
-                    </select>
-                  </div>
-                  <div className="col-auto">
-                    <label
-                      htmlFor="closingHours"
-                      className={styles.selectLabel}
-                    >
-                      結束營業時間
-                    </label>
-                  </div>
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id="closingHours"
-                      name="closingHours"
-                      value={sellerData.closingHours || ""}
-                      onChange={handleChange}
-                    >
-                      {generateTimeOptions()}
-                    </select>
+                  {/* 這裡要能夠抓取到產品分類 */}
+                </div>
+
+                {/* 這裡要改成結束日期 */}
+                <br></br>
+                {/* 這裡要能搜索產品名稱 */}
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-9 col-12">
+                      <input
+                        type="text"
+                        name="productName"
+                        value={query.productName}
+                        onChange={handleInputChange}
+                        className="form-control mb-2"
+                        placeholder="產品名稱..."
+                      />
+                    </div>
+                    {/* <div className="col-md-3 col-12">
+                      <button
+                        onClick={handleSearch}
+                        className={styles.btnPrimary}
+                      >
+                        查詢銷售數據
+                      </button>
+                    </div> */}
+                    {/* 清除搜索職按鈕 */}
+                    <div className="col-md-3 mt-1 col-12">
+                      <button
+                        onClick={resetSearch}
+                        className={styles.btnPrimary}
+                        type="button"
+                      >
+                        初始化搜索
+                      </button>
+                    </div>
+                    {/* 清除搜索職按鈕 */}
                   </div>
                 </div>
-                {/* 按鈕樣式 */}
-                <div className={styles.buttonGroup}>
-                  <Link href="/seller-basic-data/">
-                    <button className={styles.btnSecondary}>回到店面</button>
-                  </Link>
-                  <button type="submit" className={styles.btnPrimary}>
-                    提交修改
-                  </button>
+                {/* 這裡要能搜索產品名稱 */}
+                {/* 我在這裡要實現資料的顯示 */}
+                {loading ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center mt-3"
+                    style={{ minHeight: '200px' }}
+                  >
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    <p className="mt-2">加載中...</p>
+                  </div>
+                ) : (
+                  <table className={`${styles.table}`}>
+                    <thead>
+                      <tr>
+                        <th>產品名稱</th>
+                        <th>產品類別</th>
+                        <th>銷售數量</th>
+                        <th>訂單收入</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(orders) &&
+                        orders.map((order) => (
+                          <tr key={order.order_id}>
+                            <td>{order.product_name}</td>
+                            <td>{order.category_name}</td>
+                            <td>{order.purchase_quantity}</td>
+                            <td>${order.total_sum}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
+                {/* 我在這裡要實現資料的顯示 */}
+                {/* 訂單總金額 */}
+                <div className="col-md-12 mt-3 col-12">
+                  <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
+                    訂單總金額：
+                  </h3>
+                  {totalSum > 0 ? (
+                    <p
+                      style={{
+                        fontSize: '1.25rem',
+                        color: 'green',
+                        fontWeight: 'bold',
+                      }}
+                    >{`$${totalSum}`}</p>
+                  ) : (
+                    <p
+                      style={{
+                        fontSize: '1.25rem',
+                        color: 'red',
+                        fontStyle: 'bold',
+                      }}
+                    >
+                      沒有收入
+                    </p>
+                  )}
                 </div>
-              </form>
+                {/* 訂單總金額 */}
+                {/* 分頁 */}
+                <nav>
+                  <ul className="pagination justify-content-center">
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      >
+                        <i className="bi bi-chevron-left"></i>
+                      </button>
+                    </li>
+                    {renderPageNumbers()}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      >
+                        <i className="bi bi-chevron-right"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+                {/* 分頁 */}
+              </div>
             </div>
           </div>
-          {/* 表單 */}
         </div>
       </div>
     </Section>
-  );
+  )
 }

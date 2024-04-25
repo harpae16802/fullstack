@@ -2,12 +2,17 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API, COMMENT } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import ReplyModal from '@/components/ReplyModal'
+import ReplySuccessModal from '@/components/ReplySuccessModal'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 export default function Reviews() {
   // 使用 useRouter
@@ -25,25 +30,28 @@ export default function Reviews() {
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
-    account: '',
-    password: '',
-    storeName: '',
-    contactNumber: '',
-    email: '',
-    companyAddress: '',
-    companyDescription: '',
-    openingHours: '09:00',
-    closingHours: '22:00',
-    restDay: '0',
     profilePicture: '',
   })
+
+  // 評論區
+  const [comments, setComments] = useState([])
+
+  // 評論區的篩選
+  const [filterRating, setFilterRating] = useState('')
+
+  // 回覆系統的初始直
+  const [showModal, setShowModal] = useState(false)
+  const [selectedCommentId, setSelectedCommentId] = useState(null)
+  const [commentContent, setCommentContent] = useState('') 
+  const [replySuccess, setReplySuccess] = useState(false);
+
 
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
   }
 
-  // 修改前 如果拿取到seller_id執行這裡
+  // 總查詢
   useEffect(() => {
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
@@ -55,87 +63,68 @@ export default function Reviews() {
 
           setSellerData((prevData) => ({
             ...prevData,
-            account: data.account || '',
-            password: data.password || '',
-            storeName: data.store_name || '',
-            contactNumber: data.contact_number || '',
-            email: data.email || '',
-            companyAddress: data.company_address || '',
-            companyDescription: data.company_description || '',
-            openingHours: data.opening_hours || '17:00',
-            closingHours: data.closing_hours || '23:00',
-            restDay: data.rest_day?.toString() || '6',
             profilePicture: data.profile_picture || '',
-            // 其他字段...
           }))
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
     }
+    fetchData()
   }, [sellerId])
 
-  // 修改 更新 賣家的 資料
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setSellerData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
-  }
-
-  // 修改 更新 賣家所有資料 包含圖片
-  const handleFileChange = (e) => {
-    setSellerData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.files[0],
-    }))
-  }
-
-  // 驗證
-  const validateForm = () => {
-    let valid = true
-    if (!sellerData.account || !sellerData.email) {
-      alert('請輸入資料')
-      valid = false
+  // 過濾評論
+  const filteredComments = comments.filter((comment) =>
+    filterRating ? comment.store_rating === parseInt(filterRating) : true
+  )
+  // 星星圖標
+  const renderStars = (count) => {
+    let stars = ''
+    for (let i = 0; i < count; i++) {
+      stars += '★'
     }
-    // 可以添加更多的验证规则
-    return valid
+    return stars
+  }
+  // 評論區星星
+  const renderCommentStars = (count) => {
+    let stars = []
+    for (let i = 0; i < count; i++) {
+      stars.push(<FontAwesomeIcon icon={faStar} key={i} />)
+    }
+    return <>{stars}</>
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!validateForm()) return
-    const formData = new FormData()
-    formData.append('account', sellerData.account)
-    formData.append('password', sellerData.password)
-    formData.append('storeName', sellerData.storeName)
-    formData.append('contactNumber', sellerData.contactNumber)
-    formData.append('email', sellerData.email)
-    formData.append('companyAddress', sellerData.companyAddress)
-    formData.append('companyDescription', sellerData.companyDescription)
-    formData.append('restDay', sellerData.restDay)
-    // 文字部分
-    const storeImageInput = document.getElementById('store_image')
-    if (storeImageInput && storeImageInput.files && storeImageInput.files[0]) {
-      formData.append('store_image', storeImageInput.files[0])
+  // 拿取評論
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${COMMENT}/${sellerId}`)
+      setComments(response.data) //設定評論
+    } catch (error) {
+      console.error('獲取評論失敗:', error)
     }
+  }
+  // 篩選評論
+  const handleRatingChange = (event) => {
+    setFilterRating(event.target.value)
+  }
 
-    // 發送請求
-    axios
-      .put(`${SELLER_API}${sellerId}/edit`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+  // 回覆系統
+  const handleReplyClick = (commentId, commentContent) => {
+    setSelectedCommentId(commentId)
+    setCommentContent(commentContent)
+    setShowModal(true)
+  }
+  const submitReply = async (commentId, reply) => {
+    try {
+      await axios.post(`${COMMENT}/reply/${commentId}`, {
+        seller_id: sellerId,
+        reply,
       })
-      .then((response) => {
-        alert('更新成功')
-        // UI
-      })
-      .catch((error) => {
-        console.error('更新失败', error)
-        alert('更新失败')
-      })
+      fetchData()
+      setReplySuccess(true);
+    } catch (error) {
+      console.error('回复提交失败', error)
+    }
   }
 
   // 更新賣家 頭貼 包含顯示
@@ -165,19 +154,7 @@ export default function Reviews() {
         alert('頭像上傳失敗')
       })
   }
-  // 生成24小時時間選項
-  const generateTimeOptions = () => {
-    const options = []
-    for (let hour = 0; hour < 24; hour++) {
-      const value = `${hour.toString().padStart(2, '0')}:00`
-      options.push(
-        <option key={hour} value={value}>
-          {value}
-        </option>
-      )
-    }
-    return options
-  }
+
   return (
     <Section className={styles.sellerBasicSection}>
       <div className={`container mt-5`}>
@@ -265,190 +242,67 @@ export default function Reviews() {
           {/* 表單 */}
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
-              <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
-
-                <div className="mb-3">
-                  <label htmlFor="account" className="form-label">
-                    使用帳號
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="account"
-                    name="account"
-                    placeholder="使用者帳號"
-                    value={sellerData.account || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    使用者密碼
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="使用者密碼"
-                    value={sellerData.password || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="storeName" className="form-label">
-                    商家店名
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="storeName"
-                    name="storeName"
-                    placeholder="攤位名稱"
-                    value={sellerData.storeName || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="contactNumber" className="form-label">
-                    商家連絡電話
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="contactNumber"
-                    name="contactNumber"
-                    placeholder="連絡電話"
-                    value={sellerData.contactNumber || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="電子郵件"
-                    value={sellerData.email || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="companyAddress" className="form-label">
-                    商家地址
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="companyAddress"
-                    name="companyAddress"
-                    placeholder="商家地址"
-                    value={sellerData.companyAddress || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="store_image" className="form-label">
-                    上傳商家圖片
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="store_image"
-                    name="store_image"
-                    onChange={handleFileChange} // 圖片
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="companyDescription" className="form-label">
-                    店家簡介
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="companyDescription"
-                    name="companyDescription"
-                    rows="3"
-                    placeholder="商家簡介"
-                    value={sellerData.companyDescription || ''}
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
-                {/* 下拉是選單 */}
+              <div className={styles.formWrapper}>
+                <h2 className={`${styles.formTitle}`}>賣家評論區</h2>
+                {/* 篩選 */}
                 <div className={styles.selectGroup}>
-                  <div className="col-auto">
-                    <label htmlFor="restDay" className={styles.selectLabel}>
-                      選擇公休日
+                  <div className="col-md-auto col-12">
+                    <label htmlFor="" className={styles.selectLabel}>
+                      以星級篩選
                     </label>
                   </div>
-                  <div className="col-auto">
+                  <div className="col-md-auto col-12">
                     <select
-                      className={`form-select ${styles.customSelect}`}
-                      id="restDay"
-                      name="restDay"
-                      value={sellerData.restDay || ''}
-                      onChange={handleChange}
+                      className="form-select"
+                      value={filterRating}
+                      onChange={handleRatingChange}
                     >
-                      {[...Array(8).keys()].map((day) => (
-                        <option key={day} value={day}>
-                          {day === 0 ? '請選擇公休日' : `每週第${day}天`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col-auto">
-                    <label
-                      htmlFor="openingHours"
-                      className={styles.selectLabel}
-                    >
-                      開始營業時間
-                    </label>
-                  </div>
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id="openingHours"
-                      name="openingHours"
-                      value={sellerData.openingHours || ''}
-                      onChange={handleChange}
-                    >
-                      {generateTimeOptions()}
-                    </select>
-                  </div>
-                  <div className="col-auto">
-                    <label
-                      htmlFor="closingHours"
-                      className={styles.selectLabel}
-                    >
-                      結束營業時間
-                    </label>
-                  </div>
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id="closingHours"
-                      name="closingHours"
-                      value={sellerData.closingHours || ''}
-                      onChange={handleChange}
-                    >
-                      {generateTimeOptions()}
+                      <option value="">選擇星級</option>
+                      <option value="1">{renderStars(1)}</option>
+                      <option value="2">{renderStars(2)}</option>
+                      <option value="3">{renderStars(3)}</option>
+                      <option value="4">{renderStars(4)}</option>
+                      <option value="5">{renderStars(5)}</option>
                     </select>
                   </div>
                 </div>
-                {/* 按鈕樣式 */}
-                <div className={styles.buttonGroup}>
-                  <Link href="/seller-basic-data/">
-                    <button className={styles.btnSecondary}>回到店面</button>
-                  </Link>
-                  <button type="submit" className={styles.btnPrimary}>
-                    提交修改
-                  </button>
+                {/* 篩選 */}
+                <div className="row">
+                  {filteredComments.map((comment, index) => (
+                    <div className="col-md-4 mb-4" key={index}>
+                      <div className="card">
+                        <div className="card-body">
+                          <h5 className="card-title">
+                            用戶：{comment.custom_account}
+                          </h5>
+                          <h6 className="card-subtitle mb-2 text-muted">
+                            評分：{renderCommentStars(comment.store_rating)}
+                          </h6>
+                          <p className="card-text">{comment.comment}</p>
+                          <p className="card-text">
+                            <small className="text-muted">
+                              評論日期：
+                              {new Date(comment.datetime).toLocaleDateString()}
+                            </small>
+                          </p>
+                          <Button onClick={() => handleReplyClick(comment.id,comment.comment)}>
+                            回復
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </form>
+                <ReplyModal
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                  commentId={selectedCommentId}
+                  commentContent={commentContent}
+                  submitReply={submitReply}
+                />
+                <ReplySuccessModal show={replySuccess} onHide={() => setReplySuccess(false)} />
+                {/* 篩選 */}
+              </div>
             </div>
           </div>
           {/* 表單 */}

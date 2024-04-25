@@ -10,15 +10,17 @@ const FilterOptions = () => {
       width: '100vw', // 使用視口寬度
       height: '100vh', // 使用視口高度
       display: 'flex',
-      justifyContent: 'center', // 水平置中
-      alignItems: 'center', }}>
+      // justifyContent: 'center', // 水平置中
+      // alignItems: 'center'
+      }}
+      >
 
         {/* '商品篩選'視窗:外框 */}
         <div className={styles.paymentSize} >
   
           <ImCross className={styles.filterCross} />
   
-          <div className={styles.filterTitle}>距離</div>
+        <div className={styles.filterTitle}>距離</div>
 
           <div className="container">
             <div className="d-flex">
@@ -79,9 +81,9 @@ const FilterOptions = () => {
           {/* '重設 套用'按鈕 */}
           <div className={styles.filterButtonInterval}>
 
-            <button className={styles.filterButton} style={{color:' #A32C2D', backgroundColor:'#fff',border:'solid 2px #A32C2D'}}>重設</button>
+            <button className={styles.filterButton} style={{color:' #A32C2D', backgroundColor:'#fff', border:'solid 2px #A32C2D'}}>重設</button>
 
-            <button className={styles.filterButton} style={{color:'#fff',backgroundColor:' #A32C2D',border:'none',marginLeft:'20px' }}>套用</button>
+            <button className={styles.filterButton} style={{color:'#fff',backgroundColor:' #A32C2D',border:'none', marginLeft:'20px' }}>套用</button>
           </div>
   
         </div>

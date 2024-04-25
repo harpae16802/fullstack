@@ -1,5 +1,6 @@
 // 檔案位置: styles/global.scss
 // 變數覆蓋用 (Variable overrides)
+
 // // 全站配色 colors
 $black: #070505;
 $primary: rgb(163, 44, 45);
@@ -11,6 +12,9 @@ $light-primary: rgb(234, 105, 106);
 $deep-primary: rgb(98, 27, 27);
 $deep-gray: rgb(183, 180, 177);
 $gray: rgb(229, 225, 221);
+$link-decoration: none;
+// 引入變數使用
+@import 'variable';
 
 // ↑↑↑  變數覆蓋(Variable overrides) 要寫在這行"上面"  ↑↑↑
 // 導入所有 bootstrap 樣式
@@ -59,6 +63,15 @@ body {
     border: 2px solid $primary;
     background-color: #fff;
     color: $primary;
+  }
+  .btn-outline-primary a:hover {
+    color: #fff;
+  }
+  .btn-outline-primary:hover a {
+    color: #fff;
+  }
+  .btn-outline-primary a:active {
+    color: #fff;
   }
 
   // 表單
@@ -185,8 +198,8 @@ body {
       padding-bottom: 0px;
       border-radius: 0px;
       // border 手機版有奇怪的破圖才設的 沒效果可拿掉
-      // border-right: 2px solid $primary;
-      // border-left: 2px solid $primary;
+      border-right: 2px solid $primary;
+      border-left: 2px solid $primary;
     }
     align-self: stretch;
     padding-left: 20px;
@@ -261,6 +274,17 @@ body {
         align-items: center;
         justify-content: center;
         text-align: center;
+      }
+      .navbar-brand {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-right: 0px;
+      }
+      .navbar-brand img {
+        @media (max-width: 992px) {
+          height: 40px;
+          width: 105px;
+        }
       }
       .navbar-brand.min-cart {
         @media (max-width: 992px) {
@@ -521,14 +545,13 @@ body {
       //   border-radius: 70px 70px 0px 0px;
       //   background-color: $secondary;
       // }
-
       // 優惠輪播欄
       .simple-news {
         @media (max-width: 992px) {
           border: $primary solid 10px;
           border-top: none;
           border-radius: 30px 30px 0px 0px;
-          padding: 15px 20px 25px 20px;
+          padding: 10px 20px 20px 20px;
         }
         background-color: $secondary;
         border-radius: 70px 70px 0px 0px;
@@ -550,22 +573,54 @@ body {
           font-size: 1.2rem;
           font-weight: bolder;
           line-height: normal;
+          
         }
 
-        .news {
+        .newsup{
           display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          .vol{
+            @media (max-width: 992px) {
+              display: none;
+            }
+            margin-left: 5px;
+            font-size: 25px;
+          }
+        }
+        .news {
           a {
             @media (max-width: 992px) {
               font-size: 12px;
             }
-            width: 350px;
-            margin-left: 1.2rem;
             text-wrap: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             color: $black;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            p {
+              @media (max-width: 992px) {
+                line-height: 12px;
+              }
+              margin: 0;
+              line-height: 16px;
+            }
           }
+        }
+        .slick-arrow {
+          display: none !important;
+        }
+        .slick-slide {
+          @media (max-width: 992px) {
+            padding-right: 12px;
+          // padding-right: 6px;
+          }
+          padding-right: 16px;
+
         }
       }
 
@@ -598,7 +653,6 @@ body {
           padding: 20px 20px 60px 20px;
         }
         display: flex;
-
         padding: 80px 80px 150px 80px;
         align-self: stretch;
         position: relative;
@@ -621,17 +675,62 @@ body {
       }
       .section-index.index-nop.discount {
         @media (max-width: 992px) {
-          height: 40vh;
+          // height: 40vh;
         }
         padding: 0px;
-        // padding: 80px 0px 150px 0px;
-        height: 80vh;
+        position: relative;
+
+        .bgc-tapi {
+          @media (max-width: 992px) {
+            top: -10px;
+            left: -30px;
+            width: 170px;
+            height: 170px;
+          }
+          position: absolute;
+          top: -70px;
+          left: -80px;
+          z-index: 0;
+          overflow: hidden;
+          height: 520px;
+          width: 500px;
+          .tapioca {
+            @media (max-width: 992px) {
+              width: 170px;
+              height: 170px;
+              opacity: 0.1;
+            }
+            transform: rotate(-15deg);
+            opacity: 0.06;
+          }
+        }
+        .bgc-tofu {
+          @media (max-width: 992px) {
+            bottom: 10px;
+            right: 0px;
+            width: 160px;
+          }
+          position: absolute;
+          bottom: -150px;
+          right: 0px;
+          z-index: 0;
+          width: 600px;
+          overflow: hidden;
+          .tofu {
+            @media (max-width: 992px) {
+              width: 180px;
+              height: 180px;
+              opacity: 0.1;
+            }
+            transform: rotate(5deg);
+            opacity: 0.07;
+          }
+        }
       }
       // 一般的section
       .section {
         @media (max-width: 992px) {
           border: $primary solid 10px;
-          // border-bottom: $primary solid 20px;
           border-top: none;
           border-radius: 30px 30px 0px 0px;
           padding: 20px 20px 60px 20px;
@@ -652,6 +751,33 @@ body {
         border-top: none;
         flex-direction: column;
       }
+      // 無邊距版本
+      .section-nopaddin {
+        @media (max-width: 992px) {
+          border: $primary solid 10px;
+          border-top: none;
+          border-radius: 30px 30px 0px 0px;
+          padding: 20px 20px 60px 20px;
+          margin-top: -10px;
+        }
+        overflow: hidden;
+        display: flex;
+        // padding-bottom: 150px;
+        align-self: stretch;
+        position: relative;
+        background: $secondary;
+        background: linear-gradient(
+            0deg,
+            rgba(225, 209, 178, 0.8) 0%,
+            rgba(225, 209, 178, 0.8) 100%
+          ),
+          url(../public/images/layout/bgc.jpg), lightgray 50%;
+        border-radius: 70px 70px 0px 0px;
+        border: $primary solid 20px;
+        border-top: none;
+        flex-direction: column;
+        z-index: 0;
+      }
     }
 
     // ====== footer設定
@@ -665,7 +791,7 @@ body {
       position: relative;
       // height: 50vh;
       align-self: stretch;
-      z-index: 0;
+      z-index: 1;
       @media (max-width: 992px) {
         // border 手機版有奇怪的破圖才設的 或許可拿掉
         border-right: 12px solid $primary;
@@ -763,7 +889,7 @@ body {
               text-align: end;
               gap: 10px;
             }
-            justify-content: end;
+            justify-content: flex-end;
             .footer-item {
               @media (max-width: 992px) {
                 padding: 0;
@@ -871,30 +997,3 @@ body {
     // 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'
 ;
 }
-
-     // 無邊距版本
-     .section-nopaddin {
-      @media (max-width: 992px) {
-        border: $primary solid 10px;
-        border-top: none;
-        border-radius: 30px 30px 0px 0px;
-        padding: 20px 20px 60px 20px;
-        margin-top: -10px;
-      }
-      overflow: hidden;
-      display: flex;
-      padding-bottom: 150px;
-      align-self: stretch;
-      position: relative;
-      background: $secondary;
-      background: linear-gradient(
-          0deg,
-          rgba(225, 209, 178, 0.8) 0%,
-          rgba(225, 209, 178, 0.8) 100%
-        ),
-        url(../public/images/layout/bgc.jpg), lightgray 50%;
-      border-radius: 70px 70px 0px 0px;
-      border: $primary solid 20px;
-      border-top: none;
-      flex-direction: column;
-    }

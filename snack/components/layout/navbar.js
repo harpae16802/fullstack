@@ -16,7 +16,7 @@ export default function Navbar() {
         <div className="container-fluid">
           <div className="inline-nav">
             <a className="navbar-brand" href="#">
-              <Image src="/activity.svg" alt="" width={30} height={24} />
+              <Image src="/logo-o.svg" alt="" width={180} height={70} />
             </a>
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="#">

@@ -11,12 +11,21 @@
   .text {
     padding: 14px 0 14px 14px;
 
+    .titleDiv {
+      .icon {
+        margin-top: 2px;
+        margin-left: 4px;
+        color: #a32c2d;
+        cursor: pointer;
+      }
+    }
+
     .price {
       margin-right: 24px;
     }
 
     .icon {
-      margin-right: 7px;
+      margin-right: 4px;
     }
 
     .p {
@@ -27,6 +36,10 @@
 
   .img {
     width: 120px;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    right: 0;
   }
 
   .addBtn {

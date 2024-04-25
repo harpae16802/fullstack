@@ -2,19 +2,18 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { SellerProvider } from '../contexts/SellerContext'
-import { MemberProvider } from '../contexts/MemeberContext'
-import { QrcodeProvider } from '@/data/context/QrcodeContext'
-import { ImgProvider } from '@/data/context/ImgContext'
+import { CustomContextProvider } from '@/contexts/custom-context'
+import { MiniloginProvider } from '@/contexts/minilogin-context'
+import { MapProvider } from '@/contexts/mapContext'
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
-// 測試context
-import { ClickProvider, ClickContext } from "@/pages/context/qrcodeProduct"
 import { useEffect } from 'react'
 import Sesson from '@/components/layout/section'
 import '@/styles/globals.scss'
-import '../styles/form.css';
+import '../styles/form.css'
 import '@/styles/index.scss'
 import '@/styles/login.scss'
+import '@/styles/carousel.scss'
 import '@/styles/game.scss'
 
 function MyApp({ Component, pageProps }) {
@@ -23,27 +22,30 @@ function MyApp({ Component, pageProps }) {
     import('bootstrap/dist/js/bootstrap')
   }, [])
   const getLayout =
-    Component.getLayout || ((page) => <MainLayout><>{page}</></MainLayout>)
+    Component.getLayout ||
+    ((page) => (
+      <MainLayout>
+        <>{page}</>
+      </MainLayout>
+    ))
 
-  return getLayout(
-    <ImgProvider>
-      <QrcodeProvider>
-        <ClickProvider>
-          <MemberProvider>
-            <SellerProvider>
-              <AuthChecker>
-                <Component {...pageProps} />
-                <script
-                  src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-                  integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-                  crossorigin="anonymous"
-                ></script>
-              </AuthChecker>
-            </SellerProvider>
-          </MemberProvider>
-        </ClickProvider>
-      </QrcodeProvider>
-    </ImgProvider>
+  return (
+    <CustomContextProvider>
+      <SellerProvider>
+        <MapProvider>
+          <AuthChecker>
+            <MiniloginProvider>
+              {getLayout(<Component {...pageProps} />)}
+              <script
+                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+                integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+                crossorigin="anonymous"
+              ></script>
+            </MiniloginProvider>
+          </AuthChecker>
+        </MapProvider>
+      </SellerProvider>
+    </CustomContextProvider>
   )
 }
 
