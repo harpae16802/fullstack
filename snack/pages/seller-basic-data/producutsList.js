@@ -405,7 +405,14 @@ const ProductsList = () => {
                           <td>{product.category}</td>
                           <td>{product.price}</td>
                           <td>{product.status}</td>
-                          <td>{/* 修改鏈接 */}</td>
+                          <td>
+                        <Link
+                          href={`/seller-basic-data/[productId]`}
+                          as={`/seller-basic-data/${product.product_id}`}
+                        >
+                          修改
+                        </Link>
+                      </td>
                         </tr>
                       ))}
                     </tbody>
