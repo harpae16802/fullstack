@@ -1,16 +1,16 @@
-import db from './db.js';
-
-
+const db = require('./mysql2-connect');  
 
 async function createAndViewData() {
-    try {
+    try { 
         const createViewSql = `
         CREATE OR REPLACE VIEW qrcodeView AS
-        SELECT 
+        SELECT  
+        qdr.status,
+          qr.qrcode_id,
             od.order_id, 
-            od.custom_account, 
-            od.custom_id,
-            od.seller_id, 
+            c.custom_account, 
+            c.custom_id,
+            s.seller_id, 
             od.total_sum,
             od.payment_date,
             odt.order_detail_id,
@@ -28,11 +28,16 @@ async function createAndViewData() {
         JOIN
             products p ON odt.product_id = p.product_id 
         JOIN
-            seller s ON s.seller_id = p.seller_id;
+              seller s ON s.seller_id = p.seller_id
+        JOIN 
+        qrcode_record qr on odt.order_id=qr.order_id
+        JOIN
+        qrcode_detail_record  qdr on qr.qrcode_id=qdr.qrcode_id
         `;
         await db.query(createViewSql);
         console.log('View ensured (created or already existing)');
 
+       
         const queryViewSql = `SELECT * FROM qrcodeView;`;
         const [results] = await db.query(queryViewSql);
         if (results.length > 0) {
@@ -51,4 +56,4 @@ async function createAndViewData() {
     }
 }
 
-export { createAndViewData };
+module.exports = { createAndViewData };

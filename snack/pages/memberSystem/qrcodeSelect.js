@@ -27,9 +27,9 @@ export default function QrcodeselectMobile1() {
   }
   return (
     <Section>
-      <div className="container">
-        <div className="row">
-          <div className="col-12 col-md-4 ">
+      <div className="container" >
+        <div className="row"  >
+          <div className="col-12 col-md-4 " style={{paddingTop:" 110px"}}>
             <SelectMenu />
           </div>
 

@@ -1,398 +1,154 @@
-/* product */
 
-/* 最外層容器 */
+
+/* page1 */
 .outerFrame{
     width: calc( 100% - 80px );
-    height: auto;
-    background-color:rgba(255, 255, 255,0.5);
-    border-radius: 20px; 
+    height: 2679px;
+    background-color:rgb(246, 242, 219);
+    border-radius: 20px;
 }
-@media (max-width: 576px) {
-    .outerFrame{
-        width: 100%;
-        background-color:rgba(246, 242, 219, 0);
-    }
-  }
-/* '結帳頁面'標題 */
+
 .orderTitle{
     text-align: center;
     margin-top: 50px;
     color:rgb(102, 50, 4);
-    font-weight: bold;
-    font-size: 40px;
+    font-weight: bolder;
 }
-@media (max-width: 576px) {
-    .orderTitle{
-       font-size: 20px;
-      margin-top: 16px;
-    }
-  }
 
 .stepBorder{
     margin-top: 30px;
     margin-left: 70px;
-    width:calc( 100% - 150px );
+    width: calc( 100% - 150px );
     height: 288px;
     border: solid 3px rgb(163, 44, 45);
     border-radius: 20px;
 }
-@media (max-width: 576px) {
-    .stepBorder{
-       width: 299px;
-       height: 113px;
-       margin-top: 16px;
-       margin-left: 10px;
-       background-color: rgba(255, 255, 255,0.5);
-    }
-  }
 
-.container{
-    display: flex;
-    /* flex-wrap: wrap; */
-}
 
-/* 步驟:紅底白字圓圈 */
+
 .step1{
     display: inline-block;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background-color: rgb(163, 44, 45);
     color:white;
     border-radius: 50%;
     text-align: center;
-    padding-top: 3px;
-    font-size: 28px;
-    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
     line-height: 40px;
-    position: relative;
-    z-index: 1;
-    margin: -5px;
-    margin-top: 70px;
-    margin-left: 303px;
 }
-@media (max-width: 576px) {
-    .step1{
-       width: 40px;
-       height: 40px;
-       margin-top: 20px;
-       margin-left: 35px;
-       padding-top: 1px;
-      font-size: 16px;
-    }
-  }
-
-  .step2{
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    background-color: rgb(163, 44, 45);
-    color:white;
-    border-radius: 50%;
-    text-align: center;
-    padding-top: 3px;
-    font-size: 28px;
-    font-weight: bold;
-    line-height: 40px;
-    position: relative;
-    z-index: 1;
-    margin: -5px;
-}
-@media (max-width: 576px) {
-    .step2{
-       width: 40px;
-       height: 40px;
-       margin-top: 20px;
-       padding-top: 1px;
-      font-size: 16px;
-    }
-  }
 
 
-
-/* 連接線:灰 */
-.connectGrey{
+.connect1{
     display: inline-block;
     vertical-align: middle;
-    width: 290px;
-    height: 15px;
-    background-color: #B1B7B5;
-    z-index: 2;
-    margin:-5px;
+    width: 200px;
+    height: 13px;
+    background-color: rgb(177, 175, 175);
 }
-@media (max-width: 576px) {
-    .connectGrey{
-       width: 60px;
-       height: 6px;
-       margin-left: -5px;
-    }
-  }
 
-.connectRed{
+.connect2{
     display: inline-block;
     vertical-align: middle;
-    width: 290px;
-    height: 15px;
+    width: 200px;
+    height: 13px;
     background-color: rgb(163, 44, 45);
-    z-index: 2;
-    margin:-5px; 
 }
-@media (max-width: 576px) {
-    .connectRed{
-       width: 60px;
-       height: 6px;
-    }
-  }
-
 
 .step1Text{
     color:rgb(163, 44, 45);
-    font-weight: bold;
-    font-size: 28px;
-    margin-top: 40px;
-    margin-left: 345px;
+    font-weight: bolder;
+    font-size: x-large;
 }
-@media (max-width: 576px) {
-    .step1Text{
-       font-size: 16px;
-       margin-top: -5px;
-       margin-left: 35px;
-    }
-  }
 
-
-
-/* 步驟:灰底白字圓圈 */
-.stepUndo{
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    background-color: #B1B7B5;
-    color:white;
+.step2{
+    display: inline-block; 
+    width: 40px;
+    height: 40px;
+    background-color: rgb(177, 175, 175);
+    color:black;
     border-radius: 50%;
     text-align: center;
-    padding-top: 3px;
-    font-size: 28px;
-    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
     line-height: 40px;
-    position: relative;
-    z-index: 1;
-    margin: -5px;
+
 }
-@media (max-width: 576px) {
-    .stepUndo{
-        width: 40px;
-       height: 40px;
-       padding-top: 1px;
-       font-size: 16px;
-    }
-  }
 
 .textContainer{
-    display: flex; 
-    flex-direction: row; 
+    display: flex;
+    
 }
 
 .step2Text{
-    color:#A32C2D;
-    font-weight: bolder;
-    font-size: 28px;
-    margin-top: 40px;
-    margin-left: 200px;
-}
-@media (max-width: 576px) {
-    .step2Text{
-       font-size: 16px;
-       margin-left: 20px;
-       margin-top: -5px;
-    }
-  }
-
-.step2UndoText{
+   
     color:rgb(177, 175, 175);
     font-weight: bolder;
-    font-size: 28px;
-    margin-top: 40px;
-    margin-left: 200px;
+    font-size: x-large;
 }
-@media (max-width: 576px) {
-    .step2UndoText{
-       font-size: 16px;
-       margin-left: 20px;
-       margin-top: -5px;
-    }
-  }
 
-  .step3Text{
-    color:#A32C2D;
-    font-weight: bolder;
-    font-size: 28px;
-    margin-top: 40px;
-    margin-left: 225px;
-}
-@media (max-width: 576px) {
-    .step3Text{
-       font-size: 16px;
-       margin-left: 28px;
-       margin-top: -5px;
-    }
-  }
-
-  .step3UndoText{
+.step4Text{
+    margin-top:50px ;
+    margin-left: 160px;
     color:rgb(177, 175, 175);
     font-weight: bolder;
-    font-size: 28px;
-    margin-top: 40px;
-    margin-left: 225px;
+    font-size: x-large;
 }
-@media (max-width: 576px) {
-    .step3UndoText{
-       font-size: 16px;
-       margin-left: 28px;
-       margin-top: -5px;
-    }
-  }
 
-/* 訂單詳細:紅色邊框 */
 .orderBorder{
     display: flex;
     margin-top: 30px;
     margin-left: 70px;
-    padding-bottom: 20px;
     width: calc( 100% - 150px );
-    height: auto;
+    height: 2089px;
     border: solid 3px rgb(163, 44, 45);
     border-radius: 20px;
     display: flex;
-    flex-direction: column;   
-}
-@media (max-width: 576px) {
-    .orderBorder{
-       width:calc( 100% - 18px ); 
-       margin-left: -5px;
-       margin-top: -10px;
-       border: solid 3px rgba(0, 0, 0, 0);
-    }
-  }
-
-.paymentMethodBorder{
-    display: flex;
-    margin-top: 30px;
-    margin-left: 70px;
-    margin-bottom: 10px;
-    padding-bottom: 40px;
-    width: calc( 100% - 150px );
-    height: auto;
-    border: solid 3px rgb(163, 44, 45);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;   
+    flex-direction: column;
 }
 
-.order1Container{
+.orderContainer{
     margin-top: 50px;
     margin-left: 50px;
     width: calc( 100% - 100px );
-    height: auto;
+    height: 401px;
     background-color: #fff;
-}
-@media (max-width: 576px) {
-    .order1Container{
-       width: 315px ; 
-       margin-left: 8px;
-    }
-  }
-
-.order2Container{
-    margin-top: 50px;
-    margin-left: 50px;
-    width: calc( 100% - 100px );
-    height: auto;
-}
-
-.order4Container{
-    margin-top: 50px;
-    margin-left: 50px;
-    margin-bottom: 20px;
-    width: calc( 100% - 100px );
-    height: auto;
-    background-color: #fff;
-    border: solid 5px #A32C2D;
-    border-radius: 10px;
 }
 
 .orderContainerAdd{
     margin-left: 50px;
     width: calc( 100% - 100px );
-    height: auto;
+    height: 401px;
     background-color: #fff;
-    padding-bottom: 8px;
 }
-@media (max-width: 576px) {
-    .orderContainerAdd{
-       width: 299px ; 
-    }
-  }
-
-/* bootstrap手風琴套件:Icon樣式 */
-/* 修改展開 icon 的大小 */
-.accordion-button.collapsed::after {
-    background-size: 1.5em; /* 修改 icon 的大小為 1.5 倍 */
-}
-
-/* 修改展開 icon 的顏色 */
-.accordion-button.collapsed::after {
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(135deg) brightness(100%) contrast(100%); /* 修改展開 icon 的顏色為紅色 */
-}
-
 
 .marketCheckout{
-   display: flex;
+    display: flex;
    align-items: center;
 }
 
-/* 訂單詳細:店家icon */
-.sellerIcon{
-    font-size: 40px;
-    margin-left: 10px;
-}
-@media (max-width: 576px) {
-    .sellerIcon{
-       font-size: 30px; 
-       margin-left: -40px;
-    }
-  }
-
 .checkoutMarket{
-    margin-left: 60px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 30px;
+    margin-left: 70px;
+    margin-top: 30px;
+    font-weight: bolder;
+    font-size: x-large;
 }
-@media (max-width: 576px) {
-    .checkoutMarket{
-       font-size: 14px; ; 
-    }
-  }
 
 .checkoutProduct{
-    margin-left: 30px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 30px;
+    margin-left: 10px;
+    margin-top: 30px;
+    font-weight: bolder;
+    font-size: x-large;
 }
-@media (max-width: 576px) {
-    .checkoutProduct{
-       font-size: 14px; ; 
-    }
-  }
 
-/* '選此店結帳'按鈕 */
 .checkoutButton{
-    margin-left: 550px;
-    margin-top: 10px;
-    width: 160px;
-    height: 38px;
-    padding-top: 8px;
+    margin-left: 800px;
+    margin-top: 30px;
+    width: 120px;
+    height: 30px;
     color: rgb(163, 44, 45);
     background-color: #fff;
     border: solid 2px rgb(163, 44, 45);
@@ -400,55 +156,35 @@
     font-weight: bolder;
     text-align: center;
 }
-@media (max-width: 576px) {
-    .checkoutButton{
-       display: none;
-    }
-  }
 
-.checkoutDownIcon{
-    color: #A32C2D;
-    font-size: 34px;
-    margin-left: 20px;
-    margin-top: 10px;
-}
-
-/* 訂單:商品元件外框 */
 .orderDetail{
     display: flex;
    align-items: center;
-   border-bottom: solid 2px #B1B7B5;
-   padding-bottom: 20px;
-   background-color: #fff;
 }
 
 .orderPicture{
     margin-left: 30px;
-    margin-top: 25px;
+    margin-top: 10px;
     border-radius: 10px;
 }
 
 .productText{
     margin-top: 15px;
-    margin-bottom: 12px;
-    margin-left: 50px;
-    font-weight: bold;
-    font-size: 20px;
+    margin-left: 20px;
+    font-weight: bolder;
+    font-size: large;
 }
 
-/* 數量增減:外框 */
 .numberButton{
     display: flex;
-    margin-left: 600px;
+    margin-left: 760px;
 }
 
-/* 數量增減按鈕 */
 .productNumber{
     margin-top: 20px;
     margin-left: 3px;
-    padding-top: 5px;
-    width: 37px;
-    height: 37px;
+    width: 30px;
+    height: 30px;
     background-color: rgb(229, 226, 226);
     text-align: center;
     font-weight: bolder; 
@@ -471,13 +207,6 @@
     font-size: x-large;
 }
 
-/* 產品詳細:底線 */
-/* .orderProductBorder{
-    margin-top: 20px;
-    width: 100%;
-    border-bottom: #B1B7B5 ;
-} */
-
 .discount{
     display: flex;
 }
@@ -489,27 +218,25 @@
     font-weight: bolder;
 }
 
-/* 優惠加購:外層容器 */
 .discountContainer{
     display: flex;
-    margin-left: 30px;
 }
 
-/* 優惠加購:產品列容器 */
 .discountContent{
-   margin-left: 130px;
-   margin-top: 50px;
+   margin-left: 50px;
+   margin-top: 80px;
 }
 
 .leftArrow{
     margin-top: 200px;
-    font-size: 50px;
+    margin-left: 10px;
+    font-size: xx-large;
 }
 
 .rightArrow{
     margin-top: 200px;
-    margin-left: 240px;
-    font-size: 50px;
+    margin-left: 60px;
+    font-size: xx-large;
 }
 
 .discountSeller{
@@ -563,14 +290,13 @@
 }
 
 .discountArrangement{
-    width: 1000px  ;
+    width: 1250px  ;
     display: flex;
     justify-content: space-between;
 }
 
 .previousButton{
-  margin-top:50px; 
-  margin-bottom: 50px;
+  margin-top: 40px; 
   width: 150px;
   height: 30px;
   color:rgb(163, 44, 45);
@@ -582,7 +308,7 @@
 }
 
 .nextButton{
-  margin-top: 50px;  
+    margin-top: 40px;  
   margin-left: 40px ;
   width: 150px;
   height: 30px;
@@ -593,12 +319,7 @@
   text-align: center;
 }
 
-/* orderStep2 */
-.paymentContainer{
-    display: flex;
-    margin-left: 1000px;
-}
-
+/* page2 */
 .applyDiscount{
     margin-left: 30px;
     color: rgb(177, 172, 172);
@@ -631,7 +352,7 @@
 
 .discountAmount{
     margin-top: 10px;
-    margin-left: 145px;
+    margin-left: 165px;
     font-weight: bolder;
     font-size: larger;
     color: #ff2828;
@@ -671,9 +392,7 @@
 }
 
 .payment{
-    display: flex;
-    margin-top: 50px;
-    margin-left: 80px;
+    margin-top: 65px;
     padding-top: 5px;
     padding-left: 5px;
     width: 260px;
@@ -710,8 +429,8 @@
     /* 其他样式 */
   }
 
-/* orderStep4 */
-.orderInformation1{
+/* page4 */
+.orderinformation1{
     margin-top: 10px;
     margin-left: 70px;
     font-weight: bolder;
@@ -719,7 +438,7 @@
     margin-bottom: 20px;
 }
 
-.orderInformation2{
+.orderinformation2{
     margin-top: 10px;
     margin-right: 70px;
     font-weight: bolder;
@@ -732,15 +451,8 @@
     border-bottom: solid 5px rgb(163, 44, 45) ;
 }
 
-.orderDetailText{
-    font-size: 30px;
-    font-weight: bold;
-    margin-top: 50px;
-    margin-left: 45px;
-}
-
 /* 彈窗:消耗遊戲點數 */
-.cosumeButton{
+.numberButton{
     width: 30px;
     height: 30px;
     margin-left: 3px;

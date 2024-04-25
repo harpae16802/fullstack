@@ -1,8 +1,5 @@
-import React, { useContext } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { MiniloginContext } from '@/contexts/minilogin-context'
 import {
   FaBars,
   FaUser,
@@ -12,20 +9,15 @@ import {
 } from 'react-icons/fa'
 
 export default function NavbarLogout() {
-  // 顯示小版手機登入註冊導覽列傳值用的
-  const { handleLinkClick } = useContext(MiniloginContext)
-
-  // 導覽列的名稱樣式
-  const router = useRouter()
   return (
     <>
       {' '}
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <Link className="navbar-brand" href="/">
-              <Image src="/logo-o.svg" alt="" width={180} height={70} />
-            </Link>
+            <a className="navbar-brand" href="#">
+              <Image src="/activity.svg" alt="" width={30} height={24} />
+            </a>
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="#">
                 <FaShoppingCart />
@@ -48,37 +40,19 @@ export default function NavbarLogout() {
             <ul className="navbar-nav mb-2 mb-lg-0">
               <div className="view-nav-items">
                 <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      router.pathname === '/market-map' ? 'active' : ''
-                    }`}
-                    aria-current="page"
-                    href="/market-map"
-                  >
+                  <a className="nav-link active" aria-current="page" href="#">
                     夜市導覽
-                  </Link>
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      router.pathname === '/nightmarket-info/index'
-                        ? 'active'
-                        : ''
-                    }`}
-                    href="/nightmarket-info/index"
-                  >
+                  <a className="nav-link" href="#">
                     美味商城
-                  </Link>
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      router.pathname === '/game/game-select' ? 'active' : ''
-                    }`}
-                    href="/game/game-select"
-                  >
+                  <a className="nav-link" href="#">
                     趣味遊戲
-                  </Link>
+                  </a>
                 </li>
               </div>
               {/* 手機版的選單 開始 */}
@@ -104,22 +78,14 @@ export default function NavbarLogout() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link
-                        className="dropdown-item"
-                        href="/login/login-custom"
-                        onClick={() => handleLinkClick('type1')}
-                      >
+                      <a className="dropdown-item" href="#">
                         一般會員註冊
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link
-                        className="dropdown-item"
-                        href="/login/login-seller"
-                        onClick={() => handleLinkClick('type1')}
-                      >
+                      <a className="dropdown-item" href="#">
                         商家會員註冊
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li>
@@ -143,22 +109,14 @@ export default function NavbarLogout() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link
-                        className="dropdown-item"
-                        href="/login/login-custom"
-                        onClick={() => handleLinkClick('type2')}
-                      >
+                      <a className="dropdown-item" href="#">
                         一般會員登入
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link
-                        className="dropdown-item"
-                        href="/login/login-seller"
-                        onClick={() => handleLinkClick('type2')}
-                      >
+                      <a className="dropdown-item" href="#">
                         商家會員登入
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li>
@@ -189,20 +147,14 @@ export default function NavbarLogout() {
                       >
                         <div className="triangle" />
                         <li>
-                          <Link
-                            className="dropdown-item"
-                            href="/login/login-custom"
-                          >
+                          <a className="dropdown-item" href="#">
                             一般會員【登入/註冊】
-                          </Link>
+                          </a>
                         </li>
                         <li>
-                          <Link
-                            className="dropdown-item"
-                            href="/login/login-seller"
-                          >
+                          <a className="dropdown-item" href="#">
                             商家會員【登入/註冊】
-                          </Link>
+                          </a>
                         </li>
                       </ul>
                     </div>

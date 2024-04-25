@@ -1,7 +1,16 @@
 import Section from '@/components/layout/section'
-import React, { createContext, useContext } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
+import { IoSearchOutline } from "react-icons/io5";
+import SearchBar from '@/components/common/search-bar'
+import { FaShopify } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoMdTrash } from "react-icons/io";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { MdArrowForwardIos } from "react-icons/md";
+import { IoCart } from "react-icons/io5";
+
 
 
 export default function Order() {
@@ -17,20 +26,23 @@ export default function Order() {
             <div className={styles.stepBorder}>
                 
                   {/* 步驟圓圈&長條 */}
-                  <div className="container" >
-                  <div className={styles.step1} style={{marginTop:'60px',marginLeft:'293px'}}>1</div>
-                  <div className={styles.connectRed}></div>
+                  <div  >
+                  <div className={styles.step1} style={{marginTop:'60px',marginLeft:'350px'}}>1</div>
+                  <div className={styles.connect2}></div>
                   <div className={styles.step1}>2</div>
-                  <div className={styles.connectRed}></div>
-                  <div className={styles.step1}>3</div>
+                  <div className={styles.connect1}></div>
+                  <div className={styles.step2}>3</div>
+                  <div className={styles.connect1}></div>
+                  <div className={styles.step2}>4</div>
                 </div>
                   <br />
 
                   {/* 步驟文字 */}
                   <div className={styles.textContainer}>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'435px'}}>訂單資訊</div>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'120px'}}>訂單優惠</div>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'125px'}}>付款方式</div>
+                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'330px'}}>訂單資訊</div>
+                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'145px'}}>訂單優惠</div>
+                    <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'145px'}}>付款方式</div>
+                    <div className={styles.step2Text} style={{marginTop:'50px',marginLeft:'145px'}}>完成</div>
                     {/* textContainer */}
                   </div>
                  
@@ -40,7 +52,7 @@ export default function Order() {
           <div className={styles.orderBorder} style={{height:'1180px'}}>
 
            {/* 訂單詳細 外層容器 */}
-            <div className={styles.order4Container} style={{height:'714px'}}>
+            <div className={styles.orderContainer} style={{height:'714px'}}>
              
              
              {/*訂單詳細 */}

@@ -1,80 +1,81 @@
 import Section from '@/components/layout/section'
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router'
+import React from 'react'
 import Image from 'next/image'
-import styles from '@/styles/Product.module.css'
+import styles from '@/styles/Setting.module.css'
+import { IoSearchOutline } from "react-icons/io5";
 import SearchBar from '@/components/common/search-bar'
+import { FaThumbsUp } from "react-icons/fa6";
+import { FaRegHeart } from "react-icons/fa6";
+import { FiHeart } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
-import  PopularProduct  from '@/components/Product/popularProduct';
-import ProductItem from '@/components/Product/recommendProduct';
-import DiscountInformation from '@/components/Product/discountInformation';
-import CategoryItem from '@/components/Product/productCategory'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import style from '../nightmarket-info/nightmarket-info.module.scss'
-import CategoryCard from '@/components/nightmarket-info/category/category-card'
 
-import { MARKET_SELLER } from '@/components/config/api-path'
+// '產品分類'元件
+const CategoryItem = ({ imageUrl, categoryName }) => {
+  return (
+    <div className={styles.categoryImage}>
+      <Image src={"/images/主食.png"} width={119} height={119} />
+      <p style={{ fontSize: '16px' }}>{"主食"}</p>
+    </div>
+  );
+};
 
-// import { Container, Row, Col } from 'react-bootstrap';
+
+
+// '熱銷商品'元件
+const PopularProduct = ({ imageUrl, market,sellerName, productName, buttonText }) => {
+  return (
+    <div className={styles.popularProduct} style={{marginRight:'20px'}}>
+      <div className={styles.popularInfo}>
+        <Image src="/images/fire.png" width={43} height={55} style={{ marginTop: '-15px' }} />
+        <div style={{ fontSize: '28px', color: 'rgb(163, 44, 45)', marginBottom: '7px', marginLeft: '8px' }}>本週熱銷</div>
+        <div style={{ fontSize: '28px', color: 'rgb(163, 44, 45)', marginBottom: '7px', marginLeft: '8px', fontSize: '26px' }}>NO1</div>
+      </div>
+      <Image src={"/images/大腸麵線.jpg"} width={345} height={275} />
+      <p style={{ fontSize: '16px', marginTop: '10px' }}>{"三和夜市"}</p>
+      <p style={{ fontSize: '16px', marginTop: '-20px' }}>{"德記麵線"}</p>
+      <div style={{ fontSize: '28px', marginTop: '-20px', color: 'rgb(0,0,0)' }}>{"大腸麵線"}<FaRegHeart style={{ fontWeight: 'bolder', marginBottom: '3px', marginLeft: '8px', color: 'rgb(163, 44, 45)' }} /></div>
+      <br />
+      <button className={styles.wbButton} style={{ width: '128px', height: '38px', border: 'solid 3px', marginLeft: '205px', marginTop: '-10px', fontSize: '16px' }}>{"看更多"}</button>
+    </div>
+  );
+};
+
+// '推薦商品'元件
+const ProductItem = ({ imageUrl, productName, productScore }) => {
+  return (
+    <div  style={{marginLeft:'60px'}}>
+      <Image src={"/images/鹹酥雞.jpg"} width={343} height={231} style={{
+        borderRadius: '70px',
+        border: 'solid 8px #fff',
+        marginTop: '22px'
+      }} />
+      <div style={{ display: 'flex' }}>
+        <p className={styles.recommendName}>{"海鮮廣東粥"}</p>
+        <FiHeart style={{
+          color: 'rgb(163, 44, 45)',
+          fontSize: '26px',
+          marginTop: '12px',
+          marginLeft: '18px'
+        }} />
+        <div className={styles.productScore}>{"4.7"}</div>
+      </div>
+    </div>
+  );
+};
+
+// '優惠資訊'元件
+const DiscountInformation = () => {
+  return (
+    <div style={{ marginTop: '480px', marginLeft: '48px', position: 'relative' }}>
+      <Image src="/images/優惠.png" width={329} height={314} className={styles.discountInformation} style={{ position: 'absolute' }} />
+      <button className={styles.bbButton} style={{ width: '120px', height: '32px', marginBottom: '30px', position: 'absolute', top: '252px', left: '58px' }}>查看優惠</button>
+    </div>
+  );
+};
 
 
 
 export default function Product() {
-
-  // 食物分類，寫死
-  const categories = [
-    {
-      imgUrl: '/images/category-main.png',
-      title: '主食',
-      imgStyle: { top: '-50px', left: '-56px' },
-    },
-    {
-      imgUrl: '/images/category-snack.png',
-      title: '小吃',
-      imgStyle: { top: '-60px', left: '-56px' },
-    },
-    {
-      imgUrl: '/images/category-soup.png',
-      title: '湯品',
-      imgStyle: { top: '-30px', left: '-64px' },
-    },
-    {
-      imgUrl: '/images/category-sweet.png',
-      title: '甜品',
-      imgStyle: { top: '-50px', left: '-56px' },
-    },
-    {
-      imgUrl: '/images/category-saltynacks.png',
-      title: '點心',
-      imgStyle: { top: '-46px', left: '-50px' },
-    },
-    {
-      imgUrl: '/images/category-drink.png',
-      title: '飲料',
-      imgStyle: { top: '-40px', left: '-52px' },
-    },
-  ]
-
-  const router = useRouter()
-  const { market_id } = router.query
-  const { data } = router.query
-
-  useEffect(() => {
-    // 因為 market_id 是固定的，這裡不再檢查它的值
-    fetch(`${MARKET_SELLER}/1`) // 直接使用市場ID為1
-      .then((r) => r.json())
-      .then((data) => {
-        setFeaturedShops(data.slice(0, 3)) // 只取前三個作為特色商家
-        setAllShops(data) // 設置所有商家的數據
-      })
-      .catch((error) => {
-        console.error('獲取商家數據失敗:', error)
-      })
-  }, [])
-
-
-
   return (
     <>
       <Section>
@@ -85,181 +86,80 @@ export default function Product() {
       </div>
       
       {/* 產品類型 */}
+      <div className={styles.categoryContainer} >
+         <CategoryItem />
 
-      <div className={`row ${style.content}`}>
+         <CategoryItem />
 
-      <div className={`col ${style.category}`}>
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className={`col-xs-6 col-md-2 d-flex justify-content-center ${style.categoryCard}`}
-            >
-              <CategoryCard {...category} />
-            </div>
-          ))}
-        </div>
+         <CategoryItem />
 
-      {/* <div className="container">
+         <CategoryItem />
 
-        <div className={`row ${styles.categoryPicInterval}`} >
+         <CategoryItem />
 
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
+         <CategoryItem />
 
-        </div>
+      </div>
 
-      </div> */}
-
-      
-
-      <button className={styles.filterConditionButton}>篩選條件 <IoIosArrowDown className={styles.filterIcon}/></button>
+      <button className={styles.rbButton} style={{width:'150px', height:'32px',paddingRight:'10px',marginLeft:'1050px'}}>篩選條件 <IoIosArrowDown style={{fontSize:'20px'}}/></button>
 
       {/* 熱門商品 */}
-    <div className="container-fluid row">
+      <div className={styles.popularContainer}>
+        <PopularProduct />
+        <PopularProduct />
+        <PopularProduct />
+        <PopularProduct />
+      </div>
 
-      <div className={`col ${styles.popularContainer}`}>
-
-      {Array(4)
-        .fill(null)
-        .map((v,i) => {
-          return (
-            <div key={i} className='d-flex'>
-            <PopularProduct 
-              imageUrl = "/images/大腸麵線.jpg"
-              saleRanking="No1"
-              market = "三和夜市"
-              seller = "壺茶車"
-              product = "蛤蠣湯"
-            />
-            </div>
-          )
-        })}
-
-          {/* <Swiper
-          spaceBetween={50}
-          slidesPerView={3}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-        >
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          
-          </Swiper> */}
-
-          {/* <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div> */}
-
-          </div>
-
-    </div>
-     
-
-   
       {/* 推薦餐點 */}
-  <div className={`container-fluid row ${styles.recommendOuter}`} >
-
-  <h4 className={styles.recommendTitle}>今天想減肥</h4>
-
-    <div className={`col ${styles.recommendContainer}`}>
-     
+      <div className={styles.recommendContainer} style={{marginLeft:'150px'}}>
+    <div style={{display:'flex', flexDirection:'column'}}>
+    <div className={styles.recommendTitle}>今天想減肥</div>
       {/* 第一行 */}
-     {Array(3)
-      .fill(null)
-      .map((v,i) => {
-        return (
-          <div key={i} className='d-flex'>
-          <ProductItem 
-            imageUrl = "/images/鹹酥雞.jpg"
-            productName = "海鮮廣東粥"
-            score = "4.7"
-          />
-          </div>
-        )
-      })}
-
-       </div>
+     <div style={{display:'flex'}}>
+      <ProductItem />
+       <ProductItem  />
+       <ProductItem  />
+     </div>
 
     {/* 第二行 */}
-  
-  <h4 className={styles.recommendTitle} style={{marginTop:'90px'}}>今天想減肥</h4>
-  
-    <div className={`col ${styles.recommendContainer}`}>
-     
-      {/* 第一行 */}
-     {Array(3)
-      .fill(null)
-      .map((v,i) => {
-        return (
-          <div key={i} className='d-flex'>
-          <ProductItem 
-            imageUrl = "/images/鹹酥雞.jpg"
-            productName = "海鮮廣東粥"
-            score = "4.7"
-          />
-          </div>
-        )
-      })}
-
-       </div>
+    <div className={styles.recommendTitle} style={{marginTop:'80px'}}>今天想減肥</div>
+    
+     <div style={{display:'flex'}}>
+      <ProductItem />
+       <ProductItem  />
+       <ProductItem  />
+     </div>
 
 
     
     {/* 第三行 */}
-    <h4 className={styles.recommendTitle} style={{marginTop:'90px'}}>今天想減肥</h4>
-  
-  <div className={`col ${styles.recommendContainer}`}>
-   
- 
-   {Array(3)
-    .fill(null)
-    .map((v,i) => {
-      return (
-        <div key={i} className='d-flex'>
-        <ProductItem 
-          imageUrl = "/images/鹹酥雞.jpg"
-          productName = "海鮮廣東粥"
-          score = "4.7"
-        />
-        </div>
-      )
-    })}
+    <div className={styles.recommendTitle} style={{marginTop:'80px'}}>今天想減肥</div>
+    
+    <div style={{display:'flex'}}>
+     <ProductItem />
+      <ProductItem  />
+      <ProductItem  />
+    </div>
+    </div>
 
-     </div>
+    <div>
+       {/* 優惠資訊 */}
+      <div style={{display:'flex', flexDirection:'column'}}>
 
+       <DiscountInformation />
+        <div style={{marginTop:'-45px'}}></div>
+       <DiscountInformation />
+      </div>
+       
 
-        <div className='col' style={{marginTop:'-930px',marginLeft:'48px'}}>
-          {/* 優惠資訊 */}
-
-          <div className='d-flex row'>
-
-          {Array(2)
-          .fill(null)
-          .map((v,i) => {
-            return(
-              <div key={i} className=''>
-              <DiscountInformation
-               imageUrl="/images/優惠.png"
-           />
-              </div>
-              
-            )
-          })}
-
-          </div>
-          
-        </div>
+    </div>
       
+
       </div>
 
-        </div>
+
+
       </Section>
     </>
   )

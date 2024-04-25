@@ -29,8 +29,8 @@ export default function Ticket01() {
   return (
     <Section>
       <div className="container">
-        <div className="row">
-          <div className="col-12 col-xl-4">
+        <div className="row" >
+          <div className="col-12 col-xl-4" style={{paddingTop:" 110px"}}>
             <SelectMenu />
           </div>
           <div className="col-12 col-xl-8">

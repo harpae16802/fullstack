@@ -18,7 +18,7 @@ const emptyAuth = {
 }
 
 // 設定 localStorage 的key
-const storageKey = 'Nightmarket-auth'
+const storageKey = 'shinder-auth'
 
 export function CustomContextProvider({ children }) {
   const [auth, setAuth] = useState(emptyAuth);
@@ -61,7 +61,7 @@ export function CustomContextProvider({ children }) {
     }
   }
 
-  //處理重整後頁面直接登出,由 localStorage 讀取登入狀態
+  //處理重整後葉面直接登出,由 localStorage 讀取登入狀態
   useEffect(() => {
     const str = localStorage.getItem(storageKey)
     try {

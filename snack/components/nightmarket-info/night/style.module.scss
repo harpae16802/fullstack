@@ -16,7 +16,7 @@ $bdrs: 20px;
     .left,
     .right {
       .bigImage,
-      // .smallImage,
+      .smallImage,
       .mobileImg {
         width: 100%;
         height: auto;
@@ -97,22 +97,4 @@ $bdrs: 20px;
       }
     }
   }
-}
-
-.smallImage {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  object-position: center top;
-  border-radius: $bdrs;
-}
-
-.left {
-  position: relative;
-}
-
-.shopList {
-  position: absolute;
-  top: 500px;
-  right: 50px;
 }

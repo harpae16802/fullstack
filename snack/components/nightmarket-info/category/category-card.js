@@ -1,15 +1,14 @@
-import React from 'react'
+import React from "react";
 // 樣式
-import style from './style.module.scss'
+import style from "./style.module.scss";
 
 export default function CategoryCard({
-  imgUrl = '',
-  title = '',
+  imgUrl = "",
+  title = "",
   imgStyle = {},
-  onClick,
 }) {
   return (
-    <div className={style.card} onClick={() => onClick(title)}>
+    <div className={style.card}>
       <div className={style.imageContainer}>
         <img
           src={imgUrl}
@@ -20,5 +19,5 @@ export default function CategoryCard({
       </div>
       <p className={style.title}>{title}</p>
     </div>
-  )
+  );
 }
