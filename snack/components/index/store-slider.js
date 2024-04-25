@@ -122,8 +122,8 @@ function StoreSlider() {
               />
               <div className="store-name">{v.store_name}</div>
               <div className="store-market">{v.market_name}</div>
-
-              <Link type="button" className="btn btn-light" href={`/`}>
+              <Link type="button" className="btn btn-light" href={`/shop-products/${v.seller_id}`}>
+              {/* <Link type="button" className="btn btn-light" href={`/`}> */}
                   看更多
               </Link>
             </div>
