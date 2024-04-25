@@ -1,5 +1,5 @@
 import Section from '@/components/layout/section'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import Link from 'next/link'
@@ -25,6 +25,7 @@ const schemaPwd = z.string().min(6, { message: '請填寫正確的密碼格式' 
 
 export default function LoginCustom() {
   const router = useRouter()
+
   // 會員登入登出的勾子
   const { auth, login, logout } = useAuth()
 
@@ -187,6 +188,12 @@ export default function LoginCustom() {
     }
   }
 
+  useEffect(() => {
+    // 如果已經登入，將用戶導向首頁
+    if (auth.custom_id) {
+      router.replace('/')
+    }
+  }, [auth, router])
   return (
     <>
       <Section>
