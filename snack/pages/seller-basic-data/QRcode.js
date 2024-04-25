@@ -8,6 +8,7 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { Modal, Button, Form } from 'react-bootstrap'
 import CameraQRScanner from '@/components/CameraQRScanner'
 
 export default function QRcode() {
@@ -37,8 +38,17 @@ export default function QRcode() {
   const [qrcodeid, setqrcodeid] = useState('') // 解析的 資料
   const [selectedStatus, setSelectedStatus] = useState('0') // 初始狀態為 "處理中"
   const [orderDetails, setOrderDetails] = useState([])
-  // 使用Ref
+  const [showSuccessModal, setShowSuccessModal] = useState(false) // 彈出視窗
 
+  const [showOrderNotExistModal, setShowOrderNotExistModal] = useState(false)
+  const [showOrderNotFoundModal, setShowOrderNotFoundModal] = useState(false)
+  const [showOrderUpdateSuccessModal, setShowOrderUpdateSuccessModal] =
+    useState(false)
+  const [showOrderUpdateFailModal, setShowOrderUpdateFailModal] =
+    useState(false)
+  const [showScanFailModal, setShowScanFailModal] = useState(false)
+
+  // 使用Ref
   const handleImageClick = () => fileInputRef.current.click()
 
   const handleScanClick = () => setShowScanner((prev) => !prev)
@@ -50,13 +60,17 @@ export default function QRcode() {
       if (jsonData.length > 0 && jsonData[0].qrcode_id) {
         setqrcodeid(jsonData[0].qrcode_id) // 設置 qrcodIid
         fetchOrderDetails(jsonData[0].qrcode_id)
+        setShowSuccessModal(true)
       } else {
-        console.error('解析的数据中没有qrcode_id')
+        console.error('解析的數據中沒有qrcode_id')
       }
     } catch (error) {
+      setShowScanFailModal(true) // 顯示掃描失敗彈窗
+
       console.error('解析出錯:', error)
     }
   }
+
   const fetchOrderDetails = async (qrcodeid) => {
     try {
       const response = await axios.get(
@@ -66,13 +80,14 @@ export default function QRcode() {
         const data = response.data[0]
         if (data.seller_id.toString() === sellerId.toString()) {
           setOrderDetails(response.data)
-          setSelectedStatus(data.status.toString()) // 假設status也在response中
+          setSelectedStatus(data.status.toString())
         } else {
-          alert('此訂單不存在或不屬於當前賣家')
+          setShowOrderNotExistModal(true)
           setOrderDetails([]) // 清空不相關的訂單數據
         }
       } else {
         alert('未找到訂單資訊')
+        setShowOrderNotFoundModal(true)
         setOrderDetails([])
       }
     } catch (error) {
@@ -80,6 +95,7 @@ export default function QRcode() {
     }
   }
 
+  // 更新訂單
   const updateOrderStatus = async (newStatus) => {
     try {
       const response = await axios.put(
@@ -89,12 +105,24 @@ export default function QRcode() {
         }
       )
       console.log('訂單狀態更新成功:', response.data)
+      setShowOrderUpdateSuccessModal(true)
       fetchOrderDetails(qrcodeid) // 重新獲取訂單詳情來更新 UI
     } catch (error) {
+      setShowOrderUpdateFailModal(true)
       console.error('訂單狀態更新失敗:', error)
     }
   }
 
+  // 彈出視窗關閉部分
+  const handleCloseSuccessModal = () => setShowSuccessModal(false)
+  const handleCloseNotExistModal = () => setShowOrderNotExistModal(false)
+  const handleCloseOrderNotFoundModal = () => setShowOrderNotFoundModal(false)
+  const handleCloseUpdateSuccessModal = () =>
+    setShowOrderUpdateSuccessModal(false)
+  const handleCloseUpdateFailModal = () => setShowOrderUpdateFailModal(false)
+  const handleCloseScanFailModal = () => setShowScanFailModal(false)
+
+  
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
     console.log('index.js中的sellerId', sellerId)
@@ -307,6 +335,110 @@ export default function QRcode() {
           </div>
         </div>
       </div>
+      {/*  */}
+      <Modal show={showSuccessModal} onHide={handleCloseSuccessModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>掃描成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>掃描結果已確認。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCloseSuccessModal}>
+            確定
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      // 掃描失敗的彈窗
+      <Modal
+        show={showScanFailModal}
+        onHide={handleCloseScanFailModal}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>掃描失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>無法解析QR碼，請確保QR碼清晰且完整。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseScanFailModal}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      // 訂單不存在的彈窗
+      <Modal
+        show={showOrderNotExistModal}
+        onHide={handleCloseNotExistModal}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>訂單不存在</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>此訂單不存在或不屬於當前賣家。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseNotExistModal}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      // 訂單未找到的彈窗
+      <Modal
+        show={showOrderNotFoundModal}
+        onHide={handleCloseOrderNotFoundModal}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>訂單未找到</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>未找到訂單資訊。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseOrderNotFoundModal}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      // 訂單更新成功的彈窗
+      <Modal
+        show={showOrderUpdateSuccessModal}
+        onHide={handleCloseUpdateSuccessModal}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>更新成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>訂單狀態更新成功。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseUpdateSuccessModal}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      // 訂單更新失敗的彈窗
+      <Modal
+        show={showOrderUpdateFailModal}
+        onHide={handleCloseUpdateFailModal}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>更新失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>訂單狀態更新失敗，請重試。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseUpdateFailModal}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }
