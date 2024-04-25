@@ -296,33 +296,49 @@
     font-weight: bold;
   }
 
+/* 產品篩選:手風琴元件容器 */
+.filterContainer{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 500px;
+  height: 280px;
+ }
+
+
+
   /* '產品篩選'彈窗 */
   .paymentSize{
-    width: 491px;
-    height: 436px;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 450px;
     background-color: #fff;
     border-radius: 20px;
     position: absolute;
-    top: 30%;
-    left: 70%;
+    margin-top: 160px;
+    margin-left: 500px;
      transform: translate(-50%, -50%);
   }
   @media(max-width:576px){ 
     .paymentSize{
-      width: 100%;
-      height: 378px;
+      width: 491px;
+      height: 436px;
       border-radius: 20px 20px 0 0;
       position: absolute;
       top:79%;
       left: 39%;
-     transform: translate(-50%, -50%);
-      
     }
    }
+
+   .custom-accordion{
+    border-radius: 20px;
+   }
+   
 /* 商品篩選:叉叉 */
    .filterCross{
-    margin-top: 25px;
-    margin-left: 450px;
+    margin-top: 5px;
+    margin-left: 440px;
      color: rgb(163, 44, 45);
      font-size: 22px;
      font-weight: 100;
@@ -416,6 +432,7 @@
     border-radius: 20px;
     justify-content: center;
     text-align: center;
+    margin-top: -20px;
    }
    @media(max-width:375px){ 
     .filterButton{
@@ -423,7 +440,7 @@
     }
    }
 
-   
+ 
 
   /* 產品列表:優惠資訊 */
  .discountInformation{
@@ -453,8 +470,15 @@
   }
  }
 
+ /* 產品詳細:手風琴元件設定 */
+ .modalSize{
+  margin-top: 50px;
+  margin-left: 150px;
+  border-radius: 20px;
+  max-width: 1536px;
+ }
 
-
+ 
  /* 產品詳細:圖片設定 */
  .detailPic{
   border-radius: 20px 0 0 20px;

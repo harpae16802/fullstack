@@ -9,7 +9,10 @@ import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 import CheckoutProduct from '@/components/Order/checkoutProduct'
 
 const OrderStep1 = () => {
+
+  //訂單數量
   const [dataCount, setDataCount] = useState(0); // 使用useState来存储数据数量
+  const [productCount, setProductCount] = useState(0)
 
   // 模拟从后台获取数据的效果，你需要根据实际情况修改这部分代码
   useEffect(() => {
@@ -20,9 +23,16 @@ const OrderStep1 = () => {
       setDataCount(count);
     };
 
-    fetchDataCount();
-  }, []);
+    const fetchProductCount = async () => {
+      // 模拟从后台获取数据的过程
+      const productCount = 2; // 假设从后台获取到的数据数量为3
+      setProductCount(productCount);
+    };
 
+    fetchDataCount();
+    fetchProductCount();
+
+  }, [dataCount,productCount]);
 
 }
 

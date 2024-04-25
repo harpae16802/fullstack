@@ -324,6 +324,7 @@
     margin-left: 50px;
     width: calc( 100% - 100px );
     height: auto;
+    max-height: 160px;
     background-color: #fff;
     padding-bottom: 8px;
 }
@@ -417,19 +418,22 @@
 .orderDetail{
     display: flex;
    align-items: center;
-   border-bottom: solid 2px #B1B7B5;
-   padding-bottom: 20px;
    background-color: #fff;
 }
 
-.orderPicture{
+.order1Picture{
+    margin-top: 35px;
+    border-radius: 10px;
+}
+
+.order2Picture{
+    margin-top: 35px;
     margin-left: 30px;
-    margin-top: 25px;
     border-radius: 10px;
 }
 
 .productText{
-    margin-top: 15px;
+    margin-top: 30px;
     margin-bottom: 12px;
     margin-left: 50px;
     font-weight: bold;
@@ -444,7 +448,7 @@
 
 /* 數量增減按鈕 */
 .productNumber{
-    margin-top: 20px;
+    margin-top: 30px;
     margin-left: 3px;
     padding-top: 5px;
     width: 37px;
@@ -457,7 +461,7 @@
 .removeButton{
     padding-top: 8px;
     margin-left: 20px;
-    margin-top: 15px;
+    margin-top: 30px;
     width: 120px;
     height: 40px;
     color: #fff;
@@ -472,11 +476,13 @@
 }
 
 /* 產品詳細:底線 */
-/* .orderProductBorder{
-    margin-top: 20px;
-    width: 100%;
-    border-bottom: #B1B7B5 ;
-} */
+.orderProductBorder{
+    margin-top: 22px;
+    margin-left: -71px;
+    width: 1329px;
+    height: 20px;
+    border-bottom:solid 2px #B1B7B5 ;
+}
 
 .discount{
     display: flex;
@@ -740,7 +746,15 @@
 }
 
 /* 彈窗:消耗遊戲點數 */
-.cosumeButton{
+
+.consumeContainer{
+    display: flex;
+    flex-direction: column;
+    height: 280px;
+}
+
+
+.consumeButton{
     width: 30px;
     height: 30px;
     margin-left: 3px;
@@ -760,6 +774,7 @@
     border:solid 2px rgb(163, 44, 45);
     border-radius: 20px;
     font-weight: bolder;
+    margin-top: -50px;
 }
 
 .rbButton{
@@ -771,6 +786,7 @@
     background-color: rgb(163, 44, 45);
     border-radius: 20px;
     font-weight: bolder;
+    margin-top: -50px;
 }
 
 /* 彈窗:付款成功 */

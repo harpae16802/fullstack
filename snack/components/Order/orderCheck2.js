@@ -18,7 +18,7 @@ export default function OrderCheck ({
 
     <div className={styles.orderDetail}>
     <Image src={imageUrl} width={100} height={100}
-     className={styles.orderPicture} 
+     className={styles.order2Picture} 
     />
 
        <div className={styles.productText}>{product}</div>

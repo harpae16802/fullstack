@@ -1,7 +1,6 @@
 import Section from '@/components/layout/section'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import styles from '@/styles/Product.module.css'
 import SearchBar from '@/components/common/search-bar'
 import { IoIosArrowDown } from "react-icons/io";
@@ -13,14 +12,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
-
 import { MARKET_SELLER } from '@/components/config/api-path'
+import FilterOptions from '@/components/Product/productFilter'
 
 // import { Container, Row, Col } from 'react-bootstrap';
 
 
 
 export default function Product() {
+
+
 
   // 食物分類，寫死
   const categories = [
@@ -59,6 +60,7 @@ export default function Product() {
   const router = useRouter()
   const { market_id } = router.query
   const { data } = router.query
+  const [showProductFilter, setShowProductFilter] = useState(false);
 
   useEffect(() => {
     // 因為 market_id 是固定的，這裡不再檢查它的值
@@ -116,7 +118,7 @@ export default function Product() {
 
       
 
-      <button className={styles.filterConditionButton}>篩選條件 <IoIosArrowDown className={styles.filterIcon}/></button>
+      <button className={styles.filterConditionButton} >篩選條件 <IoIosArrowDown className={styles.filterIcon}/></button>
 
       {/* 熱門商品 */}
     <div className="container-fluid row">

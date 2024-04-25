@@ -7,7 +7,23 @@ import styles from '@/styles/Order.module.css'; // 確保引入了正確的樣�
 const PaymentSuccessWindow = () => {
   return (
     <>
-          <div style={{display:'flex',flexDirection:'column'}}>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  付款成功
+</button>
+
+<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog" style={{maxWidth:'480px'}}>
+        <div class="modal-content">
+          
+              <div class="modal-body body" style={{height:'370px'}}>
+                        
+              <div >
+
+
+
+
+              <div style={{display:'flex',flexDirection:'column'}}>
                 {/* '付款成功'視窗:外框 */}
                 <div style={{
                 width:'451px',
@@ -46,6 +62,23 @@ const PaymentSuccessWindow = () => {
 
                 </div>
           </div>
+
+
+</div>
+
+
+           </div>
+           
+  
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
     </>
   );
 };
