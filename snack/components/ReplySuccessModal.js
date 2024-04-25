@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap'
 
 function ReplySuccessModal({ show, onHide }) {
     return (
-      <Modal show={show} onHide={onHide}>
+      <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>回覆成功</Modal.Title>
         </Modal.Header>

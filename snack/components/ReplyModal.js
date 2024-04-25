@@ -15,7 +15,7 @@ function ReplyModal({ show, onHide, commentId, submitReply ,commentContent}) {
   }
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>回覆評論</Modal.Title>
       </Modal.Header>
