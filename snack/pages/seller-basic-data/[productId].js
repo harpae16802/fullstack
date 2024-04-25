@@ -1,4 +1,4 @@
-// pages/seller-basic-data/[productId].js
+// pages/seller-basic-data/addProduct.js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
@@ -8,8 +8,9 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { Modal, Button, Form } from 'react-bootstrap'
 
-export default function ProductModify() {
+export default function AddProducts() {
   // 使用 useRouter
   const router = useRouter()
 
@@ -19,19 +20,6 @@ export default function ProductModify() {
   //拿取seller_id
   const { seller } = useSeller()
   const sellerId = seller?.id
-  const { productId } = router.query
-  console.log(productId)
-
-  const [product, setProduct] = useState({
-    productId: productId,
-    productName: '',
-    productDescription: '',
-    price: '',
-    productNutrition: '',
-    productIngredient: '',
-    stockQuantity: '',
-    imageUrl: '',
-  })
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -41,116 +29,104 @@ export default function ProductModify() {
     profilePicture: '',
   })
 
-  // 下拉選單
-  const handleChangeStatus = (e) => {
-    setProduct((prev) => ({ ...prev, status: e.target.value }))
-  }
+  // 新增產品的資料
+  const [newProductData, setNewProductData] = useState({
+    productName: '',
+    productDescription: '',
+    price: '',
+    productNutrition: '',
+    productIngredient: '',
+    stockQuantity: '',
+    category_id: '',
+    category: '',
+  })
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
   }
 
-  // 總查詢
+  // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
+    console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data
+          const data = response.data.data // 注意确保这里的路径正确
+          console.log(data) // 查看数据结构
+
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
+            // 其他字段...
           }))
         })
-        .catch((error) => console.error('獲取賣家資訊失敗', error))
-    }
-
-    if (productId) {
-      axios
-        .get(`${PRODUCTS_API}/details/${productId}`)
-        .then((response) => {
-          const {
-            product_id,
-            category,
-            product_name,
-            product_description,
-            image_url,
-            price,
-            stock_quantity,
-            status,
-            category_id,
-            product_ingredient,
-            product_nutrition,
-            seller_id,
-            favorite_count,
-            created_at,
-          } = response.data.product
-          setProduct({
-            productId: product_id,
-            category,
-            productName: product_name,
-            productDescription: product_description,
-            imageUrl: image_url,
-            price,
-            stockQuantity: stock_quantity,
-            status,
-            categoryId: category_id,
-            productIngredient: product_ingredient,
-            productNutrition: product_nutrition,
-            sellerId: seller_id,
-            favoriteCount: favorite_count,
-            createdAt: created_at,
-          })
-        })
         .catch((error) => {
-          console.error('获取产品资料失败', error)
+          console.error('获取商家信息失败', error)
         })
     }
-  }, [productId, sellerId]) // 确保這裡有 productId
+  }, [sellerId])
 
-  // 表單更改
-  const handleChange = (e) => {
+  //表單狀態
+  const handleInputChange = (e) => {
     const { name, value } = e.target
-    setProduct((prev) => ({ ...prev, [name]: value }))
+  
+    // 種類
+    if (name === 'category_id') {
+      const category = e.target.options[e.target.selectedIndex].text
+      setNewProductData((prevData) => ({
+        ...prevData,
+        category_id: value,
+        category: category,
+      }))
+    } else {
+      setNewProductData((prevData) => ({ ...prevData, [name]: value }))
+    }
   }
 
-  // 圖片上傳
-  const handleFileChange = (e) => {
-    setProduct((prev) => ({ ...prev, imageUrl: e.target.files[0] }))
-  }
-
-  // 表單提交
-  const handleSubmit = (e) => {
+  // 送出表單
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
-    console.log(product) // 输出查看所有字段值
-    const formData = new FormData()
-    Object.keys(product).forEach((key) => {
-      if (key === 'imageUrl' && product[key] instanceof File) {
-        formData.append('image', product[key])
-      } else if (product[key] != null) {
-        // 确保不添加null值
-        formData.append(key, product[key])
-      }
-    })
 
-    axios
-      .put(`${PRODUCTS_API}/update/${productId}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+    // 用formData傳送資料
+    const formData = new FormData()
+    formData.append('productName', newProductData.productName)
+    formData.append('productDescription', newProductData.productDescription)
+    formData.append('price', newProductData.price)
+    formData.append('productNutrition', newProductData.productNutrition)
+    formData.append('productIngredient', newProductData.productIngredient)
+    formData.append('stockQuantity', newProductData.stockQuantity)
+    formData.append('category', newProductData.category)
+    formData.append('category_id', newProductData.category_id)
+    formData.append('seller_id', sellerId) //
+    // console.log(sellerId);
+
+    if (fileInputRef.current?.files[0]) {
+      formData.append('image', fileInputRef.current.files[0])
+    }
+
+    // 產品圖片上傳
+    const imageFile = document.querySelector('#store_image').files[0]
+    formData.append('image', imageFile)
+
+    // 請求
+    try {
+      const response = await axios.post(`${PRODUCTS_API}/add`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
-      .then((response) => {
-        console.log('Response received:', response)
-        if (response.data.success) {
-          alert('產品更新成功')
-          router.push('/seller-basic-data/productsList')
-        } else {
-          throw new Error(response.data.message)
-        }
-      })
-      .catch((error) => {
-        console.error('更新產品信息失败', error)
-        alert(` 產品新增成功`)
-        router.push('/seller-basic-data/productsList')
-      })
+
+      if (response.data.success) {
+        alert('产品添加成功')
+      } else {
+        alert('产品添加失败')
+      }
+    } catch (error) {
+      console.error('产品添加出错', error)
+      alert('产品添加过程中发生错误')
+    }
   }
 
   // 更新賣家 頭貼 包含顯示
@@ -268,8 +244,8 @@ export default function ProductModify() {
           {/* 表單 */}
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
-              <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>編輯產品資料</h2>
+              <form onSubmit={handleFormSubmit} className={styles.formWrapper}>
+                <h2 className={`${styles.formTitle}`}>上架新增商品</h2>
 
                 <div className="mb-3">
                   <label htmlFor="productName" className="form-label">
@@ -281,11 +257,15 @@ export default function ProductModify() {
                     id="productName"
                     name="productName"
                     placeholder="產品名稱"
-                    value={product.productName}
-                    onChange={handleChange}
+                    value={newProductData.productName}
+                    onChange={handleInputChange}
                   />
+                  <input
+                    type="hidden"
+                    name="sellerId"
+                    value={sellerId}
+                  ></input>
                 </div>
-                <input type="hidden" name="sellerId" value={productId}></input>
                 <div className="mb-3">
                   <label htmlFor="productDescription" className="form-label">
                     產品描述
@@ -296,8 +276,8 @@ export default function ProductModify() {
                     name="productDescription"
                     rows="3"
                     placeholder="產品描述簡介"
-                    value={product.productDescription}
-                    onChange={handleChange}
+                    value={newProductData.productDescription}
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
                 <div className="mb-3">
@@ -310,8 +290,8 @@ export default function ProductModify() {
                     id="price"
                     name="price"
                     placeholder="產品價格(台幣)"
-                    value={product.price}
-                    onChange={handleChange}
+                    value={newProductData.price}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -324,8 +304,8 @@ export default function ProductModify() {
                     id="productNutrition"
                     name="productNutrition"
                     placeholder="產品營養表"
-                    value={product.productNutrition}
-                    onChange={handleChange}
+                    value={newProductData.productNutrition}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -338,8 +318,8 @@ export default function ProductModify() {
                     id="productIngredient"
                     name="productIngredient"
                     placeholder="產品成分"
-                    value={product.productIngredient}
-                    onChange={handleChange}
+                    value={newProductData.productIngredient}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -352,46 +332,48 @@ export default function ProductModify() {
                     id="stockQuantity"
                     name="stockQuantity"
                     placeholder="產品數量"
-                    value={product.stockQuantity}
-                    onChange={handleChange}
+                    value={newProductData.stockQuantity}
+                    onChange={handleInputChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="imageUrl" className="form-label">
+                  <label htmlFor="store_image" className="form-label">
                     上傳產品圖片
                   </label>
                   <input
                     type="file"
                     className="form-control"
-                    id="imageUrl"
-                    name="imageUrl"
-                    onChange={handleFileChange}
+                    id="store_image"
+                    name="store_image"
                   />
-                  {/* 顯示當前的產品圖片 */}
-                  {product.imageUrl && (
-                    <img
-                      src={product.imageUrl || 'default-placeholder.png'}
-                      alt="Product Image"
-                    />
-                  )}
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="status" className="form-label">
-                    產品狀態
-                  </label>
-                  <select
-                    className="form-control"
-                    id="status"
-                    value={product.status || ''}
-                    onChange={handleChangeStatus}
-                  >
-                    <option value="1">上架</option>
-                    <option value="0">下架</option>
-                  </select>
-                </div>
+                <div className={styles.selectGroup}>
+                  <div className="col-auto ">
+                    <label htmlFor="store_image" className={styles.selectLabel}>
+                      選擇產品種類
+                    </label>
+                  </div>
 
+                  <div className="col-auto">
+                    <select
+                      className={`form-select ${styles.customSelect}`}
+                      id="category_id"
+                      name="category_id" 
+                      value={newProductData.category_id}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">新增產品種類</option>
+                      <option value="1">點心</option>
+                      <option value="2">飲料</option>
+                      <option value="3">甜品</option>
+                      <option value="4">湯品</option>
+                      <option value="5">小吃</option>
+                      <option value="6">主食</option>
+                    </select>
+                  </div>
+                </div>
                 <br></br>
                 {/* 按鈕樣式 */}
                 <div className={styles.buttonGroup}>

@@ -27,7 +27,6 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 
-
 productsRouter.put(
   "/edit-profile-picture/:sellerId",
   upload.single("profilePicture"),
@@ -242,7 +241,6 @@ productsRouter.get("/details/:productId", async (req, res) => {
 // 更新產品信息
 productsRouter.put("/update/:productId", upload.single("image"), async (req, res) => {
   const { productId } = req.params;
-  console.log("Updating product with ID:", productId); 
   const {
     productName,
     productDescription,
@@ -251,22 +249,25 @@ productsRouter.put("/update/:productId", upload.single("image"), async (req, res
     status,
     productNutrition,
     productIngredient,
+    category_id
   } = req.body;
-  const image_url = req.file ? `/public/products/${req.file.filename}` : undefined;
 
-  const query = `
-    UPDATE products SET
-    product_name = ?, 
-    product_description = ?,
-    price = ?,
-    stock_quantity = ?,
-    status = ?,
-    product_nutrition = ?,
-    product_ingredient = ?,
-    image_url = COALESCE(?, image_url)
-    WHERE product_id = ?;
-  `;
+  const image_url = req.file ? `/products/${req.file.filename}` : null;
+
   try {
+    const query = `
+      UPDATE products SET
+      product_name = ?, 
+      product_description = ?,
+      price = ?,
+      stock_quantity = ?,
+      status = ?,
+      product_nutrition = ?,
+      product_ingredient = ?,
+      category_id = ?,
+      image_url = COALESCE(?, image_url)
+      WHERE product_id = ?;
+    `;
     const result = await db.query(query, [
       productName,
       productDescription,
@@ -275,11 +276,13 @@ productsRouter.put("/update/:productId", upload.single("image"), async (req, res
       status,
       productNutrition,
       productIngredient,
-      image_url,
+      category_id,
+      image_url,  // 新圖片 URL 或保持原有 URL
       productId
     ]);
-    if (result.affectedRows >= 0) {
-      res.json({ success: true, message: "產品信息已更新" });
+
+    if (result.affectedRows > 0) {
+      res.json({ success: true, message: "產品信息已更新", imageUrl: image_url });
     } else {
       res.status(404).json({ success: false, message: "未找到該產品，無法更新" });
     }
@@ -288,5 +291,6 @@ productsRouter.put("/update/:productId", upload.single("image"), async (req, res
     res.status(500).json({ success: false, message: "數據庫操作錯誤" });
   }
 });
+
 
 export default productsRouter;
