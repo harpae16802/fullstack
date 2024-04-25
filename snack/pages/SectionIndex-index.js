@@ -1,12 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
-import { FaSistrix, FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
-import SearchBar from '@/components/common/search-bar'
 import CustomSlider from '@/components/index/custom-slider'
 import StoreSlider from '@/components/index/store-slider'
+import NewsSlider from '@/components/index/news-slider'
 import ProductSlider from '@/components/index/product-slider'
 import SearchBarIndex from '@/components/common/search-bar-index'
-import MultipleItems from '@/components/index/multipleItems'
+import { FaVolumeDown } from "react-icons/fa";
+
 
 export default function SectionIndex() {
   // 搜尋後 跳轉至 夜市資訊 || 地圖導覽
@@ -14,19 +14,18 @@ export default function SectionIndex() {
 
   // }
 
+
+
   return (
     <>
       {' '}
       <div className="simple-news">
-        <div className="col-2 col-md-1">
-          <h6>即時消息</h6>
+        <div className="col-2 col-md-1 newsup">
+          <h6>即時消息</h6><FaVolumeDown className='vol'/>
         </div>
         <div className="col-10 col-md-11 news">
-          <a href="#">即時消息即時消息即時消息即時消息即時消息即時消息</a>
-          <a href="#">即時消息即時消息即時消息即時消息即時消息即時消息</a>
-          <a href="#">即時消息即時消息即時消息即時消息即時消息即時消息</a>
-          <a href="#">即時消息即時消息即時消息即時消息即時消息即時消息</a>
-          <a href="#">即時消息即時消息即時消息即時消息即時消息即時消息</a>
+        <NewsSlider />
+
         </div>
       </div>
       <div className="kv">
@@ -67,6 +66,33 @@ export default function SectionIndex() {
           最新消息
         </div>
         <CustomSlider />
+        {/* <div className="bgc-candy">
+          <Image
+            src="/images/layout/28_candy.png"
+            alt="candy"
+            className="candy"
+            width={300}
+            height={300}
+          />
+        </div> */}
+        <div className="bgc-tapi">
+          <Image
+            src="/images/layout/2_tapioca.png"
+            alt="tapioca"
+            className="tapioca"
+            width={600}
+            height={600}
+          />
+        </div>
+        <div className="bgc-tofu">
+          <Image
+            src="/images/layout/18_tofu.png"
+            alt="stinky-tofu"
+            className="tofu"
+            width={800}
+            height={800}
+          />
+        </div>
       </div>
       <div className="section-index index-nop index-store">
         <div className="index-title">店家</div>

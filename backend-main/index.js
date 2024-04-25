@@ -18,6 +18,7 @@ import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
 import signUpRouter from "./routes/sign-up.js"; 
+import indexInfoRouter from "./routes/indexinfo.js";
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
@@ -123,6 +124,7 @@ app.get("/jwt-data", async (req, res) => {
 });
 
 app.use("/sign-up", signUpRouter);
+app.use("/index-info", indexInfoRouter);
 
 
 // ==== 弘
