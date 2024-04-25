@@ -242,7 +242,7 @@ export default function Ad() {
                                 : 'btn-outline-primary'
                             }`}
                           >
-                            首頁懸浮廣告
+                            列表懸浮廣告
                           </button>
                         </div>
                       </div>
