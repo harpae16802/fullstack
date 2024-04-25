@@ -8,7 +8,8 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
-
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Order() {
   // 使用 useRouter
@@ -29,6 +30,9 @@ export default function Order() {
     profilePicture: '',
   })
 
+  // 載入動畫
+  const [loading, setLoading] = useState(false) // 新增 loading 狀態
+
   // 資料過濾
   const [query, setQuery] = useState({
     startDate: '',
@@ -40,7 +44,7 @@ export default function Order() {
   const [categories, setCategories] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
-  const [totalSum, setTotalSum] = useState(0); 
+  const [totalSum, setTotalSum] = useState(0)
   // 資料過濾
 
   // 使用Ref
@@ -55,7 +59,7 @@ export default function Order() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data 
+          const data = response.data.data
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
@@ -86,6 +90,7 @@ export default function Order() {
 
   // 後端資料仔入
   function loadOrders() {
+    setLoading(true) // 動畫
     axios
       .get(`${ORDERDETAIL}/`, {
         params: {
@@ -110,8 +115,13 @@ export default function Order() {
       .catch((error) => {
         console.error('查询销售数据失败', error)
       })
+      .finally(() => {
+        // 動畫
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
+      })
   }
-
 
   // 資料輸入
   function handleInputChange(e) {
@@ -121,12 +131,12 @@ export default function Order() {
       [name]: value,
     }))
   }
-// 處裡日期變更
+  // 處裡日期變更
   function handleDateChange(field, value) {
     setQuery((prev) => ({
       ...prev,
       [field]: value,
-    }));
+    }))
   }
 
   // 總金額
@@ -140,7 +150,7 @@ export default function Order() {
       })
       .then((response) => {
         if (response.status === 200 && response.data.total_revenue) {
-          setTotalSum(response.data.total_revenue);
+          setTotalSum(response.data.total_revenue)
         } else {
           console.log('Unexpected response structure:', response)
           setTotalSum(0)
@@ -151,8 +161,8 @@ export default function Order() {
         setTotalSum(0)
       })
   }
-  
-// 類別
+
+  // 類別
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value
     setQuery((prev) => ({
@@ -395,7 +405,7 @@ export default function Order() {
                   </div>
                   {/* 這裡要能夠抓取到產品分類 */}
                 </div>
-                
+
                 {/* 這裡要改成結束日期 */}
                 <br></br>
                 {/* 這裡要能搜索產品名稱 */}
@@ -434,33 +444,64 @@ export default function Order() {
                 </div>
                 {/* 這裡要能搜索產品名稱 */}
                 {/* 我在這裡要實現資料的顯示 */}
-                <table className={`${styles.table}`}>
-                  <thead>
-                    <tr>
-                      <th>產品名稱</th>
-                      <th>產品類別</th>
-                      <th>銷售數量</th>
-                      <th>訂單收入</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.isArray(orders) &&
-                      orders.map((order) => (
-                        <tr key={order.order_id}>
-                          <td>{order.product_name}</td>
-                          <td>{order.category_name}</td>
-                          <td>{order.purchase_quantity}</td>
-                          <td>${order.total_sum}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                {loading ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center mt-3"
+                    style={{ minHeight: '200px' }}
+                  >
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    <p className="mt-2">加載中...</p>
+                  </div>
+                ) : (
+                  <table className={`${styles.table}`}>
+                    <thead>
+                      <tr>
+                        <th>產品名稱</th>
+                        <th>產品類別</th>
+                        <th>銷售數量</th>
+                        <th>訂單收入</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(orders) &&
+                        orders.map((order) => (
+                          <tr key={order.order_id}>
+                            <td>{order.product_name}</td>
+                            <td>{order.category_name}</td>
+                            <td>{order.purchase_quantity}</td>
+                            <td>${order.total_sum}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
                 {/* 我在這裡要實現資料的顯示 */}
-                {/* 在这里添加订单总金额显示 */}
-                <div className="col-md-3 mt-1 col-12">
-                <p>{`訂單總金額: ${totalSum}`}</p>
+                {/* 訂單總金額 */}
+                <div className="col-md-12 mt-3 col-12">
+                  <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
+                    訂單總金額：
+                  </h3>
+                  {totalSum > 0 ? (
+                    <p
+                      style={{
+                        fontSize: '1.25rem',
+                        color: 'green',
+                        fontWeight: 'bold',
+                      }}
+                    >{`$${totalSum}`}</p>
+                  ) : (
+                    <p
+                      style={{
+                        fontSize: '1.25rem',
+                        color: 'red',
+                        fontStyle: 'bold',
+                      }}
+                    >
+                      沒有收入
+                    </p>
+                  )}
                 </div>
-                {/* 在这里添加订单总金额显示 */}
+                {/* 訂單總金額 */}
                 {/* 分頁 */}
                 <nav>
                   <ul className="pagination justify-content-center">

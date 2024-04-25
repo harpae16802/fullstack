@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import styles from '../../styles/navbar-seller.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const ProductsList = () => {
   // 使用 useRouter
@@ -27,8 +29,10 @@ const ProductsList = () => {
   const [totalItems, setTotalItems] = useState(0) // 處裡分頁
   const [filter, setFilter] = useState({}) //過濾查詢
   const [searchTerm, setSearchTerm] = useState('') // 篩選
-  const [categories, setCategories] = useState([]) // 下拉是選單篩選過濾
+  const [categories, setCategories] = useState([]) // 下拉選單
   const [selectedProducts, setSelectedProducts] = useState([]) // 批量操作
+
+  const [loading, setLoading] = useState(false) // 新增 loading 狀態
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
@@ -51,21 +55,20 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
+    setLoading(true) //loading 為 true
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
+          const data = response.data.data
 
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
-            // 其他字段...
           }))
         })
         .catch((error) => {
-          console.error('获取商家信息失败', error)
+          console.error('獲取失敗', error)
         })
     }
     const queryParams = new URLSearchParams({
@@ -108,7 +111,10 @@ const ProductsList = () => {
           setCurrentPage(1)
         }
       } catch (error) {
-        console.error('获取产品失败', error)
+      } finally {
+        setTimeout(() => {
+          setLoading(false); // 一秒後設置 loading 為 false
+        }, 1000); // 延遲一秒) // 無論成功還是失敗，都將 loading 設置為 false
       }
     }
 
@@ -286,7 +292,7 @@ const ProductsList = () => {
                       type="button"
                       onClick={() => setSearchTerm('')}
                     >
-                    初始化搜尋
+                      初始化搜尋
                     </button>
                   </div>
                 </div>
@@ -369,45 +375,43 @@ const ProductsList = () => {
 
               <br></br>
               {/* 表格 */}
-              <table className={`${styles.table}`}>
-                <thead>
-                  <tr>
-                    <th>產品名稱</th>
-                    <th>產品數量</th>
-                    <th>產品類別</th>
-                    <th>產品價格</th>
-                    <th>產品狀態</th>
-                    <th>修改</th>
-                    {/* <th>批量修改</th> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product.product_id}>
-                      <td>{product.productName}</td>
-                      <td>{product.stockQuantity}</td>
-                      <td>{product.category}</td>
-                      <td>{product.price}</td>
-                      <td>{product.status}</td>
-                      <td>
-                        <Link
-                          href={`/seller-basic-data/[productId]`}
-                          as={`/seller-basic-data/${product.product_id}`}
-                        >
-                          修改
-                        </Link>
-                      </td>
-                      {/* <td>
-                        <input
-                          type="checkbox"
-                          onChange={() => {}}
-                          value={product.product_id}
-                        />
-                      </td> */}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
+              <div
+                className="d-flex justify-content-center align-items-center mt-3"
+                style={{ minHeight: '200px' }}
+              >
+                {loading ? (
+                  <div className="text-center">
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    <p className="mt-2">加載中...</p>
+                  </div>
+                ) : (
+                  <table className={`${styles.table}`}>
+                    <thead>
+                      <tr>
+                        <th>產品名稱</th>
+                        <th>產品數量</th>
+                        <th>產品類別</th>
+                        <th>產品價格</th>
+                        <th>產品狀態</th>
+                        <th>修改</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.map((product) => (
+                        <tr key={product.product_id}>
+                          <td>{product.productName}</td>
+                          <td>{product.stockQuantity}</td>
+                          <td>{product.category}</td>
+                          <td>{product.price}</td>
+                          <td>{product.status}</td>
+                          <td>{/* 修改鏈接 */}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
               <br></br>
               {/* <button onClick={() => {}}>批量上下架</button> */}
               {/* 分頁 */}

@@ -8,6 +8,7 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { Modal, Button } from 'react-bootstrap'
 
 export default function bank() {
   // 使用 useRouter
@@ -28,6 +29,10 @@ export default function bank() {
     profilePicture: '', // 賣家頭像
     bankAccounts: [], // 初始化為空數組
   })
+
+  //彈出視窗
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showFailModal, setShowFailModal] = useState(false)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -74,19 +79,15 @@ export default function bank() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // 假设您的后端接收的是 sellerData 的格式
-    axios
     axios
       .put(`${SELLER_API}/${sellerId}/update-bank-accounts`, {
         bankAccounts: sellerData.bankAccounts,
       })
       .then((response) => {
-        console.log('数据更新成功:', response.data)
-        // 在这里处理更新成功后的逻辑
+        setShowSuccessModal(true)
       })
       .catch((error) => {
-        console.error('数据更新失败:', error)
-        // 在这里处理更新失败后的逻辑
+        setShowFailModal(true)
       })
   }
 
@@ -252,9 +253,7 @@ export default function bank() {
                 {/* 提交按鈕 */}
                 <div className={styles.buttonGroup}>
                   <Link href="/seller-basic-data/">
-                    <button className={styles.btnSecondary}>
-                      回到店面
-                    </button>
+                    <button className={styles.btnSecondary}>回到店面</button>
                   </Link>
                   <button type="submit" className={styles.btnPrimary}>
                     提交修改
@@ -266,6 +265,38 @@ export default function bank() {
           {/* 表單 */}
         </div>
       </div>
+
+      <Modal
+        show={showSuccessModal}
+        onHide={() => setShowSuccessModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>修改成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>銀行帳號已成功更新。</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShowSuccessModal(false)}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showFailModal}
+        onHide={() => setShowFailModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>修改失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>更新銀行帳號失敗，請重試。</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowFailModal(false)}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }
