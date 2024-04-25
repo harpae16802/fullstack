@@ -297,7 +297,6 @@
     overflow: hidden;
   }
   padding: 20px 0px;
-  position: relative;
   //包住方向鍵和內容的階層
   .slick-slider.slick-initialized {
     position: relative;
@@ -373,8 +372,6 @@
             align-items: start;
             flex-direction: column;
             gap: 20px;
-            //彈窗
-
             .product-top {
               @media (max-width: 992px) {
                 background-color: rgba(255, 255, 255, 0.5);
