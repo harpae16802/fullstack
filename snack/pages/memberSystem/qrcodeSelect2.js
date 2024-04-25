@@ -11,7 +11,13 @@ import classNames from 'classnames'
 import Section from "@/components/layout/section";
 import { useData } from "@/pages/context/qrcodeProduct"
 import { useRouter } from "next/router";
+import { myProduct, myProduct2, recordSearch,insertProduct } from '@/api/qrcodeApi';
+import {useQrcode } from '@/data/context/QrcodeContext';
+ 
+
+
 export default function QrcodeselectMobile1() {
+  const {  orderId, setOrderId, QRcodeData, QrcodeOrder,setQRcodeDataOrder, setQRcodeData,QRcodeDataCreate, setQRcodeDataCreate } = useQrcode();
   const [isBigScreen, setIsBigScreen] = useState(false);
   const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
   const { data, setData } = useData(); // 修改為使用解構賦值，保持一致性
@@ -39,11 +45,27 @@ export default function QrcodeselectMobile1() {
     };
 
   }, [])
+  const createQrcode=async(e)=>{
+    e.preventDefault(); // 阻止 
+    // insertProduct建立QRcode 
+    // 記得%
+    const newQRcodeDataCreate = QRcodeDataCreate.filter(item => item.isinput);  
+     const result = await insertProduct(newQRcodeDataCreate);
+     setQRcodeDataOrder(newQRcodeDataCreate)
+     sessionStorage.setItem('QrcodeOrder', JSON.stringify(newQRcodeDataCreate));
+
+  if (result.success) {
+      setQRcodeData(result.data)
+        router.push(`/memberSystem/qrcodeSelect3`)
+      } else {
+        console.log("錯誤")
+      }
+  }
   return (
     <Section>
       <div className="container">
-        <div className="row">
-          <div className="col-12 col-md-4 ">
+        <div className="row"  >
+          <div className="col-12 col-md-4 " style={{paddingTop:" 110px"}}>
             <SelectMenu />
           </div>
 
@@ -69,7 +91,14 @@ export default function QrcodeselectMobile1() {
                 上一步
               </button>
 
-              <button type="button" onClick={() => pages("qrcodeSelect3")} className={classNames("btn btn-outline-primary",qrcodeStyle["qrcodeRecord"])}>
+              <button type="button"
+               onClick={(e) => {
+              
+                createQrcode(e);
+              }} 
+              
+              className={classNames("btn btn-outline-primary",qrcodeStyle["qrcodeRecord"])}  
+             >
                 下一步
               </button>
            </div>

@@ -1,0 +1,101 @@
+ 
+@media (max-width: 1000px) {
+    .card{
+        border: 0;
+    }
+   .record .recordBtn{
+    border-radius: 5px;
+   }
+  .record h5 {
+    font-size: 16px;
+  }
+  .fixed {
+    padding: 0 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .record .just-end {
+    justify-content: end !important;
+  }
+
+  .record ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 !important;
+  }
+  .record ul li {
+    width: 100%;
+  }
+  .smchoosebtn{
+    border-radius: 10px;
+    text-wrap: nowrap;
+    min-width: 30px;
+    color: #a32c2d  !important;
+    border: 1px solid #a32c2d;
+    background: transparent;
+  }
+  .record ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 !important;
+  }
+  .record ul li {
+    width: 100%;
+  }
+
+  .px-5 {
+    padding: 0 !important;
+  }
+ .justify-self-end{
+    justify-self: end;
+ }
+  .wrap {
+    border-top: 1px solid black;
+    border-bottom: 1px dotted grey;
+    display: grid;
+    grid-template-columns: auto 0.1fr auto;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'a1 . a2'
+      'a1 .  a3' ;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+   
+  .postion-a1 {
+    grid-area: a1;
+  }
+
+  .postion-a6 {
+    grid-area: a6;
+  }
+  .postion-a2 {
+    grid-area: a2;
+  }
+
+  .postion-a3 {
+    grid-area: a3; 
+  }
+ 
+  .postion-a4 {
+    text-align: end;
+    grid-area: a4;
+  }
+  .record span {
+    text-align: center;
+    font-size: 12px;
+  }
+  .record h1 span {
+    text-align: center;
+    font-size: 25px;
+  }
+}

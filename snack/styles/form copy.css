@@ -205,6 +205,7 @@ div.accordion-item:not(.accordion-drop) .accordion-button:not(.collapsed)::after
 }
 .setPersonFormGrid {
   width: 25%;
+  order: -1;
 }
 /* selectMenuitem */
 .itemShow {

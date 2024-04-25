@@ -1,24 +1,16 @@
-import React, { useEffect } from 'react'
-import Link from 'next/link'
+import React from "react";
 // icons
-import { FaBusAlt } from 'react-icons/fa'
-// api-path
-import { IMAGES_NIGHT, IMAGES_SELLER } from '@/components/config/api-path'
+import { FaBusAlt } from "react-icons/fa";
 // 樣式
-import style from './style.module.scss'
+import style from "./style.module.scss";
 
-export default function Night({
-  nightName = '',
-  introduction = '',
-  nightImg = '',
-  store_image = '',
-}) {
+export default function Night() {
   return (
     <div className={`${style.container}`}>
       {/* 標題 */}
       <div className="row">
         <div className="col-12">
-          <h1 className={style.nightName}>{nightName}</h1>
+          <h3 className={style.nightName}>饒河街觀光夜市</h3>
         </div>
       </div>
 
@@ -27,35 +19,40 @@ export default function Night({
         {/* 桌面版 */}
         <div className={`col-lg-8 d-none d-lg-block ${style.left}`}>
           <img
-            src={`${IMAGES_NIGHT}/${nightImg}`}
-            alt={nightImg}
+            src="/images/night01.jpg"
+            alt="饒河街夜市全景"
             className={style.bigImage}
           />
-
-          <Link href="#shopList" className={`btn btn-light ${style.shopList}`}>
-            店家列表
-          </Link>
-
-          <div className={`row`}>
-            {store_image.map((imgUrl, index) => {
-              return (
-                <div className={`col-4`}>
-                  <img
-                    src={`${IMAGES_SELLER}/${imgUrl}`}
-                    alt={`商店圖片 ${index}`}
-                    className={`${style.smallImage}`}
-                  />
-                </div>
-              )
-            })}
+          <div className="row">
+            <div className="col-4">
+              <img
+                src="/images/shop02.jpg"
+                alt="商店一"
+                className={style.smallImage}
+              />
+            </div>
+            <div className="col-4">
+              <img
+                src="/images/shop02.jpg"
+                alt="商店二"
+                className={style.smallImage}
+              />
+            </div>
+            <div className="col-4">
+              <img
+                src="/images/shop02.jpg"
+                alt="商店三"
+                className={style.smallImage}
+              />
+            </div>
           </div>
         </div>
         {/* 手機版 */}
         <div className="col-12 d-lg-none p-0 mb-2">
           <div className={`d-flex overflow-auto ${style.scrollbar}`}>
             <img
-              src={`/images/night/${nightImg}`}
-              alt={nightImg}
+              src="/images/night01.jpg"
+              alt="饒河街夜市全景"
               className={`${style.mobileImg} img-fluid`}
             />
             <img
@@ -79,7 +76,9 @@ export default function Night({
         {/* 右邊文字資訊 */}
         <div className={`col-12 col-lg-4 pt-0 pb-0 ${style.right}`}>
           <div className="row">
-            <p className={`p-0 ${style.p}`}>{introduction}</p>
+            <p className={`p-0 ${style.p}`}>
+              饒河街夜市位於松山區八德路四段及撫遠街間的饒河街，全長600公尺，是臺北市區的大型觀光夜市之一。停泊船隻漸少，再加上八德路拓寬後，饒河街成為次要道路，商業活動大減。政府為了改善當地商家生計，遂於民國76年（西元1987年）將南松山橋下有照攤販集中至饒河街，規劃為五百公尺長，為臺北市第二條觀光夜市。攤位整齊，內容琳琅滿目，蚵仔麵線、牛雜麵。
+            </p>
           </div>
           <div className={`row ${style.traffic}`}>
             <div className={style.title}>
@@ -97,5 +96,5 @@ export default function Night({
         </div>
       </div>
     </div>
-  )
+  );
 }
