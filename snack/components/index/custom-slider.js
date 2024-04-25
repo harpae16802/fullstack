@@ -4,6 +4,10 @@ import Link from 'next/link'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import {
+  INDEX_INFO_DISCOUNT,
+  IMAGES_SELLER,
+} from '@/components/config/api-path'
 
 function CustomSlider() {
 
@@ -18,6 +22,9 @@ function CustomSlider() {
     prevArrow: null,
     nextArrow: null,
   })
+
+    // 抓首頁資料的部分
+    const [listData, setListData] = useState([])
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,6 +59,16 @@ function CustomSlider() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+    // 抓商品資料用的
+    useEffect(() => {
+      fetch(`${INDEX_INFO_DISCOUNT}`)
+        .then((r) => r.json())
+        .then((result) => {
+          console.log(result)
+          // setListData(result)
+        })
+    }, [])
 
   return (
     <div className="slider-container discount-index-gruop ss">

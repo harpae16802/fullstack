@@ -47,5 +47,7 @@ export const SIGN_UP_POST = `${API_SERVER}/sign-up/custom-sign`
 export const INDEX_INFO_STORE = `${API_SERVER}/index-info/store`
     //商品
 export const INDEX_INFO_PRODUCT = `${API_SERVER}/index-info/product` 
+    //優惠
+    export const INDEX_INFO_DISCOUNT = `${API_SERVER}/index-info/discount` 
 
 

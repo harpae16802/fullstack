@@ -161,6 +161,7 @@ function ProductSlider() {
                         value={v.quantity || 0}
                         max={parseInt(v.stock_quantity)}
                         style={{ border: 'none', outline: 'none' }}
+                        readOnly
                       />
                       <button onClick={() => handleQuantityChange(i, false)}>
                         <FaMinus />

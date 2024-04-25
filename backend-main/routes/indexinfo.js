@@ -28,7 +28,11 @@ indexInfoRouter.get("/product", async function (req, res) {
 });
 
 indexInfoRouter.get("/discount", async function (req, res) {
-  const sql = "SELECT market_data.market_name,seller_discounts.seller_id, seller.store_name, seller.store_image, discount_category.name FROM market_data JOIN seller ON market_data.market_id = seller.market_id JOIN seller_discounts ON seller.seller_id = seller_discounts.seller_id JOIN discount_category ON seller_discounts.discount_category_id = discount_category.id;";
+  const sql = `SELECT md.market_name,sd.seller_id, s.store_name, s.store_image, dc.name 
+  FROM market_data AS md
+  JOIN seller AS s ON md.market_id = s.market_id 
+  JOIN seller_discounts AS sd ON s.seller_id = sd.seller_id 
+  JOIN discount_category AS dc ON sd.discount_category_id = dc.id`;
   const [rows, fields] = await db.query(sql);
   // fields: 資料表結構的相關訊息
 
