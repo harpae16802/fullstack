@@ -168,7 +168,7 @@ export default function NightmarketInfo({ initialMarketData }) {
           </div>
         </div>
 
-        <div className="row">
+        <div className={`row`}>
           <div className="col-xs-12">
             <h3 className={style.shopsTitle} id="shopList">
               店家列表
@@ -198,7 +198,11 @@ export default function NightmarketInfo({ initialMarketData }) {
                   time1={`每周${restDayChinese}休息`}
                   time2={`下午${openingTime}到凌晨${closingTime}`}
                   score={seller.score ? seller.score.toFixed(1) : 'N/A'}
-                  comment={seller.commentCount ? `(${seller.commentCount}則留言)` : '(暫無評論)'}
+                  comment={
+                    seller.commentCount
+                      ? `(${seller.commentCount}則留言)`
+                      : '(暫無評論)'
+                  }
                   onClick={handleCardClick}
                 />
               </div>
