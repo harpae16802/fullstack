@@ -9,6 +9,7 @@ import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { SIGN_UP_POST } from '@/components/config/api-path'
 import { z } from 'zod'
+import toast, { Toaster } from 'react-hot-toast'
 
 // 用在分頁的icon
 import {
@@ -167,42 +168,23 @@ export default function LoginCustom() {
     const result = await r.json()
     if (result.success) {
       //
-      alert('註冊成功')
-      router.push(`/`)
+      toast.success('註冊成功！將導向登入頁', {
+        style: {
+          color: '#a32c2d',
+        },
+        iconTheme: {
+          primary: '#29a21e',
+          secondary: '#ffffff',
+        },
+      })
+      setTimeout(() => {
+        // router.replace('/')
+        window.location.reload()
+      }, 1500)
     } else {
       //
       alert('資料新增發生錯誤')
     }
-
-    //   const r = await fetch(AB_ADD_POST, {
-    //     method: "POST",
-    //     body: JSON.stringify(myForm),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   const result = await r.json();
-    //   console.log({ result });
-    //   if (result.success) {
-    //     //
-    //     router.push(`/address-book`);
-    //   } else {
-    //     //
-    //     alert("資料新增發生錯誤");
-    //   }
-    // };
-    // const res = await fetch('http://localhost:3005/api/member', {
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   method: 'POST',
-    //   body: JSON.stringify(user),
-    // })
-
-    // const data = await res.json()
-
-    // console.log(data)
   }
 
   return (
@@ -433,11 +415,29 @@ export default function LoginCustom() {
                         login(account, password).then((success) => {
                           if (success) {
                             // 登入成功後的操作，例如導航到另一個頁面
-                            alert('登入成功')
-                            router.replace(`/`)
+                            toast.success('歡迎您！登入成功', {
+                              style: {
+                                color: '#a32c2d',
+                              },
+                              iconTheme: {
+                                primary: '#29a21e',
+                                secondary: '#ffffff',
+                              },
+                            })
+                            setTimeout(() => {
+                              router.replace('/')
+                            }, 1500)
                           } else {
                             // 登入失敗，顯示錯誤訊息
-                            alert('登入失敗，請檢查帳號和密碼')
+                            toast.error('登入失敗，請檢查帳號和密碼', {
+                              style: {
+                                color: '#ff0101',
+                              },
+                              iconTheme: {
+                                primary: '#ff0101',
+                                secondary: '#ffffff',
+                              },
+                            })
                           }
                         })
                       }}
@@ -671,11 +671,29 @@ export default function LoginCustom() {
                     login(account, password).then((success) => {
                       if (success) {
                         // 登入成功後的操作，例如導航到另一個頁面
-                        alert('登入成功')
-                        router.replace(`/`)
+                        toast.success('歡迎您！登入成功', {
+                          style: {
+                            color: '#a32c2d',
+                          },
+                          iconTheme: {
+                            primary: '#29a21e',
+                            secondary: '#ffffff',
+                          },
+                        })
+                        setTimeout(() => {
+                          router.replace('/')
+                        }, 1500)
                       } else {
                         // 登入失敗，顯示錯誤訊息
-                        alert('登入失敗，請檢查帳號和密碼')
+                        toast.error('登入失敗，請檢查帳號和密碼', {
+                          style: {
+                            color: '#ff0101',
+                          },
+                          iconTheme: {
+                            primary: '#ff0101',
+                            secondary: '#ffffff',
+                          },
+                        })
                       }
                     })
                   }}
@@ -760,6 +778,7 @@ export default function LoginCustom() {
             </div>
           </div>
         </div>
+        <Toaster />
       </Section>
     </>
   )
