@@ -21,6 +21,7 @@ router.get("/search/:market_name", async (req, res) => {
   }
 });
 
+// 找出對應夜市的店家
 router.get("/seller/:market_id", async (req, res) => {
   try {
     const market_id = req.params.market_id;
@@ -32,6 +33,7 @@ router.get("/seller/:market_id", async (req, res) => {
   }
 });
 
+// 找出對應夜市的資訊
 router.get("/:market_id", async (req, res) => {
   try {
     const market_id = req.params.market_id;
@@ -44,18 +46,45 @@ router.get("/:market_id", async (req, res) => {
 });
 
 // 分類搜尋
-router.get("/category", async (req, res) => {
+router.get("/category/:category_id", async (req, res) => {
   try {
-    const categoryId = req.query.category;
+    const category_id = req.params.category_id;
     const sql = `
-    SELECT DISTINCT seller.* FROM products
-    JOIN seller ON products.seller_id = seller.seller_id
-    WHERE category_id = ?
-  `;
-    const [row] = await db.query(sql, [categoryId]);
+      SELECT DISTINCT s.* FROM seller AS s
+      JOIN products AS p ON s.seller_id = p.seller_id
+      WHERE p.category_id = ?
+    `;
+    const [row] = await db.query(sql, [category_id]);
+    if (row.length > 0) {
+      res.json(row);
+    } else {
+      // 如果沒有找到相應的店家，返回空結果
+      res.status(404).json({ message: "沒有找到相應的店家資料" });
+    }
+  } catch (error) {
+    console.error(`後端 /category/:category_id 錯誤: ${error}`);
+    res.status(500).json({ message: "伺服器錯誤" });
+  }
+});
+
+// 獲取每個商店的平均評分和評論總數
+router.get("/store-ratings/:market_id", async (req, res) => {
+  try {
+    const market_id = req.params.market_id;
+    const sql = `
+      SELECT s.seller_id, s.store_name, 
+             AVG(c.night_rating) AS average_night_rating, 
+             COUNT(c.comment) AS total_comments
+      FROM seller s
+      LEFT JOIN comment c ON s.seller_id = c.seller_id
+      WHERE s.market_id = ?
+      GROUP BY s.seller_id;
+    `;
+    const [row] = await db.query(sql, [market_id]);
     res.json(row);
   } catch (error) {
-    console.log(`分類搜尋 錯誤 : ${error}`);
+    console.error(`後端 /store-ratings/:market_id 錯誤: ${error}`);
+    res.status(500).json({ message: "伺服器錯誤" });
   }
 });
 
