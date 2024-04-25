@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
+import Link from 'next/link'
 import { INDEX_INFO_STORE } from '@/components/config/api-path'
 
 import 'slick-carousel/slick/slick.css'
@@ -84,7 +85,7 @@ function StoreSlider() {
           infinite: true,
           speed: 500,
           slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToScroll: 4,
           prevArrow: <CustomPrevArrow />,
           nextArrow: <CustomNextArrow />,
           autoplay: false,
@@ -114,11 +115,17 @@ function StoreSlider() {
         {listData?.map((v, i) => {
           return (
             <div className="card-store-index" key={i}>
+              <img
+                src={`/images/seller/${v.store_image}`}
+                alt="store-img"
+                className="store-img"
+              />
               <div className="store-name">{v.store_name}</div>
               <div className="store-market">{v.market_name}</div>
-              <button type="button" className="btn btn-light">
-                看更多
-              </button>
+
+              <Link type="button" className="btn btn-light" href={`/`}>
+                  看更多
+              </Link>
             </div>
           )
         })}
