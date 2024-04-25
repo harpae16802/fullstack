@@ -54,15 +54,30 @@ export const CartProvider = ({ children }) => {
   // 移除购物车商品
   const removeFromCart = (product) => {}
 
-  // 载入购物车数据
-  useEffect(() => {
-    fetch(CART) // 假设您有一个API端点返回所有购物车项目
-      .then((response) => response.json())
-      .then((data) => {
-        setCartItems(data.cartInfo || [])
-        setTotal(data.totalAmount || 0)
+  // 加載購物車數據
+  const loadCartData = async () => {
+    try {
+      const response = await fetch(CART, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch((error) => console.error('Failed to load cart items', error))
+
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.message || 'Could not fetch cart data')
+      }
+
+      setCartItems(data.items) // 假設後端返回了購物車項目的數組
+      setTotal(data.totalAmount) // 假設後端返回了總金額
+    } catch (error) {
+      console.error('Failed to load cart data:', error)
+    }
+  }
+
+  useEffect(() => {
+    loadCartData()
   }, [])
 
   return (

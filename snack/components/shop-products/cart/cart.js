@@ -15,22 +15,20 @@ export default function Cart() {
     >
       {cartItems.length > 0 ? (
         cartItems.map((item) => (
-          <div key={item.product_id} className="cart-item">
+          <div key={item.product_id} className="d-flex">
             <img
               src={item.imgUrl}
               alt={item.title}
               className={style.cartItemImage}
             />
-            <div className={style.cartItemDetails}>
+            <div className={`d-flex ${style.cartItemDetails}`}>
               <h5>{item.title}</h5>
-              <p>价格: ${item.price.toFixed(2)}</p>
+              <p>价格: ${item.total_price.toFixed(2)}</p>
               <p>数量: {item.quantity}</p>
-              <button
+              <FaTrashAlt
                 onClick={() => removeFromCart(item.product_id)}
                 className={style.removeItem}
-              >
-                <FaTrashAlt />
-              </button>
+              />
             </div>
           </div>
         ))
@@ -46,7 +44,7 @@ export default function Cart() {
       )}
       {cartItems.length > 0 && (
         <div className="d-flex">
-          <p>总计</p>
+          <p>總計</p>
           <p>${total.toFixed(2)}</p>
         </div>
       )}

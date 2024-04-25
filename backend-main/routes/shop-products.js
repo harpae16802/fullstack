@@ -313,13 +313,32 @@ router.post("/cart-edit", async (req, res) => {
 });
 
 // 獲取購物車數據
-router.post("/cart", async (req, res) => {
+router.get("/cart", async (req, res) => {
+  const custom_id = 1; // 假定一個固定的用戶ID
   try {
-    const sql = `SELECT * FROM cart`;
-    const [row] = await db.query(sql);
-    res.json(row);
+    const cartSql = `
+      SELECT p.product_name, p.product_id, c.quantity, c.total_price 
+      FROM cart c
+      JOIN products p ON c.product_id = p.product_id 
+      WHERE c.custom_id = ?
+    `;
+    const [cartItems] = await db.query(cartSql, [custom_id]);
+
+    // 計算總金額
+    const totalAmount = cartItems.reduce(
+      (acc, item) => acc + item.total_price,
+      0
+    );
+
+    // 返回購物車項目和總金額
+    res.json({
+      success: true,
+      items: cartItems,
+      totalAmount,
+    });
   } catch (error) {
-    console.log("獲取購物車數據錯誤: " + error);
+    console.error("獲取購物車數據錯誤: ", error);
+    res.status(500).json({ error: "內部服務器錯誤" });
   }
 });
 
