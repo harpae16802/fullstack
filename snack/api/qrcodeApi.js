@@ -1,7 +1,7 @@
 import mainApi from "./api";
 
-const myProduct = () => {
-    return fetch(`${mainApi.API_URL}/qrcode/myProduct`)
+const recordSearch = () => {
+    return fetch(`${mainApi.API_URL}/qrcode/recordSearch`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('網路請求失敗');
@@ -17,8 +17,35 @@ const myProduct = () => {
             console.error('非 JSON 响应:', error.response);
         });
 }
-const myProduct2 = () => {
-    return fetch(`${mainApi.API_URL}/qrcode/myProduct2`)
+const myProduct = (orderId) => {
+    return fetch(`${mainApi.API_URL}/qrcode/myProduct`, {
+        method: 'POST', // 指定請求方法為POST
+        body: JSON.stringify(orderId),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('網路請求失敗');
+            }
+            return response.json();
+        })
+        .then(data => {
+            return { success: true, data: data.data, data2: data.data2 };
+
+        })
+        .catch(error => {
+            console.error('網路請求操作出現問題:', error);
+            console.error('非 JSON 响应:', error.response);
+        });
+}
+const myProduct2 = (orderId) => {
+    return fetch(`${mainApi.API_URL}/qrcode/myProduct2`, {
+        method: 'POST', // 指定請求方法為POST
+        body: JSON.stringify(orderId),
+        headers: {
+            'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
+            // 如果有需要，還可以添加其他的請求頭
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('網路請求失敗');
@@ -34,6 +61,31 @@ const myProduct2 = () => {
             console.error('非 JSON 响应:', error.response);
         });
 }
- 
+const insertProduct = (values) => {
+    console.log(values)
+    return fetch(`${mainApi.API_URL}/qrcode/insertProduct`, {
+        method: 'POST', // 指定請求方法為POST
+        body: JSON.stringify(values),
+        headers: {
+            'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
+            // 如果有需要，還可以添加其他的請求頭
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('網路請求失敗');
+            }
+            return response.json();
+        })
+        .then(data => {
+            return { success: true, data: data.data };
 
-export { myProduct, myProduct2 }
+        })
+        .catch(error => {
+            console.error('網路請求操作出現問題:', error);
+            console.error('非 JSON 响应:', error.response);
+        });
+}
+
+
+export { myProduct, myProduct2, recordSearch, insertProduct }

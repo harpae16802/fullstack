@@ -4,24 +4,17 @@ import React, { createContext, useContext,useState, useEffect } from 'react'
 import styles from '@/styles/Order.module.css'
 
 
-export default function DiscountContentItem ({
-   seller = "",
-   product = "",
-   imageUrl = "",
-   price = "",
-   })  {
-
+const DiscountContentItem = ({ sellerName, productName, imageUrl, price }) => {
   return (
      <>
-
  <div className={`${styles.discountContent}`}>
-   <div className={styles.discountSeller}>{seller}</div>
+   <div className={styles.discountSeller}>姊姊抓的餅</div>
 
-     <div className={styles.discountProduct}>{product}</div>
-        <Image src={imageUrl} width={250} height={250} className={styles.discountPicture}
+     <div className={styles.discountProduct}>豬排蛋</div>
+        <Image src="/images/蛋塔.jpg" width={250} height={250} className={styles.discountPicture}
 />
     <div className={styles.priceAndCart}>
-    <p className={styles.discountPrice}>${price}</p>
+    <p className={styles.discountPrice}>$70</p>
 
         <div className={styles.addToCart}>加入購物車
         <IoCart style={{
@@ -37,13 +30,12 @@ export default function DiscountContentItem ({
 
 {/* discountContent */}
 </div>
-
      </>
     
   );
 };
 
-
+export default DiscountContentItem;
 
 
 

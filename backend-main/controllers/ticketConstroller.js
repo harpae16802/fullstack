@@ -1,10 +1,8 @@
 import db from "../utils/db.js";
 import fs from 'fs';
 import path from 'path';
-import  { ISOtodate } from "../utils/day.js";
+import { ISOtodate } from "../utils/day.js";
 
-// Note: You might need to update the file extensions or the way files are exported in `mysql2-connect.js` and `day.js`
-// if those modules use CommonJS syntax. They need to either use ESM syntax or be adapted via dynamic import() where necessary.
 
 export const selectGainedTicket01 = async (req, res) => {
     const userId = req.body.userId || 1;
@@ -28,10 +26,10 @@ export const selectGainedTicket01 = async (req, res) => {
         let [result2] = await db.query(sql2);
 
         result2 = result2.map((v, i) => {
-            return {...v, payment_date: date.ISOtodate(v.payment_date)};
+            return { ...v, payment_date: ISOtodate(v.payment_date) };
         });
         result1 = result1.map((v, i) => {
-            return {...v, payment_date: date.ISOtodate(v.payment_date)};
+            return { ...v, payment_date: ISOtodate(v.payment_date) };
         });
 
         if (!result1 || !result2) {
@@ -69,7 +67,7 @@ export const selectGainedTicket02 = async (req, res) => {
                 return res.json({ success: false, error: "Error in signup query" });
             } else {
                 res2[0] = res2[0].map((v, i) => {
-                    return {...v, play_date: date.ISOtodate(v.payment_date)};
+                    return { ...v, play_date: ISOtodate(v.payment_date) };
                 });
                 return res.send({ success: true, data: res2[0] });
             }
@@ -90,7 +88,7 @@ export const selectGainedTicket03 = async (req, res) => {
                 return res.json({ success: false, error: "Error in signup query" });
             } else {
                 res2[0] = res2[0].map((v, i) => {
-                    return {...v, payment_date: date.ISOtodate(v.payment_date)};
+                    return { ...v, payment_date: ISOtodate(v.payment_date) };
                 });
                 return res.send({ success: true, data: res2[0] });
             }

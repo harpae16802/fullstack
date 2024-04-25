@@ -5,22 +5,22 @@ import QrcodeRecord from "@/components/memberS/qrcode/qrcodeRecord3"
 import StepComputer from "@/components/memberS/qrcode/step/stepComputer";
 import Search from "@/components/memberS/qrcode/searchbar"
 import qrcodeStyle from "@/styles/qrcode.module.css" 
-import styles from "@/styles/form.module.css"
-import Pagination from "@/components/memberS/others/pagination"
-import QrcodeCurrent from "@/components/modal/qrcodeCurrent";
+import styles from "@/styles/form.module.css" 
 import { useState, useEffect } from "react";
 import classNames from 'classnames'
-import Image from "next/image";
+import QrcodeImg from "@/components/memberS/qrcode/qrcode/qs" 
 import Section from "@/components/layout/section";
 import { useRouter } from "next/router"; 
+import codeStyles from "@/styles/qr.module.css"
+// 
 export default function QrcodeselectMobile2() {
-  const router = useRouter();
-
+  const router = useRouter(); 
   const pages = (url) => {
     router.push(`/memberSystem/${url}`); 
   }
   const [isBigScreen, setIsBigScreen] = useState(false);
   const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
+
   useEffect(() => {
     const handleResize = () => {
       setIsBigScreen(window.innerWidth > 500);
@@ -37,24 +37,22 @@ export default function QrcodeselectMobile2() {
     };
 
   }, [])
-  return (
-    <Section>
+  
 
+  return (
+    <Section> 
     <div className="container">
       <div className="row">
-        <div className="col-12 col-md-4 ">
+        <div className="col-12 col-md-4 " style={{paddingTop:" 110px"}}>
           <SelectMenu />
         </div>
 
         <div className="col-12 col-md-8">
-          <div className={classNames("", styles["main-O-baground"])}>
-
-            <h4 className="text-title">[Qrcode兌換]</h4>
-
+          <div className={classNames("", styles["main-O-baground"])}> 
+            <h4 className="text-title">[Qrcode兌換]</h4> 
             <StepComputer stepLevel="3" />
-            <div className=" mt-2 d-flex justify-content-center">
-
-              <Image src="/images.png" alt="Description" width={250} height={250} />
+            <div className={classNames(codeStyles.QRCode," mt-2 d-flex justify-content-center")}> 
+              <QrcodeImg/>
             </div>
 
 

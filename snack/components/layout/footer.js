@@ -1,7 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
-
 
 export default function Footer() {
   return (
@@ -15,36 +13,36 @@ export default function Footer() {
           <div className="footer-top d-flex  flex-md-row">
             <ul className="left-footer col-6 d-flex flex-column flex-md-row">
               <li className="footer-item">
-                <Link className="footer-link" href="/market-map">
+                <a className="footer-link" href="#">
                   夜市導覽
-                </Link>
+                </a>
               </li>
               <li className="footer-item">
-                <Link className="footer-link" href="/nightmarket-info/index">
+                <a className="footer-link" href="#">
                   美味商城
-                </Link>
+                </a>
               </li>
               <li className="footer-item">
-                <Link className="footer-link" href="/game/game-select">
+                <a className="footer-link" href="#">
                   趣味遊戲
-                </Link>
+                </a>
               </li>
             </ul>
             <ul className="right-footer col-6 d-flex flex-column flex-md-row">
               <li className="footer-item">
-                <Link className="footer-link" href="/#discountnews">
+                <a className="footer-link" href="#">
                   最新消息
-                </Link>
+                </a>
               </li>
               <li className="footer-item">
-                <Link className="footer-link" href="/login/login-seller">
+                <a className="footer-link" href="#">
                   成為店家
-                </Link>
+                </a>
               </li>
               <li className="footer-item">
-                <Link className="footer-link" href="/#aboutme">
-                  關於我們
-                </Link>
+                <a className="footer-link" href="#">
+                  聯絡我們
+                </a>
               </li>
             </ul>
           </div>
@@ -52,7 +50,7 @@ export default function Footer() {
             <div className="icon-pic">
               {' '}
               <Image
-                src="/images/layout/logo-foot.svg"
+                src="/images/layout/icons.png"
                 alt="web-icon"
                 className="web-icon"
                 width={250}

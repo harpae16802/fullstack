@@ -5,7 +5,7 @@ import MemberList from "@/components/memberS/memberList"
 import styles from"@/styles/form.module.css";
 import classNames from 'classnames';
 import { useRouter } from 'next/router'; 
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive' 
 
 
 // npm install --save styled-components
@@ -31,12 +31,13 @@ export default function SelectMenu() {
   
   },[])
 
+
   console.log(router.pathname)
   return (
     <>
       <div className={classNames("selectMenuPostion")}>
         <div className={classNames(styles["lg-open"],"mb-3")}>
-          <ImgIcon />
+          <ImgIcon  />
         </div>
 
         <div className="">

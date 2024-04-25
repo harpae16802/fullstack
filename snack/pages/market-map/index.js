@@ -1,15 +1,15 @@
-import React from 'react'
-import dynamic from 'next/dynamic'
+import React from "react";
+import dynamic from "next/dynamic";
 // 元件
-import SectionNopaddin from '../../components/layout/section-nopaddin'
-import SearchBar from '@/components/common/search-bar'
+import SectionNopaddin from "../../components/layout/section-nopaddin";
+import SearchBar from "@/components/common/search-bar";
 // 樣式
-import 'leaflet/dist/leaflet.css'
-import style from './market-map.module.scss'
+import "leaflet/dist/leaflet.css";
+import style from "./market-map.module.scss";
 
-const MapComponent = dynamic(() => import('../../components/market-map/map'), {
+const MapComponent = dynamic(() => import("../../components/market-map/map"), {
   ssr: false,
-})
+});
 
 export default function MarketMap() {
   return (
@@ -19,5 +19,5 @@ export default function MarketMap() {
       </div>
       <MapComponent />
     </SectionNopaddin>
-  )
+  );
 }

@@ -1,0 +1,18 @@
+.QRCode canvas{
+    width: 300px !important;
+    height: 300px !important;
+  }
+  .QRCode canvas.code{
+    width: 300px !important;
+    height: 300px !important;
+}
+@media (max-width: 500px) {
+  .QRCode canvas{
+    width:100% !important;
+    height:100% !important;
+  }
+  .QRCode canvas.code{
+    width:100% !important;
+    height:100% !important;
+}
+}

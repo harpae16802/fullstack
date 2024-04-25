@@ -28,7 +28,8 @@ $white: #fff;
 
       .ul {
         margin: 0;
-        margin-left: 30px;
+        margin-left: 60px;
+        gap: 60px;
         list-style: none;
         @media (max-width: 576px) {
           margin: 0;
@@ -38,9 +39,6 @@ $white: #fff;
           justify-content: space-between;
         }
 
-        .li {
-          gap: 50px;
-        }
         @media (max-width: 576px) {
           .li {
             flex: 0 0 auto;
@@ -97,6 +95,3 @@ $white: #fff;
   }
 }
 
-.titleHighlight {
-  background-color: yellow; /* 或其他显著颜色 */
-}

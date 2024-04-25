@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
-// 套件
-import toast from 'react-hot-toast'
 // 元件
 import SectionProducts from '@/components/layout/section-nopaddin'
 import ShopInfo from '@/components/shop-products/shop-info/shop-info'
@@ -12,13 +9,10 @@ import ProductCard2 from '@/components/shop-products/product-card2/product-card2
 // icons
 import { FaShoppingCart } from 'react-icons/fa'
 // api-path
-import {
-  SELLER_DATA,
-  PRODUCTS_DATA,
-  IMAGES_PRODUCTS,
-} from '@/components/config/api-path'
+import { SELLER_DATA, PRODUCTS_DATA } from '@/components/config/api-path'
 // 樣式
 import style from './shop-products.module.scss'
+import { useRouter } from 'next/router'
 
 export default function ShopProducts() {
   const router = useRouter()
@@ -30,34 +24,6 @@ export default function ShopProducts() {
   const [snack, setSnack] = useState([]) // 渲染過濾的商品
   const [sweet, setSweet] = useState([]) // 渲染過濾的商品
   const [drink, setDrink] = useState([]) // 渲染過濾的商品
-
-  // 關鍵字搜尋
-  const handleSearch = (searchTerm) => {
-    const search = searchTerm.toLowerCase().trim()
-    const allProductElements = document.querySelectorAll(
-      `.${style.productCardCol}, .${style.productCardCol2}`
-    )
-
-    let found = false
-
-    allProductElements.forEach((element) => {
-      const titleElement = element.querySelector(`.${style.title}`)
-      if (
-        titleElement &&
-        titleElement.textContent.toLowerCase().includes(search)
-      ) {
-        found = true
-        titleElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        titleElement.classList.add(style.titleHighlight)
-      } else if (titleElement) {
-        titleElement.classList.remove(style.titleHighlight)
-      }
-    })
-
-    if (!found) {
-      toast.error('沒有找到相關項目')
-    }
-  }
 
   useEffect(() => {
     // 撈 seller 資料
@@ -133,11 +99,11 @@ export default function ShopProducts() {
             {seller && (
               <ShopInfo
                 seller_id={seller.seller_id}
-                shopName={seller.store_name}
-                time1="周一到周六"
-                time2="下午5:00到上午2:00"
-                score="4.2"
-                comment="169則留言"
+                shopName={seller.store_name} // 确保从状态动态传递 store_name
+                time1="周一到周六" // 如果这些信息也应该是动态的，请替换为对应的状态
+                time2="下午5:00到上午2:00" // 同上
+                score="4.2" // 如果有动态数据，请替换
+                comment="169則留言" // 如果有动态数据，请替换
               />
             )}
           </div>
@@ -145,7 +111,7 @@ export default function ShopProducts() {
           {/* search & nav */}
           <div className={`row d-flex align-items-center ${style.search}`}>
             <div className="col-12 col-md-3">
-              <SearchBarSmaller onSearch={handleSearch} />
+              <SearchBarSmaller />
             </div>
 
             <div className="col-12 col-md-9">
@@ -194,7 +160,7 @@ export default function ShopProducts() {
                       >
                         <ProductCard
                           product_id={product.product_id}
-                          imgUrl={`${IMAGES_PRODUCTS}/${product.image_url}`}
+                          imgUrl={`/images/products/${product.image_url}`}
                           title={product.product_name}
                           price={product.price}
                           percentage="4.3"
@@ -216,17 +182,14 @@ export default function ShopProducts() {
                 <div className="row">
                   {mainDishes.map((dish, index) => {
                     return (
-                      <div
-                        key={index}
-                        className={`col-12 col-md-6 ${style.productCardCol2}`}
-                      >
+                      <div key={index} className={`col-12 col-md-6`}>
                         <ProductCard2
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`/images/products/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -244,17 +207,14 @@ export default function ShopProducts() {
                 <div className="row">
                   {snack.map((dish, index) => {
                     return (
-                      <div
-                        key={index}
-                        className={`col-12 col-md-6 ${style.productCardCol2}`}
-                      >
+                      <div key={index} className={`col-12 col-md-6`}>
                         <ProductCard2
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`/images/products/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -272,17 +232,14 @@ export default function ShopProducts() {
                 <div className="row">
                   {sweet.map((dish, index) => {
                     return (
-                      <div
-                        key={index}
-                        className={`col-12 col-md-6 ${style.productCardCol2}`}
-                      >
+                      <div key={index} className={`col-12 col-md-6`}>
                         <ProductCard2
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`/images/products/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -300,17 +257,14 @@ export default function ShopProducts() {
                 <div className="row">
                   {drink.map((dish, index) => {
                     return (
-                      <div
-                        key={index}
-                        className={`col-12 col-md-6 ${style.productCardCol2}`}
-                      >
+                      <div key={index} className={`col-12 col-md-6`}>
                         <ProductCard2
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
                           percentage="3.6"
                           pepole="48"
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`/images/products/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
