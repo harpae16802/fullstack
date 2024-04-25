@@ -6,8 +6,25 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
 import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
-import Order1Seller from '@/components/Order/order1Seller'
-import Order1Product from '@/components/Order/order1Product'
+import CheckoutProduct from '@/components/Order/checkoutProduct'
+
+const OrderStep1 = () => {
+  const [dataCount, setDataCount] = useState(0); // 使用useState来存储数据数量
+
+  // 模拟从后台获取数据的效果，你需要根据实际情况修改这部分代码
+  useEffect(() => {
+    // 这里可以是从后台获取数据的逻辑，这里暂时模拟一个数量
+    const fetchDataCount = async () => {
+      // 模拟从后台获取数据的过程
+      const count = 3; // 假设从后台获取到的数据数量为3
+      setDataCount(count);
+    };
+
+    fetchDataCount();
+  }, []);
+
+
+}
 
 
 export default function Order() {
@@ -36,7 +53,7 @@ export default function Order() {
                   <div className={styles.textContainer}>
                     <div className={styles.step1Text}>訂單資訊</div>
                     <div className={styles.step2UndoText}>訂單優惠</div>
-                    <div className={styles.step3UndoText}>付款方式</div>
+                    <div className={styles.step3UndoText}>完成</div>
                   </div>
                  
             </div>
@@ -45,128 +62,24 @@ export default function Order() {
           <div className={styles.orderBorder}>
 
            {/* 訂單詳細 外層容器 */}
-            <div className={styles.order1Container}>
-   {/* bootstrap:手風琴(Accordion)   */}
-  <div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-    {/* 按鈕1 */}
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne"
-      style={{ backgroundColor: 'transparent', color: 'inherit',borderBottom:'solid 1px #B1B7B5' }}
-      >
-        <Order1Seller
-         nightmarket = "士林夜市"
-         seller = "豪大雞排"
-        />
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne" data-bs-parent="#accordionPanelsStayOpenExample">
-      <div class="accordion-body">
-        {/* 顯示的內容1 */}
-        <Order1Product
-         imageUrl = "/images/鹹酥雞.jpg"
-         product = "海苔雞排"
-         price = "80"
-         />
-
-        <Order1Product
-         imageUrl = "/images/鹹酥雞.jpg"
-         product = "海苔雞排"
-         price = "80"
-         />
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-             {/* <OrderDetailItem/>  */}
-
-            </div>
+           <div className={styles.order1Container}>
+           <CheckoutProduct />
+           </div>
+         
 
             <br/>
           
            {/* 訂單詳細 外層容器 */}
            <div className={styles.order1Container}>
-   {/* bootstrap:手風琴(Accordion)   */}
-  <div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-    {/* 按鈕1 */}
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo"
-      style={{ backgroundColor: 'transparent', color: 'inherit',borderBottom:'solid 1px #B1B7B5' }}
-      >
-        <Order1Seller
-         nightmarket = "士林夜市"
-         seller = "豪大雞排"
-        />
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo" data-bs-parent="#accordionPanelsStayOpenExample">
-      <div class="accordion-body">
-        {/* 顯示的內容1 */}
-        <Order1Product
-         imageUrl = "/images/鹹酥雞.jpg"
-         product = "海苔雞排"
-         price = "80"
-         />
-
-        <Order1Product
-         imageUrl = "/images/鹹酥雞.jpg"
-         product = "海苔雞排"
-         price = "80"
-         />
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-             {/* <OrderDetailItem/>  */}
-
-            </div>
+           <CheckoutProduct />
+           </div>
 
             <br/>
 
            {/* 訂單詳細 外層容器 */}
            <div className={styles.order1Container}>
-   {/* bootstrap:手風琴(Accordion)   */}
-  <div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-    {/* 按鈕1 */}
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree"
-      style={{ backgroundColor: 'transparent', color: 'inherit',borderBottom:'solid 1px #B1B7B5' }}
-      >
-        <Order1Seller
-         nightmarket = "士林夜市"
-         seller = "豪大雞排"
-        />
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree" data-bs-parent="#accordionPanelsStayOpenExample">
-      <div class="accordion-body">
-        {/* 顯示的內容1 */}
-        <Order1Product
-         imageUrl = "/images/鹹酥雞.jpg"
-         product = "海苔雞排"
-         price = "80"
-         />
-
-        <Order1Product
-         imageUrl = "/images/鹹酥雞.jpg"
-         product = "海苔雞排"
-         price = "80"
-         />
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-             {/* <OrderDetailItem/>  */}
-
-            </div>
+           <CheckoutProduct />
+           </div>
 
 <h2 className={styles.discountTitle}>【優惠加購】</h2>
 

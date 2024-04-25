@@ -30,7 +30,7 @@ export default function Order() {
                 <div className={styles.textContainer}>
                   <div className={styles.step1Text}>訂單資訊</div>
                   <div className={styles.step2Text}>訂單優惠</div>
-                  <div className={styles.step3Text}>付款方式</div>
+                  <div className={styles.step3Text}>完成</div>
                 </div>
                
           </div>

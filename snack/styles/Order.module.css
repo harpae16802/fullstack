@@ -96,8 +96,16 @@
     position: relative;
     z-index: 1;
     margin: -5px;
-    
 }
+@media (max-width: 576px) {
+    .step2{
+       width: 40px;
+       height: 40px;
+       margin-top: 20px;
+       padding-top: 1px;
+      font-size: 16px;
+    }
+  }
 
 
 
@@ -126,20 +134,28 @@
     height: 15px;
     background-color: rgb(163, 44, 45);
     z-index: 2;
-    margin:-5px;
-   
+    margin:-5px; 
 }
+@media (max-width: 576px) {
+    .connectRed{
+       width: 60px;
+       height: 6px;
+    }
+  }
+
 
 .step1Text{
     color:rgb(163, 44, 45);
-    font-weight: bolder;
-    font-size: x-large;
+    font-weight: bold;
+    font-size: 28px;
     margin-top: 40px;
     margin-left: 345px;
 }
 @media (max-width: 576px) {
     .step1Text{
        font-size: 16px;
+       margin-top: -5px;
+       margin-left: 35px;
     }
   }
 
@@ -172,7 +188,8 @@
   }
 
 .textContainer{
-    display: flex;  
+    display: flex; 
+    flex-direction: row; 
 }
 
 .step2Text{
@@ -180,11 +197,13 @@
     font-weight: bolder;
     font-size: 28px;
     margin-top: 40px;
-    margin-left: 230px;
+    margin-left: 200px;
 }
 @media (max-width: 576px) {
     .step2Text{
        font-size: 16px;
+       margin-left: 20px;
+       margin-top: -5px;
     }
   }
 
@@ -193,11 +212,13 @@
     font-weight: bolder;
     font-size: 28px;
     margin-top: 40px;
-    margin-left: 230px;
+    margin-left: 200px;
 }
 @media (max-width: 576px) {
     .step2UndoText{
        font-size: 16px;
+       margin-left: 20px;
+       margin-top: -5px;
     }
   }
 
@@ -206,11 +227,13 @@
     font-weight: bolder;
     font-size: 28px;
     margin-top: 40px;
-    margin-left: 205px;
+    margin-left: 225px;
 }
 @media (max-width: 576px) {
     .step3Text{
        font-size: 16px;
+       margin-left: 28px;
+       margin-top: -5px;
     }
   }
 
@@ -219,15 +242,17 @@
     font-weight: bolder;
     font-size: 28px;
     margin-top: 40px;
-    margin-left: 205px;
+    margin-left: 225px;
 }
 @media (max-width: 576px) {
     .step3UndoText{
        font-size: 16px;
+       margin-left: 28px;
+       margin-top: -5px;
     }
   }
 
-
+/* 訂單詳細:紅色邊框 */
 .orderBorder{
     display: flex;
     margin-top: 30px;
@@ -240,6 +265,14 @@
     display: flex;
     flex-direction: column;   
 }
+@media (max-width: 576px) {
+    .orderBorder{
+       width:calc( 100% - 18px ); 
+       margin-left: -5px;
+       margin-top: -10px;
+       border: solid 3px rgba(0, 0, 0, 0);
+    }
+  }
 
 .paymentMethodBorder{
     display: flex;
@@ -260,9 +293,14 @@
     margin-left: 50px;
     width: calc( 100% - 100px );
     height: auto;
-    /* 401px; */
     background-color: #fff;
 }
+@media (max-width: 576px) {
+    .order1Container{
+       width: 315px ; 
+       margin-left: 8px;
+    }
+  }
 
 .order2Container{
     margin-top: 50px;
@@ -289,6 +327,11 @@
     background-color: #fff;
     padding-bottom: 8px;
 }
+@media (max-width: 576px) {
+    .orderContainerAdd{
+       width: 299px ; 
+    }
+  }
 
 /* bootstrap手風琴套件:Icon樣式 */
 /* 修改展開 icon 的大小 */
@@ -312,24 +355,40 @@
     font-size: 40px;
     margin-left: 10px;
 }
+@media (max-width: 576px) {
+    .sellerIcon{
+       font-size: 30px; 
+       margin-left: -40px;
+    }
+  }
 
 .checkoutMarket{
-    margin-left: 30px;
+    margin-left: 60px;
     margin-top: 10px;
-    font-weight: bolder;
-    font-size: x-large;
+    font-weight: bold;
+    font-size: 30px;
 }
+@media (max-width: 576px) {
+    .checkoutMarket{
+       font-size: 14px; ; 
+    }
+  }
 
 .checkoutProduct{
-    margin-left: 20px;
+    margin-left: 30px;
     margin-top: 10px;
-    font-weight: bolder;
-    font-size: x-large;
+    font-weight: bold;
+    font-size: 30px;
 }
+@media (max-width: 576px) {
+    .checkoutProduct{
+       font-size: 14px; ; 
+    }
+  }
 
 /* '選此店結帳'按鈕 */
 .checkoutButton{
-    margin-left: 670px;
+    margin-left: 550px;
     margin-top: 10px;
     width: 160px;
     height: 38px;
@@ -341,6 +400,11 @@
     font-weight: bolder;
     text-align: center;
 }
+@media (max-width: 576px) {
+    .checkoutButton{
+       display: none;
+    }
+  }
 
 .checkoutDownIcon{
     color: #A32C2D;
