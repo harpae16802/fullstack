@@ -8,8 +8,7 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
-import OrderChart from '@/components/OrderChart' // 確保路徑正確
-import PaginationComponent from '@/components/page'
+
 
 export default function Order() {
   // 使用 useRouter
@@ -39,11 +38,9 @@ export default function Order() {
   })
   const [orders, setOrders] = useState([])
   const [categories, setCategories] = useState([])
-  // 在 Order 组件的顶部添加新的状态
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
-  const [totalSum, setTotalSum] = useState(0); //總金額
-
+  const [totalSum, setTotalSum] = useState(0); 
   // 資料過濾
 
   // 使用Ref
@@ -58,9 +55,7 @@ export default function Order() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
-
+          const data = response.data.data 
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
@@ -69,7 +64,7 @@ export default function Order() {
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
-      // 加载产品类别
+      // 產品類別
       axios
         .get(`${ORDERDETAIL}/categories`)
         .then((response) => {
