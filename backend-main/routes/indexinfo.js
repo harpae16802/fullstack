@@ -32,12 +32,15 @@ indexInfoRouter.get("/discount", async function (req, res) {
   FROM market_data AS md
   JOIN seller AS s ON md.market_id = s.market_id 
   JOIN seller_discounts AS sd ON s.seller_id = sd.seller_id 
-  JOIN discount_category AS dc ON sd.discount_category_id = dc.id`;
+  JOIN discount_category AS dc ON sd.discount_category_id = dc.id
+  ORDER BY seller_id ASC`;
   const [rows, fields] = await db.query(sql);
   // fields: 資料表結構的相關訊息
 
   res.json(rows);
 });
+
+
 
 
 export default indexInfoRouter;

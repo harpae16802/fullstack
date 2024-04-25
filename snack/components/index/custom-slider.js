@@ -10,7 +10,6 @@ import {
 } from '@/components/config/api-path'
 
 function CustomSlider() {
-
   const [settings, setSettings] = useState({
     dots: false,
     infinite: true,
@@ -23,8 +22,8 @@ function CustomSlider() {
     nextArrow: null,
   })
 
-    // 抓首頁資料的部分
-    const [listData, setListData] = useState([])
+  // 抓首頁資料的部分
+  const [listData, setListData] = useState([])
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,91 +59,37 @@ function CustomSlider() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-    // 抓商品資料用的
-    useEffect(() => {
-      fetch(`${INDEX_INFO_DISCOUNT}`)
-        .then((r) => r.json())
-        .then((result) => {
-          console.log(result)
-          // setListData(result)
-        })
-    }, [])
+  // 抓商品資料用的
+  useEffect(() => {
+    fetch(`${INDEX_INFO_DISCOUNT}`)
+      .then((r) => r.json())
+      .then((result) => {
+        // console.log(result)
+        setListData(result)
+      })
+  }, [])
 
   return (
     <div className="slider-container discount-index-gruop ss">
       <Slider {...settings}>
-        <Link className="slide-item" href="/">
-          {/* 點圖片要到 咚咚的 商家頁面 */}
-          <Image
-            src="/images/layout/P_20240224_194256.jpg"
-            alt="discount-img"
-            className="discount-img"
-            width={500}
-            height={300}
-          />
-          <div className="discount-text discount-store">士林夜市 林藤茶坊</div>
-          <div className="discount-text discount-name">滿百折三十</div>
-        </Link>
-        <Link className="slide-item" href="/">
-          {/* 點圖片要到 咚咚的 商家頁面 */}
-          <Image
-            src="/images/layout/P_20240224_194256.jpg"
-            alt="discount-img"
-            className="discount-img"
-            width={500}
-            height={300}
-          />
-          <div className="discount-text discount-store">士林夜市 林藤茶坊</div>
-          <div className="discount-text discount-name">滿百折三十</div>
-        </Link>
-        <Link className="slide-item" href="/">
-          {/* 點圖片要到 咚咚的 商家頁面 */}
-          <Image
-            src="/images/layout/P_20240224_194256.jpg"
-            alt="discount-img"
-            className="discount-img"
-            width={500}
-            height={300}
-          />
-          <div className="discount-text discount-store">士林夜市 林藤茶坊</div>
-          <div className="discount-text discount-name">滿百折三十</div>
-        </Link>
-        <Link className="slide-item" href="/">
-          {/* 點圖片要到 咚咚的 商家頁面 */}
-          <Image
-            src="/images/layout/P_20240224_194256.jpg"
-            alt="discount-img"
-            className="discount-img"
-            width={500}
-            height={300}
-          />
-          <div className="discount-text discount-store">士林夜市 林藤茶坊</div>
-          <div className="discount-text discount-name">滿百折三十</div>
-        </Link>
-        <Link className="slide-item" href="/">
-          {/* 點圖片要到 咚咚的 商家頁面 */}
-          <Image
-            src="/images/layout/P_20240224_194256.jpg"
-            alt="discount-img"
-            className="discount-img"
-            width={500}
-            height={300}
-          />
-          <div className="discount-text discount-store">士林夜市 林藤茶坊</div>
-          <div className="discount-text discount-name">滿百折三十</div>
-        </Link>
-        <Link className="slide-item" href="/">
-          {/* 點圖片要到 咚咚的 商家頁面 */}
-          <Image
-            src="/images/layout/P_20240224_194256.jpg"
-            alt="discount-img"
-            className="discount-img"
-            width={500}
-            height={300}
-          />
-          <div className="discount-text discount-store">士林夜市 林藤茶坊</div>
-          <div className="discount-text discount-name">滿百折三十</div>
-        </Link>
+        {listData?.map((v, i) => {
+          return (
+            <Link className="slide-item" href={`/shop-products/${v.seller_id}`}>
+              {/* 點圖片要到 咚咚的 商家頁面 */}
+              <Image
+                src={`${IMAGES_SELLER}/${v.store_image}`}
+                alt="discount-img"
+                className="discount-img"
+                width={500}
+                height={300}
+              />
+              <div className="discount-text discount-store">
+              {v.market_name} {v.store_name}
+              </div>
+              <div className="discount-text discount-name">{v.name}</div>
+            </Link>
+          )
+        })}
       </Slider>
     </div>
   )

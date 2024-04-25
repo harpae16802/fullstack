@@ -66,15 +66,6 @@ export default function SectionIndex() {
           最新消息
         </div>
         <CustomSlider />
-        {/* <div className="bgc-candy">
-          <Image
-            src="/images/layout/28_candy.png"
-            alt="candy"
-            className="candy"
-            width={300}
-            height={300}
-          />
-        </div> */}
         <div className="bgc-tapi">
           <Image
             src="/images/layout/2_tapioca.png"
