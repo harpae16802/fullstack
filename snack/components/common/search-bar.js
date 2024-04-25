@@ -109,8 +109,9 @@ export default function SearchBar() {
       const data = await response.json()
       if (data && data.lat && data.lng) {
         updateMapPosition(data.lat, data.lng, {
-          market_name: data.market_name, // 從API響應中獲取市場名稱
-          market_img: data.market_img, // 從API響應中獲取市場圖片
+          market_name: data.market_name,
+          market_img: data.market_img,
+          market_id: data.market_id,
         })
       } else {
         console.error('API返回格式错误或未包含经纬度信息')
@@ -132,8 +133,7 @@ export default function SearchBar() {
 
         if (data) {
           router.push({
-            pathname: '/nightmarket-info',
-            query: { data: JSON.stringify(data) },
+            pathname: `/nightmarket-info/${data.market_id}`,
           })
         }
       } catch (error) {

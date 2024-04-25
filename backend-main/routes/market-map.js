@@ -19,7 +19,7 @@ router.get("/search", async (req, res) => {
 
     // 准备SQL查询，用于根据搜索词查找位置
     const sql =
-      "SELECT latitude_and_longitude, market_name, market_img FROM market_data WHERE market_name LIKE ? LIMIT 1";
+      "SELECT latitude_and_longitude, market_name, market_img, market_id FROM market_data WHERE market_name LIKE ? LIMIT 1";
     const [row] = await db.query(sql, [`%${searchTerm}%`]);
 
     // 检查是否有结果
@@ -33,6 +33,7 @@ router.get("/search", async (req, res) => {
         lng: longitude,
         market_name: row[0].market_name,
         market_img: row[0].market_img,
+        market_id: row[0].market_id,
       });
     } else {
       console.log({ message: "Location not found" });

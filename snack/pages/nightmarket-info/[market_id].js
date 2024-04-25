@@ -11,11 +11,15 @@ import {
   MARKET_SELLER,
   IMAGES_SELLER,
   CATEGORY,
+  MARKET,
 } from '@/components/config/api-path'
 // 樣式
 import style from './nightmarket-info.module.scss'
 
 export default function NightmarketInfo({ initialMarketData }) {
+  const router = useRouter()
+  const { market_id } = router.query
+
   const [featuredShops, setFeaturedShops] = useState([]) // 夜市店家圖片(3)
   const [allShops, setAllShops] = useState([]) // 所有商家的數據
 
@@ -59,18 +63,7 @@ export default function NightmarketInfo({ initialMarketData }) {
     },
   ]
 
-  const router = useRouter()
-  const { data } = router.query
-
-  // 解析数据（如果有必要）
-  let marketData
-  if (data) {
-    try {
-      marketData = JSON.parse(data)
-    } catch (error) {
-      console.error('解析数据錯誤 : ', error)
-    }
-  }
+  const marketInfo = initialMarketData[0] || {}
 
   const handleCategoryClick = async (categoryId) => {
     try {
@@ -88,7 +81,7 @@ export default function NightmarketInfo({ initialMarketData }) {
   }
 
   useEffect(() => {
-    fetch(`${MARKET_SELLER}/${marketData.market_id}`)
+    fetch(`${MARKET_SELLER}/${market_id}`)
       .then((r) => r.json())
       .then((data) => {
         const shopImages = data.map((shop) => shop.store_image)
@@ -128,9 +121,9 @@ export default function NightmarketInfo({ initialMarketData }) {
         <div className={`row`}>
           <div className="col">
             <Night
-              nightName={marketData.market_name}
-              introduction={marketData.market_introduction}
-              nightImg={marketData.market_img}
+              nightName={marketInfo.market_name}
+              introduction={marketInfo.market_introduction}
+              nightImg={marketInfo.market_img}
               store_image={featuredShops}
             />
           </div>
@@ -179,9 +172,14 @@ export async function getServerSideProps(context) {
   let initialMarketData = null
 
   try {
-    const market_id = context.params.market_id
-    const response = await fetch(`${MARKET_SELLER}/${market_id}`)
-    initialMarketData = await response.json()
+    const { market_id } = context.params
+    const response = await fetch(`${MARKET}/${market_id}`)
+    if (response.ok) {
+      initialMarketData = await response.json()
+    } else {
+      // 處理 API 錯誤情況
+      console.error('API response error:', response.statusText)
+    }
   } catch (error) {
     console.error('获取市场数据失败', error)
   }
