@@ -98,7 +98,7 @@ export default function SectionIndex() {
         <div className="index-title">店家</div>
         <StoreSlider />
       </div>
-      <div className="section-index index-nop">
+      <div className="section-index index-nop index-product">
         <div className="index-title">商品</div>
         <ProductSlider />
       </div>

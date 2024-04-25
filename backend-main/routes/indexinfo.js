@@ -19,4 +19,12 @@ indexInfoRouter.get("/store", async function (req, res) {
   res.json(rows);
 });
 
+indexInfoRouter.get("/product", async function (req, res) {
+  const sql = "SELECT seller.store_name,products.product_id,products.product_name,products.product_description,products.image_url,products.price,products.stock_quantity,products.product_ingredient,	products.product_nutrition,products.seller_id FROM products JOIN seller ON products.seller_id = seller.seller_id WHERE products.product_id IN (2,23,25,37,51,65,88,98,115)";
+  const [rows, fields] = await db.query(sql);
+  // fields: 資料表結構的相關訊息
+
+  res.json(rows);
+});
+
 export default indexInfoRouter;

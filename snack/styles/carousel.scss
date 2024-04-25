@@ -224,7 +224,6 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            
 
             .store-name {
               @media (max-width: 992px) {
@@ -271,6 +270,26 @@
 }
 
 // ====[商品]====
+
+// 處理商品
+.section-index.index-nop.index-product {
+  position: relative;
+  overflow: visible;
+  .product-detail {
+    @media (max-width: 992px) {
+      top: 0;
+      left: 5%;
+
+    }
+    position: absolute;
+    top: 10px;
+    left: calc((1920px - 1518px) / 2 - 80px);
+    // display: none;
+    z-index: 1;
+  }
+}
+
+// 輪播
 //最外層
 .slider-container.product-index-gruop {
   @media (max-width: 992px) {
@@ -278,6 +297,7 @@
     overflow: hidden;
   }
   padding: 20px 0px;
+  position: relative;
   //包住方向鍵和內容的階層
   .slick-slider.slick-initialized {
     position: relative;
@@ -353,6 +373,7 @@
             align-items: start;
             flex-direction: column;
             gap: 20px;
+            //彈窗
 
             .product-top {
               @media (max-width: 992px) {
@@ -396,8 +417,20 @@
               display: flex;
               align-items: center;
               justify-content: center;
+              position: relative;
+              overflow: hidden;
               .btn.btn-light {
+                @media (max-width: 992px) {
+                  font-size: 10px;
+                  padding: 4px 12px;
+                }
+                position: absolute;
                 display: none;
+              }
+              .product {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
               }
             }
             :hover {
