@@ -1,11 +1,8 @@
 import Section from '@/components/layout/section'
 import React, { createContext, useContext } from 'react'
-import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
-import { IoSearchOutline } from "react-icons/io5";
-import { FaShopify } from "react-icons/fa";
-import { IoCart } from "react-icons/io5";
-
+import ConsumerInfo from '@/components/Order/consumerInfo'
+import OrderLastCheck from '@/components/Order/orderLastCheck'
 
 export default function Order() {
   return (
@@ -18,103 +15,90 @@ export default function Order() {
             {/* 步驟紅色邊框 */}
             <div className={styles.stepBorder}>
                 
-                  {/* 步驟圓圈&長條 */}
-                  <div className="container">
-                  <div className={styles.step1} style={{marginTop:'60px',marginLeft:'293px'}}>1</div>
-                  <div className={styles.connect2}></div>
-                  <div className={styles.step1}>2</div>
-                  <div className={styles.connect2}></div>
-                  <div className={styles.step1}>3</div>
-                </div>
-                  <br />
-
-                  {/* 步驟文字 */}
-                  <div className={styles.textContainer}>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'435px'}}>訂單資訊</div>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'120px'}}>訂單優惠</div>
-                    <div className={styles.step1Text} style={{marginTop:'50px',marginLeft:'125px'}}>付款方式</div>
-                    {/* textContainer */}
-                  </div>
-                 
+                {/* 步驟圓圈&長條 */}
+            <div className="container">
+                <div className={styles.step1}>1</div>
+                <div className={styles.connectRed}></div>
+                <div className={styles.step2}>2</div>
+                <div className={styles.connectRed}></div>
+                <div className={styles.step2}>3</div>
             </div>
+
+                <br />
+
+                {/* 步驟文字 */}
+                <div className={styles.textContainer}>
+                  <div className={styles.step1Text}>訂單資訊</div>
+                  <div className={styles.step2Text}>訂單優惠</div>
+                  <div className={styles.step3Text}>完成</div>
+                </div>
+               
+          </div>
 
            {/* 訂單詳細 紅色邊框 */}
-          <div className={styles.orderBorder} style={{height:'690px'}}>
+          <div className={styles.orderBorder}>
 
-          <h1 style={{
-                fontWeight:'bolder',
-                marginTop:'50px',
-                marginLeft:'45px'
-             }}>訂單詳細</h1>
+          <div className={styles.orderDetailText}>訂單詳細</div>
 
            {/* 訂單詳細 外層容器 */}
-            <div className={styles.orderContainer} style={{
-                marginTop:'15px',
-                height:'520px',
-                border:'solid 5px rgb(163, 44, 45)',
-                borderRadius:'10px'
-                }}>
-             
-             
-             {/*結帳後 訂單詳細 */}
-            <div style={{display:'flex', justifyContent:'space-between'}} className={styles.borderBottom}>
-                <div className={styles.orderinformation1}>買家帳號</div>
-                <div className={styles.orderinformation2}>訂單編號</div>
-                <div className={styles.orderinformation2} >訂單日期</div>
-                <div className={styles.orderinformation2}>訂單總金額</div>
-            </div>
+            <div className={styles.order4Container}>
+            
+             {/*買家資訊 文字 */}
+  
+              {/*買家資訊*/}
+              <ConsumerInfo
+                account = "Test123"
+                orderId = "20240206280"
+                orderDate = "2024-02-06"
+                totalSum = "2800"
+              />
 
-            <div style={{display:'flex', justifyContent:'space-between'}} className={styles.borderBottom}>
-                <div className={styles.orderinformation1}>Test123</div>
-                <div className={styles.orderinformation2}>20240206280</div>
-                <div className={styles.orderinformation2 } style={{marginRight:'85px'}}>2024-02-06</div>
-                <div className={styles.orderinformation2}>NT.2800</div>
-            </div>  
 
               {/* 訂單詳細:列 */}
             <div style={{display:'flex',flexDirection:'column'}}>
                 {/* 訂單詳細:行 */}
                 <div style={{display:'flex',justifyContent:'space-between',marginTop:'10px'}}>
-                    <div className={styles.orderinformation1}>商品名稱</div>
-                    <div className={styles.orderinformation2}>商品數量</div>
-                    <div className={styles.orderinformation2} >商品價格</div>
-                    <div className={styles.orderinformation2}>商品總價</div>
+                    <div className={styles.orderInformation1}>商品名稱</div>
+                    <div className={styles.orderInformation2}>商品數量</div>
+                    <div className={styles.orderInformation2} >商品價格</div>
+                    <div className={styles.orderInformation2}>商品總價</div>
                 </div>
 
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                    <div className={styles.orderinformation1} style={{marginLeft:'85px'}}>雞排</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>5</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>NT.120</div>
-                    <div className={styles.orderinformation2} style={{color:'#ff2828'}}>NT.600</div>
-                </div>
+                <OrderLastCheck
+                   product = "雞排"
+                   number = "5"
+                   price = "120"
+                   total = "600"
+                />
 
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                    <div className={styles.orderinformation1} style={{marginLeft:'85px'}}>雞排</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>5</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>NT.120</div>
-                    <div className={styles.orderinformation2} style={{color:'#ff2828'}}>NT.600</div>
-                </div>
+                <OrderLastCheck
+                   product = "雞排"
+                   number = "5"
+                   price = "120"
+                   total = "600"
+                />
 
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                    <div className={styles.orderinformation1} style={{marginLeft:'85px'}}>雞排</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>5</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>NT.120</div>
-                    <div className={styles.orderinformation2} style={{color:'#ff2828'}}>NT.600</div>
-                </div>
+                  <OrderLastCheck
+                   product = "雞排"
+                   number = "5"
+                   price = "120"
+                   total = "600"
+                />
 
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                    <div className={styles.orderinformation1} style={{marginLeft:'85px'}}>雞排</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>5</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>NT.120</div>
-                    <div className={styles.orderinformation2} style={{color:'#ff2828'}}>NT.600</div>
-                </div>
+                  <OrderLastCheck
+                   product = "雞排"
+                   number = "5"
+                   price = "120"
+                   total = "600"
+                />
 
-                <div style={{display:'flex',justifyContent:'space-between'}}>
-                    <div className={styles.orderinformation1} style={{marginLeft:'85px'}}>雞排</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>5</div>
-                    <div className={styles.orderinformation2} style={{marginLeft:'25px'}}>NT.120</div>
-                    <div className={styles.orderinformation2} style={{color:'#ff2828'}}>NT.600</div>
-                </div>
+                  <OrderLastCheck
+                   product = "雞排"
+                   number = "5"
+                   price = "120"
+                   total = "600"
+                />
+
 
             </div>
 

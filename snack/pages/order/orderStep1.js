@@ -4,8 +4,27 @@ import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
-import OrderDetailItem from '@/components/Order/orderCheck1'
+import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
+import CheckoutProduct from '@/components/Order/checkoutProduct'
+
+const OrderStep1 = () => {
+  const [dataCount, setDataCount] = useState(0); // 使用useState来存储数据数量
+
+  // 模拟从后台获取数据的效果，你需要根据实际情况修改这部分代码
+  useEffect(() => {
+    // 这里可以是从后台获取数据的逻辑，这里暂时模拟一个数量
+    const fetchDataCount = async () => {
+      // 模拟从后台获取数据的过程
+      const count = 3; // 假设从后台获取到的数据数量为3
+      setDataCount(count);
+    };
+
+    fetchDataCount();
+  }, []);
+
+
+}
 
 
 export default function Order() {
@@ -23,9 +42,9 @@ export default function Order() {
               <div className="container">
                   <div className={styles.step1}>1</div>
                   <div className={styles.connectGrey}></div>
-                  <div className={styles.step2}>2</div>
+                  <div className={styles.stepUndo}>2</div>
                   <div className={styles.connectGrey}></div>
-                  <div className={styles.step2}>3</div>
+                  <div className={styles.stepUndo}>3</div>
               </div>
 
                   <br />
@@ -33,60 +52,34 @@ export default function Order() {
                   {/* 步驟文字 */}
                   <div className={styles.textContainer}>
                     <div className={styles.step1Text}>訂單資訊</div>
-                    <div className={styles.step2Text} style={{marginTop:'40px',marginLeft:'230px'}}>訂單優惠</div>
-                    <div className={styles.step2Text} style={{marginTop:'40px',marginLeft:'225px'}}>付款方式</div>
+                    <div className={styles.step2UndoText}>訂單優惠</div>
+                    <div className={styles.step3UndoText}>完成</div>
                   </div>
                  
             </div>
-
-    
 
            {/* 訂單詳細 紅色邊框 */}
           <div className={styles.orderBorder}>
 
            {/* 訂單詳細 外層容器 */}
-            <div className={styles.orderContainer}>
-   {/* bootstrap:手風琴(Accordion)   */}
-  <div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-    {/* 按鈕1 */}
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne"
-      style={{ backgroundColor: 'transparent', color: 'inherit' }}
-      >
-        Accordion Item #1
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-      <div class="accordion-body">
-        {/* 顯示的內容1 */}
-        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-
-             {/* <OrderDetailItem/>  */}
-
-            </div>
+           <div className={styles.order1Container}>
+           <CheckoutProduct />
+           </div>
+         
 
             <br/>
-            {/* 訂單詳細 外層容器 */}
-            <div className={styles.orderContainer}>
           
-             <OrderDetailItem/> 
-
-            </div>
+           {/* 訂單詳細 外層容器 */}
+           <div className={styles.order1Container}>
+           <CheckoutProduct />
+           </div>
 
             <br/>
- {/* 訂單詳細 外層容器 */}
- <div className={styles.orderContainer}>
-          
-          <OrderDetailItem/> 
 
-         </div>
+           {/* 訂單詳細 外層容器 */}
+           <div className={styles.order1Container}>
+           <CheckoutProduct />
+           </div>
 
 <h2 className={styles.discountTitle}>【優惠加購】</h2>
 
@@ -100,13 +93,28 @@ export default function Order() {
     <div className={styles.discountArrangement}>
 
             {/* 優惠加購:產品內容1 */}
-           <DiscountContentItem/> 
+           <DiscountContentItem
+            seller = "姊姊抓的餅"
+            product = "豬排蛋"
+            imageUrl = "/images/蛋塔.jpg"
+            price="70"
+           /> 
 
        {/* 優惠加購:產品內容2 */}
-       <DiscountContentItem /> 
+       <DiscountContentItem
+            seller = "姊姊抓的餅"
+            product = "豬排蛋"
+            imageUrl = "/images/蛋塔.jpg"
+            price="70"
+           /> 
 
      {/* 優惠加購:產品內容3 */}
-       <DiscountContentItem/> 
+     <DiscountContentItem
+            seller = "姊姊抓的餅"
+            product = "豬排蛋"
+            imageUrl = "/images/蛋塔.jpg"
+            price="70"
+           /> 
 
         {/* discountArrangement */}
     </div>
