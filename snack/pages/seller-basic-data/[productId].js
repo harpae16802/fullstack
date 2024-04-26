@@ -29,18 +29,6 @@ export default function AddProducts() {
     profilePicture: '',
   })
 
-  // 新增產品的資料
-  const [newProductData, setNewProductData] = useState({
-    productName: '',
-    productDescription: '',
-    price: '',
-    productNutrition: '',
-    productIngredient: '',
-    stockQuantity: '',
-    category_id: '',
-    category: '',
-  })
-
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -67,67 +55,6 @@ export default function AddProducts() {
         })
     }
   }, [sellerId])
-
-  //表單狀態
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-  
-    // 種類
-    if (name === 'category_id') {
-      const category = e.target.options[e.target.selectedIndex].text
-      setNewProductData((prevData) => ({
-        ...prevData,
-        category_id: value,
-        category: category,
-      }))
-    } else {
-      setNewProductData((prevData) => ({ ...prevData, [name]: value }))
-    }
-  }
-
-  // 送出表單
-  const handleFormSubmit = async (e) => {
-    e.preventDefault()
-
-    // 用formData傳送資料
-    const formData = new FormData()
-    formData.append('productName', newProductData.productName)
-    formData.append('productDescription', newProductData.productDescription)
-    formData.append('price', newProductData.price)
-    formData.append('productNutrition', newProductData.productNutrition)
-    formData.append('productIngredient', newProductData.productIngredient)
-    formData.append('stockQuantity', newProductData.stockQuantity)
-    formData.append('category', newProductData.category)
-    formData.append('category_id', newProductData.category_id)
-    formData.append('seller_id', sellerId) //
-    // console.log(sellerId);
-
-    if (fileInputRef.current?.files[0]) {
-      formData.append('image', fileInputRef.current.files[0])
-    }
-
-    // 產品圖片上傳
-    const imageFile = document.querySelector('#store_image').files[0]
-    formData.append('image', imageFile)
-
-    // 請求
-    try {
-      const response = await axios.post(`${PRODUCTS_API}/add`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-
-      if (response.data.success) {
-        alert('产品添加成功')
-      } else {
-        alert('产品添加失败')
-      }
-    } catch (error) {
-      console.error('产品添加出错', error)
-      alert('产品添加过程中发生错误')
-    }
-  }
 
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
@@ -244,8 +171,8 @@ export default function AddProducts() {
           {/* 表單 */}
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
-              <form onSubmit={handleFormSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>上架新增商品</h2>
+              <form className={styles.formWrapper}>
+                <h2 className={`${styles.formTitle}`}>修改商品</h2>
 
                 <div className="mb-3">
                   <label htmlFor="productName" className="form-label">
@@ -254,11 +181,10 @@ export default function AddProducts() {
                   <input
                     type="text"
                     className="form-control"
-                    id="productName"
-                    name="productName"
+                    id=""
+                    name=""
                     placeholder="產品名稱"
-                    value={newProductData.productName}
-                    onChange={handleInputChange}
+             
                   />
                   <input
                     type="hidden"
@@ -272,12 +198,11 @@ export default function AddProducts() {
                   </label>
                   <textarea
                     className="form-control"
-                    id="productDescription"
-                    name="productDescription"
+                    id=""
+                    name=""
                     rows="3"
                     placeholder="產品描述簡介"
-                    value={newProductData.productDescription}
-                    onChange={handleInputChange}
+
                   ></textarea>
                 </div>
                 <div className="mb-3">
@@ -286,12 +211,11 @@ export default function AddProducts() {
                   </label>
                   <input
                     type="number"
-                    className="form-control"
-                    id="price"
-                    name="price"
+                    className=""
+                    id=""
+                    name=""
                     placeholder="產品價格(台幣)"
-                    value={newProductData.price}
-                    onChange={handleInputChange}
+
                   />
                 </div>
                 <div className="mb-3">
@@ -301,11 +225,10 @@ export default function AddProducts() {
                   <input
                     type="text"
                     className="form-control"
-                    id="productNutrition"
-                    name="productNutrition"
+                    id=""
+                    name=""
                     placeholder="產品營養表"
-                    value={newProductData.productNutrition}
-                    onChange={handleInputChange}
+
                   />
                 </div>
                 <div className="mb-3">
@@ -315,11 +238,10 @@ export default function AddProducts() {
                   <input
                     type="text"
                     className="form-control"
-                    id="productIngredient"
-                    name="productIngredient"
+                    id=""
+                    name=""
                     placeholder="產品成分"
-                    value={newProductData.productIngredient}
-                    onChange={handleInputChange}
+
                   />
                 </div>
                 <div className="mb-3">
@@ -329,11 +251,10 @@ export default function AddProducts() {
                   <input
                     type="number"
                     className="form-control"
-                    id="stockQuantity"
-                    name="stockQuantity"
+                    id=""
+                    name=""
                     placeholder="產品數量"
-                    value={newProductData.stockQuantity}
-                    onChange={handleInputChange}
+
                   />
                 </div>
 
@@ -344,14 +265,14 @@ export default function AddProducts() {
                   <input
                     type="file"
                     className="form-control"
-                    id="store_image"
-                    name="store_image"
+                    id=""
+                    name=""
                   />
                 </div>
 
                 <div className={styles.selectGroup}>
                   <div className="col-auto ">
-                    <label htmlFor="store_image" className={styles.selectLabel}>
+                    <label htmlFor="" className={styles.selectLabel}>
                       選擇產品種類
                     </label>
                   </div>
@@ -359,10 +280,9 @@ export default function AddProducts() {
                   <div className="col-auto">
                     <select
                       className={`form-select ${styles.customSelect}`}
-                      id="category_id"
-                      name="category_id" 
-                      value={newProductData.category_id}
-                      onChange={handleInputChange}
+                      id=""
+                      name="" 
+                  
                     >
                       <option value="">新增產品種類</option>
                       <option value="1">點心</option>

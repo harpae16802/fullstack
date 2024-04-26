@@ -349,7 +349,7 @@ export default function QRcode() {
           </Button>
         </Modal.Footer>
       </Modal>
-      // 掃描失敗的彈窗
+{/*  */}
       <Modal
         show={showScanFailModal}
         onHide={handleCloseScanFailModal}
@@ -367,7 +367,7 @@ export default function QRcode() {
           </Button>
         </Modal.Footer>
       </Modal>
-      // 訂單不存在的彈窗
+   
       <Modal
         show={showOrderNotExistModal}
         onHide={handleCloseNotExistModal}
@@ -385,7 +385,7 @@ export default function QRcode() {
           </Button>
         </Modal.Footer>
       </Modal>
-      // 訂單未找到的彈窗
+    
       <Modal
         show={showOrderNotFoundModal}
         onHide={handleCloseOrderNotFoundModal}
@@ -403,7 +403,7 @@ export default function QRcode() {
           </Button>
         </Modal.Footer>
       </Modal>
-      // 訂單更新成功的彈窗
+   
       <Modal
         show={showOrderUpdateSuccessModal}
         onHide={handleCloseUpdateSuccessModal}
@@ -421,7 +421,7 @@ export default function QRcode() {
           </Button>
         </Modal.Footer>
       </Modal>
-      // 訂單更新失敗的彈窗
+
       <Modal
         show={showOrderUpdateFailModal}
         onHide={handleCloseUpdateFailModal}
