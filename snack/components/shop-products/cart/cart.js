@@ -9,25 +9,23 @@ import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
 import style from './style.module.scss'
 
 export default function Cart() {
-  const { cartItems, total, addToCart, removeFromCart } = useCartContext()
+  const { cartItems, total, addToCart, removeFromCart, delFromCart } =
+    useCartContext()
 
-  // 处理增加商品数量
-  const handleIncreaseQuantity = (product_id) => {
-    addToCart({ product_id })
+  // 增加數量
+  const handleIncreaseQuantity = (productId) => {
+    // 调用 addToCart 方法并传入商品ID
+    addToCart(productId)
   }
 
-  // 处理减少商品数量
-  const handleDecreaseQuantity = (item) => {
-    if (item.quantity > 1) {
-      removeFromCart(item.product_id, -1)
-    } else {
-      handleRemoveProduct(item.product_id)
-    }
+  // 減少數量
+  const handleDecreaseQuantity = (productId) => {
+    removeFromCart(productId)
   }
 
-  // 处理直接移除商品
-  const handleRemoveProduct = (product_id) => {
-    removeFromCart(product_id, -999) // 传递一个足够大的负数来触发删除操作
+  // 減少數量
+  const handleDel = (productId) => {
+    delFromCart(productId)
   }
 
   return (
@@ -66,11 +64,16 @@ export default function Cart() {
                     style={{ border: 'none', outline: 'none' }}
                     readOnly
                   />
-                  <button onClick={() => handleDecreaseQuantity(item)}>
+                  <button
+                    onClick={() => handleDecreaseQuantity(item.product_id)}
+                  >
                     <FaMinus />
                   </button>
                 </div>
-                <FaTrashAlt onClick={() => {}} className={style.removeItem} />
+                <FaTrashAlt
+                  onClick={() => handleDel(item.product_id)}
+                  className={style.removeItem}
+                />
               </div>
             </div>
           </div>

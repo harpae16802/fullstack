@@ -169,168 +169,6 @@ router.get("/comment/:seller_id", async (req, res) => {
   }
 });
 
-// 加入購物車
-router.post("/cart-add", async (req, res) => {
-  const { product_id, quantity } = req.body;
-  const custom_id = 1; // 假设用户ID
-
-  try {
-    // 检查购物车中是否已存在该商品
-    const existsSql = `
-      SELECT * FROM cart WHERE custom_id = ? AND product_id = ?
-    `;
-    const [existing] = await db.query(existsSql, [custom_id, product_id]);
-
-    if (existing.length > 0) {
-      // 如果已存在，更新数量和总价
-      const updateSql = `
-        UPDATE cart SET quantity = quantity + ?, total_price = total_price + ? * (SELECT price FROM products WHERE product_id = ?)
-        WHERE custom_id = ? AND product_id = ?
-      `;
-      const [updateResult] = await db.query(updateSql, [
-        quantity,
-        quantity,
-        product_id,
-        custom_id,
-        product_id,
-      ]);
-    } else {
-      // 如果不存在，插入新记录
-      const productSql = "SELECT price FROM products WHERE product_id = ?";
-      const [product] = await db.query(productSql, [product_id]);
-      const productPrice = product[0].price;
-
-      const insertSql = `
-        INSERT INTO cart (custom_id, product_id, quantity, total_price) 
-        VALUES (?, ?, ?, ?)
-      `;
-      const [insertResult] = await db.query(insertSql, [
-        custom_id,
-        product_id,
-        quantity,
-        productPrice * quantity,
-      ]);
-    }
-
-    // 获取更新后的购物车信息
-    const cartInfoSql = `
-  SELECT 
-    p.product_id, 
-    p.product_name, 
-    c.quantity, 
-    c.total_price, 
-    p.image_url
-  FROM 
-    cart c 
-  JOIN 
-    products p ON c.product_id = p.product_id 
-  WHERE 
-    c.custom_id = ?
-`;
-    const [cartInfo] = await db.query(cartInfoSql, [custom_id]);
-
-    // 计算总金额
-    const totalAmount = cartInfo.reduce(
-      (acc, item) => acc + item.total_price,
-      0
-    );
-
-    // 返回成功响应
-    res.json({
-      success: true,
-      cartInfo,
-      totalAmount,
-    });
-  } catch (error) {
-    console.error("处理购物车时发生错误:", error);
-    res.status(500).json({ error: "内部服务器错误" });
-  }
-});
-
-// 改數量或刪除
-// router.post("/cart-edit", async (req, res) => {
-//   const { product_id, change } = req.body; // change 應為 1 或 -1
-//   const custom_id = 1; // 假設用戶ID為1
-
-//   try {
-//     // 查詢當前商品在購物車中的數量
-//     const getQuantitySql = `
-//       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
-//     `;
-//     const [current] = await db.query(getQuantitySql, [custom_id, product_id]);
-
-//     // 商品不在購物車中，且用戶嘗試增加數量
-//     if (current.length === 0 && change === 1) {
-//       // 從 products 表中獲取商品價格
-//       const getPriceSql = `
-//         SELECT price FROM products WHERE product_id = ?
-//       `;
-//       const [product] = await db.query(getPriceSql, [product_id]);
-
-//       if (product.length === 0) {
-//         return res.status(404).json({ error: "無此商品" });
-//       }
-
-//       const productPrice = product[0].price;
-//       const insertSql = `
-//         INSERT INTO cart (custom_id, product_id, quantity, total_price)
-//         VALUES (?, ?, 1, ?)
-//       `;
-//       await db.query(insertSql, [custom_id, product_id, productPrice]);
-//     } else if (current.length > 0) {
-//       const currentQuantity = current[0].quantity;
-//       const newQuantity = currentQuantity + change;
-
-//       if (newQuantity <= 0) {
-//         // 數量減至0或以下，刪除商品
-//         const deleteSql = `
-//           DELETE FROM cart WHERE custom_id = ? AND product_id = ?
-//         `;
-//         await db.query(deleteSql, [custom_id, product_id]);
-//       } else {
-//         // 更新購物車中的商品數量和總價
-//         const updateSql = `
-//           UPDATE cart SET
-//             quantity = ?,
-//             total_price = quantity * (SELECT price FROM products WHERE product_id = ?)
-//           WHERE custom_id = ? AND product_id = ?
-//         `;
-//         await db.query(updateSql, [
-//           newQuantity,
-//           product_id,
-//           custom_id,
-//           product_id,
-//         ]);
-//       }
-//     }
-
-//     // 獲取更新後的購物車信息
-//     const cartInfoSql = `
-//       SELECT p.product_id, p.product_name, c.quantity, c.total_price
-//       FROM cart c
-//       JOIN products p ON c.product_id = p.product_id
-//       WHERE c.custom_id = ?
-//     `;
-//     const cartInfo = await db.query(cartInfoSql, [custom_id]);
-
-//     // 計算總金額
-//     const totalAmount = cartInfo.reduce(
-//       (acc, item) => acc + item.total_price,
-//       0
-//     );
-
-//     // 返回成功響應
-//     res.json({
-//       success: true,
-//       cartInfo,
-//       totalAmount,
-//     });
-//   } catch (error) {
-//     console.error("處理購物車商品數量變化時發生錯誤:", error);
-//     res.status(500).json({ error: "內部服務器錯誤" });
-//   }
-// });
-
 // 增加商品數量
 router.post("/cart-increase", async (req, res) => {
   const { product_id } = req.body;
@@ -400,10 +238,18 @@ router.post("/cart-increase", async (req, res) => {
 
     // 获取更新后的购物车信息
     const cartInfoSql = `
-      SELECT p.product_id AS product_id, p.product_name AS product_name, c.quantity, c.total_price
-      FROM cart c
-      JOIN products p ON c.product_id = p.product_id
-      WHERE c.custom_id = ?
+      SELECT 
+        p.product_id AS product_id, 
+        p.product_name AS product_name, 
+        c.quantity, 
+        c.total_price,
+        p.image_url
+      FROM 
+        cart c
+      JOIN 
+        products p ON c.product_id = p.product_id
+      WHERE 
+        c.custom_id = ?
     `;
     const cartInfo = await db.query(cartInfoSql, [custom_id]);
 
@@ -479,11 +325,19 @@ router.post("/cart-decrease", async (req, res) => {
 
     // 获取更新后的购物车信息
     const cartInfoSql = `
-      SELECT p.product_id AS product_id, p.product_name AS product_name, c.quantity, c.total_price
-      FROM cart c
-      JOIN products p ON c.product_id = p.product_id
-      WHERE c.custom_id = ?
-    `;
+    SELECT 
+      p.product_id AS product_id, 
+      p.product_name AS product_name, 
+      c.quantity, 
+      c.total_price,
+      p.image_url
+    FROM 
+      cart c
+    JOIN 
+      products p ON c.product_id = p.product_id
+    WHERE 
+      c.custom_id = ?
+  `;
     const cartInfo = await db.query(cartInfoSql, [custom_id]);
 
     // 返回成功响应
@@ -517,13 +371,20 @@ router.post("/cart-remove", async (req, res) => {
     const [totalResult] = await db.query(totalAmountSql, [custom_id]);
     const totalAmount = totalResult[0].totalAmount || 0; // 如果没有商品，则总金额为0
 
-    // 返回购物车的最新信息
     const cartInfoSql = `
-      SELECT p.product_id, p.product_name, c.quantity, c.total_price
-      FROM cart c
-      JOIN products p ON c.product_id = p.product_id
-      WHERE c.custom_id = ?
-    `;
+    SELECT 
+      p.product_id AS product_id, 
+      p.product_name AS product_name, 
+      c.quantity, 
+      c.total_price,
+      p.image_url
+    FROM 
+      cart c
+    JOIN 
+      products p ON c.product_id = p.product_id
+    WHERE 
+      c.custom_id = ?
+  `;
     const cartInfo = await db.query(cartInfoSql, [custom_id]);
 
     res.json({

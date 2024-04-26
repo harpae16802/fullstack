@@ -28,7 +28,8 @@ export const C_FAVORITE_PRODUCTS = `${SHOP_PRODUCTS}/check-like-products`
 export const COMMENT_DATA = `${SHOP_PRODUCTS}/comment`
 // 購物車
 export const CART_ADD = `${SHOP_PRODUCTS}/cart-increase`
-export const CART_EDIT = `${SHOP_PRODUCTS}/cart-edit`
+export const CART_MINUS = `${SHOP_PRODUCTS}/cart-decrease`
+export const CART_DEL = `${SHOP_PRODUCTS}/cart-remove`
 // 獲取購物車數據
 export const CART = `${SHOP_PRODUCTS}/cart`
 
