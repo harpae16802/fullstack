@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
 
+
+
 import {
   FaBars,
   FaUser,
@@ -122,6 +124,7 @@ export default function NavbarCustom() {
                     href="#"
                     onClick={(e) => {
                       e.preventDefault()
+  
                       logout()
                       router.replace(`/login/login-custom`)
                     }}

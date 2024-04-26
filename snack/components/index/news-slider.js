@@ -37,7 +37,7 @@ function NewsSlider() {
       <Slider {...settings}>
         {listData?.map((v, i) => {
           return (
-            <Link href={`/shop-products/${v.seller_id}`}>
+            <Link href={`/shop-products/${v.seller_id}`} key={i}>
               <p>
                 ‧【{v.store_name}】－ {v.name}！
                 {v.market_name === '士林夜市' ? '現正優惠！' : '要買要快～'}【

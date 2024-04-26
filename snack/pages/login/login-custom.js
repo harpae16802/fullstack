@@ -11,14 +11,6 @@ import { SIGN_UP_POST } from '@/components/config/api-path'
 import { z } from 'zod'
 import toast, { Toaster } from 'react-hot-toast'
 
-// 用在分頁的icon
-import {
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-  FaAngleLeft,
-  FaAngleRight,
-} from 'react-icons/fa'
-
 // 註冊檢查用
 const schemaEmail = z.string().email({ message: '請填寫正確的E-MAIL格式' })
 const schemaPwd = z.string().min(6, { message: '請填寫正確的密碼格式' })
@@ -87,7 +79,17 @@ export default function LoginCustom() {
     password4: '',
   })
 
-  //
+  // // toast設定
+  // const notify = () =>
+  //   toast.success('歡迎您！登入成功', {
+  //     style: {
+  //       color: '#a32c2d',
+  //     },
+  //     iconTheme: {
+  //       primary: '#29a21e',
+  //       secondary: '#ffffff',
+  //     },
+  //   })
 
   // 多欄位共用事件函式
   const handleFieldChange = (e) => {
@@ -168,7 +170,6 @@ export default function LoginCustom() {
     })
     const result = await r.json()
     if (result.success) {
-      //
       toast.success('註冊成功！將導向登入頁', {
         style: {
           color: '#a32c2d',
@@ -179,11 +180,9 @@ export default function LoginCustom() {
         },
       })
       setTimeout(() => {
-        // router.replace('/')
         window.location.reload()
-      }, 1500)
+      }, 2000)
     } else {
-      //
       alert('資料新增發生錯誤')
     }
   }
@@ -194,6 +193,7 @@ export default function LoginCustom() {
       router.replace('/')
     }
   }, [auth, router])
+
   return (
     <>
       <Section>
@@ -419,9 +419,10 @@ export default function LoginCustom() {
                           setIsPasswordEmpty(true)
                           return // 如果密碼為空，停止表單提交
                         }
-                        login(account, password).then((success) => {
-                          if (success) {
+                        login(account, password).then((result) => {
+                          if (result) {
                             // 登入成功後的操作，例如導航到另一個頁面
+                         
                             toast.success('歡迎您！登入成功', {
                               style: {
                                 color: '#a32c2d',
@@ -432,8 +433,8 @@ export default function LoginCustom() {
                               },
                             })
                             setTimeout(() => {
-                              router.replace('/')
-                            }, 1500)
+                              router.push('/')
+                            }, 2000)
                           } else {
                             // 登入失敗，顯示錯誤訊息
                             toast.error('登入失敗，請檢查帳號和密碼', {
@@ -675,9 +676,10 @@ export default function LoginCustom() {
                       setIsPasswordEmpty(true)
                       return // 如果密碼為空，停止表單提交
                     }
-                    login(account, password).then((success) => {
-                      if (success) {
+                    login(account, password).then((result) => {
+                      if (result) {
                         // 登入成功後的操作，例如導航到另一個頁面
+                       
                         toast.success('歡迎您！登入成功', {
                           style: {
                             color: '#a32c2d',
@@ -688,8 +690,8 @@ export default function LoginCustom() {
                           },
                         })
                         setTimeout(() => {
-                          router.replace('/')
-                        }, 1500)
+                          router.push('/')
+                        }, 2000)
                       } else {
                         // 登入失敗，顯示錯誤訊息
                         toast.error('登入失敗，請檢查帳號和密碼', {

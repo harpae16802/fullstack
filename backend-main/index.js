@@ -101,6 +101,7 @@ app.post("/login-jwt", async (req, res) => {
       {
         custom_id: row.custom_id ,
         account: row.custom_account ,
+        google_uid: row.google_uid,
       },
       // process.env.JWT_SECRET >> 去看 dev.env 檔
       process.env.JWT_SECRET

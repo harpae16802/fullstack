@@ -37,12 +37,12 @@ export function CustomContextProvider({ children }) {
     //這裡的return的布林值會傳給login-quick
     if (result.success) {
       // 把 token 記錄在 localStorage
-      localStorage.setItem(storageKey, JSON.stringify(result.data))
+      localStorage.setItem(storageKey, JSON.stringify(result.data));
 
-      setAuth(result.data)
-      return true
+      setAuth(result.data);
+      return true;
     } else {
-      return false
+      return false;
     }
   }
   // 登出的功能
@@ -74,7 +74,7 @@ export function CustomContextProvider({ children }) {
 
   return (
     // login & logout 是function 傳出的是promise
-    <CustomContext.Provider value={{ auth, login, logout,storageKey }}>
+    <CustomContext.Provider value={{ auth, login, logout,storageKey, getAuthHeader }}>
       {children}
     </CustomContext.Provider>
   )

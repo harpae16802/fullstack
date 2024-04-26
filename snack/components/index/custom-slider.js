@@ -74,7 +74,7 @@ function CustomSlider() {
       <Slider {...settings}>
         {listData?.map((v, i) => {
           return (
-            <Link className="slide-item" href={`/shop-products/${v.seller_id}`}>
+            <Link className="slide-item" href={`/shop-products/${v.seller_id}`} key={i}>
               {/* 點圖片要到 咚咚的 商家頁面 */}
               <Image
                 src={`${IMAGES_SELLER}/${v.store_image}`}
