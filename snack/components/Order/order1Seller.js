@@ -24,7 +24,7 @@ export default function Order1Seller ({
 
       {/* '選此店結帳'按鈕 */}
       <div className={styles.checkoutButton}>選此店結帳</div>
-      <IoIosArrowDown className={styles.checkoutDownIcon}/>
+      {/* <IoIosArrowDown className={styles.checkoutDownIcon} /> */}
       
       {/* marketCheckout */}
      </div>

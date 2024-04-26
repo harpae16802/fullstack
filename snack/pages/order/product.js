@@ -13,7 +13,8 @@ import 'swiper/css';
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
 import { MARKET_SELLER } from '@/components/config/api-path'
-import FilterOptions from '@/components/Product/productFilter'
+// import FilterOptions from '@/components/Product/productFilter'
+import ProductFilter from './productFilter'
 
 // import { Container, Row, Col } from 'react-bootstrap';
 

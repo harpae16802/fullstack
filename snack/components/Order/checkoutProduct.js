@@ -14,7 +14,7 @@ const CheckoutProduct = ({ dataCount, productCount}) => {
         <div className="accordion" id={`accordionPanelsStayOpenExample${index}`} key={index}>
           <div className="accordion-item">
             <h2 className="accordion-header" id={`panelsStayOpen-heading${index}`}>
-              <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#panelsStayOpen-collapse${index}`} aria-expanded="false" aria-controls={`panelsStayOpen-collapse${index}`} style={{ backgroundColor: 'transparent', color: 'inherit', borderBottom: 'solid 1px #B1B7B5' }}>
+              <button className={`accordion-button ${styles.customAccordionButton}`} type="button" data-bs-toggle="collapse" data-bs-target={`#panelsStayOpen-collapse${index}`} aria-expanded="false" aria-controls={`panelsStayOpen-collapse${index}`} style={{ backgroundColor: 'transparent', color: 'inherit', borderBottom: 'solid 1px #B1B7B5' }}>
               {/* 商家資訊 */}
                 <Order1Seller nightmarket="士林夜市" seller="豪大雞排" />
               </button>
@@ -23,7 +23,7 @@ const CheckoutProduct = ({ dataCount, productCount}) => {
               <div className="accordion-body">
 
         {/* 商品資訊 */}
-        {Array(productCount)
+        {Array(2)
         .fill(null)
         .map((v,i) => {
           return (

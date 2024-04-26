@@ -109,7 +109,6 @@ export default function Order() {
             {/* orderBorder */}
           </div>
           
-       
 
        {/* '查看商品 繼續選購'按鈕 */}
           <div style={{display:'flex',justifyContent:'center'}}>

@@ -442,7 +442,7 @@
 }
 
 .order1Picture{
-    margin-top: 35px;
+    margin-top: 25px;
     border-radius: 10px;
 }
 @media (max-width: 576px) {
@@ -547,7 +547,7 @@
 
 /* 產品詳細:底線 */
 .orderProductBorder{
-    margin-top: 22px;
+    margin-top: 15px;
     margin-left: -71px;
     width: 1329px;
     height: 20px;
@@ -555,8 +555,8 @@
 }
 @media (max-width: 576px) {
     .orderProductBorder{
-        width: 315px;
-        margin-top: -10px;
+      width: 315px;
+      margin-top: -10px;
       margin-left:-72px;
       font-size: 14px;
     }
@@ -890,12 +890,85 @@
 }
 
 /* 彈窗:付款成功 */
+.paymentSuccessWidth{
+    max-width: 480px;
+}
+
+.paymentSuccessHeight{
+    height: 450px;
+}
+
+.paymentSuccessText{
+    font-size: 28px;
+    color: #A32C2D;
+    margin-top: 20px;
+    margin-left: 160px;
+    font-weight: bolder;
+}
+
+.paymentSuccessCross{
+    margin-top: -40px;
+    margin-left: 420px;
+    color: #A32C2D;
+    font-size: 22px;
+    font-weight: 100;
+}
+
+.successGreenFrame{
+    width: 101px;
+    height: 101px;
+    border:solid 8px #7BDB73;
+    margin-top: 45px;
+    margin-left: 168px;
+    text-align: center;
+    padding-top: 20px;
+    border-radius: 30px;
+}
+
+.successTickIcon{
+    font-size: 45px;
+    font-weight: 900;
+    color: #29A21E;
+}
+
+.successTextContainer{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 30px;
+}
+
 .successText{
     font-size: 16px;
     font-weight: 900;
     color: #A32C2D;
+    margin-left: -15px;
 }
 
-.n{
-    color:#78b270;
+.nextTextButton{
+    text-align: center;
+    padding-top: 7px;
+    width: 144px;
+    height: 38px;
+    color: #fff;
+    background-color: rgb(163, 44, 45);
+    border-radius: 20px;
+    font-weight: bolder;
+    margin-top: 40px;
+    margin-left: 158px;
+}
+
+
+/* 手風琴元件:箭頭Icon設定 */
+.accordion-button.collapsed::after {
+    color: red;
+}
+
+.accordion-button.collapsed::after {
+    right: calc(100% - 100px);
+}
+
+.customAccordionButton::after{
+   margin-left: -40px;
+   color: #A32C2D  !important; 
 }
