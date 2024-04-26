@@ -331,6 +331,23 @@
 @media (max-width: 576px) {
     .orderContainerAdd{
        width: 299px ; 
+       height: 72px;
+    }
+  }
+
+  /* orderStep1:產品容器 */
+  .orderProductContainer{
+    margin-left: 50px;
+    width: calc( 100% - 100px );
+    height: auto;
+    max-height: 160px;
+    background-color: #fff;
+    padding-bottom: 8px;
+  }
+  @media (max-width: 576px) {
+    .orderProductContainer{
+       width: 245px ; 
+       height: 183px;
     }
   }
 
@@ -359,31 +376,34 @@
 @media (max-width: 576px) {
     .sellerIcon{
        font-size: 30px; 
-       margin-left: -40px;
+       margin-left: -35px;
+       margin-top: 20px;
     }
   }
 
 .checkoutMarket{
     margin-left: 60px;
-    margin-top: 10px;
+    margin-top: 20px;
     font-weight: bold;
     font-size: 30px;
 }
 @media (max-width: 576px) {
     .checkoutMarket{
        font-size: 14px; ; 
+       margin-left: 20px;
     }
   }
 
 .checkoutProduct{
     margin-left: 30px;
-    margin-top: 10px;
+    margin-top: 20px;
     font-weight: bold;
     font-size: 30px;
 }
 @media (max-width: 576px) {
     .checkoutProduct{
-       font-size: 14px; ; 
+       font-size: 14px;
+       margin-left: 15px;
     }
   }
 
@@ -410,8 +430,8 @@
 .checkoutDownIcon{
     color: #A32C2D;
     font-size: 34px;
-    margin-left: 20px;
-    margin-top: 10px;
+    margin-left: 25px;
+    margin-top: 20px;
 }
 
 /* 訂單:商品元件外框 */
@@ -425,6 +445,14 @@
     margin-top: 35px;
     border-radius: 10px;
 }
+@media (max-width: 576px) {
+    .order1Picture{
+        display: flex;
+       margin-top: -40px;
+       margin-bottom: 20px;
+       margin-left: -40px;
+    }
+  }
 
 .order2Picture{
     margin-top: 35px;
@@ -439,12 +467,40 @@
     font-weight: bold;
     font-size: 20px;
 }
+@media (max-width: 576px) {
+    .productText{
+        margin-top: -40px;
+        margin-left: 30px;
+       font-size: 14px;
+    }
+  }
+
+  .productPrice{
+    margin-top: 15px;
+    margin-left: 30px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  @media (max-width: 576px) {
+    .productPrice{
+      font-size: 20px;
+      margin-left: 20px;
+      margin-top: -50px;
+      font-weight: bolder;
+    }
+  }
 
 /* 數量增減:外框 */
 .numberButton{
     display: flex;
     margin-left: 600px;
 }
+@media (max-width: 576px) {
+    .numberButton{
+        margin-top: 50px;
+       margin-left: -240px;
+    }
+  }
 
 /* 數量增減按鈕 */
 .productNumber{
@@ -457,6 +513,13 @@
     text-align: center;
     font-weight: bolder; 
 }
+@media (max-width: 576px) {
+    .productNumber{
+       font-size: 16px;
+       margin-top: 80px;
+       
+    }
+  }
 
 .removeButton{
     padding-top: 8px;
@@ -470,6 +533,13 @@
     text-align: center;
     font-weight: bolder;
 }
+@media (max-width: 576px) {
+    .removeButton{
+        margin-top: 120px;
+      margin-left: 30px;
+      font-size: 14px;
+    }
+  }
 
 .trashIcon{
     font-size: x-large;
@@ -483,6 +553,14 @@
     height: 20px;
     border-bottom:solid 2px #B1B7B5 ;
 }
+@media (max-width: 576px) {
+    .orderProductBorder{
+        width: 315px;
+        margin-top: -10px;
+      margin-left:-72px;
+      font-size: 14px;
+    }
+  }
 
 .discount{
     display: flex;
@@ -494,12 +572,23 @@
     color: rgb(102, 50, 4);
     font-weight: bolder;
 }
+@media (max-width: 576px) {
+    .discountTitle{
+       display: none;
+    }
+  }
+
 
 /* 優惠加購:外層容器 */
 .discountContainer{
     display: flex;
     margin-left: 30px;
 }
+@media (max-width: 576px) {
+    .discountContainer{
+       display: none;
+    }
+  }
 
 /* 優惠加購:產品列容器 */
 .discountContent{
@@ -586,6 +675,12 @@
   font-weight: bolder;
   text-align: center;
 }
+@media (max-width: 576px) {
+    .previousButton{
+       display: none;
+    }
+  }
+
 
 .nextButton{
   margin-top: 50px;  
@@ -598,6 +693,11 @@
   font-weight: bolder;
   text-align: center;
 }
+@media (max-width: 576px) {
+    .nextButton{
+       display: none;
+    }
+  }
 
 /* orderStep2 */
 .paymentContainer{
