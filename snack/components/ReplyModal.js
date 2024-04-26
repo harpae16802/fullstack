@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import styles from '../styles/navbar-seller.module.scss'
 import { Modal, Button, Form } from 'react-bootstrap'
+
 
 function ReplyModal({ show, onHide, commentId, submitReply ,commentContent}) {
   const [reply, setReply] = useState('')
@@ -41,10 +43,10 @@ function ReplyModal({ show, onHide, commentId, submitReply ,commentContent}) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" className={styles.btnSecondary}  onClick={onHide}>
           取消
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button variant="primary"  className={styles.btnPrimary} onClick={handleSubmit}>
           回覆評論
         </Button>
       </Modal.Footer>

@@ -119,6 +119,7 @@ export default function AddProducts() {
       })
 
       if (response.data.success) {
+      
         alert('产品添加成功')
       } else {
         alert('产品添加失败')

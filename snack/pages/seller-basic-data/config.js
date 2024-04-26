@@ -4,6 +4,9 @@ const SELLER_API="http://localhost:3002/sellers/"
 // 產品相關路由
 const PRODUCTS_API="http://localhost:3002/products"
 
+// 產品種類路由
+const PRODUCTS_CATEGORIES = "http://localhost:3002/api/categories"
+
 // 修改路由
 const SELLER_LOCATION="http://localhost:3000/seller-basic-data/modify"
 
@@ -16,4 +19,5 @@ const COMMENT="http://localhost:3002/comment"
 // 廣告上船路由
 const ADROUTER="http://localhost:3002/ad"
 
-export {SELLER_API,PRODUCTS_API,SELLER_LOCATION,ORDERDETAIL,COMMENT ,ADROUTER}
+
+export {SELLER_API,PRODUCTS_API,SELLER_LOCATION,ORDERDETAIL,COMMENT ,PRODUCTS_CATEGORIES,ADROUTER}
