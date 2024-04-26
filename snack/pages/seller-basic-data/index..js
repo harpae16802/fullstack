@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 export default function SellerBasicData() {
   // 使用 useRouter
@@ -40,6 +41,17 @@ export default function SellerBasicData() {
     profilePicture: '',
   })
 
+  // 彈出視窗
+  const [showUpdateSuccessModal, setShowUpdateSuccessModal] = useState(false)
+  const [showUpdateFailModal, setShowUpdateFailModal] = useState(false)
+  const [filePictureSuccessModal, setfilePictureSuccessModal] = useState(false)
+  const [filePictureFailModal, setfilePictureFailModal] = useState(false)
+  const [originData, setOriginData] = useState({})
+  const [showNoChangeModal, setShowNoChangeModal] = useState(false)
+
+  //眼睛符號
+  const [passwordShown, setPasswordShown] = useState(false)
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -52,8 +64,8 @@ export default function SellerBasicData() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
+          const data = response.data.data
+          console.log(data)
 
           setSellerData((prevData) => ({
             ...prevData,
@@ -68,9 +80,10 @@ export default function SellerBasicData() {
             closingHours: data.closing_hours || '23:00',
             restDay: data.rest_day?.toString() || '6',
             profilePicture: data.profile_picture || '',
-            // 其他字段...
           }))
+          setOriginData(data)
         })
+
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
@@ -86,6 +99,11 @@ export default function SellerBasicData() {
     }))
   }
 
+  // 眼睛符號
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown)
+  }
+
   // 修改 更新 賣家所有資料 包含圖片
   const handleFileChange = (e) => {
     setSellerData((prevState) => ({
@@ -94,20 +112,12 @@ export default function SellerBasicData() {
     }))
   }
 
-  // 驗證
-  const validateForm = () => {
-    let valid = true
-    if (!sellerData.account || !sellerData.email) {
-      alert('請輸入資料')
-      valid = false
-    }
-    // 可以添加更多的验证规则
-    return valid
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!validateForm()) return
+    if (JSON.stringify(sellerData) === JSON.stringify(originData)) {
+      setShowNoChangeModal(true)
+      return
+    }
     const formData = new FormData()
     formData.append('account', sellerData.account)
     formData.append('password', sellerData.password)
@@ -116,8 +126,8 @@ export default function SellerBasicData() {
     formData.append('email', sellerData.email)
     formData.append('companyAddress', sellerData.companyAddress)
     formData.append('companyDescription', sellerData.companyDescription)
-    formData.append('openingHours', sellerData.openingHours);  // 添加營業開始時間
-    formData.append('closingHours', sellerData.closingHours);
+    formData.append('openingHours', sellerData.openingHours) // 添加營業開始時間
+    formData.append('closingHours', sellerData.closingHours)
     formData.append('restDay', sellerData.restDay)
     // 文字部分
     const storeImageInput = document.getElementById('store_image')
@@ -133,15 +143,12 @@ export default function SellerBasicData() {
         },
       })
       .then((response) => {
-        alert('更新成功')
-        // UI
+        setShowUpdateSuccessModal(true)
       })
       .catch((error) => {
-        console.error('更新失败', error)
-        alert('更新失败')
+        setShowUpdateFailModal(true)
       })
   }
-
 
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
@@ -158,15 +165,15 @@ export default function SellerBasicData() {
         },
       })
       .then((response) => {
-        alert('頭像上傳成功')
-        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setImageVersion((prevVersion) => prevVersion + 1)
         setSellerData((prevData) => ({
           ...prevData,
-          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+          profilePicture: response.data.imageUrl,
         }))
+        setfilePictureSuccessModal(true)
       })
       .catch((error) => {
-        console.error('頭像上傳失敗', error)
+        setfilePictureFailModal(ture)
         alert('頭像上傳失敗')
       })
   }
@@ -201,7 +208,6 @@ export default function SellerBasicData() {
                     width: '100px',
                     height: '100px',
                     borderRadius: '50px',
-             
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
                 />
@@ -275,7 +281,7 @@ export default function SellerBasicData() {
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
 
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="account" className="form-label">
                     使用帳號
                   </label>
@@ -289,21 +295,38 @@ export default function SellerBasicData() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 container">
                   <label htmlFor="password" className="form-label">
                     使用者密碼
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="使用者密碼"
-                    value={sellerData.password || ''}
-                    onChange={handleChange}
-                  />
+                  <div className="input-wrapper row">
+                    <input
+                      type={passwordShown ? 'text' : 'password'}
+                      className="form-control col-6"
+                      id="password"
+                      name="password"
+                      placeholder="请输入密码"
+                      value={sellerData.password || ''}
+                      onChange={handleChange}
+                    />
+                    <i
+                      className="icon-toggle col-6"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        position: 'relative',
+                        top: '-27.5px',
+                        left: '90%', // 可根据需要调整
+                        transform: 'translateY(-50%)',
+                        fontSize: '30px', // 调整为适合的大小
+                        cursor: 'pointer',
+                        zIndex: '2', // 确保图标位于最上层
+                      }}
+                    >
+                      {passwordShown ? <FaEyeSlash /> : <FaEye />}
+                    </i>
+                  </div>
                 </div>
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="storeName" className="form-label">
                     商家店名
                   </label>
@@ -317,7 +340,7 @@ export default function SellerBasicData() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="contactNumber" className="form-label">
                     商家連絡電話
                   </label>
@@ -331,7 +354,7 @@ export default function SellerBasicData() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="email" className="form-label">
                     Email
                   </label>
@@ -345,7 +368,7 @@ export default function SellerBasicData() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="companyAddress" className="form-label">
                     商家地址
                   </label>
@@ -359,7 +382,7 @@ export default function SellerBasicData() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="store_image" className="form-label">
                     上傳商家圖片
                   </label>
@@ -371,7 +394,7 @@ export default function SellerBasicData() {
                     onChange={handleFileChange} // 圖片
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-5">
                   <label htmlFor="companyDescription" className="form-label">
                     店家簡介
                   </label>
@@ -385,6 +408,7 @@ export default function SellerBasicData() {
                     onChange={handleChange}
                   ></textarea>
                 </div>
+                <br></br>
                 {/* 下拉是選單 */}
                 <div className={styles.selectGroup}>
                   <div className="col-auto">
@@ -448,6 +472,7 @@ export default function SellerBasicData() {
                     </select>
                   </div>
                 </div>
+                <br></br>
                 {/* 按鈕樣式 */}
                 <div className={styles.buttonGroup}>
                   <Link href="/seller-basic-data/">
@@ -458,11 +483,111 @@ export default function SellerBasicData() {
                   </button>
                 </div>
               </form>
+              
             </div>
+            
           </div>
           {/* 表單 */}
         </div>
       </div>
+      <Modal
+        show={showUpdateSuccessModal}
+        onHide={() => setShowUpdateSuccessModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>修改成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>您的商家資料已成功更新。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            className={styles.btnPrimary}
+            onClick={() => setShowUpdateSuccessModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showUpdateFailModal}
+        onHide={() => setShowUpdateFailModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>修改失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>更新過程中發生錯誤，請稍後再試。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setShowUpdateFailModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={filePictureSuccessModal}
+        onHide={() => setfilePictureSuccessModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>修改成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>您的頭貼資料已成功更新。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setfilePictureSuccessModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={filePictureFailModal}
+        onHide={() => setfilePictureFailModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>修改失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>更新過程中發生錯誤，請稍後再試。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setfilePictureFailModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showNoChangeModal}
+        onHide={() => setShowNoChangeModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>資料未變更</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>您沒有做任何變更。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowNoChangeModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }

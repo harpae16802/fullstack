@@ -43,7 +43,7 @@ function ReplyModal({ show, onHide, commentId, submitReply ,commentContent}) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" className={styles.btnSecondary}  onClick={onHide}>
+        <Button variant="secondary"   onClick={onHide}>
           取消
         </Button>
         <Button variant="primary"  className={styles.btnPrimary} onClick={handleSubmit}>

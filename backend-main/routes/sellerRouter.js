@@ -147,5 +147,42 @@ sellerRouter.put("/:sellerId/edit/profilePicture", upload.single('profilePicture
   }
 });
 
+sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
+  const { sellerId } = req.params;
+  const { bankAccounts } = req.body;
+
+  try {
+    await db.getConnection().then(async (conn) => {
+      await conn.beginTransaction();
+      try {
+        // 這裡假設您要清空舊的銀行帳號並添加新的信息
+        await conn.query("DELETE FROM bank_account WHERE seller_id = ?", [sellerId]);
+
+        for (const account of bankAccounts) {
+          await conn.query("INSERT INTO bank_account (seller_id, account_number, bank_code) VALUES (?, ?, ?)", [
+            sellerId,
+            account.account_number,
+            account.bank_code
+          ]);
+        }
+
+        // 提交事务
+        await conn.commit();
+        res.json({ success: true, message: "银行账户更新成功" });
+      } catch (error) {
+        // 出现错误则回滚事务
+        await conn.rollback();
+        throw error;
+      } finally {
+        // 结束连接
+        conn.release();
+      }
+    });
+  } catch (error) {
+    console.error("更新银行账户失败:", error);
+    res.status(500).json({ success: false, message: "服务器错误" });
+  }
+});
+
 
 export default sellerRouter;

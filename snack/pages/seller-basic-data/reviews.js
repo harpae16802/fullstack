@@ -285,7 +285,7 @@ export default function Reviews() {
                               {new Date(comment.datetime).toLocaleDateString()}
                             </small>
                           </p>
-                          <Button onClick={() => handleReplyClick(comment.id,comment.comment)}>
+                          <Button  className={` border-radius: 5% ${styles.btnPrimary}`} onClick={() => handleReplyClick(comment.id,comment.comment)}>
                             回復
                           </Button>
                         </div>

@@ -46,6 +46,13 @@ export default function AddProducts() {
     status: '',
   })
 
+  // 比較資料
+  const [originalProductDetails, setOriginalProductDetails] = useState({})
+
+  //彈窗
+  const [showUpdateSuccessModal, setShowUpdateSuccessModal] = useState(false)
+  const [showUpdateFailModal, setShowUpdateFailModal] = useState(false)
+  const [showNoChangeModal, setShowNoChangeModal] = useState(false)
   // 種類
   const [categories, setCategories] = useState([])
   const CATEGORY_MAP = {
@@ -92,6 +99,7 @@ export default function AddProducts() {
         .get(`${PRODUCTS_API}/details/${productId}`)
         .then((response) => {
           setProductDetails(response.data.product)
+          setOriginalProductDetails(response.data)
           return axios.get(`${PRODUCTS_CATEGORIES}`)
         })
         .then((response) => {
@@ -141,7 +149,12 @@ export default function AddProducts() {
   // 送出表單
   const handleSubmit = (event) => {
     event.preventDefault()
-
+    if (
+      JSON.stringify(productDetails) === JSON.stringify(originalProductDetails)
+    ) {
+      setShowNoChangeModal(true) // 顯示資料未變更的彈窗
+      return
+    }
     const formData = new FormData()
     formData.append('product_name', productDetails.product_name)
     formData.append('product_description', productDetails.product_description)
@@ -152,7 +165,7 @@ export default function AddProducts() {
     formData.append('category', productDetails.category)
     formData.append('category_id', productDetails.category_id)
     formData.append('status', productDetails.status)
-    formData.append('image', fileInputRef.current.files[0]) // 假设图片上传是可选的
+    formData.append('image', fileInputRef.current.files[0])
 
     axios
       .put(`${PRODUCTS_API}/update-product/${productId}`, formData, {
@@ -161,9 +174,11 @@ export default function AddProducts() {
         },
       })
       .then((response) => {
+        setShowUpdateSuccessModal(true)
         alert('产品更新成功')
       })
       .catch((error) => {
+        setShowUpdateFailModal(true)
         console.error('更新产品信息失败:', error)
       })
   }
@@ -472,6 +487,64 @@ export default function AddProducts() {
           {/* 表單 */}
         </div>
       </div>
+      <Modal
+        show={showUpdateSuccessModal}
+        onHide={() => setShowUpdateSuccessModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>更新成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>產品資料已成功更新。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            className={styles.btnPrimary}
+            onClick={() => setShowUpdateSuccessModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showUpdateFailModal}
+        onHide={() => setShowUpdateFailModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>更新失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>產品更新過程中發生錯誤。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setShowUpdateFailModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showNoChangeModal}
+        onHide={() => setShowNoChangeModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>資料未變更</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>您沒有做任何變更。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setShowNoChangeModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }

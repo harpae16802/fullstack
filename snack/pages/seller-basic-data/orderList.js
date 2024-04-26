@@ -342,6 +342,7 @@ export default function Order() {
               <div className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>訂單管理系統</h2>
                 {/* 這裡要改成起始日期 */}
+                <br></br>
                 <div className={styles.selectGroup}>
                   <div className="col-md-auto col-12">
                     <label htmlFor="" className={styles.selectLabel}>
@@ -442,6 +443,7 @@ export default function Order() {
                     {/* 清除搜索職按鈕 */}
                   </div>
                 </div>
+                <br></br>
                 {/* 這裡要能搜索產品名稱 */}
                 {/* 我在這裡要實現資料的顯示 */}
                 {loading ? (
@@ -514,12 +516,12 @@ export default function Order() {
                         className="page-link"
                         onClick={() => handlePageChange(currentPage - 1)}
                       >
-                        <i className="bi bi-chevron-left"></i>
+                        <i className="bi bi-chevron-left "></i>
                       </button>
                     </li>
                     {renderPageNumbers()}
                     <li
-                      className={`page-item ${
+                      className={`page-item  ${
                         currentPage === totalPages ? 'disabled' : ''
                       }`}
                     >
@@ -527,7 +529,7 @@ export default function Order() {
                         className="page-link"
                         onClick={() => handlePageChange(currentPage + 1)}
                       >
-                        <i className="bi bi-chevron-right"></i>
+                        <i className="bi bi-chevron-right "></i>
                       </button>
                     </li>
                   </ul>

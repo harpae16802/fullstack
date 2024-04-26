@@ -33,6 +33,8 @@ export default function bank() {
   //彈出視窗
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showFailModal, setShowFailModal] = useState(false)
+  const [originalBankAccounts, setOriginalBankAccounts] = useState([]);
+  const [showNoChangeModal, setShowNoChangeModal] = useState(false);
 
   // 使用Ref
   const handleImageClick = () => {
@@ -54,8 +56,8 @@ export default function bank() {
             ...prevData,
             profilePicture: profile_picture || '', // 使用鉤子
             bankAccounts: bankAccounts || [], // 使用鉤子
-            // 設定前端的 狀態
           }))
+          setOriginalBankAccounts(bankAccounts || []);  
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
@@ -78,16 +80,19 @@ export default function bank() {
   // 提交表单
   const handleSubmit = (e) => {
     e.preventDefault()
-
+    if (JSON.stringify(sellerData.bankAccounts) === JSON.stringify(originalBankAccounts)) {
+      setShowNoChangeModal(true);
+      return;
+    }
     axios
       .put(`${SELLER_API}/${sellerId}/update-bank-accounts`, {
         bankAccounts: sellerData.bankAccounts,
       })
       .then((response) => {
-        setShowSuccessModal(true)
+        setShowSuccessModal(true);
       })
       .catch((error) => {
-        setShowFailModal(true)
+        setShowFailModal(true);
       })
   }
 
@@ -210,7 +215,7 @@ export default function bank() {
                 <h2 className={`${styles.formTitle}`}>銀行帳號設定</h2>
                 {sellerData.bankAccounts.map((account, index) => (
                   <React.Fragment key={`bank-account-group-${index}`}>
-                    <div className="mb-3">
+                    <div className="mb-5">
                       <label
                         htmlFor={`accountNumber-${index}`}
                         className="form-label"
@@ -230,7 +235,7 @@ export default function bank() {
                         )}
                       />
                     </div>
-                    <div className="mb-3">
+                    <div className="mb-5">
                       <label
                         htmlFor={`bankCode-${index}`}
                         className="form-label"
@@ -297,6 +302,15 @@ export default function bank() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal show={showNoChangeModal} onHide={() => setShowNoChangeModal(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>資料未變更</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>您沒有做任何變更。</Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowNoChangeModal(false)}>關閉</Button>
+  </Modal.Footer>
+</Modal>
     </Section>
   )
 }

@@ -271,6 +271,7 @@ const ProductsList = () => {
             <div className={`${styles.formWrapper}`}>
               <h2 className={`${styles.formTitle}`}>產品列表</h2>
               {/* 搜索框 */}
+              <br></br>
               <div className="container">
                 <div className="row">
                   <div className="col-md-9 col-12">
@@ -300,12 +301,13 @@ const ProductsList = () => {
               </div>
               {/* 搜索框 */}
               <br></br>
+              <br></br>
               {/* 篩選 */}
               <div className="container">
                 <div className="col-12">
                   <div className="row">
                     {/*  類別篩選 */}
-                    <div className="col-md-4 col-12 mb-3">
+                    <div className="col-md-4 col-12 mb-5">
                       <select
                         className="form-control"
                         onChange={(e) => {
@@ -330,7 +332,7 @@ const ProductsList = () => {
                     </div>
 
                     {/* 價格篩選 */}
-                    <div className="col-md-4 col-12 mb-3">
+                    <div className="col-md-4 col-12 mb-5">
                       <select
                         className="form-control"
                         onChange={(e) => {
@@ -356,7 +358,7 @@ const ProductsList = () => {
                     </div>
 
                     {/* 狀態篩選 */}
-                    <div className="col-md-4 col-12 mb-3">
+                    <div className="col-md-4 col-12 mb-5">
                       <select
                         className="form-control"
                         onChange={(e) =>
@@ -430,28 +432,28 @@ const ProductsList = () => {
                     }`}
                   >
                     <button
-                      className="page-link"
+                      className="page-link cursor:'pointer'" 
                       onClick={() =>
                         currentPage > 1 && handlePageChange(currentPage - 1)
                       }
                     >
-                      <i className="bi bi-chevron-left"></i>
+                      <i className="bi bi-chevron-left cursor:'pointer'"></i>
                     </button>
                   </li>
                   {renderPageNumbers()}
                   <li
-                    className={`page-item ${
-                      currentPage === totalPages ? 'disabled' : ''
+                    className={`page-item cursor:'pointer' ${
+                      currentPage === totalPages ? 'disabled' : '' 
                     }`}
                   >
                     <button
-                      className="page-link"
+                      className="page-link  cursor-pointer;"
                       onClick={() =>
                         currentPage < totalPages &&
                         handlePageChange(currentPage + 1)
                       }
                     >
-                      <i className="bi bi-chevron-right"></i>
+                      <i className="bi bi-chevron-right cursor:'pointer'" ></i>
                     </button>
                   </li>
                 </ul>

@@ -41,6 +41,10 @@ export default function AddProducts() {
     category: '',
   })
 
+  // 彈出視窗
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showFailModal, setShowFailModal] = useState(false)
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -71,7 +75,7 @@ export default function AddProducts() {
   //表單狀態
   const handleInputChange = (e) => {
     const { name, value } = e.target
-  
+
     // 種類
     if (name === 'category_id') {
       const category = e.target.options[e.target.selectedIndex].text
@@ -119,14 +123,13 @@ export default function AddProducts() {
       })
 
       if (response.data.success) {
-      
-        alert('产品添加成功')
+        setShowSuccessModal(true)
       } else {
         alert('产品添加失败')
       }
     } catch (error) {
       console.error('产品添加出错', error)
-      alert('产品添加过程中发生错误')
+      setShowFailModal(true)
     }
   }
 
@@ -261,11 +264,7 @@ export default function AddProducts() {
                     value={newProductData.productName}
                     onChange={handleInputChange}
                   />
-                  <input
-                    type="hidden"
-                    name="sellerId"
-                    value={sellerId}
-                  ></input>
+                  <input type="hidden" name="sellerId" value={sellerId}></input>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="productDescription" className="form-label">
@@ -361,7 +360,7 @@ export default function AddProducts() {
                     <select
                       className={`form-select ${styles.customSelect}`}
                       id="category_id"
-                      name="category_id" 
+                      name="category_id"
                       value={newProductData.category_id}
                       onChange={handleInputChange}
                     >
@@ -391,6 +390,40 @@ export default function AddProducts() {
           {/* 表單 */}
         </div>
       </div>
+
+      {/* Success Modal */}
+      <Modal
+        show={showSuccessModal}
+        onHide={() => setShowSuccessModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>新增成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>產品已成功添加至賣家目錄。</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary"  className={styles.btnPrimary} onClick={() => setShowSuccessModal(false)}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Fail Modal */}
+      <Modal
+        show={showFailModal}
+        onHide={() => setShowFailModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>新增失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>添加產品過程中發生錯誤，請檢查數據後重試。</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary"  className={styles.btnPrimary} onClick={() => setShowFailModal(false)}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }

@@ -96,7 +96,7 @@ export default function NavbarSeller() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="./index">
+                      <a className="dropdown-item" href="/seller-basic-data/QRcode">
                         掃描QRcode
                       </a>
                     </li>
@@ -106,7 +106,7 @@ export default function NavbarSeller() {
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="/seller-basic-data/orderList">
                         訂單管理
                       </a>
                     </li>
@@ -144,22 +144,22 @@ export default function NavbarSeller() {
                       >
                         <div className="triangle"></div>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a className="dropdown-item" href="/">
                             進入店面
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a className="dropdown-item" href="/seller-basic-data/orderList">
                             訂單管理
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a className="dropdown-item" href="/seller-basic-data/QRcode">
                             掃描QRcode
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a className="dropdown-item" href="/">
                             登出
                           </a>
                         </li>

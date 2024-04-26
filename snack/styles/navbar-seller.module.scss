@@ -63,7 +63,7 @@ $mobile-width: 480px;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 4px; // 根據設計調整半徑
+  border-radius: 30px; // 根據設計調整半徑
   cursor: pointer;
   font-weight: bold; // 假設按鈕根據設計是粗體
   margin-right: 10px; // 按鈕之間的間距
@@ -74,11 +74,11 @@ $mobile-width: 480px;
 }
 
 .btnSecondary {
-  background-color: #f7f7f7; // 淺灰色，根據設計調整
-  color: #333; // 次要按鈕的深色文字
+  background-color: $sidebar-background; // 淺灰色，根據設計調整
+  color: $text-color; // 次要按鈕的深色文字
   border: 1px solid #dedede; // 設計中的邊框
   padding: 10px 20px;
-  border-radius: 4px; // 根據設計調整半徑
+  border-radius: 30px; // 根據設計調整半徑
   cursor: pointer;
   font-weight: bold; // 假設按鈕根據設計是粗體
   margin-left: 10px; // 按鈕之間的間距
@@ -420,6 +420,7 @@ $mobile-width: 480px;
 
 // 搜索和篩選輸入框樣式
 .form-control {
+  
   border: 1px solid $border-red;
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba($primary-red, .25);
@@ -541,3 +542,14 @@ $mobile-width: 480px;
 // .modal.show .modal-dialog {
 //   transform: translateY(0); /* 过渡到原位置 */
 // }
+.input-wrapper {
+  position: relative;
+}
+
+.icon-toggle {
+  position: absolute;
+  top: 50%;  
+  right: 16px;  /* 根据具体的设计调整 */
+  transform: translateY(-50%);
+  font-size: 24px;  /* 或者根据需要调整大小 */
+}
