@@ -11,6 +11,8 @@ import { SIGN_UP_POST } from '@/components/config/api-path'
 import { z } from 'zod'
 import toast, { Toaster } from 'react-hot-toast'
 
+
+
 // 註冊檢查用
 const schemaEmail = z.string().email({ message: '請填寫正確的E-MAIL格式' })
 const schemaPwd = z.string().min(6, { message: '請填寫正確的密碼格式' })
@@ -63,6 +65,7 @@ export default function LoginCustom() {
     })
   }
 
+
   // ==== 註冊的部分 ====
 
   // 狀態為物件，屬性對應到表單的欄位名稱
@@ -78,18 +81,6 @@ export default function LoginCustom() {
     password3: '',
     password4: '',
   })
-
-  // // toast設定
-  // const notify = () =>
-  //   toast.success('歡迎您！登入成功', {
-  //     style: {
-  //       color: '#a32c2d',
-  //     },
-  //     iconTheme: {
-  //       primary: '#29a21e',
-  //       secondary: '#ffffff',
-  //     },
-  //   })
 
   // 多欄位共用事件函式
   const handleFieldChange = (e) => {
@@ -187,12 +178,13 @@ export default function LoginCustom() {
     }
   }
 
-  useEffect(() => {
-    // 如果已經登入，將用戶導向首頁
-    if (auth.custom_id) {
-      router.replace('/')
-    }
-  }, [auth, router])
+  // useEffect(() => {
+  //   // 如果已經登入，將用戶導向首頁
+  //   if (auth.custom_id) {
+  //     router.push('/')
+  //   }
+  // }, [auth, router])
+
 
   return (
     <>
@@ -422,7 +414,7 @@ export default function LoginCustom() {
                         login(account, password).then((result) => {
                           if (result) {
                             // 登入成功後的操作，例如導航到另一個頁面
-                         
+
                             toast.success('歡迎您！登入成功', {
                               style: {
                                 color: '#a32c2d',
@@ -432,6 +424,7 @@ export default function LoginCustom() {
                                 secondary: '#ffffff',
                               },
                             })
+            
                             setTimeout(() => {
                               router.push('/')
                             }, 2000)
@@ -679,7 +672,7 @@ export default function LoginCustom() {
                     login(account, password).then((result) => {
                       if (result) {
                         // 登入成功後的操作，例如導航到另一個頁面
-                       
+
                         toast.success('歡迎您！登入成功', {
                           style: {
                             color: '#a32c2d',

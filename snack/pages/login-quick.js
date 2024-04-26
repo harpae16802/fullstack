@@ -1,13 +1,33 @@
 import Head from 'next/head'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/custom-context'
 import Link from 'next/link'
 import Section from '@/components/layout/section'
+import NomalModal from '@/components/modal/nomalmodal'
+import { FaSistrix, FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
+import { Modal, Button } from 'react-bootstrap'
+
 
 export default function PageA() {
   const { auth, login, logout } = useAuth()
+  // const [showModal, setShowModal] = useState(false);
+
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  // };
+
   return (
     <Section>
+ {/* <button onClick={()=>{setShowModal(true)}}>案我</button>
+      <NomalModal show={showModal} onHide={handleCloseModal} >
+        <h6>fffff</h6>
+      </NomalModal> */}
+
+  
+  
+              
+
+
       <ul className="navbar-nav mb-2 mb-lg-0">
         {auth.custom_id ? (
           <>
