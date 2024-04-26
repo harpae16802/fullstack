@@ -17,12 +17,12 @@ import authRouter from "./routes/authRouter.js";
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
-import signUpRouter from "./routes/sign-up.js"; 
+import signUpRouter from "./routes/sign-up.js";
 import indexInfoRouter from "./routes/indexinfo.js";
-import QRrouter from "./routes/qrcode.js"
-import orderDataRouter from "./routes/orderData.js"
-import commentRouter from './routes/comment.js'
-import adRouter from "./routes/adRouter.js"
+import QRrouter from "./routes/qrcode.js";
+import orderDataRouter from "./routes/orderData.js";
+import commentRouter from "./routes/comment.js";
+import adRouter from "./routes/adRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,16 +30,15 @@ const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;
-app.use(cors({
-  origin: 'http://localhost:3000', // 允许的前端源
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 允许的HTTP方法
-  credentials: true // 允许跨域带认证信息（cookies）
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 允许的前端源
+    methods: ["GET", "POST", "PUT", "DELETE"], // 允许的HTTP方法
+    credentials: true, // 允许跨域带认证信息（cookies）
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
-
 
 // ==== 如
 
@@ -61,6 +60,68 @@ app.use((req, res, next) => {
   next(); //呼叫他才能往下 不然網頁會一直停留在讀取旋轉
 });
 
+// Google會員登入
+app.post("/google-login", async (req, res) => {
+  // console.log(req.body);
+  //   res.json({ data: {} });
+  // });
+  const { displayName, email, uid, photoURL } = req.body || {};
+  const google_uid = uid;
+
+  const output = {
+    success: false,
+    error: "",
+    code: 0,
+    //當success變為true要的資料
+    data: {
+      custom_id: 0,
+      account: "",
+      google_uid: "",
+      token: "",
+    },
+  };
+
+  const sql = "SELECT * FROM custom WHERE google_uid=?";
+  const [rows] = await db.query(sql, [google_uid]);
+  const row = rows[0];
+  if (rows.length) {
+    output.success = true;
+    // 打包  JWT
+    const token = jwt.sign(
+      {
+        custom_id: row.custom_id,
+        account: row.custom_account,
+        google_uid: row.google_uid,
+      },
+      // process.env.JWT_SECRET >> 去看 dev.env 檔
+      process.env.JWT_SECRET
+    );
+    output.data = {
+      custom_id: row.custom_id,
+      account: row.custom_account,
+      google_uid: row.google_uid,
+      token,
+    };
+  } else {
+
+
+    let result = {};
+    const sql =
+      "INSERT INTO custom (custom_name, custom_account, google_uid, photo_url) VALUES (?, ?, ?, ?)";
+    try {
+      [result] = await db.query(sql, [
+        displayName,
+        email,
+        google_uid,
+        photoURL,
+      ]);
+      output.success = !!result.affectedRows;
+    } catch (ex) {}
+  }
+
+  res.json(output);
+});
+
 // 一般會員登入
 app.post("/login-jwt", async (req, res) => {
   let { account, password } = req.body || {};
@@ -72,7 +133,7 @@ app.post("/login-jwt", async (req, res) => {
     data: {
       custom_id: 0,
       account: "",
-      nickname: "",
+      google_uid: "",
       token: "",
     },
   };
@@ -99,16 +160,16 @@ app.post("/login-jwt", async (req, res) => {
     // 打包  JWT
     const token = jwt.sign(
       {
-        custom_id: row.custom_id ,
-        account: row.custom_account ,
+        custom_id: row.custom_id,
+        account: row.custom_account,
         google_uid: row.google_uid,
       },
       // process.env.JWT_SECRET >> 去看 dev.env 檔
       process.env.JWT_SECRET
     );
     output.data = {
-      custom_id: row.custom_id ,
-      account: row.custom_account ,
+      custom_id: row.custom_id,
+      account: row.custom_account,
       nickname: row.custom_nickname,
       token,
     };
@@ -127,7 +188,6 @@ app.get("/jwt-data", async (req, res) => {
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
 
-
 // ==== 弘
 // 賣家登入驗證帳戶
 app.use("/auth", authRouter);
@@ -140,17 +200,16 @@ app.use("/sellers", sellerRouter);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 //QRcode 資輛查詢與變更
-app.use("/QRcode", QRrouter)
+app.use("/QRcode", QRrouter);
 
 // order路由
-app.use("/order" , orderDataRouter)
+app.use("/order", orderDataRouter);
 
 //賣家評論路由
-app.use("/comment", commentRouter)
+app.use("/comment", commentRouter);
 
 //賣家廣告路由
-app.use("/ad", adRouter)
-
+app.use("/ad", adRouter);
 
 // ==== 咚
 // 店家產品路由
@@ -162,12 +221,10 @@ app.use("/market", marketRouter);
 // 夜市地圖路由
 app.use("/market-map", marketMapRouter);
 
-
 // ==== 蓁
 // 會員路由
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/backRoute", index);
-
 
 /*---其他路由放在這之前---*/
 

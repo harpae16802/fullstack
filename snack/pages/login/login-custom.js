@@ -1,5 +1,6 @@
 import Section from '@/components/layout/section'
 import React, { useState, useContext, useEffect } from 'react'
+import useFirebase from '@/hooks/use-firebase'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import Link from 'next/link'
@@ -10,8 +11,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { SIGN_UP_POST } from '@/components/config/api-path'
 import { z } from 'zod'
 import toast, { Toaster } from 'react-hot-toast'
-
-
 
 // 註冊檢查用
 const schemaEmail = z.string().email({ message: '請填寫正確的E-MAIL格式' })
@@ -25,6 +24,14 @@ export default function LoginCustom() {
 
   // 處理手機板的註冊登入的頁面呈現
   const { selectedContent, handleLinkClick } = useContext(MiniloginContext)
+
+  // loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
+  const { logoutFirebase, loginGoogleRedirect, initApp, loginGoogle } =
+    useFirebase()
+
+  const callbackGoogleLoginRedirect = async (providerData) => {
+    console.log(providerData)
+  }
 
   // 處理必填欄位的CSS
   const [isAccountEmpty, setIsAccountEmpty] = useState(false) // 帳號狀態
@@ -64,7 +71,6 @@ export default function LoginCustom() {
       [fieldName]: !passwordVisibility[fieldName],
     })
   }
-
 
   // ==== 註冊的部分 ====
 
@@ -178,13 +184,16 @@ export default function LoginCustom() {
     }
   }
 
+  // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
+  useEffect(() => {
+    initApp(callbackGoogleLoginRedirect)
+  }, [])
   // useEffect(() => {
   //   // 如果已經登入，將用戶導向首頁
   //   if (auth.custom_id) {
   //     router.push('/')
   //   }
   // }, [auth, router])
-
 
   return (
     <>
@@ -424,7 +433,7 @@ export default function LoginCustom() {
                                 secondary: '#ffffff',
                               },
                             })
-            
+
                             setTimeout(() => {
                               router.push('/')
                             }, 2000)
@@ -515,7 +524,7 @@ export default function LoginCustom() {
                         </Link>
                       </div>
                     </form>
-                    <button className="google-login mt-5">
+                    <button className="google-login mt-5" onClick={() => loginGoogleRedirect()}>
                       <Image
                         src="/images/login/Google.svg"
                         alt=""
