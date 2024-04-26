@@ -2,14 +2,14 @@ import express from "express";
 import db from "../utils/db.js";
 import multer from "multer"; // 引入 multer 用於處理檔案上傳
 import path from "path"; // 引入 path 模塊，用於處理文件路徑
-import { log } from "console";
+
 
 const productsRouter = express.Router();
 
 // Multer 配置
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/products/"); // 正確的檔案儲存路徑
+    cb(null, "public/images/products");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -27,6 +27,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
+// 頭像更新
 productsRouter.put(
   "/edit-profile-picture/:sellerId",
   upload.single("profilePicture"),
@@ -45,6 +46,7 @@ productsRouter.put(
   }
 );
 
+//依照賣家找到對應商品
 productsRouter.get("/:sellerId/categories", async (req, res) => {
   const { sellerId } = req.params;
 
@@ -62,6 +64,8 @@ productsRouter.get("/:sellerId/categories", async (req, res) => {
     res.status(500).json({ success: false, message: "後端錯誤" });
   }
 });
+
+// 依照賣家獲取產品列表
 productsRouter.get("/:sellerId", async (req, res) => {
   const { sellerId } = req.params;
   const {
@@ -281,5 +285,7 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
     res.status(500).json({ success: false, message: "更新產品訊息:", error: error.message });
   }
 });
+
+
 
 export default productsRouter;

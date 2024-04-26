@@ -1,8 +1,8 @@
-// pages/seller-basic-data/addProduct.js
+// pages/seller-basic-data/[productId].js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API, PRODUCTS_API } from './config'
+import { SELLER_API, PRODUCTS_API, PRODUCTS_CATEGORIES } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -21,6 +21,9 @@ export default function AddProducts() {
   const { seller } = useSeller()
   const sellerId = seller?.id
 
+  // 拿取product_id
+  const { productId } = router.query
+
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -28,6 +31,33 @@ export default function AddProducts() {
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
   })
+
+  //設定products
+  const [productDetails, setProductDetails] = useState({
+    product_name: '',
+    product_description: '',
+    price: '',
+    product_nutrition: '',
+    product_ingredient: '',
+    stock_quantity: '',
+    category_id: '',
+    category: '',
+    image_url: '',
+  })
+
+  // 種類
+  const [categories, setCategories] = useState([])
+  const CATEGORY_MAP = {
+    1: '點心',
+    2: '飲料',
+    3: '甜品',
+    4: '湯品',
+    5: '小吃',
+    6: '主食',
+  };
+
+  // 載入
+  const [loading, setLoading] = useState(false)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -47,15 +77,77 @@ export default function AddProducts() {
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
-            // 其他字段...
+            
           }))
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
     }
-  }, [sellerId])
+    if (productId) {
+      axios
+        .get(`${PRODUCTS_API}/details/${productId}`)
+        .then((response) => {
+          setProductDetails(response.data.product)
+          return axios.get(`${PRODUCTS_CATEGORIES}`)
+        })
+        .then((response) => {
+          setLoading(false)
+          setCategories(response.data.categories)
+        })
+        .catch((error) => {
+          console.error('加载产品详情失败:', error)
+          setLoading(false)
+        })
+    }
+  }, [sellerId, productId])
 
+  // 更新產品 (可控表單)
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }))
+  }
+
+
+  //種類對應表
+  const handleCategoryInputChange = (categoryId) => {
+    const category = CATEGORY_MAP[categoryId] || ''; 
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      category, 
+    }));
+  };
+  // 送出表單
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    handleCategoryInputChange(productDetails.category_id);
+    const formData = new FormData()
+    formData.append('product_name', productDetails.product_name)
+    formData.append('product_description', productDetails.product_description)
+    formData.append('price', productDetails.price)
+    formData.append('product_nutrition', productDetails.product_nutrition)
+    formData.append('product_ingredient', productDetails.product_ingredient)
+    formData.append('stock_quantity', productDetails.stock_quantity)
+    formData.append('category', productDetails.category); 
+    formData.append('category_id', productDetails.category_id)
+    formData.append('image', fileInputRef.current.files[0]) // 假设图片上传是可选的
+
+    axios
+      .put(`${PRODUCTS_API}/update-product/${productId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        alert('产品更新成功')
+      })
+      .catch((error) => {
+        console.error('更新产品信息失败:', error)
+      })
+  }
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -171,139 +263,170 @@ export default function AddProducts() {
           {/* 表單 */}
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
-              <form className={styles.formWrapper}>
+              <form onSubmit={handleSubmit} className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>修改商品</h2>
+                {loading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <>
+                    <div className="mb-3">
+                      <label htmlFor="product_name" className="form-label">
+                        產品名稱
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="product_name"
+                        name="product_name"
+                        placeholder="產品名稱"
+                        value={productDetails.product_name}
+                        onChange={handleChange}
+                      />
+                      <input
+                        type="hidden"
+                        name="sellerId"
+                        value={sellerId}
+                      ></input>
+                    </div>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="product_description"
+                        className="form-label"
+                      >
+                        產品描述
+                      </label>
+                      <textarea
+                        className="form-control"
+                        id="product_description"
+                        name="product_description"
+                        rows="3"
+                        placeholder="產品描述簡介"
+                        value={productDetails.product_description}
+                        onChange={handleChange}
+                      ></textarea>
+                    </div>
 
-                <div className="mb-3">
-                  <label htmlFor="productName" className="form-label">
-                    產品名稱
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id=""
-                    name=""
-                    placeholder="產品名稱"
-             
-                  />
-                  <input
-                    type="hidden"
-                    name="sellerId"
-                    value={sellerId}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="productDescription" className="form-label">
-                    產品描述
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id=""
-                    name=""
-                    rows="3"
-                    placeholder="產品描述簡介"
+                    <div className="mb-3">
+                      <label htmlFor="price" className="form-label">
+                        產品價格
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="price"
+                        name="price"
+                        placeholder="產品價格(台幣)"
+                        value={productDetails.price}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="product_nutrition  "
+                        className="form-label"
+                      >
+                        產品營養表
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="product_nutrition"
+                        name="product_nutrition"
+                        placeholder="產品營養表"
+                        value={productDetails.product_nutrition}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="product_ingredient"
+                        className="form-label"
+                      >
+                        產品成分
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="product_ingredient"
+                        name="product_ingredient"
+                        placeholder="產品成分"
+                        value={productDetails.product_ingredient}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="stock_quantity" className="form-label">
+                        產品數量
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="stock_quantity"
+                        name="stock_quantity"
+                        placeholder="產品數量"
+                        value={productDetails.stock_quantity}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-                  ></textarea>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="price" className="form-label">
-                    產品價格
-                  </label>
-                  <input
-                    type="number"
-                    className=""
-                    id=""
-                    name=""
-                    placeholder="產品價格(台幣)"
+                    <div className="mb-3">
+                      <label htmlFor="store_image" className="form-label">
+                        上傳產品圖片
+                      </label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        id="image"
+                        name="image"
+                        value={productDetails.image}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="productNutrition  " className="form-label">
-                    產品營養表
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id=""
-                    name=""
-                    placeholder="產品營養表"
+                    <div className={styles.selectGroup}>
+                      <div className="col-auto ">
+                        <label htmlFor="" className={styles.selectLabel}>
+                          選擇產品種類
+                        </label>
+                      </div>
 
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="productIngredient" className="form-label">
-                    產品成分
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id=""
-                    name=""
-                    placeholder="產品成分"
-
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="stockQuantity" className="form-label">
-                    產品數量
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id=""
-                    name=""
-                    placeholder="產品數量"
-
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="store_image" className="form-label">
-                    上傳產品圖片
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id=""
-                    name=""
-                  />
-                </div>
-
-                <div className={styles.selectGroup}>
-                  <div className="col-auto ">
-                    <label htmlFor="" className={styles.selectLabel}>
-                      選擇產品種類
-                    </label>
-                  </div>
-
-                  <div className="col-auto">
-                    <select
-                      className={`form-select ${styles.customSelect}`}
-                      id=""
-                      name="" 
-                  
-                    >
-                      <option value="">新增產品種類</option>
-                      <option value="1">點心</option>
-                      <option value="2">飲料</option>
-                      <option value="3">甜品</option>
-                      <option value="4">湯品</option>
-                      <option value="5">小吃</option>
-                      <option value="6">主食</option>
-                    </select>
-                  </div>
-                </div>
-                <br></br>
-                {/* 按鈕樣式 */}
-                <div className={styles.buttonGroup}>
-                  <Link href="/seller-basic-data/">
-                    <button className={styles.btnSecondary}>回到店面</button>
-                  </Link>
-                  <button type="submit" className={styles.btnPrimary}>
-                    提交修改
-                  </button>
-                </div>
+                      <div className="mb-3">
+                        <label htmlFor="category" className="form-label">
+                          產品種類
+                        </label>
+                        <select
+                          className="form-control"
+                          id="category"
+                          name="category_id"
+                          value={productDetails.category_id}
+                          onChange={handleChange}
+                        >
+                          {categories &&
+                            categories.map((category) => (
+                              <option
+                                key={category.category_id}
+                                value={category.category_id}
+                              >
+                                {category.category_name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                    <br></br>
+                    {/* 按鈕樣式 */}
+                    <div className={styles.buttonGroup}>
+                      <Link href="/seller-basic-data/">
+                        <button className={styles.btnSecondary}>
+                          回到店面
+                        </button>
+                      </Link>
+                      <button type="submit" className={styles.btnPrimary}>
+                        提交修改
+                      </button>
+                    </div>
+                  </>
+                )}
               </form>
             </div>
           </div>

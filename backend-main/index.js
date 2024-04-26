@@ -23,7 +23,7 @@ import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
-
+import categoriesRouter from './routes/categoriesRouter.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
@@ -140,6 +140,10 @@ productsRouter.use((req, res, next) => {
   next();
 });
 app.use("/products", productsRouter);
+
+// 產品種類 
+app.use('/api/categories', categoriesRouter);
+
 
 // 賣家資料
 sellerRouter.use((req, res, next) => {
