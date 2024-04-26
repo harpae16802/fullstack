@@ -248,65 +248,243 @@ router.post("/cart-add", async (req, res) => {
 });
 
 // 改數量或刪除
-router.post("/cart-edit", async (req, res) => {
-  const { product_id, quantity } = req.body; // 这里的quantity表示要减少的数量
-  const custom_id = 1; // 假设用户ID
+// router.post("/cart-edit", async (req, res) => {
+//   const { product_id, change } = req.body; // change 應為 1 或 -1
+//   const custom_id = 1; // 假設用戶ID為1
+
+//   try {
+//     // 查詢當前商品在購物車中的數量
+//     const getQuantitySql = `
+//       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
+//     `;
+//     const [current] = await db.query(getQuantitySql, [custom_id, product_id]);
+
+//     // 商品不在購物車中，且用戶嘗試增加數量
+//     if (current.length === 0 && change === 1) {
+//       // 從 products 表中獲取商品價格
+//       const getPriceSql = `
+//         SELECT price FROM products WHERE product_id = ?
+//       `;
+//       const [product] = await db.query(getPriceSql, [product_id]);
+
+//       if (product.length === 0) {
+//         return res.status(404).json({ error: "無此商品" });
+//       }
+
+//       const productPrice = product[0].price;
+//       const insertSql = `
+//         INSERT INTO cart (custom_id, product_id, quantity, total_price)
+//         VALUES (?, ?, 1, ?)
+//       `;
+//       await db.query(insertSql, [custom_id, product_id, productPrice]);
+//     } else if (current.length > 0) {
+//       const currentQuantity = current[0].quantity;
+//       const newQuantity = currentQuantity + change;
+
+//       if (newQuantity <= 0) {
+//         // 數量減至0或以下，刪除商品
+//         const deleteSql = `
+//           DELETE FROM cart WHERE custom_id = ? AND product_id = ?
+//         `;
+//         await db.query(deleteSql, [custom_id, product_id]);
+//       } else {
+//         // 更新購物車中的商品數量和總價
+//         const updateSql = `
+//           UPDATE cart SET
+//             quantity = ?,
+//             total_price = quantity * (SELECT price FROM products WHERE product_id = ?)
+//           WHERE custom_id = ? AND product_id = ?
+//         `;
+//         await db.query(updateSql, [
+//           newQuantity,
+//           product_id,
+//           custom_id,
+//           product_id,
+//         ]);
+//       }
+//     }
+
+//     // 獲取更新後的購物車信息
+//     const cartInfoSql = `
+//       SELECT p.product_id, p.product_name, c.quantity, c.total_price
+//       FROM cart c
+//       JOIN products p ON c.product_id = p.product_id
+//       WHERE c.custom_id = ?
+//     `;
+//     const cartInfo = await db.query(cartInfoSql, [custom_id]);
+
+//     // 計算總金額
+//     const totalAmount = cartInfo.reduce(
+//       (acc, item) => acc + item.total_price,
+//       0
+//     );
+
+//     // 返回成功響應
+//     res.json({
+//       success: true,
+//       cartInfo,
+//       totalAmount,
+//     });
+//   } catch (error) {
+//     console.error("處理購物車商品數量變化時發生錯誤:", error);
+//     res.status(500).json({ error: "內部服務器錯誤" });
+//   }
+// });
+
+// 增加商品數量
+router.post("/cart-increase", async (req, res) => {
+  const { product_id } = req.body;
+  const custom_id = 1; // 假设用户ID为1
 
   try {
-    // 查询当前商品在购物车中的数量
+    // 检查商品是否在购物车中
+    const getQuantitySql = `
+      SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
+    `;
+    const [current] = await db.query(getQuantitySql, [custom_id, product_id]);
+
+    // 如果商品不在购物车中，则添加进去
+    if (current.length === 0) {
+      const getPriceSql = `
+        SELECT price FROM products WHERE product_id = ?
+      `;
+      const [product] = await db.query(getPriceSql, [product_id]);
+
+      if (product.length === 0) {
+        return res.status(404).json({ error: "无此商品" });
+      }
+
+      const productPrice = product[0].price;
+      const insertSql = `
+        INSERT INTO cart (custom_id, product_id, quantity, total_price)
+        VALUES (?, ?, 1, ?)
+      `;
+      await db.query(insertSql, [custom_id, product_id, productPrice]);
+    } else {
+      // 如果商品已在购物车中，则增加其数量
+      const currentQuantity = current[0].quantity;
+      const newQuantity = currentQuantity + 1; // 默认增加1
+
+      // 获取商品当前价格
+      const getPriceSql = `
+        SELECT price FROM products WHERE product_id = ?
+      `;
+      const [product] = await db.query(getPriceSql, [product_id]);
+
+      if (product.length === 0) {
+        return res.status(404).json({ error: "无此商品" });
+      }
+
+      const productPrice = product[0].price;
+      const newTotalPrice = newQuantity * productPrice; // 计算新的总价
+
+      const updateSql = `
+        UPDATE cart
+        SET quantity = ?, total_price = ?
+        WHERE custom_id = ? AND product_id = ?
+      `;
+      await db.query(updateSql, [
+        newQuantity,
+        newTotalPrice,
+        custom_id,
+        product_id,
+      ]);
+    }
+
+    // 重新计算购物车总金额
+    const totalAmountSql = `
+      SELECT SUM(total_price) AS totalAmount FROM cart WHERE custom_id = ?
+    `;
+    const [totalResult] = await db.query(totalAmountSql, [custom_id]);
+    const totalAmount = totalResult[0].totalAmount || 0;
+
+    // 获取更新后的购物车信息
+    const cartInfoSql = `
+      SELECT p.product_id AS product_id, p.product_name AS product_name, c.quantity, c.total_price
+      FROM cart c
+      JOIN products p ON c.product_id = p.product_id
+      WHERE c.custom_id = ?
+    `;
+    const cartInfo = await db.query(cartInfoSql, [custom_id]);
+
+    // 返回成功响应
+    res.json({
+      success: true,
+      cartInfo: cartInfo,
+      totalAmount: totalAmount,
+    });
+  } catch (error) {
+    console.error("处理购物车商品数量增加时发生错误:", error);
+    res.status(500).json({ error: "内部服务器错误" });
+  }
+});
+
+// 減少商品數量
+router.post("/cart-decrease", async (req, res) => {
+  const { product_id } = req.body;
+  const custom_id = 1; // 假设用户ID为1
+
+  try {
+    // 检查商品是否在购物车中
     const getQuantitySql = `
       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
     `;
     const [current] = await db.query(getQuantitySql, [custom_id, product_id]);
 
     if (current.length === 0) {
+      // 购物车中没有该商品
       return res.status(404).json({ error: "购物车中无此商品" });
     }
 
     const currentQuantity = current[0].quantity;
-    if (currentQuantity < quantity) {
-      return res
-        .status(400)
-        .json({ error: "减少的数量大于购物车中的商品数量" });
-    }
-
-    if (currentQuantity === quantity) {
-      // 如果减少后数量为0，则删除该条目
+    if (currentQuantity <= 1) {
+      // 如果商品数量小于等于1，删除该商品
       const deleteSql = `
         DELETE FROM cart WHERE custom_id = ? AND product_id = ?
       `;
       await db.query(deleteSql, [custom_id, product_id]);
     } else {
-      // 否则，减少购物车中的商品数量
-      const reduceSql = `
-        UPDATE cart SET 
-        quantity = quantity - ?, 
-        total_price = total_price - (? * (SELECT price FROM products WHERE product_id = ?))
+      // 减少商品数量
+      const newQuantity = currentQuantity - 1;
+
+      // 获取商品当前价格
+      const getPriceSql = `
+        SELECT price FROM products WHERE product_id = ?
+      `;
+      const [product] = await db.query(getPriceSql, [product_id]);
+      const productPrice = product[0].price;
+
+      // 计算新的总价
+      const newTotalPrice = newQuantity * productPrice;
+
+      const updateSql = `
+        UPDATE cart
+        SET quantity = ?, total_price = ?
         WHERE custom_id = ? AND product_id = ?
       `;
-      await db.query(reduceSql, [
-        quantity,
-        quantity,
-        product_id,
+      await db.query(updateSql, [
+        newQuantity,
+        newTotalPrice,
         custom_id,
         product_id,
       ]);
     }
 
+    // 重新计算购物车总金额
+    const totalAmountSql = `
+      SELECT SUM(total_price) AS totalAmount FROM cart WHERE custom_id = ?
+    `;
+    const [totalResult] = await db.query(totalAmountSql, [custom_id]);
+    const totalAmount = totalResult[0].totalAmount || 0;
+
     // 获取更新后的购物车信息
     const cartInfoSql = `
-      SELECT p.product_name, c.quantity, c.total_price 
-      FROM cart c 
-      JOIN products p ON c.product_id = p.product_id 
+      SELECT p.product_id AS product_id, p.product_name AS product_name, c.quantity, c.total_price
+      FROM cart c
+      JOIN products p ON c.product_id = p.product_id
       WHERE c.custom_id = ?
     `;
-    const [cartInfo] = await db.query(cartInfoSql, [custom_id]);
-
-    // 计算总金额
-    const totalAmount = cartInfo.reduce(
-      (acc, item) => acc + item.total_price,
-      0
-    );
+    const cartInfo = await db.query(cartInfoSql, [custom_id]);
 
     // 返回成功响应
     res.json({
@@ -315,7 +493,46 @@ router.post("/cart-edit", async (req, res) => {
       totalAmount,
     });
   } catch (error) {
-    console.error("处理减少购物车商品数量时发生错误:", error);
+    console.error("处理购物车商品数量减少时发生错误:", error);
+    res.status(500).json({ error: "内部服务器错误" });
+  }
+});
+
+// 删除商品
+router.post("/cart-remove", async (req, res) => {
+  const { product_id } = req.body;
+  const custom_id = 1; // 假设用户ID为1
+
+  try {
+    // 删除商品的SQL命令
+    const deleteSql = `
+      DELETE FROM cart WHERE custom_id = ? AND product_id = ?
+    `;
+    await db.query(deleteSql, [custom_id, product_id]);
+
+    // 重新计算总金额
+    const totalAmountSql = `
+      SELECT SUM(total_price) AS totalAmount FROM cart WHERE custom_id = ?
+    `;
+    const [totalResult] = await db.query(totalAmountSql, [custom_id]);
+    const totalAmount = totalResult[0].totalAmount || 0; // 如果没有商品，则总金额为0
+
+    // 返回购物车的最新信息
+    const cartInfoSql = `
+      SELECT p.product_id, p.product_name, c.quantity, c.total_price
+      FROM cart c
+      JOIN products p ON c.product_id = p.product_id
+      WHERE c.custom_id = ?
+    `;
+    const cartInfo = await db.query(cartInfoSql, [custom_id]);
+
+    res.json({
+      success: true,
+      cartInfo: cartInfo,
+      totalAmount: totalAmount,
+    });
+  } catch (error) {
+    console.error("删除购物车商品时发生错误:", error);
     res.status(500).json({ error: "内部服务器错误" });
   }
 });

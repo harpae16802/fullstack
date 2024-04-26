@@ -21,22 +21,7 @@ export default function ProductCard({
   pepole = '',
 }) {
   const { addToCart } = useCartContext()
-
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
-
-  // 添加到购物车的事件处理器
-  const handleAddToCart = () => {
-    // 创建一个代表商品的对象
-    const product = {
-      product_id,
-      imgUrl,
-      title,
-      price: parseFloat(price),
-      percentage,
-      pepole,
-    }
-    addToCart(product) // 调用addToCart函数更新购物车
-  }
 
   // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
@@ -49,6 +34,11 @@ export default function ProductCard({
     } catch (error) {
       console.error('加入最愛 錯誤:', error)
     }
+  }
+
+  // 加入購物車
+  const handleAddToCart = () => {
+    addToCart(product_id)
   }
 
   useEffect(() => {
