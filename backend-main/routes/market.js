@@ -32,6 +32,17 @@ router.get("/seller/:market_id", async (req, res) => {
   }
 });
 
+router.get("/:market_id", async (req, res) => {
+  try {
+    const market_id = req.params.market_id;
+    const sql = `SELECT * FROM market_data WHERE market_id = ?`;
+    const [row] = await db.query(sql, [market_id]);
+    res.json(row);
+  } catch (error) {
+    console.log(`獲取夜市資料錯誤: ${error}`);
+  }
+});
+
 // 分類搜尋
 router.get("/category", async (req, res) => {
   try {

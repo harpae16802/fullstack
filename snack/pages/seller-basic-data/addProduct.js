@@ -8,6 +8,7 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 export default function AddProducts() {
   // 使用 useRouter

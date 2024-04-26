@@ -18,10 +18,11 @@ import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
 import signUpRouter from "./routes/sign-up.js"; 
+import indexInfoRouter from "./routes/indexinfo.js";
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
-
+import adRouter from "./routes/adRouter.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -123,6 +124,7 @@ app.get("/jwt-data", async (req, res) => {
 });
 
 app.use("/sign-up", signUpRouter);
+app.use("/index-info", indexInfoRouter);
 
 
 // ==== 弘
@@ -130,9 +132,37 @@ app.use("/sign-up", signUpRouter);
 app.use("/auth", authRouter);
 
 //產品
+productsRouter.use((req, res, next) => {
+  req.body = Object.keys(req.body).reduce((newBody, key) => {
+    newBody[key.trim()] = req.body[key]; // 刪除鍵名稱中的尾隨空格
+    return newBody;
+  }, {});
+  next();
+});
 app.use("/products", productsRouter);
 
 // 賣家資料
+sellerRouter.use((req, res, next) => {
+  // 清理键名的尾随空格
+  req.body = Object.keys(req.body).reduce((newBody, key) => {
+    const trimmedKey = key.trim(); // 去除键名的空格
+    const value = req.body[key];
+    newBody[trimmedKey] = typeof value === 'string' ? value.trim() : value; // 去除字符串值的空格，非字符串保持原样
+    return newBody;
+  }, {});
+
+  // multer
+  if (req.files) {
+    req.files = Object.keys(req.files).reduce((newFiles, key) => {
+      const trimmedKey = key.trim(); // 去除文件字段名的空格
+      newFiles[trimmedKey] = req.files[key];
+      return newFiles;
+    }, {});
+  }
+
+  next(); // 下一步
+});
+
 app.use("/sellers", sellerRouter);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
@@ -145,7 +175,8 @@ app.use("/order" , orderDataRouter)
 //賣家評論路由
 app.use("/comment", commentRouter)
 
-
+//賣家廣告路由
+app.use("/ad", adRouter)
 
 
 // ==== 咚

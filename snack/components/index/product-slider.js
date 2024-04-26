@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -45,7 +45,8 @@ const CustomNextArrow = (props) => {
   )
 }
 function ProductSlider() {
-  const settings = {
+
+  const [settings, setSettings] = useState({
     dots: false,
     infinite: true,
     speed: 500,
@@ -53,7 +54,38 @@ function ProductSlider() {
     slidesToScroll: 3,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
-  }
+  })
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 992) {
+        setSettings({
+          dots: false,
+          className: 'center',
+          centerMode: true,
+          infinite: true,
+          centerPadding: '80px',
+          slidesToShow: 1,
+          speed: 500,
+        })
+      } else {
+        setSettings({
+          dots: false,
+          infinite: true,
+          speed: 500,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          prevArrow: <CustomPrevArrow />,
+          nextArrow: <CustomNextArrow />,
+        })
+      }
+    }
+
+    handleResize() //初始化時呼叫一次以設定原始狀態
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className="slider-container product-index-gruop">

@@ -8,6 +8,7 @@ import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 export default function SellerBasicData() {
   // 使用 useRouter
@@ -115,6 +116,8 @@ export default function SellerBasicData() {
     formData.append('email', sellerData.email)
     formData.append('companyAddress', sellerData.companyAddress)
     formData.append('companyDescription', sellerData.companyDescription)
+    formData.append('openingHours', sellerData.openingHours);  // 添加營業開始時間
+    formData.append('closingHours', sellerData.closingHours);
     formData.append('restDay', sellerData.restDay)
     // 文字部分
     const storeImageInput = document.getElementById('store_image')
@@ -198,6 +201,7 @@ export default function SellerBasicData() {
                     width: '100px',
                     height: '100px',
                     borderRadius: '50px',
+             
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
                 />
@@ -208,6 +212,7 @@ export default function SellerBasicData() {
                   style={{ display: 'none' }}
                   ref={fileInputRef} // 將ref賦予到DOM元素
                   onChange={handleProfilePictureChange}
+                  name="profilePicture"
                 />
               </div>
               {/* 這裡的賣家頭像直接連結伺服器 */}
@@ -306,7 +311,7 @@ export default function SellerBasicData() {
                     type="text"
                     className="form-control"
                     id="storeName"
-                    name="storeName"
+                    name="store_image"
                     placeholder="攤位名稱"
                     value={sellerData.storeName || ''}
                     onChange={handleChange}
