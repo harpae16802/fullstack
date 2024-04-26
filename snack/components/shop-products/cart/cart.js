@@ -1,6 +1,8 @@
 import React from 'react'
 // context
 import { useCartContext } from '@/contexts/cartContext'
+// api-path
+import { IMAGES_PRODUCTS } from '@/components/config/api-path'
 // icons
 import { FaShoppingCart, FaTrashAlt } from 'react-icons/fa'
 // 樣式
@@ -17,14 +19,14 @@ export default function Cart() {
         cartItems.map((item) => (
           <div key={item.product_id} className="d-flex">
             <img
-              src={item.imgUrl}
+              src={`${IMAGES_PRODUCTS}/${item.image_url}`}
               alt={item.title}
               className={style.cartItemImage}
             />
             <div className={`d-flex ${style.cartItemDetails}`}>
-              <h5>{item.title}</h5>
-              <p>价格: ${item.total_price.toFixed(2)}</p>
-              <p>数量: {item.quantity}</p>
+              <h5>{item.product_name}</h5>
+              <p>價格: ${item.total_price}</p>
+              <p>數量: {item.quantity}</p>
               <FaTrashAlt
                 onClick={() => removeFromCart(item.product_id)}
                 className={style.removeItem}
@@ -45,7 +47,7 @@ export default function Cart() {
       {cartItems.length > 0 && (
         <div className="d-flex">
           <p>總計</p>
-          <p>${total.toFixed(2)}</p>
+          <p>${total}</p>
         </div>
       )}
     </div>

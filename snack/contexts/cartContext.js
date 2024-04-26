@@ -44,8 +44,18 @@ export const CartProvider = ({ children }) => {
         throw new Error(data.message || 'Could not add item to cart')
       }
 
-      // 可选：如果服务器返回最新的购物车数据，也可以在这里更新
-      setTotal(data.totalAmount) // 假设后端返回了新的总金额
+      // 使用服务器返回的最新购物车数据来更新状态
+      if (data.cartInfo) {
+        // 直接使用后端返回的购物车信息，因为它已经包含了 image_url
+        setCartItems(
+          data.cartInfo.map((item) => ({
+            ...item,
+            imgUrl: item.image_url, // 注意这里的键名需要和您的前端代码一致
+          }))
+        )
+      }
+
+      setTotal(data.totalAmount)
     } catch (error) {
       console.error('Failed to update cart:', error)
     }

@@ -214,11 +214,19 @@ router.post("/cart-add", async (req, res) => {
 
     // 获取更新后的购物车信息
     const cartInfoSql = `
-      SELECT p.product_name, c.quantity, c.total_price 
-      FROM cart c 
-      JOIN products p ON c.product_id = p.product_id 
-      WHERE c.custom_id = ?
-    `;
+  SELECT 
+    p.product_id, 
+    p.product_name, 
+    c.quantity, 
+    c.total_price, 
+    p.image_url
+  FROM 
+    cart c 
+  JOIN 
+    products p ON c.product_id = p.product_id 
+  WHERE 
+    c.custom_id = ?
+`;
     const [cartInfo] = await db.query(cartInfoSql, [custom_id]);
 
     // 计算总金额
@@ -317,11 +325,19 @@ router.get("/cart", async (req, res) => {
   const custom_id = 1; // 假定一個固定的用戶ID
   try {
     const cartSql = `
-      SELECT p.product_name, p.product_id, c.quantity, c.total_price 
-      FROM cart c
-      JOIN products p ON c.product_id = p.product_id 
-      WHERE c.custom_id = ?
-    `;
+  SELECT 
+    p.product_name, 
+    p.product_id, 
+    c.quantity, 
+    c.total_price,
+    p.image_url
+  FROM 
+    cart c
+  JOIN 
+    products p ON c.product_id = p.product_id 
+  WHERE 
+    c.custom_id = ?
+`;
     const [cartItems] = await db.query(cartSql, [custom_id]);
 
     // 計算總金額
