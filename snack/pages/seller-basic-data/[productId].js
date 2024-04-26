@@ -43,6 +43,7 @@ export default function AddProducts() {
     category_id: '',
     category: '',
     image_url: '',
+    status: '',
   })
 
   // 種類
@@ -54,7 +55,10 @@ export default function AddProducts() {
     4: '湯品',
     5: '小吃',
     6: '主食',
-  };
+  }
+
+  // 圖片預覽
+  const [previewImage, setPreviewImage] = useState(null)
 
   // 載入
   const [loading, setLoading] = useState(false)
@@ -77,7 +81,6 @@ export default function AddProducts() {
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || '',
-            
           }))
         })
         .catch((error) => {
@@ -102,28 +105,43 @@ export default function AddProducts() {
     }
   }, [sellerId, productId])
 
+  //種類對應表
+  const handleCategoryInputChange = (categoryId) => {
+    const category = CATEGORY_MAP[categoryId] || ''
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      category,
+    }))
+  }
+
   // 更新產品 (可控表單)
   const handleChange = (e) => {
     const { name, value } = e.target
+    if (name === 'category_id') {
+      handleCategoryInputChange(value)
+    }
     setProductDetails((prevDetails) => ({
       ...prevDetails,
       [name]: value,
     }))
   }
 
+  // 處裡圖片預覽
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreviewImage(reader.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
-  //種類對應表
-  const handleCategoryInputChange = (categoryId) => {
-    const category = CATEGORY_MAP[categoryId] || ''; 
-    setProductDetails((prevDetails) => ({
-      ...prevDetails,
-      category, 
-    }));
-  };
   // 送出表單
   const handleSubmit = (event) => {
     event.preventDefault()
-    handleCategoryInputChange(productDetails.category_id);
+
     const formData = new FormData()
     formData.append('product_name', productDetails.product_name)
     formData.append('product_description', productDetails.product_description)
@@ -131,8 +149,9 @@ export default function AddProducts() {
     formData.append('product_nutrition', productDetails.product_nutrition)
     formData.append('product_ingredient', productDetails.product_ingredient)
     formData.append('stock_quantity', productDetails.stock_quantity)
-    formData.append('category', productDetails.category); 
+    formData.append('category', productDetails.category)
     formData.append('category_id', productDetails.category_id)
+    formData.append('status', productDetails.status)
     formData.append('image', fileInputRef.current.files[0]) // 假设图片上传是可选的
 
     axios
@@ -381,19 +400,26 @@ export default function AddProducts() {
                         value={productDetails.image}
                         onChange={handleChange}
                       />
+                      {previewImage && (
+                        <img
+                          src={previewImage}
+                          alt="Preview"
+                          style={{ maxWidth: '200px' }}
+                        />
+                      )}
                     </div>
 
                     <div className={styles.selectGroup}>
-                      <div className="col-auto ">
-                        <label htmlFor="" className={styles.selectLabel}>
+                      <div className="col-auto mb-3">
+                        <label
+                          htmlFor="category"
+                          className={styles.selectLabel}
+                        >
                           選擇產品種類
                         </label>
                       </div>
 
                       <div className="mb-3">
-                        <label htmlFor="category" className="form-label">
-                          產品種類
-                        </label>
                         <select
                           className="form-control"
                           id="category"
@@ -410,6 +436,19 @@ export default function AddProducts() {
                                 {category.category_name}
                               </option>
                             ))}
+                        </select>
+                      </div>
+                      <div className="mb-3">
+                        <select
+                          className="form-control"
+                          id="status"
+                          name="status"
+                          value={productDetails.status}
+                          onChange={handleChange}
+                        >
+                          <option value="">以上下架状态</option>
+                          <option value="1">上架</option>
+                          <option value="0">下架</option>
                         </select>
                       </div>
                     </div>

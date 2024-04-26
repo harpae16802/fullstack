@@ -233,7 +233,8 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
     product_ingredient,
     stock_quantity,
     category_id,
-    category 
+    category ,
+    status
   } = req.body;
 
   console.log(req.body);  
@@ -261,7 +262,8 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
         stock_quantity = ?,
         image_url = ?,
         category_id = ?,
-        category = ? 
+        category = ?,
+        status = ?
       WHERE product_id = ?;
     `;
 
@@ -276,6 +278,7 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
       imageUrl,
       category_id,
       category, 
+      status,
       productId
     ]);
 

@@ -78,8 +78,8 @@ const ProductsList = () => {
       ...Object.fromEntries(
         Object.entries(filter).filter(([_, v]) => v != null)
       ),
-    }).toString()
-
+    }).toString();
+    
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
@@ -113,8 +113,8 @@ const ProductsList = () => {
       } catch (error) {
       } finally {
         setTimeout(() => {
-          setLoading(false); // 一秒後設置 loading 為 false
-        }, 1000); // 延遲一秒) // 無論成功還是失敗，都將 loading 設置為 false
+          setLoading(false) // 一秒後設置 loading 為 false
+        }, 1000) // 延遲一秒) // 無論成功還是失敗，都將 loading 設置為 false
       }
     }
 
@@ -406,13 +406,13 @@ const ProductsList = () => {
                           <td>{product.price}</td>
                           <td>{product.status}</td>
                           <td>
-                        <Link
-                          href={`/seller-basic-data/[productId]`}
-                          as={`/seller-basic-data/${product.product_id}`}
-                        >
-                          修改
-                        </Link>
-                      </td>
+                            <Link
+                              href={`/seller-basic-data/[productId]`}
+                              as={`/seller-basic-data/${product.product_id}`}
+                            >
+                              修改
+                            </Link>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
