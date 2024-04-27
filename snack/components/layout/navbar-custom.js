@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
 
-
-
 import {
   FaBars,
   FaUser,
@@ -18,7 +16,7 @@ import {
 export default function NavbarCustom() {
   const router = useRouter()
 
-  const { auth, logout, login } = useAuth()
+  const { auth, logout, login, handleLogout } = useAuth()
 
   return (
     <>
@@ -124,9 +122,9 @@ export default function NavbarCustom() {
                     href="#"
                     onClick={(e) => {
                       e.preventDefault()
-  
+                    
                       logout()
-                      router.replace(`/login/login-custom`)
+                      // router.replace(`/login/login-custom`)
                     }}
                   >
                     登出
@@ -176,6 +174,7 @@ export default function NavbarCustom() {
                             href="#"
                             onClick={(e) => {
                               e.preventDefault()
+              
                               logout()
                               router.replace(`/login/login-custom`)
                             }}

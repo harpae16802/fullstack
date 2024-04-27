@@ -65,8 +65,19 @@ app.post("/google-login", async (req, res) => {
   // console.log(req.body);
   //   res.json({ data: {} });
   // });
+
+  // 檢查從react來的資料
+  if (!req.body.providerId || !req.body.uid) {
+    return res.json({ status: 'error', message: '缺少google登入資料' })
+  }
+
   const { displayName, email, uid, photoURL } = req.body || {};
   const google_uid = uid;
+
+   // 以下流程:
+  // 1. 先查詢資料庫是否有同google_uid的資料
+  // 2-1. 有存在 -> 執行登入工作
+  // 2-2. 不存在 -> 建立一個新會員資料(無帳號與密碼)，只有google來的資料 -> 執行登入工作
 
   const output = {
     success: false,
@@ -85,7 +96,9 @@ app.post("/google-login", async (req, res) => {
   const [rows] = await db.query(sql, [google_uid]);
   const row = rows[0];
   if (rows.length) {
-    output.success = true;
+  // 如果有搜尋到資料 = 進行登入
+
+  output.success = true;
     // 打包  JWT
     const token = jwt.sign(
       {
@@ -103,8 +116,7 @@ app.post("/google-login", async (req, res) => {
       token,
     };
   } else {
-
-
+    // 如果沒有搜尋到資料=進行註冊
     let result = {};
     const sql =
       "INSERT INTO custom (custom_name, custom_account, google_uid, photo_url) VALUES (?, ?, ?, ?)";
@@ -115,12 +127,34 @@ app.post("/google-login", async (req, res) => {
         google_uid,
         photoURL,
       ]);
+      if (result && result.insertId) {
+        const custom_id = result.insertId;
       output.success = !!result.affectedRows;
-    } catch (ex) {}
+      // 打包  JWT
+      const token = jwt.sign(
+        {
+          custom_id: custom_id,
+          account: email,
+          google_uid: google_uid,
+        },
+        // process.env.JWT_SECRET >> 去看 dev.env 檔
+        process.env.JWT_SECRET
+      );
+      output.data = {
+        custom_id: custom_id,
+        account: email,
+        google_uid: google_uid,
+        token,
+      };
+    }else {
+      output.error = "註冊失敗";
+    }
+  } catch (ex) {
   }
-
+  }
   res.json(output);
 });
+
 
 // 一般會員登入
 app.post("/login-jwt", async (req, res) => {

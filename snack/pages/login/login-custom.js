@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { SIGN_UP_POST } from '@/components/config/api-path'
+import { SIGN_UP_POST, GOOGLE_LOGIN_POST } from '@/components/config/api-path'
 import { z } from 'zod'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -16,24 +16,64 @@ import toast, { Toaster } from 'react-hot-toast'
 const schemaEmail = z.string().email({ message: '請填寫正確的E-MAIL格式' })
 const schemaPwd = z.string().min(6, { message: '請填寫正確的密碼格式' })
 
+// //google使用
+// const emptyAuth = {
+//   custom_id: 0,
+//   account: '',
+//   google_uid: '',
+//   token: '',
+// }
+
+// // 設定 localStorage 的key
+// const storageKey = 'Nightmarket-auth'
+
 export default function LoginCustom() {
   const router = useRouter()
 
   // 會員登入登出的勾子
-  const { auth, login, logout } = useAuth()
+  const { auth, login, logout, callbackGoogleLoginRedirect,isLoginByGoogle } = useAuth()
 
   // 處理手機板的註冊登入的頁面呈現
   const { selectedContent, handleLinkClick } = useContext(MiniloginContext)
+  
 
-  // loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
+  // ===== Google的註冊與登入
+  // const [googleLoginSuccess, setGoogleLoginSuccess] = useState(false);
+  // const [googleAuth, setGoogleAuth] = useState(emptyAuth)
+
+  //loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
   const { logoutFirebase, loginGoogleRedirect, initApp, loginGoogle } =
     useFirebase()
 
-  const callbackGoogleLoginRedirect = async (providerData) => {
-    console.log(providerData)
-  }
+  // const callbackGoogleLoginRedirect = async (providerData) => {
+  //   console.log(providerData)
 
-  // 處理必填欄位的CSS
+  //   // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
+  //   const res = await fetch(GOOGLE_LOGIN_POST, {
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     method: 'POST',
+  //     body: JSON.stringify(providerData),
+  //   })
+
+  //   const result = await res.json()
+
+  //   if (result.success) {
+  //     // 把 token 記錄在 localStorage
+  //     localStorage.setItem(storageKey, JSON.stringify(result.data))
+  //     setGoogleAuth(result.data)
+  //     setTimeout(() => {
+  //       router.push('/')
+  //     }, 1500)
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // } //callback
+
+  // ===== 處理登入註冊的必填欄位的CSS
   const [isAccountEmpty, setIsAccountEmpty] = useState(false) // 帳號狀態
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false) // 密碼狀態
 
@@ -184,10 +224,32 @@ export default function LoginCustom() {
     }
   }
 
-  // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
+  // =====google的部分
+  useEffect(() => {
+    if (isLoginByGoogle) {
+      toast.success('歡迎您！登入成功', {
+        style: {
+          color: '#a32c2d',
+        },
+        iconTheme: {
+          primary: '#29a21e',
+          secondary: '#ffffff',
+        },
+      })
+      setTimeout(() => {
+        router.push('/')
+      }, 2000)
+    }
+  }, [isLoginByGoogle]);
+
   useEffect(() => {
     initApp(callbackGoogleLoginRedirect)
   }, [])
+  // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
+  // useEffect(() => {
+  //   initApp(callbackGoogleLoginRedirect)
+  // }, [])
+
   // useEffect(() => {
   //   // 如果已經登入，將用戶導向首頁
   //   if (auth.custom_id) {
@@ -379,7 +441,9 @@ export default function LoginCustom() {
                       </button>
                     </form>
 
-                    <button className="google-login mt-4">
+                    <button className="google-login mt-4" onClick={() => {
+                        loginGoogleRedirect()
+                      }}>
                       <Image
                         src="/images/login/Google.svg"
                         alt=""
@@ -524,7 +588,12 @@ export default function LoginCustom() {
                         </Link>
                       </div>
                     </form>
-                    <button className="google-login mt-5" onClick={() => loginGoogleRedirect()}>
+                    <button
+                      className="google-login mt-5"
+                      onClick={() => {
+                        loginGoogleRedirect()
+                      }}
+                    >
                       <Image
                         src="/images/login/Google.svg"
                         alt=""
