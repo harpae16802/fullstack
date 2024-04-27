@@ -24,6 +24,7 @@ import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
 import categoriesRouter from './routes/categoriesRouter.js'
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
@@ -151,14 +152,14 @@ sellerRouter.use((req, res, next) => {
   req.body = Object.keys(req.body).reduce((newBody, key) => {
     const trimmedKey = key.trim(); // 去除键名的空格
     const value = req.body[key];
-    newBody[trimmedKey] = typeof value === 'string' ? value.trim() : value; // 去除字符串值的空格，非字符串保持原样
+    newBody[trimmedKey] = typeof value === 'string' ? value.trim() : value; // 去除字符串值的空格，非字符串保持原樣
     return newBody;
   }, {});
 
   // multer
   if (req.files) {
     req.files = Object.keys(req.files).reduce((newFiles, key) => {
-      const trimmedKey = key.trim(); // 去除文件字段名的空格
+      const trimmedKey = key.trim(); // 去除空格
       newFiles[trimmedKey] = req.files[key];
       return newFiles;
     }, {});

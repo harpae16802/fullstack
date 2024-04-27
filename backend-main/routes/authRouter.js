@@ -25,7 +25,7 @@ authRouter.post("/login", upload.none(), async (req, res) => {
 });
 
 // 賣家註冊
-authRouter.post("/register", async (req, res) => {
+authRouter.post("/register", upload.none(), async (req, res) => {
   const { account, password } = req.body;
   try {
     const query = "INSERT INTO account (account, password) VALUES (?, ?)";

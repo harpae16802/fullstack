@@ -22,9 +22,7 @@ const ProductsList = () => {
   //拿取seller_id
   const { seller } = useSeller()
   const sellerId = seller?.id
-  if(sellerId){
-    return router.replace("/")
-  }
+  
 
   const [products, setProducts] = useState([]) // 產品資訊
   const [imageVersion, setImageVersion] = useState(0) // 賣家頭貼
@@ -59,9 +57,6 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller');  
-    }
     setLoading(true) //loading 為 true
     if (sellerId) {
       axios

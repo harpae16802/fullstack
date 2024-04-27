@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import NavbarLogout from '@/components/sellerLogout'
+
 import {
   FaBars,
   FaUser,
@@ -10,7 +10,7 @@ import {
   FaAngleDown,
   FaAngleUp,
 } from 'react-icons/fa'
-
+import NavbarLogout from '@/components/sellerLogout'
 export default function NavbarSeller() {
   // 導覽列的名稱樣式
   const router = useRouter()
