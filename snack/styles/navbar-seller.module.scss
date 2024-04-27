@@ -549,6 +549,7 @@ $mobile-width: 480px;
 
 .icon-toggle {
   position: absolute;
+  color: $border-red;
   top: 50%;  
   right: 16px;  /* 根据具体的设计调整 */
   transform: translateY(50%);

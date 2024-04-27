@@ -57,7 +57,7 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    if (!sellerId) {
+      if (!sellerId) {
       router.replace('/login/login-seller');  
     }
     setLoading(true) //loading 為 true

@@ -5,7 +5,8 @@ import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import LoginForm from '../../components/loginForm'
+import LoginForm from '../../components/loginForm' // 賣家表單
+import CustomModal from '../../components/CustomModal' // 賣家彈窗
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
@@ -42,9 +43,30 @@ export default function LoginSeller() {
   }
 
   const router = useRouter()
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showErrorModal, setShowErrorModal] = useState(false)
 
   const handleSuccess = () => {
-    router.push('/seller-basic-data')
+    setShowSuccessModal(true)
+
+    setTimeout(() => {
+      Replace()
+    }, 2000)
+  }
+
+  const handleError = () => {
+    setShowErrorModal(true)
+  }
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false)
+  }
+
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false)
+  }
+  const Replace = () => {
+    router.replace('/seller-basic-data')
   }
 
   return (
@@ -176,10 +198,7 @@ export default function LoginSeller() {
                         <div id="passwordHelp" className="form-text"></div>
                       </div>
                       {/* 追 */}
-                      <button
-                        type="submit"
-                        className="btn btn-primary mt-4"
-                      >
+                      <button type="submit" className="btn btn-primary mt-4">
                         註冊
                       </button>
                     </form>
@@ -331,8 +350,25 @@ export default function LoginSeller() {
                 </button>
               </div>
               <div className="seller-input-group">
-                <LoginForm onSuccess={handleSuccess} />
+                <LoginForm onSuccess={handleSuccess} onError={handleError} />
 
+                {/* 登入成功彈窗 */}
+                <CustomModal
+                  show={showSuccessModal}
+                  onClose={handleCloseSuccessModal}
+                  title="登入成功"
+                  body="您已成功登入。"
+                />
+
+                {/* 登入失敗彈窗 */}
+                <CustomModal
+                  show={showErrorModal}
+                  onClose={handleCloseErrorModal}
+                  title="登入失敗"
+                  body="帳號或密碼錯誤，請重新輸入。"
+                />
+
+                
                 <div className="forget-text">
                   <Link href="/opt" className="forget-p">
                     <p>忘記密碼？</p>

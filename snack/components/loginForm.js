@@ -1,61 +1,249 @@
-// components/LoginForm.js
-import React, { useState, useRef } from 'react'
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import { useSeller } from '@/contexts/SellerContext'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
+// // components/LoginForm.js
+// import React, { useState, useRef } from 'react'
+// import axios from 'axios'
+// import { useRouter } from 'next/router'
+// import { useSeller } from '@/contexts/SellerContext'
+// import { FaEye, FaEyeSlash } from 'react-icons/fa'
+// import { Modal, Button } from 'react-bootstrap'
+
+// const LoginForm = ({ onSuccess }) => {
+//   const [loading, setLoading] = useState(false)
+//   const accountRef = useRef('')
+//   const passwordRef = useRef('')
+//   const router = useRouter()
+//   const { setSeller } = useSeller()
+
+// // 彈出視窗
+// const [showSuccessModal, setShowSuccessModal] = useState(false)
+// const [showErrorModal, setShowErrorModal] = useState(false)
+// const [accountError, setAccountError] = useState(false);
+// const [passwordError, setPasswordError] = useState(false);
+//   // 驗證
+//   const phonePattern = /^09\d{8}$/ 
+//   const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{6,16}$/ 
+
+
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault()
+//     setLoading(true)
+//     const formData = new FormData()
+//     formData.append('account', accountRef.current.value)
+//     formData.append('password', passwordRef.current.value)
+
+//     const account = accountRef.current.value;
+//     const password = passwordRef.current.value;
+//     let isValid = true;
+
+//    //驗證
+//     if (!phonePattern.test(account)) {
+//       setLoading(false)
+//       setShowErrorModal(true)
+//       return
+//     }
+
+//     if (!passwordPattern.test(password)) {
+//       setLoading(false)
+//       setShowErrorModal(true)
+//       return
+//     }
+//     if (!isValid) {
+//       setLoading(false);
+//       return;
+//     }
+//     try {
+//       const response = await axios.post(
+//         'http://localhost:3002/auth/login',
+//         formData,
+//         {
+//           headers: { 'Content-Type': 'multipart/form-data' },
+//         }
+//       )
+
+//       if (response.data.success) {
+//         localStorage.setItem('sellerId', response.data.sellerId)
+//         setSeller({ id: response.data.sellerId, isLoggedIn: true })
+//         setLoading(false)
+//         setShowSuccessModal(true)
+//         onSuccess()
+//       } else {
+//         setLoading(false)
+    
+//         setShowErrorModal(true)
+//       }
+//     } catch (error) {
+//       setLoading(false)
+//       console.error('登入錯誤', error)
+//       setShowErrorModal(true)
+//     }
+//   }
+
+//   //眼睛
+//   const [passwordVisibility, setPasswordVisibility] = useState({
+//     password: false,
+//   })
+
+//   // 切換指定密碼欄位的顯示狀態
+//   const togglePasswordVisibility = (fieldName) => {
+//     setPasswordVisibility({
+//       ...passwordVisibility,
+//       [fieldName]: !passwordVisibility[fieldName],
+//     })
+//   }
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <div className="mb-3">
+//         <label htmlFor="account" className="form-label">
+//           帳號:
+//         </label>
+//         <input
+//           type="text"
+//           id="account"
+//           className={`form-control ${accountError ? 'is-invalid' : ''}`}
+//           ref={accountRef}
+          
+//         />
+//       </div>
+//       <div className="mb-3 pswinput">
+//         <label htmlFor="password" className="form-label">
+//           密碼:
+//         </label>
+//         <input
+//           type={passwordVisibility.password ? 'text' : 'password'}
+//           id="password"
+//           className={`form-control ${passwordError ? 'is-invalid' : ''}`}
+//           ref={passwordRef}
+          
+//         />
+        
+//         <div
+//           className="password-eye"
+//           onClick={() => togglePasswordVisibility('password')}
+//         >
+//           {passwordVisibility.password ? <FaEyeSlash /> : <FaEye />}
+//         </div>
+//       </div>
+//       <button type="submit" className="btn btn-primary mt-4 mb-4" disabled={loading}>
+//         登入
+//       </button>
+//       {loading && <div>Loading...</div>}
+
+
+//       <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
+//         <Modal.Header closeButton>
+//           <Modal.Title>登入成功</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           登入成功！
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
+//             關閉
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+
+//       <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
+//         <Modal.Header closeButton>
+//           <Modal.Title>登入失敗</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           帳號或密碼錯誤，請重新輸入。
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+//             關閉
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </form>
+//   )
+// }
+
+// export default LoginForm
+import React, { useState, useRef } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useSeller } from '@/contexts/SellerContext';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Modal, Button } from 'react-bootstrap';
 
 const LoginForm = ({ onSuccess }) => {
-  const [loading, setLoading] = useState(false)
-  const accountRef = useRef('')
-  const passwordRef = useRef('')
-  const router = useRouter()
-  const { setSeller } = useSeller()
+  const [loading, setLoading] = useState(false);
+  const accountRef = useRef('');
+  const passwordRef = useRef('');
+  const router = useRouter();
+  const { setSeller } = useSeller();
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [accountError, setAccountError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(false);  
+
+  const phonePattern = /^09\d{8}$/;
+  const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{6,16}$/;
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    setLoading(true)
-    const formData = new FormData()
-    formData.append('account', accountRef.current.value)
-    formData.append('password', passwordRef.current.value)
+    event.preventDefault();
+    setLoading(true);
+
+    const account = accountRef.current.value;
+    const password = passwordRef.current.value;
+    let isValid = true;
+
+    if (!phonePattern.test(account)) {
+      setAccountError('帳號必須是有效的手機號碼');
+      isValid = false;
+    } else {
+      setAccountError(false);
+    }
+
+    if (!passwordPattern.test(password)) {
+      setPasswordError('密碼必須是6到16位，且包含英文與數字');
+      isValid = false;
+    } else {
+      setPasswordError(false);
+    }
+
+    if (!isValid) {
+      setLoading(false);
+      setShowErrorModal(true);
+      return;
+    }
 
     try {
       const response = await axios.post(
         'http://localhost:3002/auth/login',
-        formData,
+        { account, password },
         {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: { 'Content-Type': 'application/json' },
         }
-      )
+      );
 
       if (response.data.success) {
-        localStorage.setItem('sellerId', response.data.sellerId)
-        setSeller({ id: response.data.sellerId, isLoggedIn: true })
-        setLoading(false)
-        onSuccess() // Callback for successful login
+        localStorage.setItem('sellerId', response.data.sellerId);
+        setSeller({ id: response.data.sellerId, isLoggedIn: true });
+        setShowSuccessModal(true);
+        onSuccess();
       } else {
-        setLoading(false)
-        alert(response.data.message)
+        setShowErrorModal(true);
       }
     } catch (error) {
-      setLoading(false)
-      console.error('Login request failed', error)
-      alert('Login failed')
+      console.error('登入错误', error);
+      setShowErrorModal(true);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  //眼睛
-  const [passwordVisibility, setPasswordVisibility] = useState({
-    password: false,
-  })
-
-  // 切換指定密碼欄位的顯示狀態
-  const togglePasswordVisibility = (fieldName) => {
-    setPasswordVisibility({
-      ...passwordVisibility,
-      [fieldName]: !passwordVisibility[fieldName],
-    })
-  }
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(prev => ({
+      ...prev,
+      password: !prev.password
+    }));
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -66,10 +254,10 @@ const LoginForm = ({ onSuccess }) => {
         <input
           type="text"
           id="account"
-          className="form-control"
+          className={`form-control ${accountError ? 'is-invalid' : ''}`}
           ref={accountRef}
-          required
-        />
+          
+        /> {accountError && <div className="invalid-feedback">{accountError}</div>}
       </div>
       <div className="mb-3 pswinput">
         <label htmlFor="password" className="form-label">
@@ -78,23 +266,49 @@ const LoginForm = ({ onSuccess }) => {
         <input
           type={passwordVisibility.password ? 'text' : 'password'}
           id="password"
-          className="form-control"
+          className={`form-control ${passwordError ? 'is-invalid' : ''}`}
           ref={passwordRef}
-          required
+          
         />
-        <div
-          className="password-eye"
-          onClick={() => togglePasswordVisibility('password')}
-        >
+        <div className="password-eye" onClick={togglePasswordVisibility}>
           {passwordVisibility.password ? <FaEyeSlash /> : <FaEye />}
         </div>
+        {passwordError && <div className="invalid-feedback">{passwordError}</div>}
       </div>
       <button type="submit" className="btn btn-primary mt-4 mb-4" disabled={loading}>
         登入
       </button>
       {loading && <div>Loading...</div>}
-    </form>
-  )
-}
 
-export default LoginForm
+      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>登入成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        登入成功
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>登入失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          帳號或密碼錯誤請稍後再試
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </form>
+  );
+};
+
+export default LoginForm;
