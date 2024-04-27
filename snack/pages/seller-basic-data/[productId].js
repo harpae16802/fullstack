@@ -32,6 +32,9 @@ export default function AddProducts() {
   // 動畫
   const [loading, setLoading] = useState(true)
 
+  // 驗證
+  const [errors, setErrors] = useState({});
+
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
@@ -145,21 +148,50 @@ export default function AddProducts() {
     }))
   }
 
-  // 處裡圖片預覽
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreviewImage(reader.result)
-      }
-      reader.readAsDataURL(file)
-    }
+// 驗證表單
+const validateProductDetails = () => {
+  const newErrors = {};
+
+  if (!productDetails.product_name.trim()) {
+    newErrors.product_name = "產品名稱不能為空";
   }
+
+  if (!productDetails.product_description.trim()) {
+    newErrors.product_description = "產品描述不能為空";
+  }
+
+    // 將 price 轉換為字符串進行檢查
+    if (!String(productDetails.price).trim()) {
+      newErrors.price = "價格不能為空";
+    }
+  
+    if (!productDetails.stock_quantity.toString().trim()) {
+      newErrors.stock_quantity = "庫存數量不能為空";
+    }
+
+  // if (!productDetails.category_id.trim()) {
+  //   newErrors.category_id = "產品種類必須選擇";
+  // }
+  if (!productDetails.product_nutrition.trim()) {
+    newErrors.product_nutrition = "產品營養表不能為空";
+  }
+  if (!productDetails.product_ingredient.trim()) {
+    newErrors.product_ingredient = "產品成分表不能為空";
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
   // 送出表單
   const handleSubmit = (event) => {
     event.preventDefault()
+    
+  if (!validateProductDetails()) {
+    console.error('表單驗證失敗:', errors);
+    return; 
+  }
     if (
       JSON.stringify(productDetails) === JSON.stringify(originalProductDetails)
     ) {
@@ -327,13 +359,14 @@ export default function AddProducts() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors.product_name ? 'is-invalid' : ''}`}
                         id="product_name"
                         name="product_name"
                         placeholder="產品名稱"
                         value={productDetails.product_name}
                         onChange={handleChange}
                       />
+                        {errors.product_name && <div className="invalid-feedback">{errors.product_name}</div>}
                       <input
                         type="hidden"
                         name="sellerId"
@@ -348,7 +381,7 @@ export default function AddProducts() {
                         產品描述
                       </label>
                       <textarea
-                        className="form-control"
+                          className={`form-control ${errors.product_description ? 'is-invalid' : ''}`}
                         id="product_description"
                         name="product_description"
                         rows="3"
@@ -356,6 +389,7 @@ export default function AddProducts() {
                         value={productDetails.product_description}
                         onChange={handleChange}
                       ></textarea>
+                         {errors.product_description && <div className="invalid-feedback">{errors.product_description}</div>}
                     </div>
 
                     <div className="mb-3">
@@ -364,13 +398,14 @@ export default function AddProducts() {
                       </label>
                       <input
                         type="number"
-                        className="form-control"
+                        className={`form-control ${errors.price ? 'is-invalid' : ''}`}
                         id="price"
                         name="price"
                         placeholder="產品價格(台幣)"
                         value={productDetails.price}
                         onChange={handleChange}
-                      />
+                        
+                      />   {errors.price && <div className="invalid-feedback">{errors.price}</div>}
                     </div>
                     <div className="mb-3">
                       <label
@@ -381,13 +416,13 @@ export default function AddProducts() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors.product_nutrition ? 'is-invalid' : ''}`}
                         id="product_nutrition"
                         name="product_nutrition"
                         placeholder="產品營養表"
                         value={productDetails.product_nutrition}
                         onChange={handleChange}
-                      />
+                      />   {errors.product_nutrition && <div className="invalid-feedback">{errors.product_nutrition}</div>}
                     </div>
                     <div className="mb-3">
                       <label
@@ -398,13 +433,13 @@ export default function AddProducts() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors.product_ingredient ? 'is-invalid' : ''}`}
                         id="product_ingredient"
                         name="product_ingredient"
                         placeholder="產品成分"
                         value={productDetails.product_ingredient}
                         onChange={handleChange}
-                      />
+                      />   {errors.product_ingredient && <div className="invalid-feedback">{errors.product_ingredient}</div>}
                     </div>
                     <div className="mb-3">
                       <label htmlFor="stock_quantity" className="form-label">
@@ -412,13 +447,13 @@ export default function AddProducts() {
                       </label>
                       <input
                         type="number"
-                        className="form-control"
+                        className={`form-control ${errors.stock_quantity ? 'is-invalid' : ''}`}
                         id="stock_quantity"
                         name="stock_quantity"
                         placeholder="產品數量"
                         value={productDetails.stock_quantity}
                         onChange={handleChange}
-                      />
+                      />   {errors.stock_quantity && <div className="invalid-feedback">{errors.stock_quantity}</div>}
                     </div>
 
                     <div className="mb-3">
@@ -443,7 +478,7 @@ export default function AddProducts() {
                     </div>
 
                     <div className={styles.selectGroup}>
-                      <div className="col-auto mb-3">
+                      <div className="col-md-auto col-12 mb-3">
                         <label
                           htmlFor="category"
                           className={styles.selectLabel}
@@ -452,9 +487,9 @@ export default function AddProducts() {
                         </label>
                       </div>
 
-                      <div className="mb-3">
+                      <div className="col-md-auto col-12 mb-3">
                         <select
-                          className="form-control"
+                        className={`form-control ${errors.category_id ? 'is-invalid' : ''}`}
                           id="category"
                           name="category_id"
                           value={productDetails.category_id}
@@ -470,8 +505,20 @@ export default function AddProducts() {
                               </option>
                             ))}
                         </select>
+                        {errors.category_id && <div className="invalid-feedback">{errors.category_id}</div>}
                       </div>
-                      <div className="mb-3">
+
+
+                      <div className="col-md-auto col-12 mb-3">
+                        <label
+                          htmlFor="status"
+                          className={styles.selectLabel}
+                        >
+                          選擇產品上下架狀態
+                        </label>
+                      </div>
+                      
+                      <div className="col-md-auto col-12 mb-3">
                         <select
                           className="form-control"
                           id="status"
@@ -479,13 +526,16 @@ export default function AddProducts() {
                           value={productDetails.status}
                           onChange={handleChange}
                         >
-                          <option value="">以上下架状态</option>
+                          <option value="">上下架狀態</option>
                           <option value="1">上架</option>
                           <option value="0">下架</option>
                         </select>
                       </div>
                     </div>
                     <br></br>
+
+
+
                     {/* 按鈕樣式 */}
                     <div className={styles.buttonGroup}>
                       <Link href="/seller-basic-data/">

@@ -356,7 +356,7 @@ export default function Order() {
                       onChange={(e) =>
                         handleDateChange('startDate', e.target.value)
                       }
-                      className="form-control mb-2"
+                      className="form-control"
                       placeholder="開始日期"
                     />
                   </div>
@@ -374,7 +374,7 @@ export default function Order() {
                       onChange={(e) =>
                         handleDateChange('endDate', e.target.value)
                       }
-                      className="form-control mb-2"
+                      className="form-control "
                       placeholder="結束日期"
                     />
                   </div>
@@ -390,7 +390,7 @@ export default function Order() {
                       name="categoryId"
                       value={query.categoryId}
                       onChange={handleCategoryChange}
-                      className="form-control mb-2"
+                      className="form-control "
                     >
                       <option value="">所有類別</option>
                       {categories.map((category) => (

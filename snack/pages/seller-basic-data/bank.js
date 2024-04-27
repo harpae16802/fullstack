@@ -42,6 +42,9 @@ export default function bank() {
   // 動畫
   const [loading, setLoading] = useState(true)
 
+  // 驗證
+  const [errors, setErrors] = useState({});
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -86,9 +89,30 @@ export default function bank() {
     setSellerData({ ...sellerData, bankAccounts: updatedBankAccounts })
   }
 
-  // 提交表单
+// 驗證
+const validateBankAccounts = () => {
+  const newErrors = {};
+  sellerData.bankAccounts.forEach((account, index) => {
+    if  (!account.account_number || !account.account_number.trim()) {
+      newErrors[`accountNumber-${index}`] = "銀行帳號不能為空";
+    }
+    const bankCode = String(account.bank_code || "");
+    if (!bankCode.trim()) {
+      newErrors[`bankCode-${index}`] = "銀行代碼不能為空";
+    }
+  });
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0; 
+};
+
+  // 送出表單
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!validateBankAccounts()) {
+      console.error('表單驗證失敗:', errors);
+      return;  
+    }
     if (JSON.stringify(sellerData.bankAccounts) === JSON.stringify(originalBankAccounts)) {
       setShowNoChangeModal(true);
       return;
@@ -238,7 +262,7 @@ export default function bank() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors[`accountNumber-${index}`] ? 'is-invalid' : ''}`}
                         id={`accountNumber-${index}`}
                         name="account_number"
                         placeholder={`请输入第 ${index + 1} 銀行帳號`}
@@ -248,6 +272,7 @@ export default function bank() {
                           'account_number'
                         )}
                       />
+                      {errors[`accountNumber-${index}`] && <div className="invalid-feedback">{errors[`accountNumber-${index}`]}</div>}
                     </div>
                     <div className="mb-5">
                       <label
@@ -258,13 +283,14 @@ export default function bank() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors[`bankCode-${index}`] ? 'is-invalid' : ''}`}
                         id={`bankCode-${index}`}
                         name="bank_code"
                         placeholder={`请输入第 ${index + 1}銀行代碼 `}
                         value={account.bank_code || ''}
                         onChange={handleBankAccountChange(index, 'bank_code')}
                       />
+                       {errors[`bankCode-${index}`] && <div className="invalid-feedback">{errors[`bankCode-${index}`]}</div>}
                     </div>
                   </React.Fragment>
                 ))}
