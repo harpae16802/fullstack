@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
+import NavbarLogout from '@/components/sellerLogout'
 import {
   FaBars,
   FaUser,
@@ -113,9 +113,9 @@ export default function NavbarSeller() {
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    登出
-                  </a>
+                 
+                    <NavbarLogout/>
+                
                 </li>
                 {/* 商家會員結束 */}
               </div>
@@ -159,9 +159,7 @@ export default function NavbarSeller() {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="/">
-                            登出
-                          </a>
+                        <NavbarLogout/>
                         </li>
                       </ul>
                     </div>

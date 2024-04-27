@@ -25,7 +25,7 @@ export default function Reviews() {
   //拿取seller_id
   const { seller } = useSeller()
   const sellerId = seller?.id
-
+ 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -56,6 +56,9 @@ export default function Reviews() {
 
   // 總查詢
   useEffect(() => {
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
