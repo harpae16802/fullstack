@@ -56,7 +56,9 @@ export default function Reviews() {
 
   // 總查詢
   useEffect(() => {
-
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios

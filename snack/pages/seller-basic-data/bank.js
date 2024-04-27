@@ -52,6 +52,9 @@ export default function bank() {
 
   // 總查詢
   useEffect(() => {
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)

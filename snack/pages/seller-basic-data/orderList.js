@@ -89,6 +89,9 @@ export default function Order() {
 
   // 後端資料仔入
   function loadOrders() {
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     setLoading(true) // 動畫
     axios
       .get(`${ORDERDETAIL}/`, {

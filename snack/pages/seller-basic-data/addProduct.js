@@ -109,7 +109,9 @@ export default function AddProducts() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
-
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     setTimeout(() => {
       setLoading(false)
     }, 500)
