@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function AddProducts() {
   // 使用 useRouter
@@ -26,6 +28,9 @@ export default function AddProducts() {
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
+
+  // 動畫
+  const [loading, setLoading] = useState(true)
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
@@ -67,9 +72,6 @@ export default function AddProducts() {
   // 圖片預覽
   const [previewImage, setPreviewImage] = useState(null)
 
-  // 載入
-  const [loading, setLoading] = useState(false)
-
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -93,6 +95,7 @@ export default function AddProducts() {
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
+        
     }
     if (productId) {
       axios
@@ -110,6 +113,14 @@ export default function AddProducts() {
           console.error('加载产品详情失败:', error)
           setLoading(false)
         })
+        .finally(() => {
+          setTimeout(() => {
+            setLoading(false);
+          }, 1000);
+        });
+    } else {
+      setLoading(false);
+    
     }
   }, [sellerId, productId])
 
@@ -295,6 +306,13 @@ export default function AddProducts() {
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
+          {loading ? (
+            <div0
+                   className={styles.loadingContainer}>
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    {/* <p className="mt-2">加載中...</p> */}
+                  </div0>
+                ) : (
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
@@ -484,6 +502,7 @@ export default function AddProducts() {
               </form>
             </div>
           </div>
+                )}
           {/* 表單 */}
         </div>
       </div>
