@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function AddProducts() {
   // 使用 useRouter
@@ -28,6 +30,9 @@ export default function AddProducts() {
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
   })
+
+  // 動畫
+  const [loading, setLoading] = useState(true)
 
   // 新增產品的資料
   const [newProductData, setNewProductData] = useState({
@@ -52,6 +57,9 @@ export default function AddProducts() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 500)
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
@@ -69,6 +77,7 @@ export default function AddProducts() {
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
+       
     }
   }, [sellerId])
 
@@ -246,6 +255,13 @@ export default function AddProducts() {
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
+          {loading ? (
+            <div
+                   className={styles.loadingContainer}>
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    {/* <p className="mt-2">加載中...</p> */}
+                  </div>
+                ) : (
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <form onSubmit={handleFormSubmit} className={styles.formWrapper}>
@@ -387,6 +403,7 @@ export default function AddProducts() {
               </form>
             </div>
           </div>
+                )}
           {/* 表單 */}
         </div>
       </div>
@@ -402,7 +419,11 @@ export default function AddProducts() {
         </Modal.Header>
         <Modal.Body>產品已成功添加至賣家目錄。</Modal.Body>
         <Modal.Footer>
-          <Button variant="primary"  className={styles.btnPrimary} onClick={() => setShowSuccessModal(false)}>
+          <Button
+            variant="primary"
+            className={styles.btnPrimary}
+            onClick={() => setShowSuccessModal(false)}
+          >
             關閉
           </Button>
         </Modal.Footer>
@@ -419,7 +440,11 @@ export default function AddProducts() {
         </Modal.Header>
         <Modal.Body>添加產品過程中發生錯誤，請檢查數據後重試。</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary"  className={styles.btnPrimary} onClick={() => setShowFailModal(false)}>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setShowFailModal(false)}
+          >
             關閉
           </Button>
         </Modal.Footer>

@@ -542,6 +542,7 @@ $mobile-width: 480px;
 // .modal.show .modal-dialog {
 //   transform: translateY(0); /* 过渡到原位置 */
 // }
+//  眼睛
 .input-wrapper {
   position: relative;
 }
@@ -550,6 +551,36 @@ $mobile-width: 480px;
   position: absolute;
   top: 50%;  
   right: 16px;  /* 根据具体的设计调整 */
-  transform: translateY(-50%);
+  transform: translateY(50%);
   font-size: 24px;  /* 或者根据需要调整大小 */
+}
+
+
+
+// 動畫
+.loadingContainer {
+  position: absolute;
+  right: 35%;
+  top: 40%;
+  padding-right: 50px; 
+  padding-top: 50px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; 
+  
+  width: 100px;
+}
+
+.loadingContainer1 {
+  position: absolute;
+  right: 40%;
+  top: 50%;
+  padding-right: 50px; 
+  padding-top: 50px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; 
+  width: 100px;
 }

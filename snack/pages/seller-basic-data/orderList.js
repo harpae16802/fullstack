@@ -31,7 +31,7 @@ export default function Order() {
   })
 
   // 載入動畫
-  const [loading, setLoading] = useState(false) // 新增 loading 狀態
+  const [loading, setLoading] = useState(false) 
 
   // 資料過濾
   const [query, setQuery] = useState({
@@ -168,7 +168,6 @@ export default function Order() {
     setQuery((prev) => ({
       ...prev,
       categoryId: categoryId,
-      // 在這裡手動清除其他條件
       startDate: '',
       endDate: '',
       productName: '',
@@ -191,7 +190,7 @@ export default function Order() {
 
   //分頁
   const renderPageNumbers = () => {
-    if (totalPages <= 1) return null // 如果总页数为1或更少，不显示分页
+    if (totalPages <= 1) return null 
 
     const pageNumbers = []
     let startPage = Math.max(currentPage - 2, 1)
@@ -452,7 +451,7 @@ export default function Order() {
                     style={{ minHeight: '200px' }}
                   >
                     <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-                    <p className="mt-2">加載中...</p>
+                    {/* <p className="mt-2">加載中...</p> */}
                   </div>
                 ) : (
                   <table className={`${styles.table}`}>

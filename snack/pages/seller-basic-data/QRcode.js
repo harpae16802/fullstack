@@ -10,6 +10,8 @@ import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { Modal, Button, Form } from 'react-bootstrap'
 import CameraQRScanner from '@/components/CameraQRScanner'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function QRcode() {
   // 使用 useRouter
@@ -27,6 +29,9 @@ export default function QRcode() {
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
+
+  // 動畫
+  const [loading, setLoading] = useState(true)
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
@@ -92,7 +97,7 @@ export default function QRcode() {
       }
     } catch (error) {
       console.error('获取订单详情失败:', error)
-    }
+    } 
   }
 
   // 更新訂單
@@ -141,7 +146,9 @@ export default function QRcode() {
         .catch((error) => {
           console.error('獲取賣家頭像失敗', error)
         })
-    }
+    }setTimeout(() => {
+      setLoading(false)
+    }, 1000)
   }, [sellerId])
 
   // 更新賣家 頭貼 包含顯示
@@ -257,6 +264,13 @@ export default function QRcode() {
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
+          {loading ? (
+            <div0
+                   className={styles.loadingContainer}>
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    {/* <p className="mt-2">加載中...</p> */}
+                  </div0>
+                ) : (
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
@@ -333,6 +347,7 @@ export default function QRcode() {
               </div>
             </div>
           </div>
+                )}
         </div>
       </div>
       {/*  */}

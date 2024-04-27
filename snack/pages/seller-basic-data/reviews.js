@@ -13,6 +13,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import ReplyModal from '@/components/ReplyModal'
 import ReplySuccessModal from '@/components/ReplySuccessModal'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 export default function Reviews() {
   // 使用 useRouter
@@ -36,15 +37,17 @@ export default function Reviews() {
   // 評論區
   const [comments, setComments] = useState([])
 
+  // 動畫
+  const [loading, setLoading] = useState(true)
+
   // 評論區的篩選
   const [filterRating, setFilterRating] = useState('')
 
   // 回覆系統的初始直
   const [showModal, setShowModal] = useState(false)
   const [selectedCommentId, setSelectedCommentId] = useState(null)
-  const [commentContent, setCommentContent] = useState('') 
-  const [replySuccess, setReplySuccess] = useState(false);
-
+  const [commentContent, setCommentContent] = useState('')
+  const [replySuccess, setReplySuccess] = useState(false)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -71,6 +74,8 @@ export default function Reviews() {
         })
     }
     fetchData()
+ 
+    
   }, [sellerId])
 
   // 過濾評論
@@ -102,10 +107,15 @@ export default function Reviews() {
     } catch (error) {
       console.error('獲取評論失敗:', error)
     }
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000)
   }
   // 篩選評論
   const handleRatingChange = (event) => {
-    setFilterRating(event.target.value)
+    setLoading(true); 
+    setFilterRating(event.target.value);
+    fetchData();
   }
 
   // 回覆系統
@@ -121,7 +131,7 @@ export default function Reviews() {
         reply,
       })
       fetchData()
-      setReplySuccess(true);
+      setReplySuccess(true)
     } catch (error) {
       console.error('回复提交失败', error)
     }
@@ -240,11 +250,13 @@ export default function Reviews() {
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
+       
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>賣家評論區</h2>
                 {/* 篩選 */}
+          
                 <div className={styles.selectGroup}>
                   <div className="col-md-auto col-12">
                     <label htmlFor="" className={styles.selectLabel}>
@@ -267,6 +279,16 @@ export default function Reviews() {
                   </div>
                 </div>
                 {/* 篩選 */}
+                <br></br>
+                <br></br>
+                <br></br>
+                {loading ? (
+            <div
+                   className={styles.loadingContainer1}>
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    {/* <p className="mt-2">加載中...</p> */}
+                  </div>
+                ) : (
                 <div className="row">
                   {filteredComments.map((comment, index) => (
                     <div className="col-md-4 mb-4" key={index}>
@@ -285,14 +307,21 @@ export default function Reviews() {
                               {new Date(comment.datetime).toLocaleDateString()}
                             </small>
                           </p>
-                          <Button  className={` border-radius: 5% ${styles.btnPrimary}`} onClick={() => handleReplyClick(comment.id,comment.comment)}>
+                          <Button
+                            className={` border-radius: 5% ${styles.btnPrimary}`}
+                            onClick={() =>
+                              handleReplyClick(comment.id, comment.comment)
+                            }
+                          >
                             回復
                           </Button>
                         </div>
                       </div>
                     </div>
                   ))}
+                  
                 </div>
+                )}
                 <ReplyModal
                   show={showModal}
                   onHide={() => setShowModal(false)}
@@ -300,11 +329,15 @@ export default function Reviews() {
                   commentContent={commentContent}
                   submitReply={submitReply}
                 />
-                <ReplySuccessModal show={replySuccess} onHide={() => setReplySuccess(false)} />
+                <ReplySuccessModal
+                  show={replySuccess}
+                  onHide={() => setReplySuccess(false)}
+                />
                 {/* 篩選 */}
               </div>
             </div>
           </div>
+         
           {/* 表單 */}
         </div>
       </div>

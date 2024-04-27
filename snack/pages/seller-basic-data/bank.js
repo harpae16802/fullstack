@@ -9,6 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { Modal, Button } from 'react-bootstrap'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 export default function bank() {
   // 使用 useRouter
@@ -36,6 +39,9 @@ export default function bank() {
   const [originalBankAccounts, setOriginalBankAccounts] = useState([]);
   const [showNoChangeModal, setShowNoChangeModal] = useState(false);
 
+  // 動畫
+  const [loading, setLoading] = useState(true)
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -62,6 +68,9 @@ export default function bank() {
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
     }
   }, [sellerId, imageVersion])
 
@@ -111,7 +120,6 @@ export default function bank() {
         },
       })
       .then((response) => {
-        alert('頭像上傳成功')
         setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
         setSellerData((prevData) => ({
           ...prevData,
@@ -120,7 +128,6 @@ export default function bank() {
       })
       .catch((error) => {
         console.error('頭像上傳失敗', error)
-        alert('頭像上傳失敗')
       })
   }
 
@@ -209,6 +216,13 @@ export default function bank() {
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
+          {loading ? (
+            <div0
+                   className={styles.loadingContainer}>
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    {/* <p className="mt-2">加載中...</p> */}
+                  </div0>
+                ) : (
           <div className="col-md-8 col-12">
             <div className={styles.formCard}>
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
@@ -267,6 +281,7 @@ export default function bank() {
               </form>
             </div>
           </div>
+                )}
           {/* 表單 */}
         </div>
       </div>

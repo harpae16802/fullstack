@@ -10,6 +10,8 @@ import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function SellerBasicData() {
   // 使用 useRouter
@@ -52,6 +54,9 @@ export default function SellerBasicData() {
   //眼睛符號
   const [passwordShown, setPasswordShown] = useState(false)
 
+  // 動畫
+  const [loading, setLoading] = useState(true)
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -87,6 +92,9 @@ export default function SellerBasicData() {
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
     }
   }, [sellerId, imageVersion])
 
@@ -210,7 +218,7 @@ export default function SellerBasicData() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
-                />
+                  />
 
                 <input
                   type="file"
@@ -219,7 +227,7 @@ export default function SellerBasicData() {
                   ref={fileInputRef} // 將ref賦予到DOM元素
                   onChange={handleProfilePictureChange}
                   name="profilePicture"
-                />
+                  />
               </div>
               {/* 這裡的賣家頭像直接連結伺服器 */}
               <div
@@ -227,7 +235,7 @@ export default function SellerBasicData() {
                 id="v-pills-tab"
                 role="tablist"
                 aria-orientation="vertical"
-              >
+                >
                 <ul className="list-unstyled">
                   <li className={styles.navListItem}>
                     <Link href="/seller-basic-data/">
@@ -275,12 +283,20 @@ export default function SellerBasicData() {
           </div>
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
-          {/* 表單 */}
-          <div className="col-md-8 col-12">
+          
+          {loading ? (
+          <div
+                 className={`${styles.loadingContainer}`}>
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    {/* <span className="ml-2">加載中...</span>  */}
+                  </div>
+                ) : (
+              <div className="col-md-8 col-12">
+                  {/* 表單 */}
             <div className={styles.formCard}>
               <form onSubmit={handleSubmit} className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>商家基本資料</h2>
-
+           
                 <div className="mb-5">
                   <label htmlFor="account" className="form-label">
                     使用帳號
@@ -315,11 +331,11 @@ export default function SellerBasicData() {
                       style={{
                         position: 'relative',
                         top: '-27.5px',
-                        left: '90%', // 可根据需要调整
+                        left: '90%', 
                         transform: 'translateY(-50%)',
-                        fontSize: '30px', // 调整为适合的大小
+                        fontSize: '30px', 
                         cursor: 'pointer',
-                        zIndex: '2', // 确保图标位于最上层
+                        zIndex: '2', 
                       }}
                     >
                       {passwordShown ? <FaEyeSlash /> : <FaEye />}
@@ -483,13 +499,15 @@ export default function SellerBasicData() {
                   </button>
                 </div>
               </form>
-              
             </div>
-            
-          </div>
-          {/* 表單 */}
+          </div>  
+           )}
+        {/* 表單 */}
         </div>
+        
       </div>
+        
+      
       <Modal
         show={showUpdateSuccessModal}
         onHide={() => setShowUpdateSuccessModal(false)}

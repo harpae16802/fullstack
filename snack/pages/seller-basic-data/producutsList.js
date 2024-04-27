@@ -385,7 +385,7 @@ const ProductsList = () => {
                 {loading ? (
                   <div className="text-center">
                     <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-                    <p className="mt-2">加載中...</p>
+                    {/* <p className="mt-2">加載中...</p> */}
                   </div>
                 ) : (
                   <table className={`${styles.table}`}>
