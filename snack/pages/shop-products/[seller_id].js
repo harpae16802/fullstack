@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 // 套件
 import toast from 'react-hot-toast'
-import Sticky from 'react-stickynode'
 // 元件
 import SectionProducts from '@/components/layout/section-nopaddin'
 import ShopInfo from '@/components/shop-products/shop-info/shop-info'
@@ -31,6 +30,9 @@ const StickyCart = dynamic(
 export default function ShopProducts() {
   const router = useRouter()
   const { seller_id } = router.query
+
+  const cartRef = useRef(null)
+  const [cartWidth, setCartWidth] = useState(0)
 
   const [seller, setSeller] = useState(null) // 渲染資訊出來
   const [products, setProducts] = useState([]) // 渲染資訊出來
@@ -123,6 +125,23 @@ export default function ShopProducts() {
     fetchData()
     fetchProducts()
   }, [seller_id])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (cartRef.current) {
+        setCartWidth(cartRef.current.offsetWidth)
+      }
+    }
+
+    // 监听窗口大小变化
+    window.addEventListener('resize', handleResize)
+
+    // 初始加载时设置宽度
+    handleResize()
+
+    // 组件卸载时移除监听器
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <SectionProducts>
@@ -330,14 +349,16 @@ export default function ShopProducts() {
             </div>
 
             {/* cart */}
-            <StickyCart
-              enabled={true}
-              top={50}
-              bottomBoundary={2800}
-              className={`d-none col-0 d-md-block col-md-3`}
-            >
-              <Cart />
-            </StickyCart>
+            <div ref={cartRef} className="col-md-3 d-none d-md-block">
+              <StickyCart
+                enabled={true}
+                top={50}
+                bottomBoundary={2800}
+                style={{ width: cartWidth }}
+              >
+                <Cart />
+              </StickyCart>
+            </div>
           </div>
         </div>
       </div>
