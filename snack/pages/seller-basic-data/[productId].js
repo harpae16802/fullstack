@@ -20,8 +20,8 @@ export default function AddProducts() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
+  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+
 
   // 拿取product_id
   const { productId } = router.query

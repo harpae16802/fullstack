@@ -16,8 +16,8 @@ const LoginForm = ({ onSuccess }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [accountError, setAccountError] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(false);  
 
   const phonePattern = /^09\d{8}$/;
   const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{6,16}$/;

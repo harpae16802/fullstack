@@ -5,7 +5,7 @@ import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import LoginForm from '../../components/loginForm' // 賣家表單
+import LoginForm from '../../components/LoginForm' // 賣家表單
 import RegisterForm from '@/components/RegisterForm' //賣家註冊
 import CustomModal from '../../components/CustomModal' // 賣家彈窗
 import { MiniloginContext } from '@/contexts/minilogin-context'
@@ -133,7 +133,7 @@ export default function LoginSeller() {
                   </div>
 
                   <div className="seller-input-group">
-                  <RegisterForm onSuccess={handleRegisterSuccess} />
+                    <RegisterForm onSuccess={handleRegisterSuccess} />
                   </div>
                 </div>
                 <div
@@ -197,73 +197,7 @@ export default function LoginSeller() {
                 </button>
               </div>
               <div className="seller-input-group">
-                <form>
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputMobile" className="form-label">
-                      <span>手機號碼</span>
-                      <span className="must-text">*必填項目</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="exampleInputMobile"
-                      aria-describedby="mobileHelp"
-                    />
-                    <div id="mobileHelp" className="form-text"></div>
-                  </div>
-                  <div className="mb-3 pswinput">
-                    <label htmlFor="password5" className="form-label">
-                      <span>密碼</span>
-                      <span className="must-text">*必填項目</span>
-                    </label>
-                    <input
-                      type={passwordVisibility.password5 ? 'text' : 'password'}
-                      className="form-control"
-                      id="password5"
-                      name="password5"
-                    />
-                    <div
-                      className="password-eye"
-                      onClick={() => togglePasswordVisibility('password5')}
-                    >
-                      {passwordVisibility.password5 ? (
-                        <FaEyeSlash />
-                      ) : (
-                        <FaEye />
-                      )}
-                    </div>
-                    <div id="passwordHelp" className="form-text"></div>
-                  </div>
-                  <div className="mb-3 pswinput">
-                    <label htmlFor="password6" className="form-label">
-                      <span>再次確認密碼</span>
-                      <span className="must-text">*必填項目</span>
-                    </label>
-                    <input
-                      type={passwordVisibility.password6 ? 'text' : 'password'}
-                      className="form-control"
-                      id="password6"
-                      name="password6"
-                    />
-                    <div
-                      className="password-eye"
-                      onClick={() => togglePasswordVisibility('password6')}
-                    >
-                      {passwordVisibility.password6 ? (
-                        <FaEyeSlash />
-                      ) : (
-                        <FaEye />
-                      )}
-                    </div>
-                    <div id="passwordHelp" className="form-text"></div>
-                  </div>
-                  <button type="submit" className="btn btn-primary mt-4 mb-4 ">
-                    註冊
-                  </button>
-                </form>
-                <RegisterForm
-                  onSuccess={() => router.replace('/seller-basic-data')}
-                />
+                <RegisterForm onSuccess={handleRegisterSuccess} />
               </div>
             </div>
             {/* 商家會員登入 */}

@@ -19,8 +19,7 @@ export default function Order() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
+  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)

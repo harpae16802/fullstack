@@ -24,11 +24,10 @@ export default function QRcode() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
-  if(sellerId){
-    return router.replace("/")
-  }
+  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+
+  console.log(sellerId); // 確認是否獲取到了 sellerId
+
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
