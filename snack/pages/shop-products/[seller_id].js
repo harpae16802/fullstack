@@ -133,13 +133,10 @@ export default function ShopProducts() {
       }
     }
 
-    // 监听窗口大小变化
     window.addEventListener('resize', handleResize)
 
-    // 初始加载时设置宽度
     handleResize()
 
-    // 组件卸载时移除监听器
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
@@ -352,8 +349,8 @@ export default function ShopProducts() {
             <div ref={cartRef} className="col-md-3 d-none d-md-block">
               <StickyCart
                 enabled={true}
-                top={50}
-                bottomBoundary={2800}
+                top={40}
+                bottomBoundary={2860}
                 style={{ width: cartWidth }}
               >
                 <Cart />
