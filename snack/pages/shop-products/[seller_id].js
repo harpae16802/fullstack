@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 // 套件
 import toast from 'react-hot-toast'
+import Sticky from 'react-stickynode'
 // 元件
 import SectionProducts from '@/components/layout/section-nopaddin'
 import ShopInfo from '@/components/shop-products/shop-info/shop-info'
@@ -18,6 +20,13 @@ import {
 } from '@/components/config/api-path'
 // 樣式
 import style from './shop-products.module.scss'
+
+const StickyCart = dynamic(
+  () => {
+    return import('react-stickynode')
+  },
+  { ssr: false } // 设置 ssr 为 false 来关闭服务器端渲染
+)
 
 export default function ShopProducts() {
   const router = useRouter()
@@ -58,6 +67,7 @@ export default function ShopProducts() {
     }
   }
 
+  // 處理資料
   useEffect(() => {
     // 撈 seller 資料
     const fetchData = async () => {
@@ -320,19 +330,14 @@ export default function ShopProducts() {
             </div>
 
             {/* cart */}
-            <div className="d-none col-0 d-md-block col-md-3">
+            <StickyCart
+              enabled={true}
+              top={50}
+              bottomBoundary={2800}
+              className={`d-none col-0 d-md-block col-md-3`}
+            >
               <Cart />
-              {/* <div
-                className={`d-flex justify-content-center align-items-center flex-column sticky-top ${style.cart}`}
-              >
-                <FaShoppingCart className={`${style.icon}`} />
-                <h4 className="fw-bold">購物車目前空空</h4>
-                <div className="d-flex">
-                  <p>總計</p>
-                  <p>0</p>
-                </div>
-              </div> */}
-            </div>
+            </StickyCart>
           </div>
         </div>
       </div>

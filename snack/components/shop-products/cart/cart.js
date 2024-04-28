@@ -30,7 +30,7 @@ export default function Cart() {
 
   return (
     <div
-      className={`d-flex justify-content-center align-items-center flex-column sticky-top ${style.cart}`}
+      className={`d-flex justify-content-center align-items-center flex-column ${style.cart}`}
     >
       {cartItems.length > 0 ? (
         cartItems.map((item) => (
@@ -79,14 +79,17 @@ export default function Cart() {
           </div>
         ))
       ) : (
-        <>
+        <div
+          className={`d-flex flex-column align-items-center ${style.noItems}`}
+        >
           <FaShoppingCart className={`${style.icon}`} />
-          <h4 className="fw-bold">購物車目前空空</h4>
-          <div className={`d-flex`}>
+          <h4 className={`fw-bold`}>購物車目前空空</h4>
+          <div className={`w-100 d-flex justify-content-between`}>
             <p>總計</p>
             <p>$0</p>
           </div>
-        </>
+          <button className="btn disabled">去購物車結帳</button>
+        </div>
       )}
       {cartItems.length > 0 && (
         <div className="w-100 d-flex justify-content-between">
