@@ -6,6 +6,7 @@ import SearchBar from '@/components/common/search-bar'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import LoginForm from '../../components/loginForm' // 賣家表單
+import RegisterForm from '@/components/RegisterForm' //賣家註冊
 import CustomModal from '../../components/CustomModal' // 賣家彈窗
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
@@ -46,7 +47,7 @@ export default function LoginSeller() {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showErrorModal, setShowErrorModal] = useState(false)
 
-  const handleSuccess = () => {
+  const handleEnterSuccess = () => {
     setShowSuccessModal(true)
 
     setTimeout(() => {
@@ -65,10 +66,13 @@ export default function LoginSeller() {
   const handleCloseErrorModal = () => {
     setShowErrorModal(false)
   }
+
+  const handleRegisterSuccess = () => {
+    Replace()
+  }
   const Replace = () => {
     router.replace('/seller-basic-data')
   }
-
   return (
     <>
       <Section>
@@ -129,79 +133,7 @@ export default function LoginSeller() {
                   </div>
 
                   <div className="seller-input-group">
-                    <form>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputMobile"
-                          className="form-label"
-                        >
-                          <span>手機號碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="exampleInputMobile"
-                          aria-describedby="mobileHelp"
-                        />
-                        <div id="mobileHelp" className="form-text"></div>
-                      </div>
-                      {/* 追加1 */}
-                      <div className="mb-3 pswinput">
-                        <label htmlFor="password3" className="form-label">
-                          <span>密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type={
-                            passwordVisibility.password3 ? 'text' : 'password'
-                          }
-                          className="form-control"
-                          id="password3"
-                          name="password3"
-                        />
-                        <div
-                          className="password-eye"
-                          onClick={() => togglePasswordVisibility('password3')}
-                        >
-                          {passwordVisibility.password3 ? (
-                            <FaEyeSlash />
-                          ) : (
-                            <FaEye />
-                          )}
-                        </div>
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      <div className="mb-3 pswinput">
-                        <label htmlFor="password4" className="form-label">
-                          <span>再次確認密碼</span>
-                          <span className="must-text">*必填項目</span>
-                        </label>
-                        <input
-                          type={
-                            passwordVisibility.password4 ? 'text' : 'password'
-                          }
-                          className="form-control"
-                          id="password4"
-                          name="password4"
-                        />
-                        <div
-                          className="password-eye"
-                          onClick={() => togglePasswordVisibility('password4')}
-                        >
-                          {passwordVisibility.password4 ? (
-                            <FaEyeSlash />
-                          ) : (
-                            <FaEye />
-                          )}
-                        </div>
-                        <div id="passwordHelp" className="form-text"></div>
-                      </div>
-                      {/* 追 */}
-                      <button type="submit" className="btn btn-primary mt-4">
-                        註冊
-                      </button>
-                    </form>
+                  <RegisterForm onSuccess={handleRegisterSuccess} />
                   </div>
                 </div>
                 <div
@@ -217,7 +149,7 @@ export default function LoginSeller() {
                     </button>
                   </div>
                   <div className="seller-input-group">
-                    <LoginForm onSuccess={handleSuccess} />
+                    <LoginForm onSuccess={handleEnterSuccess} />
 
                     <div className="forget-text">
                       <Link href="/opt" className="forget-p">
@@ -329,6 +261,9 @@ export default function LoginSeller() {
                     註冊
                   </button>
                 </form>
+                <RegisterForm
+                  onSuccess={() => router.replace('/seller-basic-data')}
+                />
               </div>
             </div>
             {/* 商家會員登入 */}
@@ -350,7 +285,10 @@ export default function LoginSeller() {
                 </button>
               </div>
               <div className="seller-input-group">
-                <LoginForm onSuccess={handleSuccess} onError={handleError} />
+                <LoginForm
+                  onSuccess={handleEnterSuccess}
+                  onError={handleError}
+                />
 
                 {/* 登入成功彈窗 */}
                 <CustomModal
@@ -368,7 +306,6 @@ export default function LoginSeller() {
                   body="帳號或密碼錯誤，請重新輸入。"
                 />
 
-                
                 <div className="forget-text">
                   <Link href="/opt" className="forget-p">
                     <p>忘記密碼？</p>

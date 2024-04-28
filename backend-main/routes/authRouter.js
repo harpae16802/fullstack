@@ -25,38 +25,269 @@ authRouter.post("/login", upload.none(), async (req, res) => {
 });
 
 // 賣家註冊
+// authRouter.post("/register", upload.none(), async (req, res) => {
+//   try {
+//     const connection = await db.getConnection(); // 從連線池中獲取連線
+//    await connection.beginTransaction();
+
+//     // 1. 將帳號密碼注入 account 表
+//     const { account, password } = req.body;
+//     await connection.execute(
+//       "INSERT INTO account (account, password) VALUES (?, ?)",
+//       [account, password]
+//     );
+
+//     // 2. 將 seller 注入一個新的資料
+//     const {
+//       store_name,
+//       contact_number,
+//       email,
+//       company_address,
+//       company_description,
+//       store_image,
+//       opening_hours,
+//       closing_hours,
+//       created_at,
+//       rest_day,
+//       profile_picture,
+//       favorite_count,
+//       market_id,
+//       ad_id,
+//     } = req.body;
+
+//     // 將 undefined 值替換為 null
+//     const values = [
+//       store_name,
+//       contact_number,
+//       email,
+//       company_address,
+//       company_description,
+//       store_image,
+//       opening_hours,
+//       closing_hours,
+//       created_at,
+//       rest_day,
+//       profile_picture,
+//       favorite_count,
+//       market_id,
+//       ad_id,
+//     ].map((value) => (value === undefined ? null : value));
+
+//     await connection.execute(
+//       "INSERT INTO seller (store_name, contact_number, email, company_address, company_description, store_image, opening_hours, closing_hours, created_at, rest_day, profile_picture, favorite_count, market_id, ad_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+//       values
+//     );
+
+//     // 3. 取得新插入的 seller_id
+//     const [sellerIdRows, sellerIdFields] = await connection.execute(
+//       "SELECT LAST_INSERT_ID()"
+//     );
+//     const sellerId = sellerIdRows[0]["LAST_INSERT_ID()"];
+
+//     // 4. 將兩表用 seller_id 串接起來
+//     if (sellerId !== undefined) {
+//       await connection.execute(
+//         "UPDATE account SET seller_id = ? WHERE account_id = LAST_INSERT_ID()",
+//         [sellerId]
+//       );
+//     } else {
+//       console.error("sellerId is undefined");
+//     }
+
+//     connection.release(); // 釋放連線
+
+//     // 5. 將 seller_id 回傳至前端
+//     res.json({ seller_id: sellerId }); // 回傳新建立的 seller 的 ID
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
+// authRouter.post("/register", upload.none(), async (req, res) => {
+//   try {
+//     const connection = await db.getConnection(); // 從連線池中獲取連線
+
+//     // 檢查帳號是否已經註冊過
+//     const { account } = req.body;
+//     const [existingAccountRows] = await connection.execute(
+//       "SELECT * FROM account WHERE account = ?",
+//       [account]
+//     );
+
+//     if (existingAccountRows.length > 0) {
+//       // 帳號已經註冊過，回滾事務並返回錯誤訊息
+//       await connection.rollback();
+//       connection.release(); // 釋放連線
+//       return res.status(400).json({ error: "帳號已經註冊過" });
+//     }
+
+//     // 帳號未註冊過，繼續執行註冊流程
+
+//     // 1. 將帳號密碼注入 account 表
+//     const { password } = req.body;
+//     await connection.execute(
+//       "INSERT INTO account (account, password) VALUES (?, ?)",
+//       [account, password]
+//     );
+
+//     // 2. 將 seller 注入一個新的資料
+//     const {
+//       store_name,
+//       contact_number,
+//       email,
+//       company_address,
+//       company_description,
+//       store_image,
+//       opening_hours,
+//       closing_hours,
+//       created_at,
+//       rest_day,
+//       profile_picture,
+//       favorite_count,
+//       market_id,
+//       ad_id,
+//     } = req.body;
+
+//     // 將 undefined 值替換為 null
+//     const values = [
+//       store_name,
+//       contact_number,
+//       email,
+//       company_address,
+//       company_description,
+//       store_image,
+//       opening_hours,
+//       closing_hours,
+//       created_at,
+//       rest_day,
+//       profile_picture,
+//       favorite_count,
+//       market_id,
+//       ad_id,
+//     ].map((value) => (value === undefined ? null : value));
+
+//     await connection.execute(
+//       "INSERT INTO seller (store_name, contact_number, email, company_address, company_description, store_image, opening_hours, closing_hours, created_at, rest_day, profile_picture, favorite_count, market_id, ad_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+//       values
+//     );
+//     // 3. 取得新插入的 seller_id
+//     const [sellerIdRows, sellerIdFields] = await connection.execute(
+//       "SELECT LAST_INSERT_ID()"
+//     );
+//     const sellerId = sellerIdRows[0]["LAST_INSERT_ID()"];
+
+//     // 4. 將兩表用 seller_id 串接起來
+//     if (sellerId !== undefined) {
+//       await connection.execute(
+//         "UPDATE account SET seller_id = ? WHERE account_id = LAST_INSERT_ID()",
+//         [sellerId]
+//       );
+//     } else {
+//       console.error("sellerId is undefined");
+//     }
+
+//     // 提交事務
+//     await connection.commit();
+
+//     connection.release(); // 釋放連線
+
+//     // 5. 將 seller_id 回傳至前端
+//     res.json({ seller_id: sellerId }); // 回傳新建立的 seller 的 ID
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Server error" });
+
+//     // 如果出現錯誤，回滾事務
+//     await connection.rollback();
+//   }
+// });
 authRouter.post("/register", upload.none(), async (req, res) => {
-  const { account, password } = req.body;
-
+  let connection;
   try {
-    // 1. 檢查帳號是否存在
-    const checkAccountQuery = "SELECT * FROM account WHERE account = ?";
-    const [existingAccounts, fields] = await db.query(checkAccountQuery, [account]);
-    console.log(existingAccounts); // 一定要查看返回的結構
+    connection = await db.getConnection(); // 從連線池中獲取連線
 
-    if (existingAccounts.length > 0) {
-      return res.status(400).json({ success: false, message: "帳號已存在" });
+    // 檢查帳號是否已經註冊過
+    const { account, password } = req.body;
+    const [existingAccountRows] = await connection.execute(
+      "SELECT * FROM account WHERE account = ?",
+      [account]
+    );
+
+    if (existingAccountRows.length > 0) {
+      connection.release(); // 釋放連線
+      return res.status(400).json({ error: "帳號已經註冊過" });
     }
 
-    // 2. 在seller表中建立新用戶
-    const sellerQuery = "INSERT INTO seller (store_name) VALUES ('新店铺')";
-    const sellerResult = await db.query(sellerQuery);
+    // 1. 將帳號密碼注入 account 表
+    await connection.execute(
+      "INSERT INTO account (account, password) VALUES (?, ?)",
+      [account, password]
+    );
 
-    // 3. 拿取seller_id
-    const sellerId = sellerResult.insertId;
+    // 2. 將 seller 注入一個新的資料
+    const {
+      store_name,
+      contact_number,
+      email,
+      company_address,
+      company_description,
+      store_image,
+      opening_hours,
+      closing_hours,
+      created_at,
+      rest_day,
+      profile_picture,
+      favorite_count,
+      market_id,
+      ad_id,
+    } = req.body;
 
-    // 4. 在account表中建立seller_id
-    const accountQuery = "INSERT INTO account (seller_id, account, password) VALUES (?, ?, ?)";
-    const accountResult = await db.query(accountQuery, [sellerId, account, password]);
+    // 插入賣家資料，將 undefined 值替換為 null
+    const sellerValues = [
+      store_name,
+      contact_number,
+      email,
+      company_address,
+      company_description,
+      store_image,
+      opening_hours,
+      closing_hours,
+      created_at,
+      rest_day,
+      profile_picture,
+      favorite_count,
+      market_id,
+      ad_id,
+    ].map((value) => (value === undefined ? null : value));
 
-    // 5. 返回成功的資訊
-    res.status(200).json({ success: true, message: "註冊成功", sellerId: sellerId });
-  } catch (error) {
-    console.error("註冊成功", error);
-    res.status(500).json({ success: false, message: "註冊失敗" });
+    await connection.execute(
+      "INSERT INTO seller (store_name, contact_number, email, company_address, company_description, store_image, opening_hours, closing_hours, created_at, rest_day, profile_picture, favorite_count, market_id, ad_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      sellerValues
+    );
+
+    // 3. 取得新插入的 seller_id
+    const [sellerIdRows, sellerIdFields] = await connection.execute(
+      "SELECT LAST_INSERT_ID()"
+    );
+    const sellerId = sellerIdRows[0]["LAST_INSERT_ID()"];
+
+    // 4. 將新的 seller_id 注入到 account 表中
+    await connection.execute(
+      "UPDATE account SET seller_id = ? WHERE account = ?",
+      [sellerId, account]
+    );
+
+    connection.release(); // 釋放連線
+
+    // 5. 返回帳號中的 seller_id
+    res.json({ seller_id: sellerId }); // 回傳新建立的 seller 的 ID
+  } catch (err) {
+    console.error(err);
+    if (connection) {
+      connection.release(); // 釋放連線
+    }
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-
 export default authRouter;
-
