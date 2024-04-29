@@ -1,219 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Balloon Shooter Game</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Balloon Shooter Game</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
 
-  #game-container {
-    position: relative;
-    width: 600px;
-    height: 400px;
-    border: 2px solid #000;
-    overflow: hidden;
-  }
+      #game-container {
+        position: relative;
+        width: 1050px;
+        height: 610px;
+        border: 2px solid #000;
+        overflow: hidden;
+        border-radius: 70px;
+      }
 
-  .balloon {
-    position: absolute;
-    width: 50px;
-    height: 70px;
-    background-color: red;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
-    animation: moveUp 5s linear forwards;
-  }
+      .balloon {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        overflow: visible;
+        /* border-radius: 50%; */
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
 
-  @keyframes moveUp {
-    from {
-      bottom: -70px;
-    }
-    to {
-      bottom: 400px;
-    }
-  }
-
-  #score {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-  }
-
-  #timer {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-  }
-</style>
-</head>
-<body>
-<div id="game-container">
-  <div id="score">Score: 0</div>
-  <div id="timer">Time: 60</div>
-</div>
-
-<script>
- // 获取游戏容器、分数显示元素和计时器显示元素
-const gameContainer = document.getElementById('game-container');
-const scoreDisplay = document.getElementById('score');
-const timerDisplay = document.getElementById('timer');
-
-// 初始化分数和计时器
-let score = 0;
-let timer = 60;
-
-// 定义游戏循环间隔的变量
-let gameInterval;
-
-// 创建气球的函数
-// function createBalloon() {
-//     // 生成 1 到 4 个气球
-//     const numBalloons = Math.floor(Math.random() * 4) + 1; 
-//     for (let i = 0; i < numBalloons; i++) {
-//         // 创建一个新的气球元素
-//         const balloon = document.createElement('div');
-
-//         // 生成气球的大小，大小范围为 1 到 3
-//         const size = Math.floor(Math.random() * 3) + 1; 
-        
-//         // 根据气球的大小计算气球的分数
-//         const points = size * 10; 
-        
-//         // 添加气球的 CSS 类名
-//         balloon.classList.add('balloon'); 
-        
-//         // 设置气球的水平位置，位置在游戏容器的宽度范围内随机生成
-//         balloon.style.left = `${Math.random() * (gameContainer.offsetWidth - 50)}px`; 
-        
-//         // 在气球元素上设置自定义属性 data-points，用于存储气球的分数
-//         balloon.dataset.points = points; 
-        
-//         // 在气球元素上显示气球的分数
-//         balloon.textContent = points; 
-        
-//         // 为气球元素添加点击事件监听器，点击气球时触发 popBalloon 函数
-//         balloon.addEventListener('click', () => {
-//             popBalloon(balloon);
-//         });
-        
-//         // 将气球元素添加到游戏容器中
-//         gameContainer.appendChild(balloon);
-
-//         // 3 秒后检查气球是否被点击，如果未被点击，则移除气球并减少玩家分数
-//         setTimeout(() => {
-//             if (balloon.parentNode === gameContainer) {
-//                 balloon.remove();
-//                 updateScore(0); // 如果气球未被点击，则减少分数
-//             }
-//         }, 3000);
-//     }
-// }
-
-// 气球的配置数组
-const balloonConfigs = [
-    { color: 'red', points: 10 },
-    { color: 'blue', points: 30 },
-    { color: 'green', points: 50 },
-    { color: 'yellow', points: score => score * 2 }, // 分数为当前分数的两倍
-    { color: 'purple', points: () => 0 } // 分数为零
-];
-
-function createBalloon() {
-    const numBalloons = Math.floor(Math.random() * 4) + 1; // 生成 1 到 4 个气球
-    for (let i = 0; i < numBalloons; i++) {
-        const balloonConfig = chooseBalloonConfig(); // 随机选择气球配置
-        const balloon = document.createElement('div');
-        
-        // 根据配置设置气球的样式和属性
-        balloon.classList.add('balloon');
-        balloon.style.left = `${Math.random() * (gameContainer.offsetWidth - 50)}px`;
-        balloon.style.backgroundColor = balloonConfig.color;
-        const points = typeof balloonConfig.points === 'function' ? balloonConfig.points(score) : balloonConfig.points;
-        balloon.dataset.points = points;
-        balloon.textContent = points;
-        balloon.addEventListener('click', () => {
-            popBalloon(balloon);
-        });
-        gameContainer.appendChild(balloon);
-
-        setTimeout(() => {
-            if (balloon.parentNode === gameContainer) {
-                balloon.remove();
-                updateScore(0);
-            }
-        }, 3000);
-    }
-}
-
-// 根据气球配置数组的概率随机选择气球配置
-function chooseBalloonConfig() {
-    const randomIndex = Math.floor(Math.random() * balloonConfigs.length);
-    return balloonConfigs[randomIndex];
-}
+        /* padding-top: 18px; */
+        line-height: 75px;
+        font-size: 24px;
+        color: white;
+        font-weight: bold;
+        animation: moveUp 4s linear forwards;
+      }
+      .balloonimg{
+        position: absolute;
+        background-image: url('./blue.png'); /* 替換成你的圖片路徑 */
+        background-size: cover; /*調整圖片大小以填滿氣球 */
+        text-align: center;
+        width: 70px;
+        height: 120px;
 
 
+        /* background-color: #000; */
+      }
 
-// 点击气球时触发的函数
-function popBalloon(balloon) {
-    // 获取气球的分数并将其转换为整数
-    const points = parseInt(balloon.dataset.points);
-    
-    // 移除被点击的气球
-    balloon.remove();
-    
-    // 更新分数
-    updateScore(points);
-}
 
-// 更新分数的函数
-function updateScore(points) {
-    // 将分数增加到总分数上
-    score += points;
-    
-    // 更新分数显示元素的内容
-    scoreDisplay.textContent = `Score: ${score}`;
-}
+      @keyframes moveUp {
+        from {
+          bottom: -70px;
+        }
+        to {
+          bottom: 700px;
+        }
+      }
 
-// 开始游戏的函数
-function startGame() {
-    // 设置游戏循环，每秒调用一次 createBalloon 函数生成气球
-    gameInterval = setInterval(() => {
-        createBalloon();
-    }, 1000);
+      #score {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+      }
 
-    // 在规定的时间后结束游戏
-    setTimeout(() => {
-        clearInterval(gameInterval); // 清除游戏循环
-        alert(`Game Over! Your score is ${score}`); // 弹出提示框显示最终分数
-    }, timer * 1000);
+      #timer {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container">
+      <div id="score">Score: 0</div>
+      <div id="timer">Time: 00</div>
+    </div>
 
-    // 每秒更新一次剩余时间，并更新计时器显示元素的内容
-    setInterval(() => {
-        timer--;
-        timerDisplay.textContent = `Time: ${timer}`;
-    }, 1000);
-}
+    <script>
+       // 獲得遊戲容器、分數顯示區和計時器顯示區
+      const gameContainer = document.getElementById('game-container');
+      const scoreDisplay = document.getElementById('score');
+      const timerDisplay = document.getElementById('timer');
 
-// 启动游戏
-startGame();
 
-</script>
-</body>
+      //初始化分數和計時器
+      let score = 0;
+      let timer = 30;
+
+      // 定義遊戲循環間隔的變數
+      let gameInterval;
+
+      // 關卡條件
+      const levelConfigs = [
+        { level: 1, time: 30, speed: 4 },
+        { level: 2, time: 30, speed: 3 },
+        { level: 3, time: 15, speed: 3 },
+        { level: 4, time: 15, speed: 2 },
+        { level: 5, time: 10, speed: 2 },
+      ];
+
+      // 氣球的設定
+      const balloonConfigs = [
+          { color: 'green',name:'10', points: 10 },
+          { color: 'blue',name:'30', points: 30 },
+          { color: 'red',name:'50', points: 50 },
+          { color: 'purple', name:'x2',points: 'x2' }, // 分數為目前分數的兩倍
+          { color: 'orange',name:'0', points:'0'} // 分數為0
+      ];
+
+      // 製作氣球
+      function createBalloon(speed) {
+          const numBalloons = Math.floor(Math.random() * 4) + 1; // 生成 2 到 3 個氣球
+          for (let i = 0; i < numBalloons; i++) {
+              const balloonConfig = chooseBalloonConfig(); // 隨機選擇氣球配置
+              const balloon = document.createElement('div');
+              const balloonimg = document.createElement('div');
+
+              // 根據配置設定氣球的樣式和屬性
+              balloon.classList.add('balloon');
+              balloon.style.left = `${Math.random() * (gameContainer.offsetWidth - 50)}px`;
+              const points = balloonConfig.points; // 分數
+              balloon.dataset.points = points; // 點選氣球時的分數
+              balloon.addEventListener('click', () => {
+                  popBalloon(balloon);
+              });
+              balloon.style.animation = `moveUp ${speed}s linear forwards`;
+              balloonimg.classList.add('balloonimg');
+              const name= balloonConfig.name // 名字
+              balloonimg.textContent = name; // 給氣球的名字
+              const imageUrl = `url('./${balloonConfig.color}.png')`; // 根據氣球顏色設定不同的圖片路徑
+              balloonimg.style.backgroundImage = imageUrl;
+
+
+                 // 將氣球圖片添加到氣球中
+                balloon.appendChild(balloonimg);
+
+                // 將氣球添加到遊戲容器中
+                gameContainer.appendChild(balloon);
+
+              setTimeout(() => {
+                  if (balloon.parentNode === gameContainer) {
+                      balloon.remove();
+                      updateScore(0);
+                  }
+              }, 5000);
+          }
+      }
+
+      // 跟據氣球配置的概率隨機選擇氣球配置
+      function chooseBalloonConfig() {
+          const randomIndex = Math.floor(Math.random() * balloonConfigs.length);
+          return balloonConfigs[randomIndex];
+      }
+
+      // 點擊氣球時觸發的函數
+      function popBalloon(balloon) {
+          // 獲取氣球的分數並將其轉為整數
+          const points = parseInt(balloon.dataset.points);
+          // 獲取氣球的名稱
+          const balloonName = balloon.textContent;
+
+          // 移除被點擊的氣球
+          balloon.remove();
+
+          // 更新分數
+          updateScore(points, balloonName);
+      }
+
+      // 更新分數的函式
+      function updateScore(points, balloonName) {
+        if (balloonName === "0") {
+        score = 0; // 如果氣球名字是 0 分數歸 0
+        } else if (balloonName === "x2") {
+        score *= 2; // 如果氣球名字是 2 分數乘以 2
+        } else {
+        score += points; // 都不是時 將分數累加
+        }
+
+          // 更新分數顯示的內容
+          scoreDisplay.textContent = `Score: ${score}`;
+      }
+
+
+      // 開始遊戲的函式
+      function startGame(level) {
+        const levelConfig = levelConfigs.find(config => config.level === level);
+        timer = levelConfig.time;
+        const speed = levelConfig.speed;
+          // 設置遊戲循環 每秒調用一次 createBalloon 函式生成氣球
+          gameInterval = setInterval(() => {
+              createBalloon(speed);
+          }, 1000);
+
+          //在規定時間後結束遊戲
+          setTimeout(() => {
+              clearInterval(gameInterval); // 清除遊戲循環
+              alert(`Game Over! Your score is ${score}`); // 彈出提示框顯示最終分數
+          }, timer * 1000);
+
+          // 每秒更新一次剩餘時間 並更新計時器
+          setInterval(() => {
+              timer--;
+              timerDisplay.textContent = `Time: ${timer}`;
+          }, 1000);
+      }
+
+      // 啟動遊戲
+      startGame(5);
+    </script>
+  </body>
 </html>

@@ -451,7 +451,7 @@ export default function LoginCustom() {
                         width={33}
                         height={33}
                       />
-                      <span>使用Google帳戶註冊</span>
+                      <span>使用Google帳戶登入</span>
                     </button>
                   </div>
                 </div>
@@ -708,7 +708,7 @@ export default function LoginCustom() {
                     width={33}
                     height={33}
                   />
-                  <span>使用Google帳戶註冊</span>
+                  <span>使用Google帳戶登入</span>
                 </button>
               </div>
             </div>
