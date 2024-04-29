@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 // icons
 import { FaBusAlt } from 'react-icons/fa'
 // api-path
-import { IMAGES_NIGHT, IMAGES_SELLER } from '@/components/config/api-path'
+import {
+  IMAGES_NIGHT,
+  IMAGES_SELLER,
+  TAIPEI_BUS,
+} from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -12,7 +16,28 @@ export default function Night({
   introduction = '',
   nightImg = '',
   store_image = '',
+  market_id,
 }) {
+  const [uniqueBusStops, setUniqueBusStops] = useState([])
+
+  useEffect(() => {
+    fetch(`${TAIPEI_BUS}/${market_id}/500`)
+      .then((r) => r.json())
+      .then((data) => {
+        const seen = new Map()
+        const uniqueStops = data.filter((stop) => {
+          const duplicate = seen.has(stop.StopName)
+          seen.set(stop.StopName, true)
+          return !duplicate
+        })
+
+        setUniqueBusStops(uniqueStops)
+      })
+      .catch((error) => {
+        console.error('獲取商家數據失敗:', error)
+      })
+  }, [])
+
   return (
     <div className={`${style.container}`}>
       {/* 標題 */}
@@ -86,13 +111,15 @@ export default function Night({
               <FaBusAlt className={style.icon} />
               <h4 className={`m-0 fw-bold`}>大眾交通資訊</h4>
             </div>
-            <div className={style.trafficInfo}>
-              <div>
-                <span className={`pe-4`}>公車</span>
-                <span>榮富國小站</span>
+            {uniqueBusStops.map((stop, index) => (
+              <div key={index} className={style.trafficInfo}>
+                <div>
+                  <span className={`pe-4`}>公車站</span>
+                  <span>{stop.StopName}</span>
+                </div>
+                <span>350公尺</span>
               </div>
-              <span>350公尺</span>
-            </div>
+            ))}
           </div>
         </div>
       </div>

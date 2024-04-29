@@ -43,6 +43,8 @@ export const MARKET_SELLER = `${MARKET}/seller`
 export const CATEGORY = `${MARKET}/category`
 // 取得評論
 export const STORE_RATINGS = `${MARKET}/store-ratings`
+// 台北公車
+export const TAIPEI_BUS = `${MARKET}/taipei-bus`
 
 // 登入
 // ===

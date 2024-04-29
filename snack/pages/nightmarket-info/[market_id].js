@@ -164,6 +164,7 @@ export default function NightmarketInfo({ initialMarketData }) {
               introduction={marketInfo.market_introduction}
               nightImg={marketInfo.market_img}
               store_image={featuredShops}
+              market_id={market_id}
             />
           </div>
         </div>
