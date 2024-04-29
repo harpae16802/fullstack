@@ -369,7 +369,7 @@ export default function QRcode() {
                             backgroundColor:
                               selectedRowIndex === index
                                 ? '#90EE90'
-                                : 'transparent', // 若行被選中，背景變綠色
+                                : '', // 若行被選中，背景變綠色
                           }}
                         >
                           <td>{item.custom_account}</td>

@@ -289,6 +289,24 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
   }
 });
 
+// 批量更新產品狀態
+productsRouter.put("/update-status", async (req, res) => {
+  const { productIds, status } = req.body;
+  if (!productIds || productIds.length === 0) {
+    return res.status(400).json({ success: false, message: "沒有提供產品ID" });
+  }
+
+  try {
+    const query = `
+      UPDATE products SET status = ? WHERE product_id IN (?);
+    `;
+    await db.query(query, [status, productIds]);
+    res.json({ success: true, message: "產品狀態更新成功" });
+  } catch (error) {
+    console.error("更新產品狀態失敗", error);
+    res.status(500).json({ success: false, message: "伺服器錯誤", error: error.message });
+  }
+});
 
 
 export default productsRouter;

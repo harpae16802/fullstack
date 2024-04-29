@@ -20,11 +20,11 @@ const ProductsList = () => {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
 
-    // 預設圖片
-    const IMG = "http://localhost:3000/images/seller.jpg";
-
+  // 預設圖片
+  const IMG = 'http://localhost:3000/images/seller.jpg'
 
   const [products, setProducts] = useState([]) // 產品資訊
   const [imageVersion, setImageVersion] = useState(0) // 賣家頭貼
@@ -47,20 +47,10 @@ const ProductsList = () => {
     fileInputRef.current.click()
   }
 
-  // //批量操作
-  // const handleCheckboxChange = (e) => {
-  //   const productId = e.target.value;
-  //   if (e.target.checked) {
-  //     setSelectedProducts([...selectedProducts, productId]);
-  //   } else {
-  //     setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-  //   }
-  // };
-
   // 總請求 發至後端
   useEffect(() => {
-      if (!sellerId) {
-      router.replace('/login/login-seller');  
+    if (!sellerId) {
+      router.replace('/login/login-seller')
     }
     setLoading(true) //loading 為 true
     if (sellerId) {
@@ -85,8 +75,8 @@ const ProductsList = () => {
       ...Object.fromEntries(
         Object.entries(filter).filter(([_, v]) => v != null)
       ),
-    }).toString();
-    
+    }).toString()
+
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
@@ -120,21 +110,21 @@ const ProductsList = () => {
       } catch (error) {
       } finally {
         setTimeout(() => {
-          setLoading(false) // 一秒後設置 loading 為 false
-        }, 1000) // 延遲一秒) // 無論成功還是失敗，都將 loading 設置為 false
+          setLoading(false)
+        }, 1000)
       }
     }
-   
+
     if (sellerId) {
       fetchData()
       fetchCategories()
     }
-  }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems]) // 包含 filter
+  }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems])
 
   // 處裡分頁
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const renderPageNumbers = () => {
-    if (totalItems <= itemsPerPage) return null // 如果总项目数不足以填满一页，则不显示分页按钮
+    if (totalItems <= itemsPerPage) return null
 
     const pageNumbers = []
     let startPage = Math.max(currentPage - 2, 1)
@@ -162,6 +152,71 @@ const ProductsList = () => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
   }
+
+  // 批量上下架
+  const getQueryParams = () => {
+    const params = new URLSearchParams({
+      page: currentPage,
+      limit: itemsPerPage,
+      ...(searchTerm && { productName: searchTerm.trim() }), // 确保包含搜索词
+      ...Object.fromEntries(
+        Object.entries(filter).filter(([_, v]) => v != null)
+      ), // 确保包含其他筛选条件
+    })
+
+    return params.toString() // 返回查询字符串
+  }
+
+  const fetchData1 = async () => {
+    setLoading(true) // 显示加载状态
+    const queryParams = getQueryParams() // 获取当前的查询参数
+
+    try {
+      const response = await axios.get(
+        `${PRODUCTS_API}/${sellerId}?${queryParams}`
+      )
+      const updatedProducts = response.data.products.map((product) => ({
+        ...product,
+        category:
+          categories.find((cat) => cat.category_id === product.category_id)
+            ?.category_name || product.category,
+      }))
+      setProducts(updatedProducts)
+      setTotalItems(response.data.total)
+      if (currentPage > Math.ceil(response.data.total / itemsPerPage)) {
+        setCurrentPage(1)
+      }
+    } catch (error) {
+      console.error('获取产品列表失败', error)
+    } finally {
+      setLoading(false) 
+    }
+  }
+
+  const toggleProductSelection = (productId) => {
+    setSelectedProducts((prevSelected) => {
+      if (prevSelected.includes(productId)) {
+        return prevSelected.filter((id) => id !== productId)
+      } else {
+        return [...prevSelected, productId]
+      }
+    })
+  }
+  const handleBatchUpdateStatus = async (newStatus) => {
+    setLoading(true)
+    try {
+      await axios.put(`${PRODUCTS_API}/update-status`, {
+        productIds: selectedProducts,
+        status: newStatus,
+      })
+      await fetchData1() 
+    } catch (error) {
+      console.error('更新产品状态失败', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -178,10 +233,10 @@ const ProductsList = () => {
       })
       .then((response) => {
         alert('頭像上傳成功')
-        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion圖片
         setSellerData((prevData) => ({
           ...prevData,
-          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+          profilePicture: response.data.imageUrl, // 後端返回頭貼
         }))
       })
       .catch((error) => {
@@ -198,10 +253,13 @@ const ProductsList = () => {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-              <img
+                <img
                   // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
-                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
-
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -211,7 +269,10 @@ const ProductsList = () => {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
-                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
                 <input
@@ -411,8 +472,31 @@ const ProductsList = () => {
                     </thead>
                     <tbody>
                       {products.map((product) => (
-                        <tr key={product.product_id}>
-                          <td>{product.productName}</td>
+                        <tr
+                          key={product.product_id}
+                          style={{
+                            backgroundColor: selectedProducts.includes(
+                              product.product_id
+                            )
+                              ? '#f8d7da'
+                              : '',
+                          }}
+                          onClick={() =>
+                            toggleProductSelection(product.product_id)
+                          }
+                        >
+                          <td style={{ display: 'none' }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedProducts.includes(
+                                product.product_id
+                              )}
+                              readOnly
+                            />
+                          </td>
+                          <td style={{ borderRadius: '7px 0px 0px 7px' }}>
+                            {product.productName}
+                          </td>
                           <td>{product.stockQuantity}</td>
                           <td>{product.category}</td>
                           <td>{product.price}</td>
@@ -432,7 +516,21 @@ const ProductsList = () => {
                 )}
               </div>
               <br></br>
-              {/* <button onClick={() => {}}>批量上下架</button> */}
+
+              <button
+                onClick={() => handleBatchUpdateStatus(0)}
+                className={styles.btnPrimary}
+              >
+                設為下架
+              </button>
+              <button
+                onClick={() => handleBatchUpdateStatus(1)}
+                className={styles.btnPrimary}
+              >
+                設為上架
+              </button>
+
+              <br></br>
               {/* 分頁 */}
               <nav>
                 <ul className="pagination justify-content-center">
@@ -442,7 +540,7 @@ const ProductsList = () => {
                     }`}
                   >
                     <button
-                      className="page-link cursor:'pointer'" 
+                      className="page-link cursor:'pointer'"
                       onClick={() =>
                         currentPage > 1 && handlePageChange(currentPage - 1)
                       }
@@ -453,7 +551,7 @@ const ProductsList = () => {
                   {renderPageNumbers()}
                   <li
                     className={`page-item cursor:'pointer' ${
-                      currentPage === totalPages ? 'disabled' : '' 
+                      currentPage === totalPages ? 'disabled' : ''
                     }`}
                   >
                     <button
@@ -463,7 +561,7 @@ const ProductsList = () => {
                         handlePageChange(currentPage + 1)
                       }
                     >
-                      <i className="bi bi-chevron-right cursor:'pointer'" ></i>
+                      <i className="bi bi-chevron-right cursor:'pointer'"></i>
                     </button>
                   </li>
                 </ul>
