@@ -19,8 +19,9 @@ export default function Order() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
+  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+  // 預設圖片
+  const IMG = "http://localhost:3000/images/seller.jpg";
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -31,7 +32,7 @@ export default function Order() {
   })
 
   // 載入動畫
-  const [loading, setLoading] = useState(false) // 新增 loading 狀態
+  const [loading, setLoading] = useState(false) 
 
   // 資料過濾
   const [query, setQuery] = useState({
@@ -54,7 +55,6 @@ export default function Order() {
 
   // 總查詢
   useEffect(() => {
-    console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -62,7 +62,7 @@ export default function Order() {
           const data = response.data.data
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
@@ -90,6 +90,9 @@ export default function Order() {
 
   // 後端資料仔入
   function loadOrders() {
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     setLoading(true) // 動畫
     axios
       .get(`${ORDERDETAIL}/`, {
@@ -168,7 +171,6 @@ export default function Order() {
     setQuery((prev) => ({
       ...prev,
       categoryId: categoryId,
-      // 在這裡手動清除其他條件
       startDate: '',
       endDate: '',
       productName: '',
@@ -191,7 +193,7 @@ export default function Order() {
 
   //分頁
   const renderPageNumbers = () => {
-    if (totalPages <= 1) return null // 如果总页数为1或更少，不显示分页
+    if (totalPages <= 1) return null 
 
     const pageNumbers = []
     let startPage = Math.max(currentPage - 2, 1)
@@ -261,8 +263,10 @@ export default function Order() {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-                <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+              <img
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
+
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -272,7 +276,9 @@ export default function Order() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
                 />
+
 
                 <input
                   type="file"
@@ -342,6 +348,7 @@ export default function Order() {
               <div className={styles.formWrapper}>
                 <h2 className={`${styles.formTitle}`}>訂單管理系統</h2>
                 {/* 這裡要改成起始日期 */}
+                <br></br>
                 <div className={styles.selectGroup}>
                   <div className="col-md-auto col-12">
                     <label htmlFor="" className={styles.selectLabel}>
@@ -356,7 +363,7 @@ export default function Order() {
                       onChange={(e) =>
                         handleDateChange('startDate', e.target.value)
                       }
-                      className="form-control mb-2"
+                      className="form-control"
                       placeholder="開始日期"
                     />
                   </div>
@@ -374,7 +381,7 @@ export default function Order() {
                       onChange={(e) =>
                         handleDateChange('endDate', e.target.value)
                       }
-                      className="form-control mb-2"
+                      className="form-control "
                       placeholder="結束日期"
                     />
                   </div>
@@ -390,7 +397,7 @@ export default function Order() {
                       name="categoryId"
                       value={query.categoryId}
                       onChange={handleCategoryChange}
-                      className="form-control mb-2"
+                      className="form-control "
                     >
                       <option value="">所有類別</option>
                       {categories.map((category) => (
@@ -442,6 +449,7 @@ export default function Order() {
                     {/* 清除搜索職按鈕 */}
                   </div>
                 </div>
+                <br></br>
                 {/* 這裡要能搜索產品名稱 */}
                 {/* 我在這裡要實現資料的顯示 */}
                 {loading ? (
@@ -450,7 +458,7 @@ export default function Order() {
                     style={{ minHeight: '200px' }}
                   >
                     <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-                    <p className="mt-2">加載中...</p>
+                    {/* <p className="mt-2">加載中...</p> */}
                   </div>
                 ) : (
                   <table className={`${styles.table}`}>
@@ -514,12 +522,12 @@ export default function Order() {
                         className="page-link"
                         onClick={() => handlePageChange(currentPage - 1)}
                       >
-                        <i className="bi bi-chevron-left"></i>
+                        <i className="bi bi-chevron-left "></i>
                       </button>
                     </li>
                     {renderPageNumbers()}
                     <li
-                      className={`page-item ${
+                      className={`page-item  ${
                         currentPage === totalPages ? 'disabled' : ''
                       }`}
                     >
@@ -527,7 +535,7 @@ export default function Order() {
                         className="page-link"
                         onClick={() => handlePageChange(currentPage + 1)}
                       >
-                        <i className="bi bi-chevron-right"></i>
+                        <i className="bi bi-chevron-right "></i>
                       </button>
                     </li>
                   </ul>

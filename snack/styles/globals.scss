@@ -189,6 +189,66 @@ body {
     }
   }
 
+  // 普通Modal
+  .nomal-modal {
+    .modal {
+      @media (max-width: 992px) {
+        width: 100%;
+      }
+      --bs-modal-width: 400px;
+    }
+    .modal-header {
+      @media (max-width: 992px) {
+        padding: 10px;
+      }
+      border-bottom: none;
+    }
+  
+    .modal-dialog {
+      @media (min-width: 576px) {
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: -5%;
+        overflow: visible;
+      }
+      margin-right: 30px;
+      margin-left: 30px;
+      overflow: visible;
+    }
+  
+   .btn-close {
+      --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a32c2d'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+      --bs-btn-close-opacity: 1;
+    }
+    .modal-body {
+      @media (max-width: 992px) {
+        gap: 25px;
+        padding-bottom: 40px;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding-bottom: 60px;
+      gap: 35px;
+
+      .buttons {
+        @media (max-width: 992px) {
+          flex-direction: column;
+          width: 180px;
+          align-self: stretch;
+          margin: auto;
+        }
+        display: flex;
+        flex-direction: row;
+        gap: 17px;
+      }
+    }
+  }
+
+
+
+
   // 以下是layout設定
   .my-container-fluid {
     @media (max-width: 992px) {
@@ -608,6 +668,8 @@ body {
               }
               margin: 0;
               line-height: 16px;
+            }:hover{
+              color: $primary;
             }
           }
         }

@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Ad() {
   // 使用 useRouter
@@ -18,11 +20,20 @@ export default function Ad() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
+  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+  // 預設圖片
+  const IMG = "http://localhost:3000/images/seller.jpg";
 
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+  
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
+
+  // 動畫
+  const [loading, setLoading] = useState(true)
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
@@ -47,24 +58,28 @@ export default function Ad() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
+    if (!sellerId) {
+      router.replace('/login/login-seller');  
+    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
+          const data = response.data.data 
+          console.log(data) 
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
-            // 其他字段...
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
-    }
+    } setTimeout(() => {
+      setLoading(false)
+    }, 1000)
   }, [sellerId])
 
   // 處裡文件
@@ -138,8 +153,10 @@ export default function Ad() {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-                <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+              <img
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
+
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -149,7 +166,9 @@ export default function Ad() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
                 />
+
 
                 <input
                   type="file"
@@ -215,11 +234,17 @@ export default function Ad() {
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
           <div className="col-md-8 col-12">
+          {loading ? (
+    // 如果正在加载，则显示加载动画
+    <div className={styles.loadingContainer}>
+      <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+    </div>
+  ) : (
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
                 {/* 廣告系統 */}
 
+                <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
                 <div className="container mt-5">
                   <div className="row">
                     <div className="col-md-6">
@@ -289,30 +314,33 @@ export default function Ad() {
                     name="adImage"
                     onChange={handleFileChange}
                   />
-                  
                 </div>
                 {file && (
                   <div className="preview-container">
                     <p>圖片名稱: {file.name}</p>
                     <img
                       src={URL.createObjectURL(file)}
-                      alt="Preview"
+                                            alt="Preview"
                       className="img-preview"
                     />
                   </div>
-                )}
+                  )}
                 {/* 上傳 */}
-                <button onClick={handleUpload} className={`${styles.btnPrimary} ,d-flex justify-content-center`}>
+                <button
+                  onClick={handleUpload}
+                  className={`${styles.btnPrimary} ,d-flex justify-content-center`}
+                >
                   上傳廣告
                 </button>
-              
+
                 {/* 廣告系統 */}
               </div>
             </div>
+              )}
           </div>
           {/* 表單 */}
         </div>
-      </div>
+        </div>
       {isModalVisible && (
         <Modal show={isModalVisible} onHide={closeModal} centered>
           <Modal.Header closeButton>
@@ -323,12 +351,16 @@ export default function Ad() {
           </Modal.Body>
           <Modal.Footer>
             <Link href="/seller-basic-data/producutsList" passHref>
-              <Button variant="secondary"  className={styles.secondary}>
+              <Button variant="secondary" className={styles.secondary}>
                 前往產品頁
               </Button>
             </Link>
             <Link href="/seller-basic-data" passHref>
-              <Button variant="primary"  className={styles.btnPrimary}> 前往店家頁</Button>
+              <Button variant="primary" className={styles.btnPrimary}    onClick={() => goToSellerPage(sellerId)}
+>
+                {' '}
+                前往店家頁
+              </Button>
             </Link>
           </Modal.Footer>
         </Modal>
