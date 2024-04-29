@@ -24,10 +24,7 @@ import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
 import categoriesRouter from './routes/categoriesRouter.js'
-import QRrouter from "./routes/qrcode.js";
-import orderDataRouter from "./routes/orderData.js";
-import commentRouter from "./routes/comment.js";
-import adRouter from "./routes/adRouter.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -63,6 +63,30 @@ export default function AddProducts() {
     status: '',
   })
 
+  // 樣式
+  const imageContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    border: '2px solid #de4f4f',
+    borderRadius: '10px',
+    padding: '10px',
+    flexWrap: 'wrap',
+  }
+
+  const imageStyle = {
+    maxWidth: '200px',
+    margin: '10px',
+  }
+
+  const mediaQuery = window.matchMedia('(max-width: 400px)')
+  if (mediaQuery.matches) {
+    imageContainerStyle.flexDirection = 'column'
+  } else {
+    imageContainerStyle.flexDirection = 'row'
+  }
+  // 樣式
+
   // 比較資料
   const [originalProductDetails, setOriginalProductDetails] = useState({})
 
@@ -531,13 +555,7 @@ export default function AddProducts() {
 
                       <div
                         className="mb-5"
-                        style={{
-                          border: '2px solid #de4f4f',
-                          borderRadius: '10px',
-                          padding: '10px',
-                          display: 'flex',
-                          justifyContent: 'space-around',
-                        }}
+                        style={imageContainerStyle}
                       >
                         <div>
                           <label htmlFor="store_image" className="form-label">

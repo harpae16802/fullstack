@@ -31,6 +31,30 @@ export default function AddProducts() {
     router.push(`/shop-products/${sellerId}`)
   }
 
+  // 樣式
+  const imageContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    border: '2px solid #de4f4f',
+    borderRadius: '10px',
+    padding: '10px',
+    flexWrap: 'wrap',
+  }
+
+  const imageStyle = {
+    maxWidth: '200px',
+    margin: '10px',
+  }
+
+  const mediaQuery = window.matchMedia('(max-width: 400px)')
+  if (mediaQuery.matches) {
+    imageContainerStyle.flexDirection = 'column'
+  } else {
+    imageContainerStyle.flexDirection = 'row'
+  }
+  // 樣式
+
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -485,7 +509,7 @@ export default function AddProducts() {
                     )}
                   </div>
 
-                  <div className="mb-3">
+                  <div className="mb-3" style={imageContainerStyle}>
                     <label htmlFor="store_image" className="form-label">
                       上傳產品圖片
                     </label>
