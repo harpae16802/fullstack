@@ -13,7 +13,6 @@ export const useCartContext = () => useContext(CartContext)
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([])
   const [total, setTotal] = useState(0)
-  console.log(cartItems)
 
   // 添加商品到购物车
   const addToCart = async (productId) => {

@@ -7,9 +7,10 @@ const router = express.Router();
 // tdx ----------
 const TDX_TOKEN_ENDPOINT =
   "https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token";
-const CLIENT_ID = "";
-const CLIENT_SECRET = "";
+const CLIENT_ID = "abc19wwwww-ba057041-4a8f-4d99";
+const CLIENT_SECRET = "b340bfe5-827a-4134-80e4-f1fc737f3d97";
 
+// 取得授權
 async function getAccessToken() {
   const params = new URLSearchParams();
   params.append("grant_type", "client_credentials");
@@ -45,6 +46,7 @@ async function getAccessToken() {
 //   }
 // });
 
+// 串公車站牌 api
 async function getNearbyBusStopsByMarketId(market_id, radius) {
   const sql = `SELECT latitude_and_longitude FROM market_data WHERE market_id = ?`;
   const [rows] = await db.query(sql, [market_id]);
@@ -61,8 +63,8 @@ async function getNearbyBusStopsByMarketId(market_id, radius) {
     throw new Error("無法獲取 Access Token");
   }
 
-  const city = "Taipei";
-  const TDX_API_URL = `https://tdx.transportdata.tw/api/basic/V3/Map/Bus/Network/Stop/City/${city}/Nearby/LocationX/${longitude}/LocationY/${latitude}/Radius/${radius}`;
+  const TDX_API_URL = `https://tdx.transportdata.tw/api/advanced/v2/Bus/Stop/NearBy?%24spatialFilter=nearby%28${latitude}%2C%20${longitude}%2C%20100%29&%24format=JSON`;
+
   try {
     const response = await fetch(TDX_API_URL, {
       method: "GET",
@@ -89,24 +91,68 @@ async function getNearbyBusStopsByMarketId(market_id, radius) {
     return null;
   }
 }
+// 串停車場 api
+async function getNearbyCarStopsByMarketId(market_id) {
+  const sql = `SELECT latitude_and_longitude FROM market_data WHERE market_id = ?`;
+  const [rows] = await db.query(sql, [market_id]);
 
-router.get("/taipei-bus/:market_id/:radius", async (req, res) => {
-  const { market_id, radius } = req.params;
+  if (rows.length === 0) {
+    throw new Error("找不到指定市場的經緯度資料");
+  }
+
+  const [latitude, longitude] = rows[0].latitude_and_longitude.split(", ");
+
+  // 獲取 Access Token
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    throw new Error("無法獲取 Access Token");
+  }
+
+  const TDX_API_URL = `https://tdx.transportdata.tw/api/advanced/V3/Map/GeoLocating/Parking/Nearby/LocationX/${longitude}/LocationY/${latitude}`;
   try {
-    const busStopsData = await getNearbyBusStopsByMarketId(market_id, radius);
+    const response = await fetch(TDX_API_URL, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+      },
+    });
+
+    // 檢查回應碼和 Content-Type
+    if (!response.ok) {
+      throw new Error(`API 請求失敗，狀態碼：${response.status}`);
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new Error("回應不是有效的 JSON 格式");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("調用 TDX API 查詢停車場信息出錯:", error);
+    return null;
+  }
+}
+// 測試路由
+router.get("/test-tdx/:market_id", async (req, res) => {
+  const { market_id } = req.params;
+  try {
+    const busStopsData = await getNearbyCarStopsByMarketId(market_id);
     if (busStopsData) {
       res.json(busStopsData);
     } else {
-      res.status(404).json({ message: "沒有找到公車站牌資訊" });
+      res.status(404).json({ message: "沒有找到停車場資訊" });
     }
   } catch (error) {
     res
       .status(500)
-      .json({ message: "無法獲取附近的公車站牌資訊", error: error.message });
+      .json({ message: "無法獲取附近的停車場資訊", error: error.message });
   }
 });
 
-// 計算距離
+// 計算距離公式
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371e3; // 地球半徑，單位為米
   const φ1 = (lat1 * Math.PI) / 180; // φ, λ 轉換成弧度
@@ -122,8 +168,14 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const distance = R * c; // 最終距離，單位為米
   return distance;
 }
+// 換算路程公式
+const walkingSpeedPerMinute = 60; // 每分鐘60米
+function calculateWalkingTime(distance) {
+  return distance / walkingSpeedPerMinute;
+}
 
-router.get("/market-bus-stops/:marketId", async (req, res) => {
+// 公車路由
+router.get("/bus-distance/:marketId", async (req, res) => {
   const market_id = req.params.marketId;
 
   try {
@@ -136,24 +188,23 @@ router.get("/market-bus-stops/:marketId", async (req, res) => {
 
     const [latitude, longitude] = rows[0].latitude_and_longitude.split(", ");
 
-    const radius = "500";
-    const busStopsData = await getNearbyBusStopsByMarketId(market_id, radius);
+    const busStopsData = await getNearbyBusStopsByMarketId(market_id);
 
     const busStopsWithDistance = busStopsData.map((stop) => {
-      // 使用正則表達式從 Geometry 字串中提取經緯度
-      const geometryMatch = stop.Geometry.match(/POINT \(([^ ]+) ([^ ]+)\)/);
-      const stopLon = parseFloat(geometryMatch[1]);
-      const stopLat = parseFloat(geometryMatch[2]);
+      const stopLat = parseFloat(stop.StopPosition.PositionLat);
+      const stopLon = parseFloat(stop.StopPosition.PositionLon);
 
       const distance = calculateDistance(latitude, longitude, stopLat, stopLon);
+      const walkingTime = calculateWalkingTime(distance);
 
       // 返回包含站點名、經緯度和距離的新對象
       return {
         stopId: stop.StopID,
-        stopName: stop.StopName,
+        stopName: stop.StopName.Zh_tw,
         latitude: stopLat,
         longitude: stopLon,
         distance: distance,
+        walkingTime: walkingTime.toFixed(0),
       };
     });
 
@@ -161,6 +212,22 @@ router.get("/market-bus-stops/:marketId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
+  }
+});
+// 停車場路由
+router.get("/car-distance/:market_id", async (req, res) => {
+  const { market_id } = req.params;
+  try {
+    const carStopsData = await getNearbyCarStopsByMarketId(market_id);
+    if (carStopsData) {
+      res.json(carStopsData);
+    } else {
+      res.status(404).json({ message: "沒有找到停車場資訊" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "無法獲取附近的停車場資訊", error: error.message });
   }
 });
 
