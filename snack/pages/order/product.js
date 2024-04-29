@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
+import FilterOptions from '@/components/Product/productFilter'
 import { MARKET_SELLER } from '@/components/config/api-path'
 // import FilterOptions from '@/components/Product/productFilter'
 import ProductFilter from './productFilter'
@@ -119,7 +120,8 @@ export default function Product() {
 
       
 
-      <button className={styles.filterConditionButton} >篩選條件 <IoIosArrowDown className={styles.filterIcon}/></button>
+      {/* <button className={styles.filterConditionButton} >篩選條件 <IoIosArrowDown className={styles.filterIcon}/></button> */}
+      <FilterOptions />
 
       {/* 熱門商品 */}
     <div className="container-fluid row">

@@ -4,11 +4,11 @@ import React, { createContext, useContext,useState, useEffect } from 'react'
 import styles from '@/styles/Order.module.css'
 import { FaShopify } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import PointsRedeemWindow from '@/components/Order/pointConsume'
 
 export default function AmountCal ({
    payment = "",
    discount = "",
-   pointDiscount = "",
    total =  "",
    }) {
 
@@ -16,6 +16,8 @@ export default function AmountCal ({
   return (
 <>
          {/* 結帳金額 */}
+    <div className='col'>
+
         <div className={styles.paymentContainer}>
             <div className={styles.amountText}>金額:</div>
             <div className={styles.amount}>${payment}</div>
@@ -30,15 +32,19 @@ export default function AmountCal ({
         {/* 點數折扣 */}
          <div className={styles.paymentContainer}>
             <div className={styles.pointText}>點數折扣:</div>
-            <div className={styles.usePoint}>{pointDiscount}</div>
+            <PointsRedeemWindow
+               point = "1014"
+            />
          </div>
+
+        <div className={styles.SettlementLine}></div>
 
          {/* 總金額 */}
          <div style={{display:'flex'}}>
-           <h1 className={styles.sumText}>總金額:</h1>
-           <h1 className={styles.sumTotal}>{total}.00</h1>
+           <div className={styles.sumText}>總金額:</div>
+           <div className={styles.sumTotal}>{total}.00</div>
          </div>
-
+    </div>
 </>
   );
 };

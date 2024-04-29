@@ -2,15 +2,16 @@ import React from 'react'
 import styles from '@/styles/Product.module.css'
 import { ImCross } from "react-icons/im";
 import { RxCross1 } from "react-icons/rx";
-
+import { IoIosArrowDown } from "react-icons/io";
 
 const FilterOptions = () => {
     return (
     <>
 
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  看更多
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"  className={styles.filterConditionButton}>
+篩選條件<IoIosArrowDown className={styles.filterIcon}/>
 </button>
 
 <div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
