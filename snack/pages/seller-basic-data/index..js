@@ -515,7 +515,7 @@ export default function SellerBasicData() {
                   <div
                     className="mb-5"
                     style={{
-                      border: '2px solid red',
+                      border: '2px solid #de4f4f',
                       borderRadius: '10px',
                       padding: '10px',
                       display: 'flex',
@@ -565,7 +565,7 @@ export default function SellerBasicData() {
                     className={`form-control col-6`}
                     id="store_image"
                     name="store_image"
-                    onChange={handleFileChange} // 处理文件选择
+                    onChange={handleFileChange} 
                   />
                   <br></br>
                   <div className="mb-5">

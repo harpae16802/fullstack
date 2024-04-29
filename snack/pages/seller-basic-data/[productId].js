@@ -113,7 +113,9 @@ export default function AddProducts() {
           console.log(productData)
           setOriginalProductDetails(productData)
           if (productData.image_url) {
-            setPreviewImage(`http://localhost:3002/images/${productData.image_url}`)
+            setPreviewImage(
+              `http://localhost:3002/images/${productData.image_url}`
+            )
           }
           return axios.get(`${PRODUCTS_CATEGORIES}`)
         })
@@ -200,6 +202,8 @@ export default function AddProducts() {
         setPreviewImage(e.target.result)
       }
       reader.readAsDataURL(file)
+    } else {
+      setPreviewImage(null) // 清除预览
     }
   }
 
@@ -519,26 +523,63 @@ export default function AddProducts() {
                           </div>
                         )}
                       </div>
-                      <div className="mb-3">
-                        <label htmlFor="store_image" className="form-label">
-                          上传产品图片
-                        </label>
-                        <input
-                          type="file"
-                          className="form-control"
-                          id="store_image"
-                          name="store_image"
-                          onChange={handleFileChange}
-                        />
-                        {previewImage && (
-                          <img
-                            src={previewImage}
-                            alt="Product Preview"
-                            style={{ maxWidth: '200px', marginTop: '10px' }}
-                          />
-                        )}
+
+                      <div
+                        className="mb-5"
+                        style={{
+                          border: '2px solid #de4f4f',
+                          borderRadius: '10px',
+                          padding: '10px',
+                          display: 'flex',
+                          justifyContent: 'space-around',
+                        }}
+                      >
+                        <div>
+                          <label htmlFor="store_image" className="form-label">
+                            當前產品圖片
+                          </label>
+                          <br />
+                          {productDetails.image_url ? (
+                            <img
+                              src={`http://localhost:3002/images/${productDetails.image_url}`}
+                              alt="Current Product Image"
+                              className="img-fluid"
+                              style={{ maxWidth: '200px', marginRight: '20px' }}
+                            />
+                          ) : (
+                            <p>無當前圖片</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="store_image" className="form-label">
+                            新上傳圖片預覽
+                          </label>
+                          <br />
+                          {previewImage ? (
+                            <img
+                              src={previewImage}
+                              alt="新上傳圖片預覽"
+                              className="img-fluid"
+                              style={{ maxWidth: '200px' }}
+                            />
+                          ) : (
+                            <p>請選擇圖片以預覽</p>
+                          )}
+                        </div>
                       </div>
 
+                      <label htmlFor="store_image" className="form-label">
+                        上傳商家圖片
+                      </label>
+                      <input
+                        type="file"
+                        className={`form-control col-6`}
+                        id="store_image"
+                        name="store_image"
+                        onChange={handleFileChange}
+                      />
+<br></br>
                       <div className={styles.selectGroup}>
                         <div className="col-md-auto col-12 mb-3">
                           <label
