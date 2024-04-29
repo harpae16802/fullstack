@@ -6,7 +6,7 @@
 
 // ====[優惠訊息]====
 //最外層
-.slider-container.discount-index-gruop.ss {
+.slider-container.discount-index-gruop {
   @media (max-width: 992px) {
     width: initial;
     height: initial;
@@ -224,7 +224,6 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
-            
 
             .store-name {
               @media (max-width: 992px) {
@@ -271,6 +270,26 @@
 }
 
 // ====[商品]====
+
+// 處理商品
+.section-index.index-nop.index-product {
+  position: relative;
+  overflow: visible;
+  .product-detail {
+    @media (max-width: 992px) {
+      top: 0;
+      left: 5%;
+
+    }
+    position: absolute;
+    top: 10px;
+    left: calc((1920px - 1518px) / 2 - 80px);
+    // display: none;
+    z-index: 1;
+  }
+}
+
+// 輪播
 //最外層
 .slider-container.product-index-gruop {
   @media (max-width: 992px) {
@@ -353,7 +372,6 @@
             align-items: start;
             flex-direction: column;
             gap: 20px;
-
             .product-top {
               @media (max-width: 992px) {
                 background-color: rgba(255, 255, 255, 0.5);
@@ -396,8 +414,20 @@
               display: flex;
               align-items: center;
               justify-content: center;
+              position: relative;
+              overflow: hidden;
               .btn.btn-light {
+                @media (max-width: 992px) {
+                  font-size: 10px;
+                  padding: 4px 12px;
+                }
+                position: absolute;
                 display: none;
+              }
+              .product {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
               }
             }
             :hover {
@@ -484,7 +514,7 @@
                     width: 50px;
                   }
                   height: 37px;
-                  width: 37px;
+                  width: 50px;
                   font-size: 16px;
                   font-weight: 500;
                   color: $primary;

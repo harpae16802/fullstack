@@ -11,6 +11,7 @@ import { useEffect } from 'react'
 import Sesson from '@/components/layout/section'
 import '@/styles/globals.scss'
 import '../styles/form.css'
+import '../styles/App.css'
 import '@/styles/index.scss'
 import '@/styles/login.scss'
 import '@/styles/carousel.scss'
@@ -36,11 +37,11 @@ function MyApp({ Component, pageProps }) {
           <AuthChecker>
             <MiniloginProvider>
               {getLayout(<Component {...pageProps} />)}
-              <script
+              {/* <script
                 src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
                 integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
                 crossorigin="anonymous"
-              ></script>
+              ></script> */}
             </MiniloginProvider>
           </AuthChecker>
         </MapProvider>

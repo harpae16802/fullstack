@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
 import Link from 'next/link'
-import { INDEX_INFO_STORE } from '@/components/config/api-path'
+import { INDEX_INFO_STORE,IMAGES_SELLER } from '@/components/config/api-path'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -104,7 +104,7 @@ function StoreSlider() {
     fetch(`${INDEX_INFO_STORE}`)
       .then((r) => r.json())
       .then((result) => {
-        console.log(result)
+        // console.log(result)
         setListData(result)
       })
   }, [])
@@ -116,14 +116,13 @@ function StoreSlider() {
           return (
             <div className="card-store-index" key={i}>
               <img
-                src={`/images/seller/${v.store_image}`}
+                src={`${IMAGES_SELLER}/${v.store_image}`}
                 alt="store-img"
                 className="store-img"
               />
               <div className="store-name">{v.store_name}</div>
               <div className="store-market">{v.market_name}</div>
               <Link type="button" className="btn btn-light" href={`/shop-products/${v.seller_id}`}>
-              {/* <Link type="button" className="btn btn-light" href={`/`}> */}
                   看更多
               </Link>
             </div>

@@ -66,15 +66,6 @@ export default function SectionIndex() {
           最新消息
         </div>
         <CustomSlider />
-        {/* <div className="bgc-candy">
-          <Image
-            src="/images/layout/28_candy.png"
-            alt="candy"
-            className="candy"
-            width={300}
-            height={300}
-          />
-        </div> */}
         <div className="bgc-tapi">
           <Image
             src="/images/layout/2_tapioca.png"
@@ -98,7 +89,7 @@ export default function SectionIndex() {
         <div className="index-title">店家</div>
         <StoreSlider />
       </div>
-      <div className="section-index index-nop">
+      <div className="section-index index-nop index-product">
         <div className="index-title">商品</div>
         <ProductSlider />
       </div>
