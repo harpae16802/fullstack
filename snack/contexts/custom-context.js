@@ -30,7 +30,7 @@ export function CustomContextProvider({ children }) {
   const [auth, setAuth] = useState(emptyAuth)
 
   // 解決Google的存localStorage的問題
-  const [isLoginByGoogle, setIsLoginByGoogle] = useState(false)
+  // const [isLoginByGoogle, setIsLoginByGoogle] = useState(false)
   
 
   //loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
@@ -58,24 +58,24 @@ export function CustomContextProvider({ children }) {
 
     if (result.success) {
       // 標記 Google 已登入
-      setIsLoginByGoogle(true)
+      // setIsLoginByGoogle(true)
       // 把 token 記錄在 localStorage
       localStorage.setItem(storageKey, JSON.stringify(result.data))
       setAuth(result.data)
 
-      // toast.success('歡迎您！登入成功', {
-      //   style: {
-      //     color: '#a32c2d',
-      //   },
-      //   iconTheme: {
-      //     primary: '#29a21e',
-      //     secondary: '#ffffff',
-      //   },
-      // })
+      toast.success('歡迎您！登入成功', {
+        style: {
+          color: '#a32c2d',
+        },
+        iconTheme: {
+          primary: '#29a21e',
+          secondary: '#ffffff',
+        },
+      })
 
-      // setTimeout(() => {
-      //   router.push('/')
-      // }, 2000)
+      setTimeout(() => {
+        router.push('/')
+      }, 2000)
       return true
     } else {
       return false
@@ -118,7 +118,6 @@ export function CustomContextProvider({ children }) {
     
     localStorage.removeItem(storageKey)
     setAuth(emptyAuth)
-    setIsLoginByGoogle(false)
   }
 
   //加最愛的功能,傳送getAuthHeader
@@ -135,11 +134,11 @@ export function CustomContextProvider({ children }) {
     const str = localStorage.getItem(storageKey)
     try {
       const data = JSON.parse(str)
-      if (data && !isLoginByGoogle) {
+      if (data) {
         setAuth(data)
       }
     } catch (ex) {}
-  }, [isLoginByGoogle])
+  }, [])
 
   // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
   // useEffect(() => {
@@ -156,7 +155,7 @@ export function CustomContextProvider({ children }) {
         storageKey,
         getAuthHeader,
         callbackGoogleLoginRedirect,
-        isLoginByGoogle,
+        
       }}
     >
       {children}

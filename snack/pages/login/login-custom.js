@@ -225,22 +225,22 @@ export default function LoginCustom() {
   }
 
   // =====google的部分
-  useEffect(() => {
-    if (isLoginByGoogle) {
-      toast.success('歡迎您！登入成功', {
-        style: {
-          color: '#a32c2d',
-        },
-        iconTheme: {
-          primary: '#29a21e',
-          secondary: '#ffffff',
-        },
-      })
-      setTimeout(() => {
-        router.push('/')
-      }, 2000)
-    }
-  }, [isLoginByGoogle]);
+  // useEffect(() => {
+  //   if (isLoginByGoogle) {
+  //     toast.success('歡迎您！登入成功', {
+  //       style: {
+  //         color: '#a32c2d',
+  //       },
+  //       iconTheme: {
+  //         primary: '#29a21e',
+  //         secondary: '#ffffff',
+  //       },
+  //     })
+  //     setTimeout(() => {
+  //       router.push('/')
+  //     }, 2000)
+  //   }
+  // }, [isLoginByGoogle]);
 
   useEffect(() => {
     initApp(callbackGoogleLoginRedirect)

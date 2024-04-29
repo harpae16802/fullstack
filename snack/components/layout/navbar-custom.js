@@ -105,14 +105,14 @@ export default function NavbarCustom() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/memberSystem/qrcodeSelect">
                         商品與QRcode
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" href="/memberSystem">
                         編輯基本資料
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -124,7 +124,8 @@ export default function NavbarCustom() {
                       e.preventDefault()
                     
                       logout()
-                      // router.replace(`/login/login-custom`)
+                      router.push(`/login/login-custom`)
+
                     }}
                   >
                     登出
@@ -159,14 +160,14 @@ export default function NavbarCustom() {
                         <div className="triangle"></div>
 
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link className="dropdown-item" href="/memberSystem">
                             編輯基本資料
-                          </a>
+                          </Link>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link className="dropdown-item" href="/memberSystem/qrcodeSelect">
                             商品與QRcode
-                          </a>
+                          </Link>
                         </li>
                         <li>
                           <a
@@ -176,7 +177,8 @@ export default function NavbarCustom() {
                               e.preventDefault()
               
                               logout()
-                              router.replace(`/login/login-custom`)
+                              router.push(`/login/login-custom`)
+                              
                             }}
                           >
                             登出
