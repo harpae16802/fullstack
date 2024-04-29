@@ -7,8 +7,8 @@ const router = express.Router();
 // tdx ----------
 const TDX_TOKEN_ENDPOINT =
   "https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token";
-const CLIENT_ID = "abc19wwwww-ba057041-4a8f-4d99";
-const CLIENT_SECRET = "b340bfe5-827a-4134-80e4-f1fc737f3d97";
+const CLIENT_ID = "";
+const CLIENT_SECRET = "";
 
 // 取得授權
 async function getAccessToken() {
