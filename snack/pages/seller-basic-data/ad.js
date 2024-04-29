@@ -62,8 +62,8 @@ export default function Ad() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
+          const data = response.data.data 
+          console.log(data) 
 
           setSellerData((prevData) => ({
             ...prevData,

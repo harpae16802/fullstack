@@ -39,6 +39,7 @@ export default function SellerBasicData() {
     contactNumber: '',
     email: '',
     companyAddress: '',
+    storeImage: '',
     companyDescription: '',
     openingHours: '09:00',
     closingHours: '22:00',
@@ -62,6 +63,9 @@ export default function SellerBasicData() {
 
   // 驗證
   const [errors, setErrors] = useState({})
+
+  // 上傳的新圖片
+  const [newImagePreviewUrl, setNewImagePreviewUrl] = useState(null)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -93,13 +97,14 @@ export default function SellerBasicData() {
             openingHours: data.opening_hours || '17:00',
             closingHours: data.closing_hours || '23:00',
             restDay: data.rest_day?.toString() || '6',
+            storeImage: data.storeImage || '您還沒有圖片唷~',
             profilePicture: data.profile_picture || `${IMG}`,
           }))
           setOriginData(data)
         })
 
         .catch((error) => {
-          console.error('获取商家信息失败', error)
+          console.error('獲取賣家頭貼失敗', error)
         })
       setTimeout(() => {
         setLoading(false)
@@ -169,10 +174,20 @@ export default function SellerBasicData() {
 
   // 修改 更新 賣家所有資料 包含圖片
   const handleFileChange = (e) => {
-    setSellerData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.files[0],
-    }))
+    const file = e.target.files[0]
+    if (file) {
+      setSellerData((prevState) => ({
+        ...prevState,
+        [e.target.name]: file,
+      }))
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setNewImagePreviewUrl(reader.result)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      setNewImagePreviewUrl(null)
+    }
   }
 
   const handleSubmit = (e) => {
@@ -496,23 +511,63 @@ export default function SellerBasicData() {
                       </div>
                     )}
                   </div>
-                  <div className="mb-5">
-                    <label htmlFor="store_image" className="form-label">
-                      上傳商家圖片
-                    </label>
-                    <input
-                      type="file"
-                      className={`form-control col-6${
-                        errors.account ? 'is-invalid' : ''
-                      }`}
-                      id="store_image"
-                      name="store_image"
-                      onChange={handleFileChange} // 圖片
-                    />
-                    {errors.account && (
-                      <div className="invalid-feedback">{errors.account}</div>
-                    )}
+
+                  <div
+                    className="mb-5"
+                    style={{
+                      border: '2px solid red',
+                      borderRadius: '10px',
+                      padding: '10px',
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                    }}
+                  >
+                    <div>
+                      <label htmlFor="store_image" className="form-label">
+                        現有商家圖片
+                      </label>
+                      <br />
+                      {sellerData.storeImage ? (
+                        <img
+                          src={`http://localhost:3002${sellerData.storeImage}`}
+                          alt="商家現有圖片"
+                          className="img-fluid"
+                          style={{ maxWidth: '200px', marginRight: '20px' }}
+                        />
+                      ) : (
+                        <p>暫無圖片</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label htmlFor="store_image" className="form-label">
+                        新上傳圖片預覽
+                      </label>
+                      <br />
+                      {newImagePreviewUrl ? (
+                        <img
+                          src={newImagePreviewUrl}
+                          alt="新上傳圖片預覽"
+                          className="img-fluid"
+                          style={{ maxWidth: '200px' }}
+                        />
+                      ) : (
+                        <p>請選擇圖片以預覽</p>
+                      )}
+                    </div>
                   </div>
+
+                  <label htmlFor="store_image" className="form-label">
+                    上傳商家圖片
+                  </label>
+                  <input
+                    type="file"
+                    className={`form-control col-6`}
+                    id="store_image"
+                    name="store_image"
+                    onChange={handleFileChange} // 处理文件选择
+                  />
+                  <br></br>
                   <div className="mb-5">
                     <label htmlFor="companyDescription" className="form-label">
                       店家簡介

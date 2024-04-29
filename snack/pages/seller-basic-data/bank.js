@@ -66,7 +66,7 @@ export default function bank() {
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || `${IMG}`,
+            profilePicture: profile_picture || `${IMG}`,
             bankAccounts: bankAccounts || [], // 使用鉤子
           }))
           setOriginalBankAccounts(bankAccounts || []);  

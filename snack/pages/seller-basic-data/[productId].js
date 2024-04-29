@@ -237,7 +237,7 @@ export default function AddProducts() {
       })
       .then((response) => {
         setShowUpdateSuccessModal(true)
-        alert('产品更新成功')
+        // alert('產品更新成功')
       })
       .catch((error) => {
         setShowUpdateFailModal(true)
