@@ -12,7 +12,6 @@ import { Modal, Button } from 'react-bootstrap'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
 export default function bank() {
   // 使用 useRouter
   const router = useRouter()
@@ -21,10 +20,15 @@ export default function bank() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
   // 預設圖片
-  const IMG = "http://localhost:3000/images/seller.jpg";
+  const IMG = 'http://localhost:3000/images/seller.jpg'
 
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -38,14 +42,14 @@ export default function bank() {
   //彈出視窗
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showFailModal, setShowFailModal] = useState(false)
-  const [originalBankAccounts, setOriginalBankAccounts] = useState([]);
-  const [showNoChangeModal, setShowNoChangeModal] = useState(false);
+  const [originalBankAccounts, setOriginalBankAccounts] = useState([])
+  const [showNoChangeModal, setShowNoChangeModal] = useState(false)
 
   // 動畫
   const [loading, setLoading] = useState(true)
 
   // 驗證
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({})
 
   // 使用Ref
   const handleImageClick = () => {
@@ -55,7 +59,7 @@ export default function bank() {
   // 總查詢
   useEffect(() => {
     if (!sellerId) {
-      router.replace('/login/login-seller');  
+      router.replace('/login/login-seller')
     }
     if (sellerId) {
       axios
@@ -69,14 +73,14 @@ export default function bank() {
             profilePicture: profile_picture || `${IMG}`,
             bankAccounts: bankAccounts || [], // 使用鉤子
           }))
-          setOriginalBankAccounts(bankAccounts || []);  
+          setOriginalBankAccounts(bankAccounts || [])
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
-        setTimeout(() => {
-          setLoading(false)
-        }, 1000)
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000)
     }
   }, [sellerId, imageVersion])
 
@@ -92,43 +96,46 @@ export default function bank() {
     setSellerData({ ...sellerData, bankAccounts: updatedBankAccounts })
   }
 
-// 驗證
-const validateBankAccounts = () => {
-  const newErrors = {};
-  sellerData.bankAccounts.forEach((account, index) => {
-    if  (!account.account_number || !account.account_number.trim()) {
-      newErrors[`accountNumber-${index}`] = "銀行帳號不能為空";
-    }
-    const bankCode = String(account.bank_code || "");
-    if (!bankCode.trim()) {
-      newErrors[`bankCode-${index}`] = "銀行代碼不能為空";
-    }
-  });
+  // 驗證
+  const validateBankAccounts = () => {
+    const newErrors = {}
+    sellerData.bankAccounts.forEach((account, index) => {
+      if (!account.account_number || !account.account_number.trim()) {
+        newErrors[`accountNumber-${index}`] = '銀行帳號不能為空'
+      }
+      const bankCode = String(account.bank_code || '')
+      if (!bankCode.trim()) {
+        newErrors[`bankCode-${index}`] = '銀行代碼不能為空'
+      }
+    })
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0; 
-};
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   // 送出表單
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!validateBankAccounts()) {
-      console.error('表單驗證失敗:', errors);
-      return;  
+      console.error('表單驗證失敗:', errors)
+      return
     }
-    if (JSON.stringify(sellerData.bankAccounts) === JSON.stringify(originalBankAccounts)) {
-      setShowNoChangeModal(true);
-      return;
+    if (
+      JSON.stringify(sellerData.bankAccounts) ===
+      JSON.stringify(originalBankAccounts)
+    ) {
+      setShowNoChangeModal(true)
+      return
     }
     axios
       .put(`${SELLER_API}/${sellerId}/update-bank-accounts`, {
         bankAccounts: sellerData.bankAccounts,
       })
       .then((response) => {
-        setShowSuccessModal(true);
+        setShowSuccessModal(true)
       })
       .catch((error) => {
-        setShowFailModal(true);
+        setShowFailModal(true)
       })
   }
 
@@ -167,10 +174,13 @@ const validateBankAccounts = () => {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-              <img
+                <img
                   // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
-                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
-
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -180,7 +190,10 @@ const validateBankAccounts = () => {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
-                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
                 <input
@@ -247,73 +260,88 @@ const validateBankAccounts = () => {
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
           {loading ? (
-            <div0
-                   className={styles.loadingContainer}>
-                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-                    {/* <p className="mt-2">加載中...</p> */}
-                  </div0>
-                ) : (
-          <div className="col-md-8 col-12">
-            <div className={styles.formCard}>
-              <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>銀行帳號設定</h2>
-                {sellerData.bankAccounts.map((account, index) => (
-                  <React.Fragment key={`bank-account-group-${index}`}>
-                    <div className="mb-5">
-                      <label
-                        htmlFor={`accountNumber-${index}`}
-                        className="form-label"
-                      >
-                        {`銀行帳號 ${index + 1}`}
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control ${errors[`accountNumber-${index}`] ? 'is-invalid' : ''}`}
-                        id={`accountNumber-${index}`}
-                        name="account_number"
-                        placeholder={`请输入第 ${index + 1} 銀行帳號`}
-                        value={account.account_number || ''}
-                        onChange={handleBankAccountChange(
-                          index,
-                          'account_number'
+            <div0 className={styles.loadingContainer}>
+              <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+              {/* <p className="mt-2">加載中...</p> */}
+            </div0>
+          ) : (
+            <div className="col-md-8 col-12">
+              <div className={styles.formCard}>
+                <form onSubmit={handleSubmit} className={styles.formWrapper}>
+                  <h2 className={`${styles.formTitle}`}>銀行帳號設定</h2>
+                  {sellerData.bankAccounts.map((account, index) => (
+                    <React.Fragment key={`bank-account-group-${index}`}>
+                      <div className="mb-5">
+                        <label
+                          htmlFor={`accountNumber-${index}`}
+                          className="form-label"
+                        >
+                          {`銀行帳號 ${index + 1}`}
+                        </label>
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            errors[`accountNumber-${index}`] ? 'is-invalid' : ''
+                          }`}
+                          id={`accountNumber-${index}`}
+                          name="account_number"
+                          placeholder={`请输入第 ${index + 1} 銀行帳號`}
+                          value={account.account_number || ''}
+                          onChange={handleBankAccountChange(
+                            index,
+                            'account_number'
+                          )}
+                        />
+                        {errors[`accountNumber-${index}`] && (
+                          <div className="invalid-feedback">
+                            {errors[`accountNumber-${index}`]}
+                          </div>
                         )}
-                      />
-                      {errors[`accountNumber-${index}`] && <div className="invalid-feedback">{errors[`accountNumber-${index}`]}</div>}
-                    </div>
-                    <div className="mb-5">
-                      <label
-                        htmlFor={`bankCode-${index}`}
-                        className="form-label"
-                      >
-                        {`銀行代碼 ${index + 1}`}
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control ${errors[`bankCode-${index}`] ? 'is-invalid' : ''}`}
-                        id={`bankCode-${index}`}
-                        name="bank_code"
-                        placeholder={`请输入第 ${index + 1}銀行代碼 `}
-                        value={account.bank_code || ''}
-                        onChange={handleBankAccountChange(index, 'bank_code')}
-                      />
-                       {errors[`bankCode-${index}`] && <div className="invalid-feedback">{errors[`bankCode-${index}`]}</div>}
-                    </div>
-                  </React.Fragment>
-                ))}
+                      </div>
+                      <div className="mb-5">
+                        <label
+                          htmlFor={`bankCode-${index}`}
+                          className="form-label"
+                        >
+                          {`銀行代碼 ${index + 1}`}
+                        </label>
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            errors[`bankCode-${index}`] ? 'is-invalid' : ''
+                          }`}
+                          id={`bankCode-${index}`}
+                          name="bank_code"
+                          placeholder={`请输入第 ${index + 1}銀行代碼 `}
+                          value={account.bank_code || ''}
+                          onChange={handleBankAccountChange(index, 'bank_code')}
+                        />
+                        {errors[`bankCode-${index}`] && (
+                          <div className="invalid-feedback">
+                            {errors[`bankCode-${index}`]}
+                          </div>
+                        )}
+                      </div>
+                    </React.Fragment>
+                  ))}
 
-                {/* 提交按鈕 */}
-                <div className={styles.buttonGroup}>
-                  <Link href="/seller-basic-data/">
-                    <button className={styles.btnSecondary}>回到店面</button>
-                  </Link>
-                  <button type="submit" className={styles.btnPrimary}>
-                    提交修改
-                  </button>
-                </div>
-              </form>
+                  {/* 提交按鈕 */}
+                  <div className={styles.buttonGroup}>
+                    <button
+                      type="button"
+                      className={styles.btnSecondary}
+                      onClick={() => goToSellerPage(sellerId)}
+                    >
+                      前往店面
+                    </button>
+                    <button type="submit" className={styles.btnPrimary}>
+                      提交修改
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
-                )}
+          )}
           {/* 表單 */}
         </div>
       </div>
@@ -349,15 +377,24 @@ const validateBankAccounts = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showNoChangeModal} onHide={() => setShowNoChangeModal(false)} centered>
-  <Modal.Header closeButton>
-    <Modal.Title>資料未變更</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>您沒有做任何變更。</Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={() => setShowNoChangeModal(false)}>關閉</Button>
-  </Modal.Footer>
-</Modal>
+      <Modal
+        show={showNoChangeModal}
+        onHide={() => setShowNoChangeModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>資料未變更</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>您沒有做任何變更。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowNoChangeModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }

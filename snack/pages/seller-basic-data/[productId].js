@@ -25,6 +25,11 @@ export default function AddProducts() {
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+
   // 拿取product_id
   const { productId } = router.query
 
@@ -579,7 +584,7 @@ export default function AddProducts() {
                         name="store_image"
                         onChange={handleFileChange}
                       />
-<br></br>
+                      <br></br>
                       <div className={styles.selectGroup}>
                         <div className="col-md-auto col-12 mb-3">
                           <label
@@ -644,11 +649,14 @@ export default function AddProducts() {
 
                       {/* 按鈕樣式 */}
                       <div className={styles.buttonGroup}>
-                        <Link href="/seller-basic-data/">
-                          <button className={styles.btnSecondary}>
-                            回到店面
-                          </button>
-                        </Link>
+                        <button
+                          type="button"
+                          className={styles.btnSecondary}
+                          onClick={() => goToSellerPage(sellerId)}
+                        >
+                          前往店面
+                        </button>
+
                         <button type="submit" className={styles.btnPrimary}>
                           提交修改
                         </button>

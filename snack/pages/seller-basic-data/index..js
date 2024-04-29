@@ -25,6 +25,11 @@ export default function SellerBasicData() {
   const sellerId =
     typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
 
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
@@ -565,7 +570,7 @@ export default function SellerBasicData() {
                     className={`form-control col-6`}
                     id="store_image"
                     name="store_image"
-                    onChange={handleFileChange} 
+                    onChange={handleFileChange}
                   />
                   <br></br>
                   <div className="mb-5">
@@ -656,9 +661,14 @@ export default function SellerBasicData() {
                   <br></br>
                   {/* 按鈕樣式 */}
                   <div className={styles.buttonGroup}>
-                    <Link href="/seller-basic-data/">
-                      <button className={styles.btnSecondary}>回到店面</button>
-                    </Link>
+                    <button
+                      type="button"
+                      className={styles.btnSecondary}
+                      onClick={() => goToSellerPage(sellerId)}
+                    >
+                      前往店面
+                    </button>
+
                     <button type="submit" className={styles.btnPrimary}>
                       提交修改
                     </button>

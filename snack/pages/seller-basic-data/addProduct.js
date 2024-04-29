@@ -26,6 +26,11 @@ export default function AddProducts() {
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -482,7 +487,7 @@ export default function AddProducts() {
 
                   <div className="mb-3">
                     <label htmlFor="store_image" className="form-label">
-                      上傳產品圖片 
+                      上傳產品圖片
                     </label>
                     <input
                       type="file"
@@ -492,7 +497,6 @@ export default function AddProducts() {
                       id="store_image"
                       name="store_image"
                       onChange={handleInputChange}
-                      
                     />
                     {imagePreview && (
                       <img
@@ -548,9 +552,14 @@ export default function AddProducts() {
                   <br></br>
                   {/* 按鈕樣式 */}
                   <div className={styles.buttonGroup}>
-                    <Link href="/seller-basic-data/">
-                      <button className={styles.btnSecondary}>回到店面</button>
-                    </Link>
+                    <button
+                      type="button"
+                      className={styles.btnSecondary}
+                      onClick={() => goToSellerPage(sellerId)}
+                    >
+                      前往店面
+                    </button>
+
                     <button type="submit" className={styles.btnPrimary}>
                       新增商品
                     </button>

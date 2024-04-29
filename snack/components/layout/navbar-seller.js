@@ -21,6 +21,15 @@ export default function NavbarSeller() {
   // 談窗
   const [showLogoutModal, setShowLogoutModal] = useState(false)
 
+  //拿取seller_id
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+
   const handleLogout = () => {
     // 清除localStorage中的seller_id
     localStorage.removeItem('sellerId')
@@ -30,7 +39,7 @@ export default function NavbarSeller() {
     setTimeout(() => {
       Replace()
     }, 3000)
-  }  
+  }
   const Replace = () => {
     router.replace('/')
   }
@@ -130,9 +139,12 @@ export default function NavbarSeller() {
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => goToSellerPage(sellerId)}
+                      >
                         進入店面
-                      </a>
+                      </button>
                     </li>
                     <li>
                       <a
@@ -173,11 +185,16 @@ export default function NavbarSeller() {
                         aria-labelledby="dropdownMenuLink"
                       >
                         <div className="triangle"></div>
+
                         <li>
-                          <a className="dropdown-item" href="/">
+                          <button
+                            className="dropdown-item"
+                            onClick={() => goToSellerPage(sellerId)}
+                          >
                             進入店面
-                          </a>
+                          </button>
                         </li>
+
                         <li>
                           <a
                             className="dropdown-item"

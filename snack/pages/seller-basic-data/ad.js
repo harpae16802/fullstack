@@ -24,7 +24,11 @@ export default function Ad() {
   // 預設圖片
   const IMG = "http://localhost:3000/images/seller.jpg";
 
-
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+  
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -352,7 +356,8 @@ export default function Ad() {
               </Button>
             </Link>
             <Link href="/seller-basic-data" passHref>
-              <Button variant="primary" className={styles.btnPrimary}>
+              <Button variant="primary" className={styles.btnPrimary}    onClick={() => goToSellerPage(sellerId)}
+>
                 {' '}
                 前往店家頁
               </Button>
