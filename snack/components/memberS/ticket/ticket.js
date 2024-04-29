@@ -7,13 +7,21 @@ import Link from 'next/link'
 import styles from "@/styles/form.module.css"
 import ticketStyle from '@/styles/ticket.module.css';
 import Pagination from '@/components/memberS/others/pagination'
-import { ticket01Select01, ticket01Select02, ticket01Select03 } from "@/api/ticket"
+import { ticket01Select01, ticket01Select02, ticket01Select03, remainTicket } from "@/api/ticket"
 export default function ticket() {
   const [tab, settab] = useState(1)
-  const router = useRouter();
-  const [data, setdata] = useState([]);
+  const router = useRouter(); 
+  // 設定tab資料
+  const [data1, setdata1] = useState([]);
+  const [data2, setdata2] = useState([]);
+  const [data3, setdata3] = useState([]);
+  // rwd
   const [isBigScreen, setIsBigScreen] = useState(false);
   const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
+    // 分數訊息
+  const [point, setPoint] = useState([]);
+  const [pointMsg, setPointMsg] = useState([]);
+  // 控制rwd
   useEffect(() => {
     const handleResize = () => {
       setIsBigScreen(window.innerWidth > 500);
@@ -30,47 +38,59 @@ export default function ticket() {
     };
 
   }, [])
-
+  // 設定分數
   useEffect(() => {
-    if (tab == 2) {
-      (async function () {
+    (async function () {
+      try {
+        const data = await remainTicket()
+
+        setPoint(data.data + "點");
+        setPointMsg("目前點數:")
+      } catch (error) {
+        console.log("error:", error);
+      }
+    })();
+  }, [])
+
+  // 切換資料
+  useEffect(() => {
+    (async function () {
+      try { 
+        // 已獲得
         const result = await ticket01Select02();
         if (result.success) {
-          setdata(result.data);
+          setdata2(result.data);
+          // 設定預設值 
         } else {
-          setdata([]);
+          setdata2([]);
+        }
+
+        // 已使用
+        const result3 = await ticket01Select03();
+        if (result3.success) {
+          setdata3(result3.data);
+        } else {
+          setdata3([]);
+        }
+
+        // 全部
+        const result1 = await ticket01Select01();
+        if (result1.success) {
+          setdata1(result1.data);
+        } else {
+          setdata1([]);
 
         }
-      })();
-      settab(2)
-
-    } else if (tab == 3) {
-      (async function () {
-        const result = await ticket01Select03();
-        if (result.success) {
-          setdata(result.data);
-        } else {
-          setdata([]);
-        }
-      })();
-      settab(3)
-
-    } else {
-      (async function () {
-        const result = await ticket01Select01();
-        if (result.success) {
-          setdata(result.data);
-        } else {
-          setdata([]);
-
-        }
-      })();
-      settab(1)
-    }
-  }, [tab])
+      } catch (error) {
+        console.error("Error in useEffect:", error);
+      }
+    })();
+  }, []);
   return (
     <div className={classnames(ticketStyle["ticket"])}>
-      <Point />
+      {/*上方看板*/}
+      <Point pointTitle={point} pointMsg={pointMsg} />
+      {/*切換bar*/}
       <ul className={classnames("nav nav-tabs d-flex flex-grow-1 px-5")}>
         <li className="nav-item flex-grow-1">
           <Link onClick={(e) => { e.preventDefault(); settab(1) }} aria-current="page" href="/memberSystem/ticket" style={{ border: "2px solid grey" }} className={classnames("nav-link me-1", styles["btn-parmary-white"], `${tab == 1 && styles["active"]}`)}>全部紀錄</Link>
@@ -82,28 +102,31 @@ export default function ticket() {
           <Link onClick={(e) => { e.preventDefault(); settab(3) }} aria-current="page" href="/memberSystem/ticket/?id=3" style={{ border: "2px solid grey" }} className={classnames("nav-link me-1", styles['border-1'], `${tab == 3 && styles["active"]}`, styles["btn-parmary-white"])}>已使用</Link>
         </li>
       </ul>
+      {/*內容*/}
+
       <div className=" border1">
         <div className={classnames("itemgroup item1", styles["mb-0"])}>
 
           <div className="card">
             {/* 1  */}
+            {/* 全部紀錄  */}
 
             {/* flexBetween   {Array(4).fill(1).map(() => { */}
-            {tab == 1 && data.map((v, i) => {
+            {tab == 1 && data1.map((v, i) => {
               return (<div key={i} className={classnames(" card-body border-1-bg ", ticketStyle["wrap"], styles.flexBetween)}>
                 <div className={classnames(ticketStyle["postion-a1"])}>
                   <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
                 </div>
                 <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
                   <h5 className="time" style={{ textAlign: 'center' }}>
-                   <span>{v.payment_date} </span>  <br />
+                    {v.play_date}  <br />
                     遊戲點數
                   </h5>
 
                 </div>
                 <div className={classnames("countGroup", styles.flexBetween, ticketStyle["postion-a3"])}>
                   <div style={{ margin: "auto" }}>
-                  
+
                     {v.get_point && <>+{v.get_point}點 </>}
                     {v.consume_gamepoint && <>-{v.consume_gamepoint}點  </>}
 
@@ -116,21 +139,23 @@ export default function ticket() {
             })
             }
             {/* 2  */}
-            {tab == 2 && data.map((v, i) => {
-              return (<div key={i}  className={classnames(" card-body border-1-bg ", ticketStyle["wrap"], styles.flexBetween)}>
+            {/* 已獲的  */}
+
+            {tab == 2 && data2.map((v, i) => {
+              return (<div key={i} className={classnames(" card-body border-1-bg ", ticketStyle["wrap"], styles.flexBetween)}>
                 <div className={classnames(ticketStyle["postion-a1"])}>
                   <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
                 </div>
-                <div className={classnames(styles.flexBetween,ticketStyle["postion-a2"])}>
-                  <h5 style={{ textAlign: 'center' }}>
-                    <span>{v.play_date} </span> <br />
+                <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
+                  <h5 className="time" style={{ textAlign: 'center' }}>
+                    {v.play_date}  <br />
                     遊戲點數
                   </h5>
 
                 </div>
                 <div className={classnames("countGroup", styles.flexBetween, ticketStyle["postion-a3"])}>
-                <div style={{ margin: "auto" }}>
-                  {v.get_point && <>+{v.get_point}點  </>}
+                  <div style={{ margin: "auto" }}>
+                    {v.get_point && <>+{v.get_point}點  </>}
                     {v.consume_gamepoint && <>-{v.consume_gamepoint}點 </>}
                   </div>
                   <div>
@@ -140,22 +165,23 @@ export default function ticket() {
             })
             }
             {/* 3  */}
+            {/* 已使用 */}
 
-            {tab == 3 && data.map((v, i) => {
+            {tab == 3 && data3.map((v, i) => {
               return (
                 <div v key={i} className={classnames("card card-body border-1-bg", ticketStyle["wrap"], styles.flexBetween)}>
-                  <div className={classnames(ticketStyle["postion-a1"])}> 
-                  <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
+                  <div className={classnames(ticketStyle["postion-a1"])}>
+                    <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
                   </div>
-                  <div className={classnames(styles.flexBetween,ticketStyle["postion-a2"])}>
-                    <h5 className='ms-3 text-center' > 
-                    <span> {v.payment_date}</span>
+                  <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
+                    <h5 className='ms-3 text-center' >
+                      <span> {v.payment_date}</span>
                       <br />
-                      商品折價 </h5>  
+                      商品折價 </h5>
                   </div>
                   <div className={classnames("countGroup", styles.flexBetween, ticketStyle["postion-a3"])}>
-                  <div style={{ margin: "auto" }}>
-                    {v.consume_gamepoint && <>-{v.consume_gamepoint}點  </>}
+                    <div style={{ margin: "auto" }}>
+                      {v.consume_gamepoint && <>-{v.consume_gamepoint}點  </>}
                     </div>
                     <div>
                     </div>

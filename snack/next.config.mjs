@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
-    domains: ['via.placeholder.com', 'localhost','storage.googleapis.com'],
+    domains: ['localhost', '127.0.0.1','via.placeholder.com', 'localhost','storage.googleapis.com'],
   },
 };
 

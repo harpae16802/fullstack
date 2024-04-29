@@ -23,7 +23,7 @@ import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
-
+import { join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
@@ -39,8 +39,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-
-
+// 宜 加入token黑名單
+// const blacklist = ['/backRoute'];
 // ==== 如
 
 // 自訂的頂層middleware
@@ -164,7 +164,7 @@ app.use("/market-map", marketMapRouter);
 
 // ==== 蓁
 // 會員路由
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/images", express.static(path.join(__dirname, "public/discuss/")));
 app.use("/backRoute", index);
 
 

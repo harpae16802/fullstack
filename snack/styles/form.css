@@ -87,6 +87,12 @@ input[type='number']::-webkit-inner-spin-button {
   border: 0px;
   border-bottom: 1px solid rgb(200, 200, 200);
 }
+.border-1-main-bg {
+  border: 1px solid #a32c2d;
+  padding: 10px;
+  margin-bottom: 1px;
+  background-color: transparent;
+}
 .border-1-main {
   border: 1px solid #a32c2d;
   padding: 10px;
@@ -161,12 +167,7 @@ input.inputErr,
 select.inputErr {
   border: 2px red solid !important;
 }
-/* selectmenu */
-.selectMenuPostion {
-  max-width: 400px;
-  position: relative;
-  top: -2em;
-}
+ 
 /* memeberList */
 .memeberList .accordion-button,.memeberList .accordion-item{
   background-color: white !important;
@@ -190,20 +191,7 @@ div.accordion-item:not(.accordion-drop)
   color: white !important;
   width: 100%;
 }
-/* imgicon */
 
-.imgicon {
-  height: 125px;
-  position: absolute;
-  height: 125px;
-  text-align: center;
-  bottom: -20px;
-  margin: auto;
-  z-index: 5;
-}
-.imgIcon-b {
-  border-radius: 50%;
-}
 /* .setimgicon */
 
 .setimgicon {
@@ -405,10 +393,7 @@ div.accordion-item:not(.accordion-drop)
   .setPersonFormGrid {
     width: 100%;
   }
-  .SelectMenuPostion {
-    margin-top: 10px;
-    flex-grow: 1;
-  }
+ 
   .smt-1 {
     margin-left: 3px;
   }
@@ -428,6 +413,7 @@ div.accordion-item:not(.accordion-drop)
     border-radius: 15px;
     background: transparent;
     padding: 2px !important;
+    text-wrap: nowrap;
   }
   .form .classbtn {
     border-radius: 12px;
@@ -496,13 +482,15 @@ div.accordion-item:not(.accordion-drop)
  .xl-full-width.col-xl-9 {
   width: 100%;
  }
- .selectMenuPostion {
-  position: relative;
-  top: 0;
+ 
 }
-}
-@media (max-width: 500px) {
-
+@media (max-width: 800px) {
+  .countGroup {
+    display: flex;
+    width: atuo;
+    justify-content: end;
+    text-align: end;
+  }
 
 
 }

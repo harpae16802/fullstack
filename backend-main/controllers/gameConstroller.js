@@ -2,7 +2,7 @@ import db from "../utils/db.js";
 // 如果fs和path被用到的話，也應該要將它們轉為import形式，這裡暫時註釋掉，因為您的功能中未使用它們。
 // import fs from "fs";
 // import path from "path";
-
+import { date } from '../utils/date.js';
 export async function gamePassSelect01(req, res) {
     const t_sql = `SELECT * FROM clear_data a JOIN achievement_category b ON a.level_id=b.level_id`;
     try {
