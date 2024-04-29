@@ -2,14 +2,17 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API, PRODUCTS_API } from './config'
+import { SELLER_API, PRODUCTS_API, PRODUCTS_CATEGORIES } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { Modal, Button, Form } from 'react-bootstrap'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function ProductModify() {
+export default function AddProducts() {
   // 使用 useRouter
   const router = useRouter()
 
@@ -17,41 +20,105 @@ export default function ProductModify() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
-  const { productId } = router.query
-  console.log(productId)
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+  // 預設圖片
+  const IMG = 'http://localhost:3000/images/seller.jpg'
 
-  const [product, setProduct] = useState({
-    productId: productId,
-    productName: '',
-    productDescription: '',
-    price: '',
-    productNutrition: '',
-    productIngredient: '',
-    stockQuantity: '',
-    imageUrl: '',
-  })
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+
+  // 拿取product_id
+  const { productId } = router.query
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
+
+  // 動畫
+  const [loading, setLoading] = useState(true)
+
+  // 驗證
+  const [errors, setErrors] = useState({})
+
+  // 預覽圖片
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
   })
 
-  // 下拉選單
-  const handleChangeStatus = (e) => {
-    setProduct((prev) => ({ ...prev, status: e.target.value }))
+  //設定products
+  const [productDetails, setProductDetails] = useState({
+    product_name: '',
+    product_description: '',
+    price: '',
+    product_nutrition: '',
+    product_ingredient: '',
+    stock_quantity: '',
+    category_id: '',
+    category: '',
+    image_url: '',
+    status: '',
+  })
+
+  // 樣式
+  const imageContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    border: '2px solid #de4f4f',
+    borderRadius: '10px',
+    padding: '10px',
+    flexWrap: 'wrap',
   }
+
+  const imageStyle = {
+    maxWidth: '200px',
+    margin: '10px',
+  }
+
+  const mediaQuery = window.matchMedia('(max-width: 400px)')
+  if (mediaQuery.matches) {
+    imageContainerStyle.flexDirection = 'column'
+  } else {
+    imageContainerStyle.flexDirection = 'row'
+  }
+  // 樣式
+
+  // 比較資料
+  const [originalProductDetails, setOriginalProductDetails] = useState({})
+
+  //彈窗
+  const [showUpdateSuccessModal, setShowUpdateSuccessModal] = useState(false)
+  const [showUpdateFailModal, setShowUpdateFailModal] = useState(false)
+  const [showNoChangeModal, setShowNoChangeModal] = useState(false)
+  // 種類
+  const [categories, setCategories] = useState([])
+  const CATEGORY_MAP = {
+    1: '點心',
+    2: '飲料',
+    3: '甜品',
+    4: '湯品',
+    5: '小吃',
+    6: '主食',
+  }
+
+  // 圖片預覽
+  const [previewImage, setPreviewImage] = useState(null)
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
   }
 
-  // 總查詢
+  // 如果拿取到seller_id執行這裡
   useEffect(() => {
+    if (!sellerId) {
+      router.replace('/login/login-seller')
+    }
+    console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -59,100 +126,157 @@ export default function ProductModify() {
           const data = response.data.data
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
-        .catch((error) => console.error('獲取賣家資訊失敗', error))
+        .catch((error) => {
+          console.error('拿取頭貼失敗', error)
+        })
     }
-
     if (productId) {
       axios
         .get(`${PRODUCTS_API}/details/${productId}`)
         .then((response) => {
-          const {
-            product_id,
-            category,
-            product_name,
-            product_description,
-            image_url,
-            price,
-            stock_quantity,
-            status,
-            category_id,
-            product_ingredient,
-            product_nutrition,
-            seller_id,
-            favorite_count,
-            created_at,
-          } = response.data.product
-          setProduct({
-            productId: product_id,
-            category,
-            productName: product_name,
-            productDescription: product_description,
-            imageUrl: image_url,
-            price,
-            stockQuantity: stock_quantity,
-            status,
-            categoryId: category_id,
-            productIngredient: product_ingredient,
-            productNutrition: product_nutrition,
-            sellerId: seller_id,
-            favoriteCount: favorite_count,
-            createdAt: created_at,
-          })
+          const productData = response.data.product
+          setProductDetails(productData)
+          console.log(productData)
+          setOriginalProductDetails(productData)
+          if (productData.image_url) {
+            setPreviewImage(
+              `http://localhost:3002/images/${productData.image_url}`
+            )
+          }
+          return axios.get(`${PRODUCTS_CATEGORIES}`)
+        })
+        .then((response) => {
+          setLoading(false)
+          setCategories(response.data.categories)
         })
         .catch((error) => {
-          console.error('获取产品资料失败', error)
+          console.error('載入產品圖片失敗:', error)
+          setLoading(false)
         })
+        .finally(() => {
+          setTimeout(() => {
+            setLoading(false)
+          }, 1000)
+        })
+    } else {
+      setLoading(false)
     }
-  }, [productId, sellerId]) // 确保這裡有 productId
+  }, [sellerId, productId])
 
-  // 表單更改
+  //種類對應表
+  const handleCategoryInputChange = (categoryId) => {
+    const category = CATEGORY_MAP[categoryId] || ''
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      category,
+    }))
+  }
+
+  // 更新產品 (可控表單)
   const handleChange = (e) => {
     const { name, value } = e.target
-    setProduct((prev) => ({ ...prev, [name]: value }))
+    if (name === 'category_id') {
+      handleCategoryInputChange(value)
+    }
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }))
   }
 
-  // 圖片上傳
+  // 驗證表單
+  const validateProductDetails = () => {
+    const newErrors = {}
+
+    if (!productDetails.product_name.trim()) {
+      newErrors.product_name = '產品名稱不能為空'
+    }
+
+    if (!productDetails.product_description.trim()) {
+      newErrors.product_description = '產品描述不能為空'
+    }
+
+    // 將 price 轉換為字符串進行檢查
+    if (!String(productDetails.price).trim()) {
+      newErrors.price = '價格不能為空'
+    }
+
+    if (!productDetails.stock_quantity.toString().trim()) {
+      newErrors.stock_quantity = '庫存數量不能為空'
+    }
+
+    // if (!productDetails.category_id.trim()) {
+    //   newErrors.category_id = "產品種類必須選擇";
+    // }
+    if (!productDetails.product_nutrition.trim()) {
+      newErrors.product_nutrition = '產品營養表不能為空'
+    }
+    if (!productDetails.product_ingredient.trim()) {
+      newErrors.product_ingredient = '產品成分表不能為空'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  // 圖片
   const handleFileChange = (e) => {
-    setProduct((prev) => ({ ...prev, imageUrl: e.target.files[0] }))
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setPreviewImage(e.target.result)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      setPreviewImage(null) // 清除预览
+    }
   }
 
-  // 表單提交
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(product) // 输出查看所有字段值
+  // 送出表單
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    if (!validateProductDetails()) {
+      console.error('表單驗證失敗:', errors)
+      return
+    }
+    if (
+      JSON.stringify(productDetails) === JSON.stringify(originalProductDetails)
+    ) {
+      setShowNoChangeModal(true) // 顯示資料未變更的彈窗
+      return
+    }
     const formData = new FormData()
-    Object.keys(product).forEach((key) => {
-      if (key === 'imageUrl' && product[key] instanceof File) {
-        formData.append('image', product[key])
-      } else if (product[key] != null) {
-        // 确保不添加null值
-        formData.append(key, product[key])
-      }
-    })
+    formData.append('product_name', productDetails.product_name)
+    formData.append('product_description', productDetails.product_description)
+    formData.append('price', productDetails.price)
+    formData.append('product_nutrition', productDetails.product_nutrition)
+    formData.append('product_ingredient', productDetails.product_ingredient)
+    formData.append('stock_quantity', productDetails.stock_quantity)
+    formData.append('category', productDetails.category)
+    formData.append('category_id', productDetails.category_id)
+    formData.append('status', productDetails.status)
+    formData.append('image', fileInputRef.current.files[0])
 
     axios
-      .put(`${PRODUCTS_API}/update/${productId}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      .put(`${PRODUCTS_API}/update-product/${productId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
       .then((response) => {
-        console.log('Response received:', response)
-        if (response.data.success) {
-          alert('產品更新成功')
-          router.push('/seller-basic-data/productsList')
-        } else {
-          throw new Error(response.data.message)
-        }
+        setShowUpdateSuccessModal(true)
+        // alert('產品更新成功')
       })
       .catch((error) => {
-        console.error('更新產品信息失败', error)
-        alert(` 產品新增成功`)
-        router.push('/seller-basic-data/productsList')
+        setShowUpdateFailModal(true)
+        console.error('更新产品信息失败:', error)
       })
   }
-
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -191,7 +315,12 @@ export default function ProductModify() {
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
                 <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -201,6 +330,10 @@ export default function ProductModify() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
                 <input
@@ -266,148 +399,353 @@ export default function ProductModify() {
           {/* 導覽列 */}
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
-          <div className="col-md-8 col-12">
-            <div className={styles.formCard}>
-              <form onSubmit={handleSubmit} className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>編輯產品資料</h2>
+          {loading ? (
+            <div0 className={styles.loadingContainer}>
+              <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+              {/* <p className="mt-2">加載中...</p> */}
+            </div0>
+          ) : (
+            <div className="col-md-8 col-12">
+              <div className={styles.formCard}>
+                <form onSubmit={handleSubmit} className={styles.formWrapper}>
+                  <h2 className={`${styles.formTitle}`}>修改商品</h2>
+                  {loading ? (
+                    <p>Loading...</p>
+                  ) : (
+                    <>
+                      <div className="mb-3">
+                        <label htmlFor="product_name" className="form-label">
+                          產品名稱
+                        </label>
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            errors.product_name ? 'is-invalid' : ''
+                          }`}
+                          id="product_name"
+                          name="product_name"
+                          placeholder="產品名稱"
+                          value={productDetails.product_name}
+                          onChange={handleChange}
+                        />
+                        {errors.product_name && (
+                          <div className="invalid-feedback">
+                            {errors.product_name}
+                          </div>
+                        )}
+                        <input
+                          type="hidden"
+                          name="sellerId"
+                          value={sellerId}
+                        ></input>
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="product_description"
+                          className="form-label"
+                        >
+                          產品描述
+                        </label>
+                        <textarea
+                          className={`form-control ${
+                            errors.product_description ? 'is-invalid' : ''
+                          }`}
+                          id="product_description"
+                          name="product_description"
+                          rows="3"
+                          placeholder="產品描述簡介"
+                          value={productDetails.product_description}
+                          onChange={handleChange}
+                        ></textarea>
+                        {errors.product_description && (
+                          <div className="invalid-feedback">
+                            {errors.product_description}
+                          </div>
+                        )}
+                      </div>
 
-                <div className="mb-3">
-                  <label htmlFor="productName" className="form-label">
-                    產品名稱
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="productName"
-                    name="productName"
-                    placeholder="產品名稱"
-                    value={product.productName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <input type="hidden" name="sellerId" value={productId}></input>
-                <div className="mb-3">
-                  <label htmlFor="productDescription" className="form-label">
-                    產品描述
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="productDescription"
-                    name="productDescription"
-                    rows="3"
-                    placeholder="產品描述簡介"
-                    value={product.productDescription}
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="price" className="form-label">
-                    產品價格
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="price"
-                    name="price"
-                    placeholder="產品價格(台幣)"
-                    value={product.price}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="productNutrition  " className="form-label">
-                    產品營養表
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="productNutrition"
-                    name="productNutrition"
-                    placeholder="產品營養表"
-                    value={product.productNutrition}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="productIngredient" className="form-label">
-                    產品成分
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="productIngredient"
-                    name="productIngredient"
-                    placeholder="產品成分"
-                    value={product.productIngredient}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="stockQuantity" className="form-label">
-                    產品數量
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="stockQuantity"
-                    name="stockQuantity"
-                    placeholder="產品數量"
-                    value={product.stockQuantity}
-                    onChange={handleChange}
-                  />
-                </div>
+                      <div className="mb-3">
+                        <label htmlFor="price" className="form-label">
+                          產品價格
+                        </label>
+                        <input
+                          type="number"
+                          className={`form-control ${
+                            errors.price ? 'is-invalid' : ''
+                          }`}
+                          id="price"
+                          name="price"
+                          placeholder="產品價格(台幣)"
+                          value={productDetails.price}
+                          onChange={handleChange}
+                        />{' '}
+                        {errors.price && (
+                          <div className="invalid-feedback">{errors.price}</div>
+                        )}
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="product_nutrition  "
+                          className="form-label"
+                        >
+                          產品營養表
+                        </label>
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            errors.product_nutrition ? 'is-invalid' : ''
+                          }`}
+                          id="product_nutrition"
+                          name="product_nutrition"
+                          placeholder="產品營養表"
+                          value={productDetails.product_nutrition}
+                          onChange={handleChange}
+                        />{' '}
+                        {errors.product_nutrition && (
+                          <div className="invalid-feedback">
+                            {errors.product_nutrition}
+                          </div>
+                        )}
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="product_ingredient"
+                          className="form-label"
+                        >
+                          產品成分
+                        </label>
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            errors.product_ingredient ? 'is-invalid' : ''
+                          }`}
+                          id="product_ingredient"
+                          name="product_ingredient"
+                          placeholder="產品成分"
+                          value={productDetails.product_ingredient}
+                          onChange={handleChange}
+                        />{' '}
+                        {errors.product_ingredient && (
+                          <div className="invalid-feedback">
+                            {errors.product_ingredient}
+                          </div>
+                        )}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="stock_quantity" className="form-label">
+                          產品數量
+                        </label>
+                        <input
+                          type="number"
+                          className={`form-control ${
+                            errors.stock_quantity ? 'is-invalid' : ''
+                          }`}
+                          id="stock_quantity"
+                          name="stock_quantity"
+                          placeholder="產品數量"
+                          value={productDetails.stock_quantity}
+                          onChange={handleChange}
+                        />{' '}
+                        {errors.stock_quantity && (
+                          <div className="invalid-feedback">
+                            {errors.stock_quantity}
+                          </div>
+                        )}
+                      </div>
 
-                <div className="mb-3">
-                  <label htmlFor="imageUrl" className="form-label">
-                    上傳產品圖片
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="imageUrl"
-                    name="imageUrl"
-                    onChange={handleFileChange}
-                  />
-                  {/* 顯示當前的產品圖片 */}
-                  {product.imageUrl && (
-                    <img
-                      src={product.imageUrl || 'default-placeholder.png'}
-                      alt="Product Image"
-                    />
+                      <div
+                        className="mb-5"
+                        style={imageContainerStyle}
+                      >
+                        <div>
+                          <label htmlFor="store_image" className="form-label">
+                            當前產品圖片
+                          </label>
+                          <br />
+                          {productDetails.image_url ? (
+                            <img
+                              src={`http://localhost:3002/images/${productDetails.image_url}`}
+                              alt="Current Product Image"
+                              className="img-fluid"
+                              style={{ maxWidth: '200px', marginRight: '20px' }}
+                            />
+                          ) : (
+                            <p>無當前圖片</p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="store_image" className="form-label">
+                            新上傳圖片預覽
+                          </label>
+                          <br />
+                          {previewImage ? (
+                            <img
+                              src={previewImage}
+                              alt="新上傳圖片預覽"
+                              className="img-fluid"
+                              style={{ maxWidth: '200px' }}
+                            />
+                          ) : (
+                            <p>請選擇圖片以預覽</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <label htmlFor="store_image" className="form-label">
+                        上傳商家圖片
+                      </label>
+                      <input
+                        type="file"
+                        className={`form-control col-6`}
+                        id="store_image"
+                        name="store_image"
+                        onChange={handleFileChange}
+                      />
+                      <br></br>
+                      <div className={styles.selectGroup}>
+                        <div className="col-md-auto col-12 mb-3">
+                          <label
+                            htmlFor="category"
+                            className={styles.selectLabel}
+                          >
+                            選擇產品種類
+                          </label>
+                        </div>
+
+                        <div className="col-md-auto col-12 mb-3">
+                          <select
+                            className={`form-control ${
+                              errors.category_id ? 'is-invalid' : ''
+                            }`}
+                            id="category"
+                            name="category_id"
+                            value={productDetails.category_id}
+                            onChange={handleChange}
+                          >
+                            {categories &&
+                              categories.map((category) => (
+                                <option
+                                  key={category.category_id}
+                                  value={category.category_id}
+                                >
+                                  {category.category_name}
+                                </option>
+                              ))}
+                          </select>
+                          {errors.category_id && (
+                            <div className="invalid-feedback">
+                              {errors.category_id}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="col-md-auto col-12 mb-3">
+                          <label
+                            htmlFor="status"
+                            className={styles.selectLabel}
+                          >
+                            選擇產品上下架狀態
+                          </label>
+                        </div>
+
+                        <div className="col-md-auto col-12 mb-3">
+                          <select
+                            className="form-control"
+                            id="status"
+                            name="status"
+                            value={productDetails.status}
+                            onChange={handleChange}
+                          >
+                            <option value="">上下架狀態</option>
+                            <option value="1">上架</option>
+                            <option value="0">下架</option>
+                          </select>
+                        </div>
+                      </div>
+                      <br></br>
+
+                      {/* 按鈕樣式 */}
+                      <div className={styles.buttonGroup}>
+                        <button
+                          type="button"
+                          className={styles.btnSecondary}
+                          onClick={() => goToSellerPage(sellerId)}
+                        >
+                          前往店面
+                        </button>
+
+                        <button type="submit" className={styles.btnPrimary}>
+                          提交修改
+                        </button>
+                      </div>
+                    </>
                   )}
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="status" className="form-label">
-                    產品狀態
-                  </label>
-                  <select
-                    className="form-control"
-                    id="status"
-                    value={product.status || ''}
-                    onChange={handleChangeStatus}
-                  >
-                    <option value="1">上架</option>
-                    <option value="0">下架</option>
-                  </select>
-                </div>
-
-                <br></br>
-                {/* 按鈕樣式 */}
-                <div className={styles.buttonGroup}>
-                  <Link href="/seller-basic-data/">
-                    <button className={styles.btnSecondary}>回到店面</button>
-                  </Link>
-                  <button type="submit" className={styles.btnPrimary}>
-                    提交修改
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
+          )}
           {/* 表單 */}
         </div>
       </div>
+      <Modal
+        show={showUpdateSuccessModal}
+        onHide={() => setShowUpdateSuccessModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>更新成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>產品資料已成功更新。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            className={styles.btnPrimary}
+            onClick={() => setShowUpdateSuccessModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showUpdateFailModal}
+        onHide={() => setShowUpdateFailModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>更新失敗</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>產品更新過程中發生錯誤。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setShowUpdateFailModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showNoChangeModal}
+        onHide={() => setShowNoChangeModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>資料未變更</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>您沒有做任何變更。</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            className={styles.btnPrimary}
+            onClick={() => setShowNoChangeModal(false)}
+          >
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }

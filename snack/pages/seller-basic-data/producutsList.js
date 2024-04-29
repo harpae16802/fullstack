@@ -11,6 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import styles from '../../styles/navbar-seller.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Button } from 'react-bootstrap'
 
 const ProductsList = () => {
   // 使用 useRouter
@@ -20,8 +21,12 @@ const ProductsList = () => {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  // 預設圖片
+  const IMG = 'http://localhost:3000/images/seller.jpg'
+
   const [products, setProducts] = useState([]) // 產品資訊
   const [imageVersion, setImageVersion] = useState(0) // 賣家頭貼
   const [currentPage, setCurrentPage] = useState(1) // 目前頁數
@@ -31,6 +36,9 @@ const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState('') // 篩選
   const [categories, setCategories] = useState([]) // 下拉選單
   const [selectedProducts, setSelectedProducts] = useState([]) // 批量操作
+  //彈出視窗
+  const [showModal, setShowModal] = useState(false)
+  const [showFailModal, setShowFailModal] = useState(false)
 
   const [loading, setLoading] = useState(false) // 新增 loading 狀態
   // 修改賣家資料 後 的狀態
@@ -43,18 +51,11 @@ const ProductsList = () => {
     fileInputRef.current.click()
   }
 
-  // //批量操作
-  // const handleCheckboxChange = (e) => {
-  //   const productId = e.target.value;
-  //   if (e.target.checked) {
-  //     setSelectedProducts([...selectedProducts, productId]);
-  //   } else {
-  //     setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-  //   }
-  // };
-
   // 總請求 發至後端
   useEffect(() => {
+    if (!sellerId) {
+      router.replace('/login/login-seller')
+    }
     setLoading(true) //loading 為 true
     if (sellerId) {
       axios
@@ -64,7 +65,7 @@ const ProductsList = () => {
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
@@ -83,7 +84,7 @@ const ProductsList = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${PRODUCTS_API}/${seller.id}/categories`
+          `${PRODUCTS_API}/${sellerId}/categories`
         )
         setCategories(response.data.categories)
       } catch (error) {
@@ -94,7 +95,7 @@ const ProductsList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${PRODUCTS_API}/${seller.id}?${queryParams}`
+          `${PRODUCTS_API}/${sellerId}?${queryParams}`
         )
         const categoryMap = new Map(
           categories.map((cat) => [cat.category_id, cat.category_name])
@@ -113,21 +114,21 @@ const ProductsList = () => {
       } catch (error) {
       } finally {
         setTimeout(() => {
-          setLoading(false); // 一秒後設置 loading 為 false
-        }, 1000); // 延遲一秒) // 無論成功還是失敗，都將 loading 設置為 false
+          setLoading(false)
+        }, 1000)
       }
     }
 
-    if (seller?.id) {
+    if (sellerId) {
       fetchData()
       fetchCategories()
     }
-  }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems]) // 包含 filter
+  }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems])
 
   // 處裡分頁
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const renderPageNumbers = () => {
-    if (totalItems <= itemsPerPage) return null // 如果总项目数不足以填满一页，则不显示分页按钮
+    if (totalItems <= itemsPerPage) return null
 
     const pageNumbers = []
     let startPage = Math.max(currentPage - 2, 1)
@@ -155,6 +156,77 @@ const ProductsList = () => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
   }
+
+  // 批量上下架
+  const getQueryParams = () => {
+    const params = new URLSearchParams({
+      page: currentPage,
+      limit: itemsPerPage,
+      ...(searchTerm && { productName: searchTerm.trim() }), // 确保包含搜索词
+      ...Object.fromEntries(
+        Object.entries(filter).filter(([_, v]) => v != null)
+      ), // 确保包含其他筛选条件
+    })
+
+    return params.toString() // 返回查询字符串
+  }
+
+  const fetchData1 = async () => {
+    setLoading(true) // 显示加载状态
+    const queryParams = getQueryParams() // 获取当前的查询参数
+
+    try {
+      const response = await axios.get(
+        `${PRODUCTS_API}/${sellerId}?${queryParams}`
+      )
+      const updatedProducts = response.data.products.map((product) => ({
+        ...product,
+        category:
+          categories.find((cat) => cat.category_id === product.category_id)
+            ?.category_name || product.category,
+      }))
+      setProducts(updatedProducts)
+      setTotalItems(response.data.total)
+      if (currentPage > Math.ceil(response.data.total / itemsPerPage)) {
+        setCurrentPage(1)
+      }
+    } catch (error) {
+      console.error('获取产品列表失败', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const toggleProductSelection = (productId) => {
+    setSelectedProducts((prevSelected) => {
+      if (prevSelected.includes(productId)) {
+        return prevSelected.filter((id) => id !== productId)
+      } else {
+        return [...prevSelected, productId]
+      }
+    })
+  }
+  const handleBatchUpdateStatus = async (newStatus) => {
+    setLoading(true)
+    try {
+      const response = await axios.put(`${PRODUCTS_API}/update-status`, {
+        productIds: selectedProducts,
+        status: newStatus,
+      })
+      if (response.status === 200) {
+        handleShow()
+      } else {
+        handleFailShow()
+      }
+      await fetchData1()
+    } catch (error) {
+      console.error('更新失敗', error)
+      handleFailShow()
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -171,10 +243,10 @@ const ProductsList = () => {
       })
       .then((response) => {
         alert('頭像上傳成功')
-        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion圖片
         setSellerData((prevData) => ({
           ...prevData,
-          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+          profilePicture: response.data.imageUrl, // 後端返回頭貼
         }))
       })
       .catch((error) => {
@@ -182,6 +254,13 @@ const ProductsList = () => {
         alert('頭像上傳失敗')
       })
   }
+
+  // 彈出視窗
+  const handleClose = () => setShowModal(false)
+  const handleShow = () => setShowModal(true)
+  const handleFailClose = () => setShowFailModal(false)
+  const handleFailShow = () => setShowFailModal(true)
+
   return (
     <Section>
       <div className={`container mt-5`}>
@@ -192,7 +271,12 @@ const ProductsList = () => {
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
                 <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -202,6 +286,10 @@ const ProductsList = () => {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
                 <input
@@ -271,6 +359,7 @@ const ProductsList = () => {
             <div className={`${styles.formWrapper}`}>
               <h2 className={`${styles.formTitle}`}>產品列表</h2>
               {/* 搜索框 */}
+              <br></br>
               <div className="container">
                 <div className="row">
                   <div className="col-md-9 col-12">
@@ -300,12 +389,13 @@ const ProductsList = () => {
               </div>
               {/* 搜索框 */}
               <br></br>
+              <br></br>
               {/* 篩選 */}
               <div className="container">
                 <div className="col-12">
                   <div className="row">
                     {/*  類別篩選 */}
-                    <div className="col-md-4 col-12 mb-3">
+                    <div className="col-md-4 col-12 mb-5">
                       <select
                         className="form-control"
                         onChange={(e) => {
@@ -330,7 +420,7 @@ const ProductsList = () => {
                     </div>
 
                     {/* 價格篩選 */}
-                    <div className="col-md-4 col-12 mb-3">
+                    <div className="col-md-4 col-12 mb-5">
                       <select
                         className="form-control"
                         onChange={(e) => {
@@ -356,7 +446,7 @@ const ProductsList = () => {
                     </div>
 
                     {/* 狀態篩選 */}
-                    <div className="col-md-4 col-12 mb-3">
+                    <div className="col-md-4 col-12 mb-5">
                       <select
                         className="form-control"
                         onChange={(e) =>
@@ -383,7 +473,7 @@ const ProductsList = () => {
                 {loading ? (
                   <div className="text-center">
                     <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-                    <p className="mt-2">加載中...</p>
+                    {/* <p className="mt-2">加載中...</p> */}
                   </div>
                 ) : (
                   <table className={`${styles.table}`}>
@@ -399,28 +489,65 @@ const ProductsList = () => {
                     </thead>
                     <tbody>
                       {products.map((product) => (
-                        <tr key={product.product_id}>
-                          <td>{product.productName}</td>
+                        <tr
+                          key={product.product_id}
+                          style={{
+                            backgroundColor: selectedProducts.includes(
+                              product.product_id
+                            )
+                              ? '#f8d7da'
+                              : '',
+                          }}
+                          onClick={() =>
+                            toggleProductSelection(product.product_id)
+                          }
+                        >
+                          <td style={{ display: 'none' }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedProducts.includes(
+                                product.product_id
+                              )}
+                              readOnly
+                            />
+                          </td>
+                          <td style={{ borderRadius: '7px 0px 0px 7px' }}>
+                            {product.productName}
+                          </td>
                           <td>{product.stockQuantity}</td>
                           <td>{product.category}</td>
                           <td>{product.price}</td>
                           <td>{product.status}</td>
                           <td>
-                        <Link
-                          href={`/seller-basic-data/[productId]`}
-                          as={`/seller-basic-data/${product.product_id}`}
-                        >
-                          修改
-                        </Link>
-                      </td>
+                            <Link
+                              href={`/seller-basic-data/[productId]`}
+                              as={`/seller-basic-data/${product.product_id}`}
+                            >
+                              修改
+                            </Link>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 )}
               </div>
+
+              <div className={styles.buttonGroup}>
+                <button
+                  onClick={() => handleBatchUpdateStatus(0)}
+                  className={styles.btnSecondary}
+                >
+                  設為下架
+                </button>
+                <button
+                  onClick={() => handleBatchUpdateStatus(1)}
+                  className={styles.btnPrimary}
+                >
+                  設為上架
+                </button>
+              </div>
               <br></br>
-              {/* <button onClick={() => {}}>批量上下架</button> */}
               {/* 分頁 */}
               <nav>
                 <ul className="pagination justify-content-center">
@@ -430,28 +557,28 @@ const ProductsList = () => {
                     }`}
                   >
                     <button
-                      className="page-link"
+                      className="page-link cursor:'pointer'"
                       onClick={() =>
                         currentPage > 1 && handlePageChange(currentPage - 1)
                       }
                     >
-                      <i className="bi bi-chevron-left"></i>
+                      <i className="bi bi-chevron-left cursor:'pointer'"></i>
                     </button>
                   </li>
                   {renderPageNumbers()}
                   <li
-                    className={`page-item ${
+                    className={`page-item cursor:'pointer' ${
                       currentPage === totalPages ? 'disabled' : ''
                     }`}
                   >
                     <button
-                      className="page-link"
+                      className="page-link  cursor-pointer;"
                       onClick={() =>
                         currentPage < totalPages &&
                         handlePageChange(currentPage + 1)
                       }
                     >
-                      <i className="bi bi-chevron-right"></i>
+                      <i className="bi bi-chevron-right cursor:'pointer'"></i>
                     </button>
                   </li>
                 </ul>
@@ -460,6 +587,33 @@ const ProductsList = () => {
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>更新成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>產品狀態更新完成</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showFailModal} onHide={handleFailClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>更新失败</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>產品狀態更新未能完成，请重试。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleFailClose}>
+            关闭
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }

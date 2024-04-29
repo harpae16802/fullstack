@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
-
+import styles from '../styles/navbar-seller.module.scss'
 function ReplySuccessModal({ show, onHide }) {
     return (
       <Modal show={show} onHide={onHide} centered>
@@ -11,7 +11,7 @@ function ReplySuccessModal({ show, onHide }) {
         回覆已經提交
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={onHide}>
+          <Button variant="primary" className={styles.btnPrimary} onClick={onHide}>
             確定
           </Button>
         </Modal.Footer>
