@@ -4,14 +4,15 @@ import { ImCross } from "react-icons/im";
 import { RxCross1 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 
-const FilterOptions = () => {
+export default function FilterOptions () {
+
     return (
     <>
 
 
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"  className={styles.filterConditionButton}>
-篩選條件<IoIosArrowDown className={styles.filterIcon}/>
+篩選條件 <IoIosArrowDown className={styles.filterIcon}/>
 </button>
 
 <div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -109,7 +110,7 @@ const FilterOptions = () => {
     );
   };
 
-export default FilterOptions;
+
 
 
 

@@ -4,7 +4,7 @@ import { FiHeart } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import styles from '@/styles/Product.module.css'; // 確保引入了正確的樣式文件
 import { RxCross1 } from "react-icons/rx";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function ProductDetailCard({
   imageUrl = "",
@@ -20,13 +20,13 @@ export default function ProductDetailCard({
     <>
     
    
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" className={styles.seeMoreButton}>
   看更多
 </button>
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style={{maxWidth:'1536px'}} className={styles.modalSize}>
+  <div class="modal-dialog"  className={styles.modalSize}>
     <div class="modal-content">
       
       {/* 標題 */}

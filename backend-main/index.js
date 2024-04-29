@@ -14,6 +14,8 @@ import bodyParser from "body-parser";
 import sellerRouter from "./routes/sellerRouter.js";
 import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
+import orderRouter from "./routes/orderRouter.js"
+ import productPageRouter from "./routes/productPageRouter.js"
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
@@ -125,6 +127,13 @@ app.get("/jwt-data", async (req, res) => {
 
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
+
+// ====恆
+app.use("/orderRouter",orderRouter); 
+// app.use("/product2Router",productPageRouter); 
+app.use("/productPage",productPageRouter)
+
+
 
 
 // ==== 弘
