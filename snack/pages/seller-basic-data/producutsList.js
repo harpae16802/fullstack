@@ -11,6 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import styles from '../../styles/navbar-seller.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Button } from 'react-bootstrap'
 
 const ProductsList = () => {
   // 使用 useRouter
@@ -35,6 +36,9 @@ const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState('') // 篩選
   const [categories, setCategories] = useState([]) // 下拉選單
   const [selectedProducts, setSelectedProducts] = useState([]) // 批量操作
+  //彈出視窗
+  const [showModal, setShowModal] = useState(false)
+  const [showFailModal, setShowFailModal] = useState(false)
 
   const [loading, setLoading] = useState(false) // 新增 loading 狀態
   // 修改賣家資料 後 的狀態
@@ -189,7 +193,7 @@ const ProductsList = () => {
     } catch (error) {
       console.error('获取产品列表失败', error)
     } finally {
-      setLoading(false) 
+      setLoading(false)
     }
   }
 
@@ -205,13 +209,19 @@ const ProductsList = () => {
   const handleBatchUpdateStatus = async (newStatus) => {
     setLoading(true)
     try {
-      await axios.put(`${PRODUCTS_API}/update-status`, {
+      const response = await axios.put(`${PRODUCTS_API}/update-status`, {
         productIds: selectedProducts,
         status: newStatus,
       })
-      await fetchData1() 
+      if (response.status === 200) {
+        handleShow()
+      } else {
+        handleFailShow()
+      }
+      await fetchData1()
     } catch (error) {
-      console.error('更新产品状态失败', error)
+      console.error('更新失敗', error)
+      handleFailShow()
     } finally {
       setLoading(false)
     }
@@ -244,6 +254,13 @@ const ProductsList = () => {
         alert('頭像上傳失敗')
       })
   }
+
+  // 彈出視窗
+  const handleClose = () => setShowModal(false)
+  const handleShow = () => setShowModal(true)
+  const handleFailClose = () => setShowFailModal(false)
+  const handleFailShow = () => setShowFailModal(true)
+
   return (
     <Section>
       <div className={`container mt-5`}>
@@ -515,21 +532,21 @@ const ProductsList = () => {
                   </table>
                 )}
               </div>
-              <br></br>
 
-              <button
-                onClick={() => handleBatchUpdateStatus(0)}
-                className={styles.btnPrimary}
-              >
-                設為下架
-              </button>
-              <button
-                onClick={() => handleBatchUpdateStatus(1)}
-                className={styles.btnPrimary}
-              >
-                設為上架
-              </button>
-
+              <div className={styles.buttonGroup}>
+                <button
+                  onClick={() => handleBatchUpdateStatus(0)}
+                  className={styles.btnSecondary}
+                >
+                  設為下架
+                </button>
+                <button
+                  onClick={() => handleBatchUpdateStatus(1)}
+                  className={styles.btnPrimary}
+                >
+                  設為上架
+                </button>
+              </div>
               <br></br>
               {/* 分頁 */}
               <nav>
@@ -570,6 +587,33 @@ const ProductsList = () => {
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>更新成功</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>產品狀態更新完成</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            關閉
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showFailModal} onHide={handleFailClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>更新失败</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>產品狀態更新未能完成，请重试。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleFailClose}>
+            关闭
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Section>
   )
 }
