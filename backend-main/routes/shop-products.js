@@ -27,13 +27,14 @@ router.get("/products/:seller_id", async (req, res) => {
 
 // 加入移除收藏 - 店家
 router.get("/toggle-like-shop/:seller_id", async (req, res) => {
-  const custom_id = 1; // 模擬用戶ID
+  // const custom_id = 1; // 模擬用戶ID
 
   const output = {
     success: false,
     action: "", // add, remove
     error: "",
   };
+
 
   try {
     const sql =
