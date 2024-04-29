@@ -22,7 +22,9 @@ const ProductsList = () => {
   //拿取seller_id
   const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
 
-  
+    // 預設圖片
+    const IMG = "http://localhost:3000/images/seller.jpg";
+
 
   const [products, setProducts] = useState([]) // 產品資訊
   const [imageVersion, setImageVersion] = useState(0) // 賣家頭貼
@@ -69,7 +71,7 @@ const ProductsList = () => {
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
@@ -88,7 +90,7 @@ const ProductsList = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${PRODUCTS_API}/${seller.id}/categories`
+          `${PRODUCTS_API}/${sellerId}/categories`
         )
         setCategories(response.data.categories)
       } catch (error) {
@@ -99,7 +101,7 @@ const ProductsList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${PRODUCTS_API}/${seller.id}?${queryParams}`
+          `${PRODUCTS_API}/${sellerId}?${queryParams}`
         )
         const categoryMap = new Map(
           categories.map((cat) => [cat.category_id, cat.category_name])
@@ -122,8 +124,8 @@ const ProductsList = () => {
         }, 1000) // 延遲一秒) // 無論成功還是失敗，都將 loading 設置為 false
       }
     }
-
-    if (seller?.id) {
+   
+    if (sellerId) {
       fetchData()
       fetchCategories()
     }
@@ -196,8 +198,10 @@ const ProductsList = () => {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-                <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+              <img
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
+
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -207,6 +211,7 @@ const ProductsList = () => {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
                 />
 
                 <input

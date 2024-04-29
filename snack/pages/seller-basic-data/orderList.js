@@ -20,6 +20,8 @@ export default function Order() {
 
   //拿取seller_id
   const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+  // 預設圖片
+  const IMG = "http://localhost:3000/images/seller.jpg";
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -60,7 +62,7 @@ export default function Order() {
           const data = response.data.data
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
@@ -261,8 +263,10 @@ export default function Order() {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-                <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+              <img
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
+
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -272,7 +276,9 @@ export default function Order() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
                 />
+
 
                 <input
                   type="file"

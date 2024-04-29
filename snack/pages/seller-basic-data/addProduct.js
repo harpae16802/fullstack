@@ -20,8 +20,11 @@ export default function AddProducts() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
 
+  // 預設圖片
+  const IMG = 'http://localhost:3000/images/seller.jpg'
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -48,6 +51,9 @@ export default function AddProducts() {
     category_id: '',
     category: '',
   })
+
+  // 預覽圖片
+  const [imagePreview, setImagePreview] = useState(null)
 
   // 彈出視窗
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -110,7 +116,7 @@ export default function AddProducts() {
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
     if (!sellerId) {
-      router.replace('/login/login-seller');  
+      router.replace('/login/login-seller')
     }
     setTimeout(() => {
       setLoading(false)
@@ -120,17 +126,16 @@ export default function AddProducts() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
+          const data = response.data.data
+          console.log(data)
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
-            // 其他字段...
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
-          console.error('获取商家信息失败', error)
+          console.error('取得頭貼失敗', error)
         })
     }
   }, [sellerId])
@@ -139,8 +144,19 @@ export default function AddProducts() {
   const handleInputChange = (e) => {
     const { name, value } = e.target
 
-    // 種類
-    if (name === 'category_id') {
+    // 圖片預覽
+    if (name === 'store_image' && e.target.files[0]) {
+      setNewProductData((prevData) => ({
+        ...prevData,
+        [name]: e.target.files[0],
+      }))
+      const fileReader = new FileReader()
+      fileReader.onload = () => {
+        setImagePreview(fileReader.result)
+      }
+      fileReader.readAsDataURL(e.target.files[0])
+      // 種類
+    } else if (name === 'category_id') {
       const category = e.target.options[e.target.selectedIndex].text
       setNewProductData((prevData) => ({
         ...prevData,
@@ -169,7 +185,7 @@ export default function AddProducts() {
     formData.append('stockQuantity', newProductData.stockQuantity)
     formData.append('category', newProductData.category)
     formData.append('category_id', newProductData.category_id)
-    formData.append('seller_id', sellerId) //
+    formData.append('seller_id', sellerId)
     // console.log(sellerId);
 
     if (fileInputRef.current?.files[0]) {
@@ -191,10 +207,10 @@ export default function AddProducts() {
       if (response.data.success) {
         setShowSuccessModal(true)
       } else {
-        alert('产品添加失败')
+        console.error('產品新增出錯', error)
       }
     } catch (error) {
-      console.error('产品添加出错', error)
+      console.error('產品新增出錯', error)
       setShowFailModal(true)
     }
   }
@@ -223,7 +239,6 @@ export default function AddProducts() {
       })
       .catch((error) => {
         console.error('頭像上傳失敗', error)
-        alert('頭像上傳失敗')
       })
   }
 
@@ -237,7 +252,12 @@ export default function AddProducts() {
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
                 <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -247,6 +267,10 @@ export default function AddProducts() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
                 <input
@@ -458,14 +482,34 @@ export default function AddProducts() {
 
                   <div className="mb-3">
                     <label htmlFor="store_image" className="form-label">
-                      上傳產品圖片
+                      上傳產品圖片 
                     </label>
                     <input
                       type="file"
-                      className="form-control"
+                      className={`form-control ${
+                        errors.store_image ? 'is-invalid' : ''
+                      }`}
                       id="store_image"
                       name="store_image"
+                      onChange={handleInputChange}
+                      
                     />
+                    {imagePreview && (
+                      <img
+                        src={imagePreview}
+                        alt="Image Preview"
+                        style={{
+                          marginTop: '10px',
+                          width: '100%',
+                          height: 'auto',
+                        }}
+                      />
+                    )}
+                    {errors.store_image && (
+                      <div className="invalid-feedback">
+                        {errors.store_image}
+                      </div>
+                    )}
                   </div>
 
                   <div className={styles.selectGroup}>

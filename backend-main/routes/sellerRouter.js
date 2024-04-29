@@ -54,16 +54,17 @@ sellerRouter.get('/:sellerId', async (req, res) => {
       const sellerData = {
         ...sellerRows[0],
         ...accountInfo,
-        bankAccounts: bankAccounts
+        bankAccounts: bankAccounts,
+        storeImage: `/public/images/seller/${sellerRows[0].store_image}`
       };
 
       res.json({ success: true, data: sellerData });
     } else {
-      res.status(404).json({ success: false, message: '没有此卖家' });
+      res.status(404).json({ success: false, message: '沒有此賣家' });
     }
   } catch (error) {
-    console.error('获取卖家资讯错误:', error);
-    res.status(500).json({ success: false, message: '服务器错误' });
+    console.error('拿取賣家個人資訊錯誤:', error);
+    res.status(500).json({ success: false, message: '伺服器錯誤' });
   }
 });
 

@@ -247,11 +247,11 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
     if (category_id) {
       const categoryExists = await db.query("SELECT * FROM product_categories WHERE category_id = ?", [category_id]);
       if (categoryExists[0].length === 0) {
-        return res.status(404).json({ success: false, message: "指定的种类ID不存在" });
+        return res.status(404).json({ success: false, message: "指定的id不存在" });
       }
     }
 
-    // 构建更新查询
+    // 建構更新查詢
     const query = `
       UPDATE products SET
         product_name = ?,
@@ -267,7 +267,7 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
       WHERE product_id = ?;
     `;
 
-    // 执行更新操作
+    // 執行更新
     await db.query(query, [
       product_name,
       product_description,

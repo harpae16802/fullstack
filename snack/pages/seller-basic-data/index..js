@@ -21,11 +21,12 @@ export default function SellerBasicData() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
 
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
 
-
+  // 預設圖片
+  const IMG = 'http://localhost:3000/images/seller.jpg'
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -70,7 +71,7 @@ export default function SellerBasicData() {
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
     if (!sellerId) {
-      router.replace('/login/login-seller');  
+      router.replace('/login/login-seller')
     }
 
     if (sellerId) {
@@ -92,7 +93,7 @@ export default function SellerBasicData() {
             openingHours: data.opening_hours || '17:00',
             closingHours: data.closing_hours || '23:00',
             restDay: data.rest_day?.toString() || '6',
-            profilePicture: data.profile_picture || '',
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
           setOriginData(data)
         })
@@ -267,7 +268,12 @@ export default function SellerBasicData() {
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
                 <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -277,6 +283,10 @@ export default function SellerBasicData() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
                 <input
