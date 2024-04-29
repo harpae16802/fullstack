@@ -67,7 +67,7 @@ export default function ShopInfo({
     }
   }
 
-  //
+  // 檢查收藏
   const checkFavoriteStatus = async () => {
     if (!auth.token) {
       // 如果未登录，暂不做任何操作
@@ -147,26 +147,6 @@ export default function ShopInfo({
       checkFavoriteStatus()
     }
 
-    // 检查收藏状态
-    // const checkFavoriteStatus = async () => {
-    //   if (!auth.token) {
-    //     const willLogIn = confirm('請先登入會員')
-    //     if (willLogIn) {
-    //       window.location.href = '/login/login-custom'
-    //     }
-    //     return
-    //   }
-
-    //   const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`, {
-    //     headers: { ...getAuthHeader() },
-    //   })
-    //   const data = await r.json()
-    //   if (data.isFavorite !== undefined) {
-    //     setIsFavorite(data.isFavorite)
-    //   }
-    // }
-
-    // checkFavoriteStatus()
     fetchComments()
   }, [seller_id, auth.token])
 
