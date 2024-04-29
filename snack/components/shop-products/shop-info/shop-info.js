@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 // 套件
 import Modal from 'react-modal'
 import dayjs from 'dayjs'
+// 元件
+import { useAuth } from '@/contexts/custom-context'
 // icons
 import { CgClose } from 'react-icons/cg'
 import {
@@ -31,6 +33,8 @@ export default function ShopInfo({
   score = '',
   comment = '',
 }) {
+  const { auth, getAuthHeader } = useAuth()
+
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
   const [modalIsOpen, setIsModalOpen] = useState(false) // 彈窗
   const [comments, setComments] = useState([]) // 渲染評論
@@ -39,7 +43,18 @@ export default function ShopInfo({
   // 加入收藏 - 店家
   const toggleFavoriteShop = async () => {
     try {
-      const response = await fetch(`${FAVORITE_STORE}/${seller_id}`)
+      if (!auth.token) {
+        const willLogIn = confirm('請先登入會員')
+        if (willLogIn) {
+          window.location.href = '/login/login-custom'
+        }
+        return
+      }
+
+      const response = await fetch(`${FAVORITE_STORE}/${seller_id}`, {
+        headers: { ...getAuthHeader() },
+      })
+
       const data = await response.json()
       if (data.success) {
         setIsFavorite(data.action === 'add')
@@ -49,6 +64,28 @@ export default function ShopInfo({
       }
     } catch (error) {
       console.error('Error toggling favorite:', error)
+    }
+  }
+
+  //
+  const checkFavoriteStatus = async () => {
+    if (!auth.token) {
+      // 如果未登录，暂不做任何操作
+      console.log('用户未登录，暂不检查收藏状态')
+      return
+    }
+
+    try {
+      const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`, {
+        headers: { ...getAuthHeader() },
+      })
+      if (!r.ok) throw new Error('网络回应错误')
+      const data = await r.json()
+      if (data.isFavorite !== undefined) {
+        setIsFavorite(data.isFavorite)
+      }
+    } catch (error) {
+      console.error('检查收藏状态时出错:', error)
     }
   }
 
@@ -106,18 +143,32 @@ export default function ShopInfo({
       }
     }
 
-    // 检查收藏状态
-    const checkFavoriteStatus = async () => {
-      const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`)
-      const data = await r.json()
-      if (data.isFavorite !== undefined) {
-        setIsFavorite(data.isFavorite)
-      }
+    if (auth.token) {
+      checkFavoriteStatus()
     }
 
-    checkFavoriteStatus()
+    // 检查收藏状态
+    // const checkFavoriteStatus = async () => {
+    //   if (!auth.token) {
+    //     const willLogIn = confirm('請先登入會員')
+    //     if (willLogIn) {
+    //       window.location.href = '/login/login-custom'
+    //     }
+    //     return
+    //   }
+
+    //   const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`, {
+    //     headers: { ...getAuthHeader() },
+    //   })
+    //   const data = await r.json()
+    //   if (data.isFavorite !== undefined) {
+    //     setIsFavorite(data.isFavorite)
+    //   }
+    // }
+
+    // checkFavoriteStatus()
     fetchComments()
-  }, [seller_id])
+  }, [seller_id, auth.token])
 
   return (
     <div className={`row ${style.shopInfo}`}>

@@ -21,7 +21,7 @@ const emptyAuth = {
 const storageKey = 'Nightmarket-auth'
 
 export function CustomContextProvider({ children }) {
-  const [auth, setAuth] = useState(emptyAuth);
+  const [auth, setAuth] = useState(emptyAuth)
 
   // 登入的功能
   const login = async (account, password) => {
@@ -74,7 +74,9 @@ export function CustomContextProvider({ children }) {
 
   return (
     // login & logout 是function 傳出的是promise
-    <CustomContext.Provider value={{ auth, login, logout,storageKey }}>
+    <CustomContext.Provider
+      value={{ auth, login, logout, storageKey, getAuthHeader }}
+    >
       {children}
     </CustomContext.Provider>
   )

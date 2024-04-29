@@ -56,6 +56,12 @@ app.use((req, res, next) => {
     } catch (ex) {}
   }
 
+  // ***** 只用在測試用戶
+  req.my_jwt = {
+    custom_id: 35,
+    account: "luki@gg.com",
+  };
+
   next(); //呼叫他才能往下 不然網頁會一直停留在讀取旋轉
 });
 

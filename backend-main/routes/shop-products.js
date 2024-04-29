@@ -27,14 +27,16 @@ router.get("/products/:seller_id", async (req, res) => {
 
 // 加入移除收藏 - 店家
 router.get("/toggle-like-shop/:seller_id", async (req, res) => {
-  // const custom_id = 1; // 模擬用戶ID
-
   const output = {
     success: false,
     action: "", // add, remove
     error: "",
   };
-
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
 
   try {
     const sql =
@@ -72,8 +74,11 @@ router.get("/toggle-like-shop/:seller_id", async (req, res) => {
 });
 // 检查收藏状态
 router.get("/check-like-shop/:seller_id", async (req, res) => {
-  const custom_id = 1;
-
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
   try {
     const sql =
       "SELECT * FROM favorite_store WHERE `seller_id`=? AND `custom_id`=?";
