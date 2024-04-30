@@ -6,20 +6,32 @@ import {
   CART_MINUS,
   CART_DEL,
 } from '@/components/config/api-path'
+// context
+import { useAuth } from '@/contexts/custom-context'
 
 const CartContext = createContext()
 export const useCartContext = () => useContext(CartContext)
 
 export const CartProvider = ({ children }) => {
+  const { auth, getAuthHeader } = useAuth()
   const [cartItems, setCartItems] = useState([])
   const [total, setTotal] = useState(0)
 
   // 添加商品到购物车
   const addToCart = async (productId) => {
     try {
+      if (!auth.token) {
+        const willLogIn = confirm('請先登入會員')
+        if (willLogIn) {
+          window.location.href = '/login/login-custom'
+        }
+        return
+      }
+
       const response = await fetch(CART_ADD, {
         method: 'POST',
         headers: {
+          ...getAuthHeader(),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ product_id: productId }),
@@ -109,7 +121,10 @@ export const CartProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    loadCartData()
+    if (auth.token) {
+      loadCartData()
+    }
+    // loadCartData()
   }, [])
 
   return (

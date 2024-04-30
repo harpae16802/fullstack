@@ -271,7 +271,11 @@ router.get("/comment/:seller_id", async (req, res) => {
 // 增加商品數量
 router.post("/cart-increase", async (req, res) => {
   const { product_id } = req.body;
-  const custom_id = 1; // 假设用户ID为1
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
 
   try {
     // 检查商品是否在购物车中
@@ -367,7 +371,11 @@ router.post("/cart-increase", async (req, res) => {
 // 減少商品數量
 router.post("/cart-decrease", async (req, res) => {
   const { product_id } = req.body;
-  const custom_id = 1; // 假设用户ID为1
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
 
   try {
     // 检查商品是否在购物车中
@@ -454,7 +462,11 @@ router.post("/cart-decrease", async (req, res) => {
 // 删除商品
 router.post("/cart-remove", async (req, res) => {
   const { product_id } = req.body;
-  const custom_id = 1; // 假设用户ID为1
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
 
   try {
     // 删除商品的SQL命令
@@ -499,7 +511,12 @@ router.post("/cart-remove", async (req, res) => {
 
 // 獲取購物車數據
 router.get("/cart", async (req, res) => {
-  const custom_id = 1; // 假定一個固定的用戶ID
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
+
   try {
     const cartSql = `
   SELECT 
@@ -553,6 +570,27 @@ router.get("/store-ratings/:seller_id", async (req, res) => {
   } catch (error) {
     console.error(`後端 /store-ratings/:seller_id 錯誤: ${error}`);
     res.status(500).json({ message: "伺服器錯誤" });
+  }
+});
+
+// 獲取特定賣家的商品的平均評分和評論總數
+router.get("/seller-ratings/:seller_id", async (req, res) => {
+  try {
+    const seller_id = req.params.seller_id;
+    const sql = `
+      SELECT p.product_id, p.product_name, 
+             AVG(c.product_rating) AS average_product_rating, 
+             COUNT(c.comment) AS total_comments
+      FROM products p
+      JOIN comment c ON p.product_id = c.product_id
+      WHERE p.seller_id = ?
+      GROUP BY p.product_id, p.product_name;
+    `;
+    const [rows] = await db.query(sql, [seller_id]);
+    res.json(rows);
+  } catch (error) {
+    console.error(`後端 /seller-ratings/:seller_id 錯誤: ${error}`);
+    res.status(500).json({ message: "伺服器錯誤", error: error.message });
   }
 });
 
