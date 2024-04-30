@@ -120,7 +120,7 @@ const handleDecreaseQuantity = (seller, productId) => {
             <div key={item.product_name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding: '10px', borderRadius: '10px', backgroundColor: '#f9f9f9' }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ padding: '5px', borderRadius: '10px', border: '1px solid #eaeaea', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Image src={`${BackEndPIMG}${item.image_url}`} alt={item.product_name} width={60} height={60} unoptimized style={{ borderRadius: '10px' }} />
+                  <Image src={`${BackEndPIMG}${item.image_url}`} alt={item.product_name} width={60} height={60} unoptimized style={{ borderRadius: '10px',objectFit:'cover' }} />
                 </div>
                 <div style={{ marginLeft: '10px' }}>
                   <div style={{ fontWeight: 'bold', padding: '2px 0' }}>{item.product_name}</div>
