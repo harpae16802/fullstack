@@ -168,6 +168,88 @@ router.get("/check-like-products/:product_id", async (req, res) => {
   }
 });
 
+// 加入移除收藏 - 評論
+router.get("/toggle-like-comment/:comment_id", async (req, res) => {
+  const output = {
+    success: false,
+    action: "", // 'add' or 'remove'
+    error: "",
+  };
+
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+
+  const custom_id = req.my_jwt.custom_id;
+  const comment_id = req.params.comment_id;
+
+  try {
+    const selectSql =
+      "SELECT * FROM favorite_comment WHERE `comment_id` = ? AND `custom_id` = ?";
+    const [favoriteRows] = await db.query(selectSql, [comment_id, custom_id]);
+
+    if (favoriteRows.length) {
+      // 如果已經有, 就移除
+      const deleteSql =
+        "DELETE FROM favorite_comment WHERE `comment_id` = ? AND `custom_id` = ?";
+      const [deleteResult] = await db.query(deleteSql, [comment_id, custom_id]);
+
+      if (deleteResult.affectedRows) {
+        const updateSql = "UPDATE comment SET likes = likes - 1 WHERE id = ?";
+        await db.query(updateSql, [comment_id]);
+        output.success = true;
+        output.action = "remove";
+      } else {
+        output.error = "無法移除";
+      }
+    } else {
+      // 如果沒有, 就加入
+      const insertSql =
+        "INSERT INTO favorite_comment (`comment_id`, `custom_id`) VALUES (?, ?)";
+      const [insertResult] = await db.query(insertSql, [comment_id, custom_id]);
+
+      if (insertResult.affectedRows) {
+        const updateSql = "UPDATE comment SET likes = likes + 1 WHERE id = ?";
+        await db.query(updateSql, [comment_id]);
+        output.success = true;
+        output.action = "add";
+      } else {
+        output.error = "無法加入";
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    output.error = "商品加入收藏錯誤";
+  }
+
+  res.json(output);
+});
+// 检查收藏状态
+router.get("/check-like-comment/:comment_id", async (req, res) => {
+  if (!req.my_jwt?.custom_id) {
+    output.error = "沒有授權";
+    return res.json(output);
+  }
+  const custom_id = req.my_jwt.custom_id;
+
+  try {
+    const sql =
+      "SELECT * FROM favorite_comment WHERE `comment_id`=? AND `custom_id`=?";
+    const [rows] = await db.query(sql, [req.params.comment_id, custom_id]);
+
+    if (rows.length) {
+      // 如果找到记录，说明已收藏
+      res.json({ isFavorite: true });
+    } else {
+      // 没有记录，说明未收藏
+      res.json({ isFavorite: false });
+    }
+  } catch (error) {
+    console.error("Error checking favorite status:", error);
+  }
+});
+
 // 檢視評論
 router.get("/comment/:seller_id", async (req, res) => {
   const seller_id = req.params.seller_id;
