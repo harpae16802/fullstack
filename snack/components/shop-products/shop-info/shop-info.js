@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 // 套件
 import Modal from 'react-modal'
 import dayjs from 'dayjs'
-// 元件
-import { useAuth } from '@/contexts/custom-context'
 // icons
 import { CgClose } from 'react-icons/cg'
 import {
@@ -14,6 +12,8 @@ import {
   FaStar,
   FaStarHalfAlt,
 } from 'react-icons/fa'
+// context
+import { useAuth } from '@/contexts/custom-context'
 // api-path
 import {
   FAVORITE_STORE,
@@ -69,13 +69,13 @@ export default function ShopInfo({
 
   // 檢查收藏
   const checkFavoriteStatus = async () => {
-    if (!auth.token) {
-      // 如果未登录，暂不做任何操作
-      console.log('用户未登录，暂不检查收藏状态')
-      return
-    }
-
     try {
+      if (!auth.token) {
+        // 如果未登录，暂不做任何操作
+        console.log('用户未登录，暂不检查收藏状态')
+        return
+      }
+
       const r = await fetch(`${C_FAVORITE_STORE}/${seller_id}`, {
         headers: { ...getAuthHeader() },
       })

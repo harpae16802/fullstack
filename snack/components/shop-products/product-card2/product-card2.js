@@ -6,6 +6,8 @@ import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
 } from '@/components/config/api-path'
+// context
+import { useAuth } from '@/contexts/custom-context'
 // 樣式
 import style from './style.module.scss'
 
@@ -18,11 +20,20 @@ export default function ProductCard2({
   imgUrl = '',
   introduce = '',
 }) {
+  const { auth, getAuthHeader } = useAuth()
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
 
   // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
     try {
+      if (!auth.token) {
+        const willLogIn = confirm('請先登入會員')
+        if (willLogIn) {
+          window.location.href = '/login/login-custom'
+        }
+        return
+      }
+
       const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
       const data = await r.json()
       if (data.success) {
@@ -33,17 +44,32 @@ export default function ProductCard2({
     }
   }
 
-  useEffect(() => {
-    // 检查收藏状态
-    const checkFavoriteStatus = async () => {
-      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`)
+  // 检查收藏状态
+  const checkFavoriteStatus = async () => {
+    try {
+      if (!auth.token) {
+        // 如果未登录，暂不做任何操作
+        console.log('用户未登录，暂不检查收藏状态')
+        return
+      }
+
+      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`, {
+        headers: { ...getAuthHeader() },
+      })
+      if (!r.ok) throw new Error('网络回应错误')
       const data = await r.json()
       if (data.isFavorite !== undefined) {
         setIsFavorite(data.isFavorite)
       }
+    } catch (error) {
+      console.error('检查收藏状态时出错:', error)
     }
+  }
 
-    checkFavoriteStatus()
+  useEffect(() => {
+    if (auth.token) {
+      checkFavoriteStatus()
+    }
   }, [product_id])
 
   return (
