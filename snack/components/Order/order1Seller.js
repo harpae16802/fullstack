@@ -1,3 +1,4 @@
+// components/Order/order1Seller.js
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
@@ -5,6 +6,8 @@ import { FaShopify, FaTrashAlt } from 'react-icons/fa'
 // import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
 import { CARTITEM, BackEndPIMG } from '../../pages/seller-basic-data/config'
+import { FaCheck } from 'react-icons/fa';
+
 
 // 依照 賣家 id 來渲染不同賣家
 const groupItemsBySeller = (items) => {
@@ -20,7 +23,9 @@ const groupItemsBySeller = (items) => {
   return groupedItems
 }
 
-const OrderDetailItem = () => {
+
+// 組件
+const OrderDetailItem = ({ onCheckout, onSelectSeller, onGroupedItemsChange }) => {
 
 //商家勾選系統
   const [selectedSeller, setSelectedSeller] = useState(null);
@@ -33,16 +38,6 @@ const OrderDetailItem = () => {
 //拿取cutom_id
   const { auth } = useAuth();
   const customId= auth.custom_id  
-
-
-//商家勾選系統
-  const handleSelectSeller = (sellerName) => {
-    if (selectedSeller === sellerName) {
-      setSelectedSeller(null); 
-    } else {
-      setSelectedSeller(sellerName);  
-    }
-  };
 
   // 總查詢
   useEffect(() => {
@@ -63,20 +58,6 @@ const OrderDetailItem = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-//選擇商家
-const proceedToCheckout = () => {
-  if (!selectedSeller) {
-    alert("請選擇要結帳的商家唷");
-    return;
-  }
-
-  const itemsToCheckout = groupedItems[selectedSeller];
-  console.log("正在使用以下商品进行结账：", itemsToCheckout);
-  // 这里通常会跳转到结账页面或打开结账模态框
-  // 例如：
-  // navigate('/checkout', { state: { items: itemsToCheckout } });
-};
-
 // 更新產品總查詢
   const updateCartItem = async (customId, productId, newQuantity) => {
     try {
@@ -89,7 +70,6 @@ const proceedToCheckout = () => {
       console.error('Error updating cart:', error.response ? error.response.data : error);
     }
   };
-
 
 // 商品增加数量
 const handleIncreaseQuantity = (seller, productId) => {
@@ -135,8 +115,11 @@ const handleDecreaseQuantity = (seller, productId) => {
     }
   };
   
-
-
+// 商家勾選
+const handleSelectSeller = (sellerName) => {
+  setSelectedSeller(sellerName);
+  onSelectSeller(sellerName); 
+}
   return (
     <>
       {Object.entries(groupedItems).map(([seller, items], index) => (
@@ -146,18 +129,13 @@ const handleDecreaseQuantity = (seller, productId) => {
     backgroundColor: selectedSeller === seller ? '#f0f0f0' : '#ffffff'  
   }}>      
   
-   <h2 style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-         
-          {/* 勾選要結帳的商家 */}
-          <input
-            type="checkbox"
-            checked={selectedSeller === seller}
-            onChange={() => handleSelectSeller(seller)}
-            style={{ marginRight: '5px' }}
-          />
-
-            {seller}
-          </h2>
+  <h2
+  style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', cursor: 'pointer' }}
+  onClick={() => handleSelectSeller(seller)}
+>
+  {selectedSeller === seller ? <FaCheck style={{ marginRight: '5px' }} /> : null}
+  {seller}
+</h2>
           {items.map((item) => (
             // 顯示部分
             <div key={item.product_name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding: '10px', borderRadius: '10px', backgroundColor: '#f9f9f9' }}>
@@ -184,7 +162,6 @@ const handleDecreaseQuantity = (seller, productId) => {
         </div>
       ))}
       <div>
-  <button onClick={proceedToCheckout} style={{ margin: '20px', padding: '10px', fontSize: '16px' }}>前往結帳</button>
 </div>
 
     </>
