@@ -173,7 +173,12 @@ router.get("/comment/:seller_id", async (req, res) => {
   const seller_id = req.params.seller_id;
 
   try {
-    const sql = `SELECT * FROM comment WHERE seller_id = ?`;
+    const sql = `
+    SELECT c.*, cu.custom_name
+    FROM comment c
+    INNER JOIN custom cu ON c.custom_id = cu.custom_id
+    WHERE c.seller_id = ?
+  `;
     const [row] = await db.query(sql, [seller_id]);
     res.json(row);
   } catch (error) {

@@ -91,23 +91,52 @@ export default function ShopInfo({
   }
 
   // 用於渲染星星的函數
-  const renderStars = () => {
-    let score = parseFloat(averageScore)
+  // const renderStars = (scoreParam = averageScore) => {
+  //   let score = parseFloat(scoreParam)
+  //   let stars = []
+  //   for (let i = 0; i < 5; i++) {
+  //     if (score >= 1) {
+  //       stars.push(
+  //         <FaStar key={i} className={`${style.star} ${style.bigStar}`} />
+  //       )
+  //     } else if (score > 0) {
+  //       stars.push(
+  //         <FaStarHalfAlt key={i} className={`${style.star} ${style.bigStar}`} />
+  //       )
+  //     } else {
+  //       stars.push(
+  //         <FaRegStar key={i} className={`${style.star} ${style.bigStar}`} />
+  //       )
+  //     }
+  //     score -= 1
+  //   }
+  //   return stars
+  // }
+  const renderStars = (scoreParam, useBigStars = false) => {
+    let score = parseFloat(scoreParam || averageScore)
     let stars = []
     for (let i = 0; i < 5; i++) {
+      let star
       if (score >= 1) {
-        stars.push(
-          <FaStar key={i} className={`${style.star} ${style.bigStar}`} />
+        star = useBigStars ? (
+          <FaStar className={`${style.bigStar}`} />
+        ) : (
+          <FaStar className={style.star} />
         )
       } else if (score > 0) {
-        stars.push(
-          <FaStarHalfAlt key={i} className={`${style.star} ${style.bigStar}`} />
+        star = useBigStars ? (
+          <FaStarHalfAlt className={`${style.star} ${style.bigStar}`} />
+        ) : (
+          <FaStarHalfAlt className={style.star} />
         )
       } else {
-        stars.push(
-          <FaRegStar key={i} className={`${style.star} ${style.bigStar}`} />
+        star = useBigStars ? (
+          <FaRegStar className={`${style.star} ${style.bigStar}`} />
+        ) : (
+          <FaRegStar className={style.star} />
         )
       }
+      stars.push(React.cloneElement(star, { key: i }))
       score -= 1
     }
     return stars
@@ -192,7 +221,7 @@ export default function ShopInfo({
               <p className="m-0">/ 5</p>
             </div>
             {/* star */}
-            <div>{renderStars()}</div>
+            <div>{renderStars(undefined, true)}</div>
 
             {/* btn */}
             <div className={style.btnDiv}>
@@ -220,13 +249,9 @@ export default function ShopInfo({
                       className={`rounded-circle ${style.avatar}`}
                     />
                     <div>
-                      <p className="m-0 fw-bold">肥倫</p>
+                      <p className="m-0 fw-bold">{comment.custom_name}</p>
                       <div className="d-flex align-items-center">
-                        {Array(5)
-                          .fill(1)
-                          .map((v) => (
-                            <FaStar key={v} className={style.star} />
-                          ))}
+                        {renderStars(comment.store_rating)}
                         <span className={style.time}>{formattedDate}</span>
                       </div>
                     </div>
