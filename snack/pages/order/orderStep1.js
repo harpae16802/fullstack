@@ -13,18 +13,22 @@ import {CARTITEM} from '../../pages/seller-basic-data/config'
 
 
 export default function Order() {
+  
+  // 第一次狀態
+  const [selectedItems, setSelectedItems] = useState([]);
 
+  // 取得狀態
   const { auth } = useAuth()
+  
+  // 設定進度條
   const [step, setStep] = useState(1);
-
   const handleNext = () => {
-    if (step < 3) {  // 确保步骤不会超过3
+    if (step < 3) { 
       setStep(step + 1);
     }
   };
-
   const handleBack = () => {
-    if (step > 1) {  // 确保步骤不会小于1
+    if (step > 1) { 
       setStep(step - 1);
     }
   };
@@ -74,7 +78,7 @@ export default function Order() {
           
            {/* 訂單詳細 外層容器 */}
            <div className={styles.order1Container}>
-           {/* {step === 2 && <DiscountContentItem />} */}
+           {/* {step === 2 && <DiscountContentItem items={selectedItems} />} */}
            </div>
 
             <br/>
