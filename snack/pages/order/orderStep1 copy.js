@@ -22,10 +22,10 @@ export default function Order() {
   const [selectedItems, setSelectedItems] = useState([])
 
   // 第一步 狀態更新
-  const [chosenSeller, setChosenSeller] = useState(null)
+  const [chosenSeller, setChosenSeller] = useState(null); 
   
   // 第一步 狀態更新
-  const [chosenItems, setChosenItems] = useState([])
+  const [chosenItems, setChosenItems] = useState([]); 
 
   // 設定進度條
   const [step, setStep] = useState(1)
@@ -42,8 +42,8 @@ export default function Order() {
   // 儲存第一步的資料
   const handleSelectSeller = (seller, items) => {
     // 这里可以处理接收到的商家名称和商品数据
-    // console.log('Selected seller:', seller);
-    // console.log('Selected items:', items);
+    console.log('Selected seller:', seller);
+    console.log('Selected items:', items);
     // 根据需要更新Order组件的状态
     setChosenSeller(seller);
     setChosenItems(items);
@@ -51,14 +51,12 @@ export default function Order() {
   
   // 設定進度條
   const handleNext = () => {
-    console.log("Selected Seller: ", chosenSeller);  
-    console.log("Selected Items: ", selectedItems);   
-    if (!chosenSeller || selectedItems.length === 0) {
-      alert('請先選擇要結帳的商品');
-      return;
+    if (!selectedSeller || !selectedItems) {
+      alert('請先選擇要結帳的商品')
+      return
     }
     if (step < 3) {
-      setStep(step + 1);
+      setStep(step + 1) // 前进到下一个步骤
     }
   }
 
@@ -68,6 +66,11 @@ export default function Order() {
     }
   }
 
+  // 自動跳轉
+  const handleSelectItems = (items) => {
+    setSelectedItems(items) // 保存選擇的商品資料
+    setStep(2) // 移動到下一步
+  }
 
   return (
     <>
@@ -109,10 +112,11 @@ export default function Order() {
             <div className={` mt-5 ${styles}`}>
               {step === 1 && (
                 <OrderDetailItem
-                onSelectSeller={handleSelectSeller}
-                onGroupedItemsChange={setGroupedItems}
-                setSelectedItems={setSelectedItems}
-              />
+                onCheckout={handleCheckout} // 确保其他函数也已定义
+                  onSelectSeller={handleSelectSeller}
+                  onGroupedItemsChange={setGroupedItems}
+                  setSelectedItems={setSelectedItems}
+                />
               )}
             </div>
 
