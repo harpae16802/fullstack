@@ -1,13 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-
+import React, { useState, useEffect, useRef } from 'react'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
 
 const BalloonShooterGame = () => {
-  const gameContainerRef = useRef(null);
+  const gameContainerRef = useRef(null)
   // 初始化狀態
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
   const [level, setLevel] = useState(1)
   const [gameInterval, setGameInterval] = useState(null)
+  const [showModal, setShowModal] = useState(false);
+  const [gamePaused, setGamePaused] = useState(false);
+
 
   // 關卡條件
   const levelConfigs = [
@@ -60,21 +64,32 @@ const BalloonShooterGame = () => {
   }
 
   // 檢查遊戲結果
+  // const checkGameResult = (levelConfig) => {
+  //   const nextLevel = level + 1
+  //   if (score >= levelConfig.clear && level < 5) {
+  //     const retry = window.confirm(
+  //       `恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}，要挑戰下一關嗎？`
+  //     )
+  //     if (retry) {
+  //       startGame(nextLevel)
+  //     }
+  //   } else if (score < levelConfig.clear || level === 5) {
+  //     const message =
+  //       level === 5
+  //         ? `恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}。全數通關！`
+  //         : `${levelConfig.levelName}通關失敗......你的分數是${score}，要繼續挑戰嗎？`
+  //     window.confirm(message)
+  //   }
+  // }
+  // 檢查遊戲結果
   const checkGameResult = (levelConfig) => {
     const nextLevel = level + 1
     if (score >= levelConfig.clear && level < 5) {
-      const retry = window.confirm(
-        `恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}，要挑戰下一關嗎？`
-      )
-      if (retry) {
-        startGame(nextLevel)
-      }
+      setShowModal(true)
+      setGamePaused(true); // 暫停遊戲
     } else if (score < levelConfig.clear || level === 5) {
-      const message =
-        level === 5
-          ? `恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}。全數通關！`
-          : `${levelConfig.levelName}通關失敗......你的分數是${score}，要繼續挑戰嗎？`
-      window.confirm(message)
+      setShowModal(true)
+      setGamePaused(true); // 暫停遊戲
     }
   }
 
@@ -86,7 +101,9 @@ const BalloonShooterGame = () => {
       const balloon = document.createElement('div')
       const balloonimg = document.createElement('div')
       balloon.classList.add('balloon')
-      balloon.style.left = `${Math.random() * (gameContainerRef.current.offsetWidth - 77)}px`
+      balloon.style.left = `${
+        Math.random() * (gameContainerRef.current.offsetWidth - 77)
+      }px`
       balloon.style.animation = `moveUp ${speed}s linear forwards`
       const points = balloonConfig.points
       balloon.dataset.points = points
@@ -96,7 +113,7 @@ const BalloonShooterGame = () => {
       balloonimg.classList.add('balloonimg')
       const name = balloonConfig.name
       balloonimg.textContent = name
-      const imageUrl =`url('/images/game/${balloonConfig.color}.png')`;
+      const imageUrl = `url('/images/game/${balloonConfig.color}.png')`
       balloonimg.style.backgroundImage = imageUrl
       balloon.appendChild(balloonimg)
       document.getElementById('game-container').appendChild(balloon)
@@ -145,42 +162,55 @@ const BalloonShooterGame = () => {
       }
     })
   }
+
+  const handleClose = () => {
+    setShowModal(false);
+    setGamePaused(false); // 繼續遊戲
+  };
+
+  const handleRetry = () => {
+    setShowModal(false);
+    startGame(level + 1);
+  };
+
   useEffect(() => {
-    startGame(1);
-  }, []);
+    startGame(1)
+  }, [])
 
   return (
+    <div className="game-play-page">
+      {/* <QrcodeCurrent /> */}
+      {/* <GameRule /> */}
+      {/* <div className="black-mode black-show"></div> */}
+      <div className="game-main">
+        <div className="time-table">
+          <div id="level" className="level">{`第${level}關`}</div>
 
-      <div className="game-play-page">
-        {/* <QrcodeCurrent /> */}
-        {/* <GameRule /> */}
-        {/* <div className="black-mode black-show"></div> */}
-        <div className="game-main">
-          <div className="time-table">
-            <div id="level" className="level">{`第${level}關`}</div>
-
-            <div className="table-bottom">
-              <div className="time-group">
-                <div className="time-text">剩餘時間</div>
-                <div id="timer" className="game-seconds">{`00:${timer
-                  .toString()
-                  .padStart(2, '0')}`}</div>
-              </div>
-              <div className="point-group">
-                <div className="point-text">累積分數</div>
-                <div id="score" className="game-point">
-                  {score.toString().padStart(5, '0')}
-                </div>
-              </div>
+          <div className="table-bottom">
+            <div className="time-group">
+              <div className="time-text">剩餘時間</div>
+              <div id="timer" className="game-seconds">{`00:${timer
+                .toString()
+                .padStart(2, '0')}`}</div>
             </div>
-          </div>
-          <div className="play-div ">
-            <div className="balloon-play" id="game-container" ref={gameContainerRef}>
+            <div className="point-group">
+              <div className="point-text">累積分數</div>
+              <div id="score" className="game-point">
+                {score.toString().padStart(5, '0')}
+              </div>
             </div>
           </div>
         </div>
+        <div className="play-div ">
+          <div
+            className="balloon-play"
+            id="game-container"
+            ref={gameContainerRef}
+          ></div>
+        </div>
+      </div>
 
-        {/* <div className="chara-group">
+      {/* <div className="chara-group">
           <div className="talk-group">
             <div className="triangle"></div>
             <div className="talk">
@@ -198,7 +228,38 @@ const BalloonShooterGame = () => {
             />
           </div>
         </div> */}
-      </div>
+        <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {score >= levelConfigs[level - 1].clear && level < 5
+              ? `恭喜你${levelConfigs[level - 1].levelName}通關成功!`
+              : level === 5
+              ? `恭喜你${levelConfigs[level - 1].levelName}通關成功! 全數通關！`
+              : `${levelConfigs[level - 1].levelName}通關失敗......`}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {score >= levelConfigs[level - 1].clear && level < 5 ? (
+            <p>{`你的分數是: ${score}`}</p>
+          ) : level === 5 ? (
+            <p>{`你的分數是: ${score}`}</p>
+          ) : (
+            <p>{`你的分數是: ${score}`}</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {score >= levelConfigs[level - 1].clear && level < 5 ? (
+            <Button variant="primary" onClick={handleRetry}>
+              挑戰下一關
+            </Button>
+          ) : (
+            <Button variant="secondary" onClick={handleClose}>
+              關閉
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+    </div>
   )
 }
 
