@@ -42,7 +42,8 @@ export default function ShopInfo({
   const [averageScore, setAverageScore] = useState(0) // 店家評分
   const [filter, setFilter] = useState(null) // 評論過濾
   const [sortByNewest, setSortByNewest] = useState(false) // 最新評論
-  const [sortByLikes, setSortByLikes] = useState(false)
+  const [sortByLikes, setSortByLikes] = useState(false) // 最多收藏
+
   const [ratingsCount, setRatingsCount] = useState({
     1: 0,
     2: 0,
@@ -197,6 +198,7 @@ export default function ShopInfo({
       : comments.filter((comment) => comment.store_rating === filter)
 
   useEffect(() => {
+    // 獲取資料
     const fetchComments = async () => {
       try {
         const r = await fetch(`${COMMENT_DATA}/${seller_id}`)
@@ -278,6 +280,7 @@ export default function ShopInfo({
         <button className={style.comment} onClick={openModal}>
           查看評論
         </button>
+
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}

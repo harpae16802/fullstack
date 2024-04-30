@@ -134,3 +134,16 @@ $white: #fff;
   background-color: #a32c2d !important;
   color: #fff;
 }
+
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-track {
+  margin: 20px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 100px;
+}
