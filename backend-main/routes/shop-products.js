@@ -574,17 +574,17 @@ router.get("/store-ratings/:seller_id", async (req, res) => {
 });
 
 // 獲取特定賣家的商品的平均評分和評論總數
-router.get("/seller-ratings/:seller_id", async (req, res) => {
+router.get("/product-ratings/:seller_id", async (req, res) => {
   try {
     const seller_id = req.params.seller_id;
     const sql = `
-      SELECT p.product_id, p.product_name, 
-             AVG(c.product_rating) AS average_product_rating, 
-             COUNT(c.comment) AS total_comments
-      FROM products p
-      JOIN comment c ON p.product_id = c.product_id
-      WHERE p.seller_id = ?
-      GROUP BY p.product_id, p.product_name;
+    SELECT p.product_id, p.product_name, 
+      AVG(c.night_rating) AS average_night_rating, 
+      COUNT(c.comment) AS total_comments
+    FROM products p
+    JOIN comment c ON p.product_id = c.product_id
+    WHERE p.seller_id = ?
+    GROUP BY p.product_id, p.product_name;
     `;
     const [rows] = await db.query(sql, [seller_id]);
     res.json(rows);

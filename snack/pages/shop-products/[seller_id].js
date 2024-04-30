@@ -42,6 +42,7 @@ export default function ShopProducts() {
   const [sweet, setSweet] = useState([]) // 渲染過濾的商品
   const [drink, setDrink] = useState([]) // 渲染過濾的商品
   const [rating, setRating] = useState([]) // 評分
+  const [productRating, setProductRating] = useState([]) // 評分
 
   // 關鍵字搜尋
   const handleSearch = (searchTerm) => {
@@ -156,9 +157,25 @@ export default function ShopProducts() {
       }
     }
 
+    // 取得評分的資料
+    const fetchProductRating = async () => {
+      try {
+        const response = await fetch(
+          `${SHOP_PRODUCTS}/product-ratings/${seller_id}`
+        )
+
+        if (!response.ok) throw new Error('網絡回應錯誤')
+        const data = await response.json()
+        setProductRating(data)
+      } catch (error) {
+        console.error('product-ratings 資料錯誤:', error)
+      }
+    }
+
     fetchData()
     fetchProducts()
     fetchRating()
+    fetchProductRating()
   }, [seller_id])
 
   // 處理購物車寬度
@@ -250,6 +267,10 @@ export default function ShopProducts() {
                   className={`row flex-nowrap flex-md-wrap ${style.productCardRow}`}
                 >
                   {products.map((product) => {
+                    const ratingInfo =
+                      productRating.find(
+                        (r) => r.product_id === product.product_id
+                      ) || {}
                     return (
                       <div
                         className={`col-12 col-lg-3 ${style.productCardCol}`}
@@ -260,8 +281,14 @@ export default function ShopProducts() {
                           imgUrl={`${IMAGES_PRODUCTS}/${product.image_url}`}
                           title={product.product_name}
                           price={product.price}
-                          percentage="4.3"
-                          pepole="46"
+                          percentage={
+                            ratingInfo.average_night_rating
+                              ? Number(ratingInfo.average_night_rating).toFixed(
+                                  1
+                                )
+                              : 0
+                          }
+                          people={ratingInfo.product_name}
                         />
                       </div>
                     )
