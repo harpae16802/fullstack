@@ -45,6 +45,7 @@ export default function Order() {
     }
 
     if (step < 3) {
+      console.log(groupedItems)
       setStep(step + 1)
     }
   }
@@ -76,11 +77,11 @@ export default function Order() {
                 1
               </div>
               <div className={styles.connectGrey}></div>
-              <div className={step >= 2 ? styles.step1 : styles.stepUndo}>
+              <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
                 2
               </div>
               <div className={styles.connectGrey}></div>
-              <div className={step >= 3 ? styles.step1 : styles.stepUndo}>
+              <div className={step >= 3 ? styles.step3 : styles.stepUndo}>
                 3
               </div>
             </div>
@@ -112,7 +113,7 @@ export default function Order() {
 
             {/* 訂單詳細 外層容器 */}
             <div className={styles.order1Container}>
-              {step === 2 && <DiscountContentItem items={selectedItems} />}
+            {step === 2 && <DiscountContentItem items={selectedItems} />}
             </div>
 
             <br />
