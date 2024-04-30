@@ -66,8 +66,14 @@ $white: #fff;
       padding: 4px 14px;
       border: 1px solid $main;
       background-color: transparent;
+      transition: ease-in 0.2s;
       &:not(:last-child) {
         margin-right: 7px;
+      }
+      &:hover {
+        background-color: #a32c2d;
+        color: #fff;
+        transition: ease-in 0.2s;
       }
     }
   }

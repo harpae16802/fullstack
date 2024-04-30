@@ -13,6 +13,7 @@ import ProductCard2 from '@/components/shop-products/product-card2/product-card2
 import Cart from '@/components/shop-products/cart/cart'
 // api-path
 import {
+  SHOP_PRODUCTS,
   SELLER_DATA,
   PRODUCTS_DATA,
   IMAGES_PRODUCTS,
@@ -40,6 +41,7 @@ export default function ShopProducts() {
   const [snack, setSnack] = useState([]) // 渲染過濾的商品
   const [sweet, setSweet] = useState([]) // 渲染過濾的商品
   const [drink, setDrink] = useState([]) // 渲染過濾的商品
+  const [rating, setRating] = useState([]) // 評分
 
   // 關鍵字搜尋
   const handleSearch = (searchTerm) => {
@@ -69,9 +71,28 @@ export default function ShopProducts() {
     }
   }
 
+  // 格式化時間的函數，將 '00:00:00' 轉換為 '00:00'
+  const formatTime = (time) => {
+    return time.slice(0, 5)
+  }
+
+  // 休息日的映射函數
+  const mapDayToChinese = (dayNumber) => {
+    const dayMapping = {
+      7: '日',
+      1: '一',
+      2: '二',
+      3: '三',
+      4: '四',
+      5: '五',
+      6: '六',
+    }
+    return dayMapping[dayNumber] || '未知' // 如果沒有匹配到，返回'未知'
+  }
+
   // 處理資料
   useEffect(() => {
-    // 撈 seller 資料
+    // 取得 seller 資料
     const fetchData = async () => {
       try {
         const r = await fetch(`${SELLER_DATA}/${seller_id}`)
@@ -84,7 +105,7 @@ export default function ShopProducts() {
       }
     }
 
-    // 撈 products 資料跟分類
+    // 取得 products 資料跟分類
     const fetchProducts = async () => {
       try {
         const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
@@ -122,10 +143,25 @@ export default function ShopProducts() {
       }
     }
 
+    // 取得評分的資料
+    const fetchRating = async () => {
+      try {
+        const r = await fetch(`${SHOP_PRODUCTS}/store-ratings/${seller_id}`)
+
+        if (!r.ok) throw new Error('網絡回應錯誤')
+        const data = await r.json()
+        setRating(data[0])
+      } catch (error) {
+        console.error('撈取 seller 資料錯誤:', error)
+      }
+    }
+
     fetchData()
     fetchProducts()
+    fetchRating()
   }, [seller_id])
 
+  // 處理購物車寬度
   useEffect(() => {
     const handleResize = () => {
       if (cartRef.current) {
@@ -159,10 +195,12 @@ export default function ShopProducts() {
               <ShopInfo
                 seller_id={seller.seller_id}
                 shopName={seller.store_name}
-                time1="周一到周六"
-                time2="下午5:00到上午2:00"
-                score="4.2"
-                comment="169則留言"
+                time1={`每周${mapDayToChinese(seller.rest_day)}休息`}
+                time2={`下午${formatTime(
+                  seller.opening_hours
+                )}到凌晨${formatTime(seller.closing_hours)}`}
+                score={Number(rating.average_night_rating).toFixed(1)}
+                comment={`${rating.total_comments}則留言`}
               />
             )}
           </div>

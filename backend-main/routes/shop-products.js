@@ -171,11 +171,10 @@ router.get("/check-like-products/:product_id", async (req, res) => {
 // 檢視評論
 router.get("/comment/:seller_id", async (req, res) => {
   const seller_id = req.params.seller_id;
-  const order_id = seller_id === "4" ? 1 : 2;
 
   try {
-    const sql = `SELECT * FROM comment WHERE order_id = ?`;
-    const [row] = await db.query(sql, [order_id]);
+    const sql = `SELECT * FROM comment WHERE seller_id = ?`;
+    const [row] = await db.query(sql, [seller_id]);
     res.json(row);
   } catch (error) {
     console.error("評論查詢產品出錯:", error);
@@ -446,6 +445,27 @@ router.get("/cart", async (req, res) => {
   } catch (error) {
     console.error("獲取購物車數據錯誤: ", error);
     res.status(500).json({ error: "內部服務器錯誤" });
+  }
+});
+
+// 獲取商店的平均評分和評論總數
+router.get("/store-ratings/:seller_id", async (req, res) => {
+  try {
+    const seller_id = req.params.seller_id;
+    const sql = `
+      SELECT s.seller_id, s.store_name, 
+             AVG(c.night_rating) AS average_night_rating, 
+             COUNT(c.comment) AS total_comments
+      FROM seller s
+      LEFT JOIN comment c ON s.seller_id = c.seller_id
+      WHERE s.seller_id = ?
+      GROUP BY s.seller_id;
+    `;
+    const [row] = await db.query(sql, [seller_id]);
+    res.json(row);
+  } catch (error) {
+    console.error(`後端 /store-ratings/:seller_id 錯誤: ${error}`);
+    res.status(500).json({ message: "伺服器錯誤" });
   }
 });
 

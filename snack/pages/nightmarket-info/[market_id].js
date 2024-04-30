@@ -105,13 +105,10 @@ export default function NightmarketInfo({ initialMarketData }) {
     fetch(`${MARKET_SELLER}/${market_id}`)
       .then((r) => r.json())
       .then(async (data) => {
-        // 用于存放添加了评分和评论的商家数据
         let shopsWithRatings = []
 
-        // 假设 STORE_RATINGS 提供了所有商家的评分和评论总数
         const ratingsResponse = await fetch(`${STORE_RATINGS}/1`)
         const ratingsData = await ratingsResponse.json()
-        // 合并商家数据和评分评论数据
         shopsWithRatings = data.map((shop) => {
           const ratingInfo =
             ratingsData.find((rating) => rating.seller_id === shop.seller_id) ||
@@ -124,8 +121,8 @@ export default function NightmarketInfo({ initialMarketData }) {
         })
 
         const shopImages = shopsWithRatings.map((shop) => shop.store_image)
-        setFeaturedShops(shopImages.slice(0, 3)) // 只取前三个作为特色商家图片
-        setAllShops(shopsWithRatings) // 设置所有商家的数据，包括评分和评论
+        setFeaturedShops(shopImages.slice(0, 3))
+        setAllShops(shopsWithRatings)
       })
       .catch((error) => {
         console.error('獲取商家數據失敗:', error)

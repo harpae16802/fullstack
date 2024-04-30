@@ -19,6 +19,7 @@ import {
   FAVORITE_STORE,
   COMMENT_DATA,
   C_FAVORITE_STORE,
+  SHOP_PRODUCTS,
 } from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
