@@ -26,7 +26,7 @@ import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
 import categoriesRouter from './routes/categoriesRouter.js'
-
+import cartRouter from './routes/cartRouter.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -226,7 +226,6 @@ app.get("/jwt-data", async (req, res) => {
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
 
-<<<<<<< HEAD
 // ====恆
 app.use("/orderRouter",orderRouter); 
 // app.use("/product2Router",productPageRouter); 
@@ -235,8 +234,6 @@ app.use("/productPage",productPageRouter)
 
 
 
-=======
->>>>>>> ef422ee16298c7eaa1541a218a07eac2db54be8e
 // ==== 弘
 // 賣家登入驗證帳戶
 app.use("/auth", authRouter);
@@ -291,6 +288,10 @@ app.use("/comment", commentRouter);
 
 //賣家廣告路由
 app.use("/ad", adRouter);
+
+// 購物車結帳路由
+app.use('/cartItem', cartRouter);  
+
 
 // ==== 咚
 // 店家產品路由
