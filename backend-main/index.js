@@ -26,7 +26,7 @@ import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
 import categoriesRouter from './routes/categoriesRouter.js'
-
+import cartRouter from './routes/cartRouter.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -291,6 +291,10 @@ app.use("/comment", commentRouter);
 
 //賣家廣告路由
 app.use("/ad", adRouter);
+
+// 購物車結帳路由
+app.use('/cartItem', cartRouter);  
+
 
 // ==== 咚
 // 店家產品路由
