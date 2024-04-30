@@ -8,7 +8,7 @@ import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 import CheckoutProduct from '@/components/Order/checkoutProduct'
 
-const OrderStep1 = () => {
+export  const OrderStep1 = () => {
 
   //訂單數量
   const [dataCount, setDataCount] = useState(0); // 使用useState来存储数据数量
@@ -29,8 +29,8 @@ const OrderStep1 = () => {
       setProductCount(productCount);
     };
 
-    fetchDataCount();
-    fetchProductCount();
+    // fetchDataCount();
+    // fetchProductCount();
 
   }, [dataCount,productCount]);
 
@@ -140,8 +140,8 @@ export default function Order() {
 
        {/* '上一步 下一步'按鈕 */}
           <div style={{display:'flex',justifyContent:'center'}}>
-            <div className={styles.previousButton}>上一步</div>
-            <div className={styles.nextButton}>下一步</div>
+            <button className={styles.previousButton}>上一步</button>
+            <button className={styles.nextButton}>下一步</button>
           </div>
 
           {/* outerFrame */}

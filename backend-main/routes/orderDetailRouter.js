@@ -4,17 +4,26 @@ import db from '../utils/db.js';
 const router = express.Router();
 
 // 處理來自前端的請求，根據 seller_id 查詢相應的評論資料
-router.get('/productId', async (req, res) => {
+router.get('/getorderId', async (req, res) => {
   try {
-    const { product_id } = req.params;
+    const { seller_id } = req.params;
     const sql = `
-    SELECT 
-    p.product_name, p.image_url, p.price, s.store_name, m.market_name FROM products p 
-    JOIN seller s ON p.seller_id = s.seller_id  
-    JOIN market_data m ON s.market_id = m.market_id 
-    WHERE p.product_id BETWEEN 1 AND 4;
+      SELECT 
+        c.store_rating, 
+        c.photo, 
+        c.comment, 
+        c.datetime, 
+        cu.custom_account
+      FROM 
+        comment c
+      JOIN 
+        order_data od ON c.order_id = od.order_id
+      JOIN 
+        custom cu ON od.custom_id = cu.custom_id
+      WHERE 
+        c.seller_id = ?;
     `;
-    const [rows] = await db.query(sql, [product_id]);
+    const [rows] = await db.query(sql, [seller_id]);
    return res.json(rows);
    
   } catch (error) {
@@ -22,7 +31,6 @@ router.get('/productId', async (req, res) => {
     res.status(500).json({ error: "Error fetching comments" });
   }
 })
-
 router.post('/custom', async (req, res) => {
   try {
     // const { comment_id } = req.params;

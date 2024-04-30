@@ -15,7 +15,7 @@ import sellerRouter from "./routes/sellerRouter.js";
 import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import orderRouter from "./routes/orderRouter.js"
- import productPageRouter from "./routes/productPageRouter.js"
+import productPageRouter from "./routes/productPageRouter.js"
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
@@ -226,17 +226,17 @@ app.get("/jwt-data", async (req, res) => {
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
 
-<<<<<<< HEAD
 // ====恆
-app.use("/orderRouter",orderRouter); 
-// app.use("/product2Router",productPageRouter); 
-app.use("/productPage",productPageRouter)
+
+
+//商品列表頁
+app.use("/productPageRouter",productPageRouter)
+//訂單頁--orderStep1
+app.use("/orderRouter", orderRouter); 
 
 
 
 
-=======
->>>>>>> ef422ee16298c7eaa1541a218a07eac2db54be8e
 // ==== 弘
 // 賣家登入驗證帳戶
 app.use("/auth", authRouter);

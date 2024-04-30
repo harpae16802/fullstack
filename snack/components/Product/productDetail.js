@@ -20,14 +20,14 @@ export default function ProductDetailCard({
     <>
     
    
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" className={styles.seeMoreButton}>
+<button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" className={` ${styles.seeMoreButton}`}>
   看更多
 </button>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog"  className={styles.modalSize}>
-    <div class="modal-content">
+<div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className={`modal-dialog ${styles.modalSize}`}>
+    <div className="modal-content">
       
       {/* 標題 */}
        {/* 右上角叉叉 */}
@@ -38,7 +38,7 @@ export default function ProductDetailCard({
 
 
      
-      <div class="modal-body">
+      <div className="modal-body">
        
       <div className={styles.detailContainer}>
       {/* 產品圖 */}

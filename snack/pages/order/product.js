@@ -20,7 +20,54 @@ import ProductFilter from './productFilter'
 import axios from 'axios'; 
 
 export default function Product() {
+  // 熱門產品
+  const [popularProducts, setPopularProducts] = useState([]);
 
+  useEffect(() => {
+    const fetchPopularProduct = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/product');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('eddie',data.data); // 檢查從後端獲得的資料
+        // 解構第一個產品資料並設置到狀態中
+    
+        setPopularProducts(data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // 處理錯誤
+      }
+    };
+
+    fetchPopularProduct();
+  }, []); // 空的依賴項表示只在組件 mount 時執行一次
+
+  
+//隨機推薦
+const [recommendProducts, setRecommendProducts] = useState([]);
+
+useEffect(() => {
+  const fetchRecommendProduct = async () => {
+    try {
+      const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('eddie',data.data); // 檢查從後端獲得的資料
+      // 解構第一個產品資料並設置到狀態中
+  
+      setRecommendProducts(data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // 處理錯誤
+    }
+  };
+
+  fetchRecommendProduct();
+}, []); // 空的依賴項表示只在組件 mount 時執行一次
 
   // 食物分類，寫死
   const categories = [
@@ -60,11 +107,7 @@ export default function Product() {
   const { market_id } = router.query
   const { data } = router.query
   const [showProductFilter, setShowProductFilter] = useState();
-  const [popularProduct, setPopularProduct] = useState([])
-
-  const [snack, setSnack] = useState([]) // 渲染過濾的商品
-  const [sweet, setSweet] = useState([]) // 渲染過濾的商品
-  const [drink, setDrink] = useState([]) // 渲染過濾的商品
+  // const [popularProduct, setPopularProduct] = useState([])
 
  
       //熱銷產品 撈資料呈現
@@ -95,6 +138,7 @@ export default function Product() {
 
   //產品資訊:HTTP請求
   const [products, setProducts] = useState([]);
+ 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -175,17 +219,15 @@ export default function Product() {
 
       <div className={`col ${styles.popularContainer}`}>
 
-      {Array(4)
-        .fill(null)
-        .map((v,i) => {
+      {popularProducts && popularProducts.map((v,i) => {
           return (
             <div key={i} className='d-flex'>
             <PopularProduct 
-              imageUrl = "/images/大腸麵線.jpg"
-              saleRanking="No1"
-              market = "三和夜市"
-              seller = "壺茶車"
-              product = "蛤蠣湯"
+              imageUrl = {`/images/products/${v.image_url}`}
+              saleRanking={`No${i+1}`}
+              market = {v.market_name}
+              seller = {v.store_name}
+              product = {v.product_name}
             />
             </div>
           )

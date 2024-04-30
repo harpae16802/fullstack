@@ -216,6 +216,7 @@
     font-size: 16px;
     border-radius: 20px;
     color: #A32C2D;
+    background-color: #fff;
     font-weight: bolder;
    }
    @media(max-width:576px){ 
