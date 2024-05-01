@@ -107,42 +107,90 @@ export default function ShopProducts() {
     }
 
     // 取得 products 資料跟分類
+    // const fetchProducts = async () => {
+    //   try {
+    //     const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
+    //     if (!r.ok) {
+    //       throw new Error('網絡回應錯誤')
+    //     }
+    //     const data = await r.json()
+    //     setProducts(data.slice(0, 4))
+
+    //     // 過濾分類
+    //     const mainDishProducts = data.filter(
+    //       (product) => product.category === '主食'
+    //     )
+    //     setMainDishes(mainDishProducts)
+
+    //     // 過濾分類
+    //     const snackProducts = data.filter(
+    //       (product) => product.category === '小吃'
+    //     )
+    //     setSnack(snackProducts)
+
+    //     // 過濾分類
+    //     const sweetProducts = data.filter(
+    //       (product) => product.category === '甜品'
+    //     )
+    //     setSweet(sweetProducts)
+
+    //     // 過濾分類
+    //     const drinkProducts = data.filter(
+    //       (product) => product.category === '飲料'
+    //     )
+    //     setDrink(drinkProducts)
+    //   } catch (error) {
+    //     console.error('撈取 products 資料錯誤:', error)
+    //   }
+    // }
     const fetchProducts = async () => {
       try {
-        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
+        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`);
         if (!r.ok) {
-          throw new Error('網絡回應錯誤')
+          throw new Error('網絡回應錯誤');
         }
-        const data = await r.json()
-        setProducts(data.slice(0, 4))
-
-        // 過濾分類
-        const mainDishProducts = data.filter(
-          (product) => product.category === '主食'
-        )
-        setMainDishes(mainDishProducts)
-
-        // 過濾分類
-        const snackProducts = data.filter(
-          (product) => product.category === '小吃'
-        )
-        setSnack(snackProducts)
-
-        // 過濾分類
-        const sweetProducts = data.filter(
-          (product) => product.category === '甜品'
-        )
-        setSweet(sweetProducts)
-
-        // 過濾分類
-        const drinkProducts = data.filter(
-          (product) => product.category === '飲料'
-        )
-        setDrink(drinkProducts)
+        const productsData = await r.json();
+    
+        const ratingsResponse = await fetch(`${SHOP_PRODUCTS}/product-ratings/${seller_id}`);
+        if (!ratingsResponse.ok) {
+          throw new Error('網絡回應錯誤');
+        }
+        const ratingsData = await ratingsResponse.json();
+    
+        // 結合產品數據與評分數據
+        const productsWithRatings = productsData.map(product => {
+          const rating = ratingsData.find(r => r.product_id === product.product_id) || {};
+          return {
+            ...product,
+            average_night_rating: rating.average_night_rating || 0,
+            total_comments: rating.total_comments || 0
+          };
+        });
+    
+        // 根據平均評分降序排序
+        const sortedProducts = productsWithRatings.sort((a, b) => b.average_night_rating - a.average_night_rating);
+    
+        // 設置前四個評分最高的產品
+        setProducts(sortedProducts.slice(0, 4));
+        
+        // 分類過濾部分可照舊保留
+        const mainDishProducts = sortedProducts.filter(product => product.category === '主食');
+        setMainDishes(mainDishProducts);
+    
+        const snackProducts = sortedProducts.filter(product => product.category === '小吃');
+        setSnack(snackProducts);
+    
+        const sweetProducts = sortedProducts.filter(product => product.category === '甜品');
+        setSweet(sweetProducts);
+    
+        const drinkProducts = sortedProducts.filter(product => product.category === '飲料');
+        setDrink(drinkProducts);
+    
       } catch (error) {
-        console.error('撈取 products 資料錯誤:', error)
+        console.error('撈取 products 資料錯誤:', error);
       }
-    }
+    };
+    
 
     // 取得評分的資料
     const fetchRating = async () => {
@@ -157,18 +205,15 @@ export default function ShopProducts() {
       }
     }
 
-    // 取得評分的資料
     const fetchProductRating = async () => {
       try {
-        const response = await fetch(
-          `${SHOP_PRODUCTS}/product-ratings/${seller_id}`
-        )
-
-        if (!response.ok) throw new Error('網絡回應錯誤')
-        const data = await response.json()
+        const r = await fetch(`${SHOP_PRODUCTS}/product-ratings/${seller_id}`)
+        if (!r.ok) throw new Error('網絡回應錯誤')
+        const data = await r.json()
         setProductRating(data)
+        console.log('productRating:', data)
       } catch (error) {
-        console.error('product-ratings 資料錯誤:', error)
+        console.error('撈取評分資料錯誤:', error)
       }
     }
 
@@ -244,7 +289,7 @@ export default function ShopProducts() {
                     這裡都是甜的
                   </Link>
                   <Link href="#drink" className={`fw-bold ${style.a}`}>
-                    想喝飲料看這裡
+                    多帶杯飲料
                   </Link>
                 </li>
               </ul>
@@ -267,10 +312,9 @@ export default function ShopProducts() {
                   className={`row flex-nowrap flex-md-wrap ${style.productCardRow}`}
                 >
                   {products.map((product) => {
-                    const ratingInfo =
-                      productRating.find(
-                        (r) => r.product_id === product.product_id
-                      ) || {}
+                    const productRatings = productRating.find(
+                      (r) => r.product_id === product.product_id
+                    )
                     return (
                       <div
                         className={`col-12 col-lg-3 ${style.productCardCol}`}
@@ -282,13 +326,13 @@ export default function ShopProducts() {
                           title={product.product_name}
                           price={product.price}
                           percentage={
-                            ratingInfo.average_night_rating
-                              ? Number(ratingInfo.average_night_rating).toFixed(
-                                  1
-                                )
-                              : 0
+                            productRatings
+                              ? Number(
+                                  productRatings.average_night_rating
+                                ).toFixed(1)
+                              : '無評分'
                           }
-                          people={ratingInfo.product_name}
+                          pepole={productRatings ? productRatings.total_comments : '0'}
                         />
                       </div>
                     )

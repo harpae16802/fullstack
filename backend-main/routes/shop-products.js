@@ -227,6 +227,10 @@ router.get("/toggle-like-comment/:comment_id", async (req, res) => {
 });
 // 检查收藏状态
 router.get("/check-like-comment/:comment_id", async (req, res) => {
+  const output = {
+    success: false,
+    error: "",
+  };
   if (!req.my_jwt?.custom_id) {
     output.error = "沒有授權";
     return res.json(output);
