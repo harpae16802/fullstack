@@ -34,7 +34,7 @@ cartRouter.get("/:custom_id", async (req, res) => {
 });
 
 
-// 更新购物车中的商品数量和总价格
+// 更新商品總價
 cartRouter.put("/:custom_id", async (req, res) => {
   const customId = req.params.custom_id;
   const { product_id, quantity } = req.body;
@@ -46,7 +46,7 @@ cartRouter.put("/:custom_id", async (req, res) => {
   }
 
   try {
-    // 获取产品的当前价格
+    // 獲取當前價格
     const productQuery = "SELECT price FROM products WHERE product_id = ?";
     const [products] = await db.query(productQuery, [product_id]);
     if (products.length === 0) {
@@ -55,7 +55,7 @@ cartRouter.put("/:custom_id", async (req, res) => {
     const unitPrice = products[0].price;
     const totalPrice = unitPrice * quantity;
 
-    // 更新购物车表
+    // 更新購物車
     const updateQuery = `
         UPDATE cart
         SET quantity = ?, total_price = ?
@@ -84,7 +84,7 @@ cartRouter.put("/:custom_id", async (req, res) => {
 });
 
 
-// 删除购物车中的一个商品
+// 刪除商品
 cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
     const customId = req.params.custom_id;
     const productId = req.params.product_id;
@@ -105,5 +105,29 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
       res.status(500).send({ error: 'Database error occurred while removing product.' });
     }
   });
+
+  //優惠資訊
+  cartRouter.get("/discounts/:seller_id", async (req, res) => {
+    const sellerId = req.params.seller_id;
+    const query = `
+      SELECT sd.seller_id, dc.name, dc.min_amount, dc.discount
+      FROM seller_discounts sd 
+      JOIN discount_category dc ON sd.discount_category_id = dc.id 
+      WHERE sd.seller_id = ?
+    `;
+  
+    try {
+      const [results] = await db.query(query, [sellerId]);
+      if (results.length > 0) {
+        res.send({ discounts: results });
+      } else {
+        res.status(404).send({ error: "No discounts found for this seller." });
+      }
+    } catch (error) {
+      console.error("Database error:", error);
+      res.status(500).send({ error: "Database error occurred while fetching discounts." });
+    }
+  });
+  
 
 export default cartRouter;

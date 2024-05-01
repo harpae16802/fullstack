@@ -1,4 +1,5 @@
-// components/Order/order1Seller.js
+// components/Order/order1Seller.js　結帳第一步　總購物車
+
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
@@ -140,7 +141,7 @@ const OrderDetailItem = ({
     if (groupedItems[seller]) {
       const newSelectedItems = groupedItems[seller].map(item => ({
         ...item,
-        seller_id: sellerId,  // 添加 seller_id
+        seller_id: sellerId, 
       }));
       setSelectedItems(newSelectedItems) 
       setSelectedProducts(
