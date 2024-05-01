@@ -168,6 +168,7 @@ const OrderDetailItem = ({
 
   return (
     <>
+     <div className="container" style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '20px' }}>
       {Object.entries(groupedItems).map(([seller, items], index) => (
         <div
           key={seller}
@@ -288,7 +289,7 @@ const OrderDetailItem = ({
           ))}
         </div>
       ))}
-      <div></div>
+     </div>
     </>
   )
 }

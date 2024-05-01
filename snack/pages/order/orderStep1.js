@@ -7,7 +7,6 @@ import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 import { useAuth } from '@/contexts/custom-context'
 
-
 export default function Order() {
   // 取得狀態
   const { auth } = useAuth()
@@ -43,7 +42,6 @@ export default function Order() {
       setChosenSeller(seller)
       setChosenItems(items)
     } else {
-   
     }
   }
 
@@ -77,27 +75,32 @@ export default function Order() {
           <div className={styles.stepBorder}>
             {/* 步驟圓圈&長條 */}
             <div className="container">
+
               <div className={step >= 1 ? styles.step1 : styles.stepUndo}>
                 1
               </div>
+
               <div
                 className={step >= 2 ? styles.connectRed : styles.connectGrey}
               ></div>
+
               <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
                 2
               </div>
+
               <div
                 className={step >= 3 ? styles.connectRed : styles.connectGrey}
               ></div>
+
               <div className={step >= 3 ? styles.step3 : styles.stepUndo}>
                 3
               </div>
-            </div>
 
-            <br />
+            </div>
 
             {/* 步驟文字 */}
             <div className={styles.textContainer}>
+              <br></br>
               <div className={step === 1 ? styles.step1Text : styles.step1Text}>
                 訂單資訊
               </div>
@@ -137,7 +140,7 @@ export default function Order() {
               {/* {step === 3 && <CheckoutProduct />} */}
             </div>
             {/* 優惠加購*/}
-          
+
             {/* 優惠加購 */}
           </div>
 

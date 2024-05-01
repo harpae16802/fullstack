@@ -42,13 +42,7 @@ const DiscountContentItem = ({ items = [] }) => {
 
   // 樣式-------------------------------------------------------
 
-  // 商品名稱
-  const orderItemDetailsStyle = {
-    fontSize: '16px',
-    flexGrow: 1,
-    marginLeft: '15px',
-  }
-
+  
   // 商品的左側價格 數量 總價
   const orderItemTextStyle = {
     fontWeight: 'bold',
