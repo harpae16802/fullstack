@@ -128,7 +128,7 @@ export default function Order() {
             </div>
             <br />
             {/* 訂單詳細 外層容器 */}
-            <div className={styles.order1Container}>
+            <div className={styles}>
               {step === 2 && <DiscountContentItem items={selectedItems} />}
             </div>
             <br />
