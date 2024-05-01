@@ -15,6 +15,7 @@ cartRouter.get("/:custom_id", async (req, res) => {
       p.price,
       p.image_url,
       s.store_name,
+      s.seller_id,
       cu.custom_account
     FROM cart c
     JOIN products p ON c.product_id = p.product_id

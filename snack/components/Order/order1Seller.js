@@ -135,10 +135,13 @@ const OrderDetailItem = ({
   }
 
   // 商家勾選
-  const handleSelectSeller = (seller) => {
+  const handleSelectSeller = (seller,sellerId) => {
     setSelectedSeller(seller)
     if (groupedItems[seller]) {
-      const newSelectedItems = groupedItems[seller]
+      const newSelectedItems = groupedItems[seller].map(item => ({
+        ...item,
+        seller_id: sellerId,  // 添加 seller_id
+      }));
       setSelectedItems(newSelectedItems) 
       setSelectedProducts(
         new Set(newSelectedItems.map((item) => item.product_id))
@@ -183,8 +186,8 @@ const OrderDetailItem = ({
               marginBottom: '10px',
               cursor: 'pointer',
             }}
-            onClick={() => handleSelectSeller(seller)}
-          >
+            onClick={() => handleSelectSeller(seller, items[0].seller_id)}  
+            >
             {seller}
 
             {selectedSeller === seller ? (
