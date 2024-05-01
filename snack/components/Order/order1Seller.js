@@ -139,15 +139,15 @@ const OrderDetailItem = ({
     setSelectedSeller(seller)
     if (groupedItems[seller]) {
       const newSelectedItems = groupedItems[seller]
-      setSelectedItems(newSelectedItems) // 设置本地状态
+      setSelectedItems(newSelectedItems) 
       setSelectedProducts(
         new Set(newSelectedItems.map((item) => item.product_id))
-      ) // 更新选中的产品集
-      onSelectSeller(seller, newSelectedItems) // 通过回调函数将数据传递到Order组件
+      )
+      onSelectSeller(seller, newSelectedItems)
     } else {
       setSelectedItems([])
       setSelectedProducts(new Set())
-      onSelectSeller(seller, []) // 传递空数组表示没有找到商品
+      onSelectSeller(seller, []) 
     }
   }
 
@@ -226,7 +226,7 @@ const OrderDetailItem = ({
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginRight: '10px', // 确保图片与商品名称有间距
+                    marginRight: '10px', 
                   }}
                 >
                   <Image

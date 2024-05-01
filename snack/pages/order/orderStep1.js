@@ -80,26 +80,26 @@ export default function Order() {
           <div className={styles.stepBorder}>
             {/* 步驟圓圈&長條 */}
             <div className="container">
-              <div className={step >= 1 ? styles.step1 : styles.stepUndo}>
-                1
-              </div>
-              <div className={styles.connectGrey}></div>
-              <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
-                2
-              </div>
-              <div className={styles.connectGrey}></div>
-              <div className={step >= 3 ? styles.step3 : styles.stepUndo}>
-                3
-              </div>
+            <div className={step >= 1 ? styles.step1 : styles.stepUndo}>
+          1
+        </div>
+        <div className={step >= 2 ? styles.connectRed : styles.connectGrey}></div>
+        <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
+          2
+        </div>
+        <div className={step >= 3 ? styles.connectRed : styles.connectGrey}></div>
+        <div className={step >= 3 ? styles.step3 : styles.stepUndo}>
+          3
+        </div>
             </div>
 
             <br />
 
             {/* 步驟文字 */}
             <div className={styles.textContainer}>
-              <div className={styles.step1Text}>訂單資訊</div>
-              <div className={styles.step2UndoText}>訂單優惠</div>
-              <div className={styles.step3UndoText}>完成</div>
+            <div className={step === 1 ? styles.step1Text : styles.step1Text}>訂單資訊</div>
+            <div className={step === 2 ? styles.step2Text : styles.step2UndoText}>訂單優惠</div>
+            <div className={step === 3 ? styles.step3Text : styles.step3UndoText}>完成</div>
             </div>
           </div>
 
