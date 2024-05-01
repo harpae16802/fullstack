@@ -87,25 +87,24 @@ export default function Order() {
               <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
                 2
               </div>
-
+              
               <div
                 className={step >= 3 ? styles.connectRed : styles.connectGrey}
               ></div>
-
-              <div className={step >= 3 ? styles.step3 : styles.stepUndo}>
+              <div className={step >= 3 ? styles.step2 : styles.stepUndo}>
                 3
               </div>
 
+              <br />
             </div>
 
             {/* 步驟文字 */}
             <div className={styles.textContainer}>
-              <br></br>
               <div className={step === 1 ? styles.step1Text : styles.step1Text}>
                 訂單資訊
               </div>
               <div
-                className={step === 2 ? styles.step2Text : styles.step2UndoText}
+                className={step >= 2 ? styles.step2Text : styles.step2UndoText}
               >
                 訂單優惠
               </div>
