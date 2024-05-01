@@ -229,6 +229,7 @@ router.get("/toggle-like-comment/:comment_id", async (req, res) => {
 router.get("/check-like-comment/:comment_id", async (req, res) => {
   const output = {
     success: false,
+    action: "", // 'add' or 'remove'
     error: "",
   };
   if (!req.my_jwt?.custom_id) {
@@ -275,13 +276,13 @@ router.get("/comment/:seller_id", async (req, res) => {
 // 增加商品數量
 router.post("/cart-increase", async (req, res) => {
   const { product_id } = req.body;
-  if (!req.my_jwt?.custom_id) {
-    output.error = "沒有授權";
-    return res.json(output);
-  }
   const custom_id = req.my_jwt.custom_id;
 
   try {
+    if (!custom_id) {
+      return res.status(401).json({ error: "未授权的访问" });
+    }
+
     // 检查商品是否在购物车中
     const getQuantitySql = `
       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
@@ -375,13 +376,13 @@ router.post("/cart-increase", async (req, res) => {
 // 減少商品數量
 router.post("/cart-decrease", async (req, res) => {
   const { product_id } = req.body;
-  if (!req.my_jwt?.custom_id) {
-    output.error = "沒有授權";
-    return res.json(output);
-  }
   const custom_id = req.my_jwt.custom_id;
 
   try {
+    if (!custom_id) {
+      return res.status(401).json({ error: "未授权的访问" });
+    }
+
     // 检查商品是否在购物车中
     const getQuantitySql = `
       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
@@ -466,13 +467,13 @@ router.post("/cart-decrease", async (req, res) => {
 // 删除商品
 router.post("/cart-remove", async (req, res) => {
   const { product_id } = req.body;
-  if (!req.my_jwt?.custom_id) {
-    output.error = "沒有授權";
-    return res.json(output);
-  }
   const custom_id = req.my_jwt.custom_id;
 
   try {
+    if (!custom_id) {
+      return res.status(401).json({ error: "未授权的访问" });
+    }
+
     // 删除商品的SQL命令
     const deleteSql = `
       DELETE FROM cart WHERE custom_id = ? AND product_id = ?
@@ -515,13 +516,13 @@ router.post("/cart-remove", async (req, res) => {
 
 // 獲取購物車數據
 router.get("/cart", async (req, res) => {
-  if (!req.my_jwt?.custom_id) {
-    output.error = "沒有授權";
-    return res.json(output);
-  }
   const custom_id = req.my_jwt.custom_id;
 
   try {
+    if (!custom_id) {
+      return res.status(401).json({ error: "未授权的访问" });
+    }
+
     const cartSql = `
   SELECT 
     p.product_name, 

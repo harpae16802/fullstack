@@ -47,7 +47,6 @@ export default function ProductCard({
       console.error('加入最愛 錯誤:', error)
     }
   }
-
   // 检查收藏状态
   const checkFavoriteStatus = async () => {
     try {
@@ -109,7 +108,7 @@ export default function ProductCard({
           <span className={style.price}>${price}</span>
           <span className="d-flex align-items-center">
             <FaThumbsUp className={style.iconThumbsUp} />
-            {percentage} ({pepole})
+            {percentage}({pepole})
           </span>
         </div>
       </div>

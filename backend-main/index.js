@@ -53,7 +53,10 @@ app.use((req, res, next) => {
       // res.locals.my_jwt(放在此比較安全但現在res.req不同)
       //要確認my_jwt沒用過,像req.body已經被使用了
       req.my_jwt = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (ex) {}
+    } catch (ex) {
+      console.error("JWT verification failed:", ex);
+      return res.status(401).json({ error: "Invalid token" });
+    }
   }
 
   // ***** 只用在測試用戶

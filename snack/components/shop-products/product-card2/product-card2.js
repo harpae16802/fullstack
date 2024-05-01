@@ -8,6 +8,7 @@ import {
 } from '@/components/config/api-path'
 // context
 import { useAuth } from '@/contexts/custom-context'
+import { useCartContext } from '@/contexts/cartContext'
 // 樣式
 import style from './style.module.scss'
 
@@ -21,6 +22,7 @@ export default function ProductCard2({
   introduce = '',
 }) {
   const { auth, getAuthHeader } = useAuth()
+  const { addToCart } = useCartContext()
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
 
   // 加入收藏 - 商品
@@ -34,7 +36,9 @@ export default function ProductCard2({
         return
       }
 
-      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
+      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`, {
+        headers: { ...getAuthHeader() },
+      })
       const data = await r.json()
       if (data.success) {
         setIsFavorite(data.action === 'add')
@@ -43,7 +47,6 @@ export default function ProductCard2({
       console.error('加入最愛 錯誤:', error)
     }
   }
-
   // 检查收藏状态
   const checkFavoriteStatus = async () => {
     try {
@@ -64,6 +67,10 @@ export default function ProductCard2({
     } catch (error) {
       console.error('检查收藏状态时出错:', error)
     }
+  }
+  // 加入購物車
+  const handleAddToCart = () => {
+    addToCart(product_id)
   }
 
   useEffect(() => {
@@ -100,7 +107,7 @@ export default function ProductCard2({
         <p className={`mb-0 ${style.p}`}>{introduce}</p>
       </div>
       <img src={imgUrl} alt={title} className={style.img} />
-      <button className={style.addBtn}>
+      <button className={style.addBtn} onClick={handleAddToCart}>
         <FaPlus />
       </button>
     </div>

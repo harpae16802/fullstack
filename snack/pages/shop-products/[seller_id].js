@@ -107,90 +107,63 @@ export default function ShopProducts() {
     }
 
     // 取得 products 資料跟分類
-    // const fetchProducts = async () => {
-    //   try {
-    //     const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
-    //     if (!r.ok) {
-    //       throw new Error('網絡回應錯誤')
-    //     }
-    //     const data = await r.json()
-    //     setProducts(data.slice(0, 4))
-
-    //     // 過濾分類
-    //     const mainDishProducts = data.filter(
-    //       (product) => product.category === '主食'
-    //     )
-    //     setMainDishes(mainDishProducts)
-
-    //     // 過濾分類
-    //     const snackProducts = data.filter(
-    //       (product) => product.category === '小吃'
-    //     )
-    //     setSnack(snackProducts)
-
-    //     // 過濾分類
-    //     const sweetProducts = data.filter(
-    //       (product) => product.category === '甜品'
-    //     )
-    //     setSweet(sweetProducts)
-
-    //     // 過濾分類
-    //     const drinkProducts = data.filter(
-    //       (product) => product.category === '飲料'
-    //     )
-    //     setDrink(drinkProducts)
-    //   } catch (error) {
-    //     console.error('撈取 products 資料錯誤:', error)
-    //   }
-    // }
     const fetchProducts = async () => {
       try {
-        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`);
+        const r = await fetch(`${PRODUCTS_DATA}/${seller_id}`)
         if (!r.ok) {
-          throw new Error('網絡回應錯誤');
+          throw new Error('網絡回應錯誤')
         }
-        const productsData = await r.json();
-    
-        const ratingsResponse = await fetch(`${SHOP_PRODUCTS}/product-ratings/${seller_id}`);
+        const productsData = await r.json()
+
+        const ratingsResponse = await fetch(
+          `${SHOP_PRODUCTS}/product-ratings/${seller_id}`
+        )
         if (!ratingsResponse.ok) {
-          throw new Error('網絡回應錯誤');
+          throw new Error('網絡回應錯誤')
         }
-        const ratingsData = await ratingsResponse.json();
-    
+        const ratingsData = await ratingsResponse.json()
+
         // 結合產品數據與評分數據
-        const productsWithRatings = productsData.map(product => {
-          const rating = ratingsData.find(r => r.product_id === product.product_id) || {};
+        const productsWithRatings = productsData.map((product) => {
+          const rating =
+            ratingsData.find((r) => r.product_id === product.product_id) || {}
           return {
             ...product,
             average_night_rating: rating.average_night_rating || 0,
-            total_comments: rating.total_comments || 0
-          };
-        });
-    
-        // 根據平均評分降序排序
-        const sortedProducts = productsWithRatings.sort((a, b) => b.average_night_rating - a.average_night_rating);
-    
-        // 設置前四個評分最高的產品
-        setProducts(sortedProducts.slice(0, 4));
-        
-        // 分類過濾部分可照舊保留
-        const mainDishProducts = sortedProducts.filter(product => product.category === '主食');
-        setMainDishes(mainDishProducts);
-    
-        const snackProducts = sortedProducts.filter(product => product.category === '小吃');
-        setSnack(snackProducts);
-    
-        const sweetProducts = sortedProducts.filter(product => product.category === '甜品');
-        setSweet(sweetProducts);
-    
-        const drinkProducts = sortedProducts.filter(product => product.category === '飲料');
-        setDrink(drinkProducts);
-    
+            total_comments: rating.total_comments || 0,
+          }
+        })
+
+        // 根據評分降序排序所有產品，然後選擇前四個作為人氣精選
+        const sortedProducts = productsWithRatings.sort(
+          (a, b) => b.average_night_rating - a.average_night_rating
+        )
+        setProducts(sortedProducts.slice(0, 4)) // 設置人氣精選的產品
+
+        // 過濾並設置每個分類的產品
+        const mainDishProducts = productsWithRatings.filter(
+          (product) => product.category === '主食'
+        )
+        setMainDishes(mainDishProducts)
+
+        const snackProducts = productsWithRatings.filter(
+          (product) => product.category === '小吃'
+        )
+        setSnack(snackProducts)
+
+        const sweetProducts = productsWithRatings.filter(
+          (product) => product.category === '甜品'
+        )
+        setSweet(sweetProducts)
+
+        const drinkProducts = productsWithRatings.filter(
+          (product) => product.category === '飲料'
+        )
+        setDrink(drinkProducts)
       } catch (error) {
-        console.error('撈取 products 資料錯誤:', error);
+        console.error('撈取 products 資料錯誤:', error)
       }
-    };
-    
+    }
 
     // 取得評分的資料
     const fetchRating = async () => {
@@ -211,7 +184,6 @@ export default function ShopProducts() {
         if (!r.ok) throw new Error('網絡回應錯誤')
         const data = await r.json()
         setProductRating(data)
-        console.log('productRating:', data)
       } catch (error) {
         console.error('撈取評分資料錯誤:', error)
       }
@@ -332,7 +304,9 @@ export default function ShopProducts() {
                                 ).toFixed(1)
                               : '無評分'
                           }
-                          pepole={productRatings ? productRatings.total_comments : '0'}
+                          pepole={
+                            productRatings ? productRatings.total_comments : '0'
+                          }
                         />
                       </div>
                     )
@@ -350,16 +324,17 @@ export default function ShopProducts() {
                 <div className="row">
                   {mainDishes.map((dish, index) => {
                     return (
-                      <div
-                        key={index}
-                        className={`col-12 col-md-6 ${style.productCardCol2}`}
-                      >
+                      <div key={index} className={`col-12 col-md-6`}>
                         <ProductCard2
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
-                          percentage="3.6"
-                          pepole="48"
+                          percentage={
+                            dish.average_night_rating
+                              ? Number(dish.average_night_rating).toFixed(1)
+                              : '無評分'
+                          }
+                          pepole={dish.total_comments || 0}
                           imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
@@ -386,8 +361,12 @@ export default function ShopProducts() {
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
-                          percentage="3.6"
-                          pepole="48"
+                          percentage={
+                            dish.average_night_rating
+                              ? Number(dish.average_night_rating).toFixed(1)
+                              : '無評分'
+                          }
+                          pepole={dish.total_comments || 0}
                           imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
@@ -414,8 +393,12 @@ export default function ShopProducts() {
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
-                          percentage="3.6"
-                          pepole="48"
+                          percentage={
+                            dish.average_night_rating
+                              ? Number(dish.average_night_rating).toFixed(1)
+                              : '無評分'
+                          }
+                          pepole={dish.total_comments || 0}
                           imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
@@ -442,8 +425,12 @@ export default function ShopProducts() {
                           product_id={dish.product_id}
                           title={dish.product_name}
                           price={dish.price}
-                          percentage="3.6"
-                          pepole="48"
+                          percentage={
+                            dish.average_night_rating
+                              ? Number(dish.average_night_rating).toFixed(1)
+                              : '無評分'
+                          }
+                          pepole={dish.total_comments || 0}
                           imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />

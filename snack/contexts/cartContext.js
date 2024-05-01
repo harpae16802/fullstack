@@ -56,6 +56,7 @@ export const CartProvider = ({ children }) => {
       const response = await fetch(CART_MINUS, {
         method: 'POST',
         headers: {
+          ...getAuthHeader(),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ product_id: productId }),
@@ -80,6 +81,7 @@ export const CartProvider = ({ children }) => {
       const response = await fetch(CART_DEL, {
         method: 'POST',
         headers: {
+          ...getAuthHeader(),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ product_id: productId }),
@@ -104,6 +106,7 @@ export const CartProvider = ({ children }) => {
       const response = await fetch(CART, {
         method: 'GET',
         headers: {
+          ...getAuthHeader(),
           'Content-Type': 'application/json',
         },
       })
@@ -125,7 +128,7 @@ export const CartProvider = ({ children }) => {
       loadCartData()
     }
     // loadCartData()
-  }, [])
+  }, [auth.token])
 
   return (
     <CartContext.Provider

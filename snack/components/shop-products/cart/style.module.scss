@@ -1,46 +1,3 @@
-.cart {
-  padding: 24px;
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
-  border-radius: 20px;
-
-  .cartItems {
-    width: 100%;
-    margin-bottom: 24px;
-
-    .cartItemImage {
-      width: 74px;
-      height: auto;
-      margin-right: 24px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-    .cartItemDetails {
-      width: 100%;
-      .productName {
-        margin-right: 14px;
-      }
-
-      .removeItem {
-        margin-top: 10px;
-        color: #a32c2d;
-        font-size: 24px;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .noItems {
-    margin: 80px 0;
-  }
-
-  .icon {
-    font-size: 100px;
-    color: #a32c2d;
-  }
-}
-
 .quantity {
   margin-top: 14px;
   display: flex;
@@ -51,8 +8,8 @@
       height: 30px;
       width: 30px;
     }
-    height: 37px;
-    width: 37px;
+    height: 30px;
+    width: 30px;
     border: none;
     background-color: #fff;
     color: #a32c2d;
@@ -65,8 +22,8 @@
       height: 30px;
       width: 50px;
     }
-    height: 37px;
-    width: 50px;
+    height: 30px;
+    width: 30px;
     font-size: 16px;
     font-weight: 500;
     color: #a32c2d;
@@ -76,5 +33,58 @@
   }
   :focus {
     border: none;
+  }
+}
+
+.container {
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+  border-radius: 20px;
+
+  .cartItems {
+    min-height: 16rem;
+    .product {
+      margin-bottom: 14px;
+      .cartItemImage {
+        width: 74px;
+        height: 74px;
+        margin-right: 14px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+      .removeItem {
+        margin-top: 14px;
+        margin-left: 20px;
+        color: #a32c2d;
+        cursor: pointer;
+      }
+    }
+  }
+  // empty cart
+  .iconandtext {
+    height: 16rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+    .icon {
+      font-size: 100px;
+      color: #a32c2d;
+    }
+  }
+  .summaryandbutton {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    .summary {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
