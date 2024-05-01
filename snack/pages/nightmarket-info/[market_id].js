@@ -66,20 +66,59 @@ export default function NightmarketInfo({ initialMarketData }) {
 
   const marketInfo = initialMarketData[0] || {}
 
+  // const handleCategoryClick = async (categoryId) => {
+  //   try {
+  //     const response = await fetch(`${CATEGORY}/${categoryId}`)
+  //     const filteredShops = await response.json()
+  //     setAllShops(filteredShops) // 更新顯示篩選後的店家列表
+  //     // 滑動到店家列表
+  //     const shopListElement = document.getElementById('shopList')
+  //     if (shopListElement) {
+  //       shopListElement.scrollIntoView({ behavior: 'smooth' })
+  //     }
+  //   } catch (error) {
+  //     console.error('獲取分類店家數據失敗:', error)
+  //   }
+  // }
+
   const handleCategoryClick = async (categoryId) => {
     try {
       const response = await fetch(`${CATEGORY}/${categoryId}`)
       const filteredShops = await response.json()
-      setAllShops(filteredShops) // 更新顯示篩選後的店家列表
-      // 滑動到店家列表
-      const shopListElement = document.getElementById('shopList')
+      console.log('Filtered Shops:', filteredShops);  // 调试输出过滤后的商家数据
+  
+      const ratingsPromises = filteredShops.map(shop =>
+        fetch(`${STORE_RATINGS}/${shop.seller_id}`)
+          .then(r => r.json())
+          .then(data => {
+            console.log(`Rating for seller ${shop.seller_id}:`, data);  // 调试输出评分数据
+            return data;
+          })
+      );
+      const ratings = await Promise.all(ratingsPromises);
+      console.log('All ratings:', ratings);  // 调试输出所有评分数据
+  
+      const shopsWithRatings = filteredShops.map(shop => {
+        const ratingInfo = ratings.find(rating => rating.seller_id === shop.seller_id) || {};
+        return {
+          ...shop,
+          score: Number(ratingInfo.average_night_rating || 0),
+          commentCount: ratingInfo.total_comments || 0
+        };
+      });
+  
+      console.log('Shops with ratings:', shopsWithRatings);  // 调试输出合并后的商家数据
+      setAllShops(shopsWithRatings);
+  
+      const shopListElement = document.getElementById('shopList');
       if (shopListElement) {
-        shopListElement.scrollIntoView({ behavior: 'smooth' })
+        shopListElement.scrollIntoView({ behavior: 'smooth' });
       }
     } catch (error) {
-      console.error('獲取分類店家數據失敗:', error)
+      console.error('获取分类店家数据失败:', error);
     }
-  }
+  };
+  
 
   // 休息日的映射函數
   const mapDayToChinese = (dayNumber) => {
@@ -195,7 +234,7 @@ export default function NightmarketInfo({ initialMarketData }) {
                   title={seller.store_name}
                   time1={`每周${restDayChinese}休息`}
                   time2={`下午${openingTime}到凌晨${closingTime}`}
-                  score={seller.score ? seller.score.toFixed(1) : 'N/A'}
+                  score={seller.score ? seller.score.toFixed(1) : 0}
                   comment={
                     seller.commentCount
                       ? `(${seller.commentCount}則留言)`
