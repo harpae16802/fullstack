@@ -19,18 +19,15 @@ import orderRouter from "./routes/orderRouter.js"
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
-import signUpRouter from "./routes/sign-up.js";
-import indexInfoRouter from "./routes/indexinfo.js";
+import signUpRouter from "./routes/sign-up.js"; 
 import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
-import categoriesRouter from './routes/categoriesRouter.js'
-import cartRouter from './routes/cartRouter.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
+// const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;
@@ -58,8 +55,17 @@ app.use((req, res, next) => {
       // res.locals.my_jwt(放在此比較安全但現在res.req不同)
       //要確認my_jwt沒用過,像req.body已經被使用了
       req.my_jwt = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (ex) {}
+    } catch (ex) {
+      console.error("JWT verification failed:", ex);
+      return res.status(401).json({ error: "Invalid token" });
+    }
   }
+
+  // ***** 只用在測試用戶
+  // req.my_jwt = {
+  //   custom_id: 35,
+  //   account: "luki@gg.com",
+  // };
 
   next(); //呼叫他才能往下 不然網頁會一直停留在讀取旋轉
 });
@@ -198,9 +204,8 @@ app.post("/login-jwt", async (req, res) => {
     // 打包  JWT
     const token = jwt.sign(
       {
-        custom_id: row.custom_id,
-        account: row.custom_account,
-        google_uid: row.google_uid,
+        custom_id: row.custom_id ,
+        account: row.custom_account ,
       },
       // process.env.JWT_SECRET >> 去看 dev.env 檔
       process.env.JWT_SECRET
@@ -224,14 +229,6 @@ app.get("/jwt-data", async (req, res) => {
 });
 
 app.use("/sign-up", signUpRouter);
-app.use("/index-info", indexInfoRouter);
-
-// ====恆
-app.use("/orderRouter",orderRouter); 
-// app.use("/product2Router",productPageRouter); 
-app.use("/productPage",productPageRouter)
-
-
 
 
 // ==== 弘
@@ -287,10 +284,7 @@ app.use("/order", orderDataRouter);
 app.use("/comment", commentRouter);
 
 //賣家廣告路由
-app.use("/ad", adRouter);
-
-// 購物車結帳路由
-app.use('/cartItem', cartRouter);  
+app.use("/ad", adRouter)
 
 
 // ==== 咚
