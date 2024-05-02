@@ -267,7 +267,7 @@ export default function SellerBasicData() {
       })
       .catch((error) => {
         setfilePictureFailModal(ture)
-        alert('頭像上傳失敗')
+        // alert('頭像上傳失敗')
       })
   }
   // 生成24小時時間選項
