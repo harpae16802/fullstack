@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
+// context
+import { useCartContext } from '@/contexts/cartContext'
 
 import {
   FaBars,
@@ -17,6 +19,7 @@ export default function NavbarCustom() {
   const router = useRouter()
 
   const { auth, logout, login } = useAuth()
+  const { totalItems } = useCartContext()
 
   return (
     <>
@@ -30,6 +33,12 @@ export default function NavbarCustom() {
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="/">
                 <FaShoppingCart />
+                {/* 添加商品數量顯示 */}
+                {totalItems > 0 && (
+                  <span className="badge rounded-pill bg-danger itemCount">
+                    {totalItems}
+                  </span>
+                )}
               </a>
               <button
                 className="navbar-toggler"
@@ -189,6 +198,11 @@ export default function NavbarCustom() {
                   <a className="nav-link" href="#">
                     <div className="nav-icons">
                       <FaShoppingCart className="fa-solid fa-cart-shopping" />
+                      {totalItems > 0 && (
+                        <span className="badge bg-danger itemCount">
+                          {totalItems}
+                        </span>
+                      )}
                     </div>
                   </a>
                 </li>

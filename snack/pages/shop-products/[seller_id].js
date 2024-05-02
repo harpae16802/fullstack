@@ -17,6 +17,7 @@ import {
   SELLER_DATA,
   PRODUCTS_DATA,
   IMAGES_PRODUCTS,
+  API_SERVER,
 } from '@/components/config/api-path'
 // 樣式
 import style from './shop-products.module.scss'
@@ -294,7 +295,7 @@ export default function ShopProducts() {
                       >
                         <ProductCard
                           product_id={product.product_id}
-                          imgUrl={`${IMAGES_PRODUCTS}/${product.image_url}`}
+                          imgUrl={`${API_SERVER}/${product.image_url}`}
                           title={product.product_name}
                           price={product.price}
                           percentage={
@@ -335,7 +336,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -367,7 +368,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -399,7 +400,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -431,7 +432,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${IMAGES_PRODUCTS}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>

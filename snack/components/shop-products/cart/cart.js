@@ -2,7 +2,7 @@ import React from 'react'
 // context
 import { useCartContext } from '@/contexts/cartContext'
 // api-path
-import { IMAGES_PRODUCTS } from '@/components/config/api-path'
+import { IMAGES_PRODUCTS, API_SERVER } from '@/components/config/api-path'
 // icons
 import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
 // 樣式
@@ -36,7 +36,7 @@ export default function Cart() {
             {cartItems.map((item) => (
               <div key={item.product_id} className={`d-flex ${style.product}`}>
                 <img
-                  src={`${IMAGES_PRODUCTS}/${item.image_url}`}
+                  src={`${API_SERVER}/${item.image_url}`}
                   alt={item.title}
                   className={style.cartItemImage}
                 />

@@ -16,6 +16,7 @@ export const CartProvider = ({ children }) => {
   const { auth, getAuthHeader } = useAuth()
   const [cartItems, setCartItems] = useState([])
   const [total, setTotal] = useState(0)
+  const [totalItems, setTotalItems] = useState(0) // 小購物車用的總數
 
   // 添加商品到购物车
   const addToCart = async (productId) => {
@@ -124,6 +125,12 @@ export const CartProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    // 計算所有商品的總數量
+    const newItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+    setTotalItems(newItemCount)
+  }, [cartItems])
+
+  useEffect(() => {
     if (auth.token) {
       loadCartData()
     }
@@ -134,8 +141,9 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cartItems,
-        setCartItems,
         total,
+        totalItems,
+        setCartItems,
         setTotal,
         addToCart,
         removeFromCart,

@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react'
-
+import { useRouter } from 'next/router'
+// 套件
+import Modal from 'react-modal'
+// 元件
+import ProductDetailCard from '@/components/Product/productDetail'
 // icons
 import { FaThumbsUp, FaPlus, FaRegHeart, FaHeart } from 'react-icons/fa'
+import { CgClose } from 'react-icons/cg'
 // fetch 網址
 import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
+  PRODUCTS_DATA,
+  SHOP_PRODUCTS,
+  API_SERVER,
 } from '@/components/config/api-path'
 // context
 import { useCartContext } from '@/contexts/cartContext'
 import { useAuth } from '@/contexts/custom-context'
 // 樣式
 import style from './style.module.scss'
+
+Modal.setAppElement('#__next')
 
 export default function ProductCard({
   product_id,
@@ -24,6 +34,19 @@ export default function ProductCard({
   const { auth, getAuthHeader } = useAuth()
   const { addToCart } = useCartContext()
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
+  const [modalIsOpen, setIsModalOpen] = useState(false) // 彈窗
+  const [selectedProduct, setSelectedProduct] = useState(null)
+
+  // modal open
+  const openModal = () => {
+    fetchProductDetail(product_id)
+    setIsModalOpen(true)
+  }
+  // close
+  const closeModal = (e) => {
+    e.stopPropagation()
+    setIsModalOpen(false)
+  }
 
   // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
@@ -74,6 +97,14 @@ export default function ProductCard({
     addToCart(product_id)
   }
 
+  const fetchProductDetail = (product_id) => {
+    fetch(`${SHOP_PRODUCTS}/theProduct/${product_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSelectedProduct(data[0])
+      })
+  }
+
   useEffect(() => {
     if (auth.token) {
       checkFavoriteStatus()
@@ -83,7 +114,7 @@ export default function ProductCard({
   return (
     <div className={style.card}>
       <div className={style.imgDiv}>
-        <img src={imgUrl} className={style.img} />
+        <img src={imgUrl} className={style.img} onClick={openModal} />
         <button className={style.addBtn} onClick={handleAddToCart}>
           <FaPlus />
         </button>
@@ -112,6 +143,29 @@ export default function ProductCard({
           </span>
         </div>
       </div>
+      {/* detail modal */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="產品詳細"
+        className={style.modal}
+        overlayClassName={style.overlay}
+      >
+        {selectedProduct && (
+          <ProductDetailCard
+            imageUrl={`${API_SERVER}/${selectedProduct.image_url}`}
+            seller={selectedProduct.store_name}
+            product={selectedProduct.product_name}
+            description={selectedProduct.product_description}
+            price={selectedProduct.price}
+            ingredient={selectedProduct.product_ingredient}
+            nutrition={selectedProduct.product_nutrition}
+            onClose={closeModal}
+            favorite={toggleFavoriteProducts}
+            isFavorite={isFavorite}
+          />
+        )}
+      </Modal>
     </div>
   )
 }

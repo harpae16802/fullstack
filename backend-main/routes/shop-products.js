@@ -24,6 +24,20 @@ router.get("/products/:seller_id", async (req, res) => {
     console.error("資料庫查詢產品出錯:", error);
   }
 });
+router.get("/theProduct/:product_id", async (req, res) => {
+  try {
+    const sql = `
+    SELECT p.*, s.store_name
+    FROM products p
+    JOIN seller s ON p.seller_id = s.seller_id
+    WHERE p.product_id = ?
+  `;
+    const [row] = await db.query(sql, [req.params.product_id]);
+    res.json(row);
+  } catch (error) {
+    console.error("資料庫查詢產品出錯:", error);
+  }
+});
 
 // 加入移除收藏 - 店家
 router.get("/toggle-like-shop/:seller_id", async (req, res) => {

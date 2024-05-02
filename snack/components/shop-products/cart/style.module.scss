@@ -48,6 +48,9 @@
 
   .cartItems {
     min-height: 16rem;
+    @media (min-width: 1441px) {
+      min-height: 24rem;
+    }
     .product {
       margin-bottom: 14px;
       .cartItemImage {
@@ -73,6 +76,9 @@
     align-items: center;
     flex-grow: 1;
     justify-content: center;
+    @media (min-width: 1441px) {
+      min-height: 24rem;
+    }
     .icon {
       font-size: 100px;
       color: #a32c2d;

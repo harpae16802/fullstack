@@ -280,7 +280,7 @@ export default function ShopInfo({
         <button className={style.comment} onClick={openModal}>
           查看評論
         </button>
-
+        {/* comment modal */}
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}

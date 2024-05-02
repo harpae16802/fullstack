@@ -4,6 +4,7 @@ $bdrs: 10px;
 .card {
   max-width: 20rem;
   border-radius: $bdrs;
+  cursor: pointer;
 
   .imgDiv {
     position: relative;
@@ -47,4 +48,38 @@ $bdrs: 10px;
       margin-right: 4px;
     }
   }
+}
+
+.modal {
+  height: 40rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  overflow: auto;
+  border-radius: 24px;
+  outline: none;
+  overflow: visible;
+}
+
+.close {
+  color: #a32c2d;
+  font-size: 24px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(7, 5, 5, 0.4);
 }

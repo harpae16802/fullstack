@@ -64,13 +64,13 @@ body {
     background-color: #fff;
     color: $primary;
   }
-  .btn-outline-primary a:hover{
+  .btn-outline-primary a:hover {
     color: #fff;
   }
-  .btn-outline-primary:hover a{
+  .btn-outline-primary:hover a {
     color: #fff;
   }
-  .btn-outline-primary a:active{
+  .btn-outline-primary a:active {
     color: #fff;
   }
 
@@ -275,17 +275,17 @@ body {
         justify-content: center;
         text-align: center;
       }
-      .navbar-brand{
-        padding-top:0px;
-        padding-bottom:0px;
-        margin-right:0px;
+      .navbar-brand {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-right: 0px;
       }
-      .navbar-brand img{
+      .navbar-brand img {
         @media (max-width: 992px) {
           height: 40px;
           width: 105px;
+        }
       }
-    }
       .navbar-brand.min-cart {
         @media (max-width: 992px) {
           display: flex;
@@ -918,4 +918,9 @@ body {
     // 'Apple Color Emoji',
     // 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'
 ;
+}
+
+.itemCount {
+  border-radius: 50%;
+  margin-left: 4px;
 }
