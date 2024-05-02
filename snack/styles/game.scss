@@ -132,7 +132,7 @@
     }
     position: absolute;
     top: -20px;
-    left: 60px;
+    left: 50px;
     height: 100%;
     width: 100%;
     z-index: 1;
@@ -419,6 +419,7 @@
 }
 //彈窗
 .game-card {
+
   .modal {
     @media (max-width: 992px) {
       width: 100%;
@@ -443,6 +444,99 @@
     margin-left: 30px;
     margin-top: 25%;
     overflow: visible;
+    position: relative;
+
+    .modal-content{
+      @media (max-width: 992px) {
+        height: 292px;
+      }
+      height: 473px;
+    }
+    .chara-group {
+      @media (max-width: 992px) {
+        top: 162px;
+        left: 0;
+      }
+      position: absolute;
+      top: -170px;
+      left: -781px;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+  
+      .character {
+        @media (max-width: 992px) {
+          bottom: -120px;
+          left: 0;
+          height: 100%;
+        }
+        position: absolute;
+        bottom: -328px;
+        left: 8%;
+        height: 88%;
+        width: 100%;
+        overflow: hidden;
+        .character-obj {
+          @media (max-width: 992px) {
+            width: 55%;
+          }
+          width: 300px;
+          transform: scaleX(-1);
+          position: absolute;
+        }
+      }
+      .talk-group {
+        @media (max-width: 992px) {
+          width: 130px;
+          height: 180px;
+          padding: 20px;
+          left: 58%;
+          top: 63%;
+        }
+        overflow-wrap: break-word;
+        overflow: visible;
+        background: #fff;
+        display: flex;
+        width: 280px;
+        height: 280px;
+        left: 9%;
+        top: 20%;
+        padding: 40px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset;
+        position: relative;
+        .triangle {
+          @media (max-width: 992px) {
+            border-color: transparent #ffffff transparent transparent;
+            border-width: 25px;
+            top: 40%;
+            left: -30%;
+          }
+          position: absolute;
+          border-color: #ffffff transparent transparent transparent;
+          border-style: solid solid solid solid;
+          border-width: 30px;
+          bottom: -50px;
+          right: 20%;
+          height: 0px;
+          width: 0px;
+        }
+        .talk {
+          @media (max-width: 992px) {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.3rem;
+          }
+          font-size: 24px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+        }
+      }
+    }
+
 
   }
 
