@@ -42,7 +42,7 @@ export default function GameRule({
         {/* 規則結束 */}
         <div className="chara-group">
           <div className="talk-group">
-            <div class="triangle"></div>
+            <div className="triangle"></div>
             <div className="talk">
               不好啦！
               <br />
@@ -83,7 +83,7 @@ export default function GameRule({
         {/* 挑戰成功結束 */}
         <div className="chara-group">
           <div className="talk-group">
-            <div class="triangle"></div>
+            <div className="triangle"></div>
             <div className="talk">
               呼～總算把這些氣球全部射下來了！
               <br />
@@ -125,11 +125,11 @@ export default function GameRule({
         {/* 挑戰成功結束 */}
         <div className="chara-group">
           <div className="talk-group">
-            <div class="triangle"></div>
+            <div className="triangle"></div>
             <div className="talk">
-              呼～總算把這些氣球全部射下來了！
+              好累啊.....終於走到這了！
               <br />
-              雖然只是從遙遠的垃圾變成近一點的垃圾......
+              接下來還要再繼續喔！
             </div>
           </div>
           <div className="character">
@@ -164,7 +164,7 @@ export default function GameRule({
         {/* 挑戰失敗結束 */}
         <div className="chara-group">
           <div className="talk-group">
-            <div class="triangle"></div>
+            <div className="triangle"></div>
             <div className="talk">
               嗚哇......
               <br />
