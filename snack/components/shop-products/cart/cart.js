@@ -2,7 +2,7 @@ import React from 'react'
 // context
 import { useCartContext } from '@/contexts/cartContext'
 // api-path
-import { IMAGES_PRODUCTS, API_SERVER } from '@/components/config/api-path'
+import { API_SERVER } from '@/components/config/api-path'
 // icons
 import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
 // 樣式

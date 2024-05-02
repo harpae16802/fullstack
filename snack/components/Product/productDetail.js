@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { FiHeart } from 'react-icons/fi'
 import { IoIosArrowDown } from 'react-icons/io'
@@ -48,6 +48,7 @@ export default function ProductDetailCard({
       onClose()
     }
   }
+
   return (
     <>
       <div className={styles.detailContainer}>
