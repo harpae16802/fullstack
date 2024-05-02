@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 // icons
-import { FaBusAlt, FaCarAlt } from 'react-icons/fa'
+import { FaBusAlt } from 'react-icons/fa'
 // api-path
-import {
-  IMAGES_NIGHT,
-  IMAGES_SELLER,
-  BUS_AND_DISTANCE,
-  CART_STOPS,
-} from '@/components/config/api-path'
+import { IMAGES_NIGHT, IMAGES_SELLER } from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -17,49 +12,7 @@ export default function Night({
   introduction = '',
   nightImg = '',
   store_image = '',
-  market_id,
 }) {
-  const [uniqueBusStops, setUniqueBusStops] = useState([])
-  const [carStops, setcarStops] = useState([])
-
-  useEffect(() => {
-    fetch(`${BUS_AND_DISTANCE}/${market_id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        // 創建一個新的 Map 以存儲已經見過的站點名稱
-        const seenStopNames = new Map()
-
-        const filteredData = data.filter((stop) => {
-          const normalizedName = stop.stopName.trim().toLowerCase() // 正規化站點名稱
-          if (!seenStopNames.has(normalizedName)) {
-            seenStopNames.set(normalizedName, true)
-            return true // 站點名稱未出現過，保留這個站點
-          }
-          return false // 已經存在的站點名稱，過濾掉
-        })
-
-        setUniqueBusStops(filteredData)
-      })
-      .catch((error) => {
-        console.error('獲取商家數據失敗:', error)
-      })
-
-    // ------------
-
-    fetch(`${CART_STOPS}/${market_id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data || !data.CarParkList) {
-          console.error('Car stops data is not in the expected format:', data)
-          throw new Error('Data format error')
-        }
-        setcarStops(data.CarParkList)
-      })
-      .catch((error) => {
-        console.error('Error fetching car stops data:', error)
-      })
-  }, [market_id])
-
   return (
     <div className={`${style.container}`}>
       {/* 標題 */}
@@ -133,28 +86,13 @@ export default function Night({
               <FaBusAlt className={style.icon} />
               <h4 className={`m-0 fw-bold`}>大眾交通資訊</h4>
             </div>
-            {uniqueBusStops.map((stop, index) => (
-              <div key={index} className={style.trafficInfo}>
-                <div>
-                  <span className={`pe-4`}>公車站</span>
-                  <span>{stop.stopName}</span>
-                </div>
-                <span>走路約 {stop.walkingTime} 分鐘</span>
+            <div className={style.trafficInfo}>
+              <div>
+                <span className={`pe-4`}>公車</span>
+                <span>榮富國小站</span>
               </div>
-            ))}
-
-            <div className={style.title}>
-              <FaCarAlt className={style.icon} />
-              <h4 className={`m-0 fw-bold`}>停車場</h4>
+              <span>350公尺</span>
             </div>
-            {carStops.map((stop, index) => (
-              <div key={index} className={style.trafficInfo}>
-                <div>
-                  <span>{stop.CarParkName}</span>
-                </div>
-                <span>共 {stop.TotalSpaces} 個車位</span>
-              </div>
-            ))}
           </div>
         </div>
       </div>

@@ -65,9 +65,6 @@ $bdrs: 20px;
           align-items: center;
           gap: 10px;
           margin-bottom: 24px;
-          &:not(:first-child) {
-            margin-top: 40px;
-          }
 
           .icon {
             font-size: 24px;
@@ -116,6 +113,6 @@ $bdrs: 20px;
 
 .shopList {
   position: absolute;
-  bottom: 16rem;
-  right: 4rem;
+  top: 500px;
+  right: 50px;
 }

@@ -6,9 +6,6 @@ import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
 } from '@/components/config/api-path'
-// context
-import { useAuth } from '@/contexts/custom-context'
-import { useCartContext } from '@/contexts/cartContext'
 // 樣式
 import style from './style.module.scss'
 
@@ -21,24 +18,12 @@ export default function ProductCard2({
   imgUrl = '',
   introduce = '',
 }) {
-  const { auth, getAuthHeader } = useAuth()
-  const { addToCart } = useCartContext()
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
 
   // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
     try {
-      if (!auth.token) {
-        const willLogIn = confirm('請先登入會員')
-        if (willLogIn) {
-          window.location.href = '/login/login-custom'
-        }
-        return
-      }
-
-      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`, {
-        headers: { ...getAuthHeader() },
-      })
+      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
       const data = await r.json()
       if (data.success) {
         setIsFavorite(data.action === 'add')
@@ -47,36 +32,18 @@ export default function ProductCard2({
       console.error('加入最愛 錯誤:', error)
     }
   }
-  // 检查收藏状态
-  const checkFavoriteStatus = async () => {
-    try {
-      if (!auth.token) {
-        // 如果未登录，暂不做任何操作
-        console.log('用户未登录，暂不检查收藏状态')
-        return
-      }
 
-      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`, {
-        headers: { ...getAuthHeader() },
-      })
-      if (!r.ok) throw new Error('网络回应错误')
+  useEffect(() => {
+    // 检查收藏状态
+    const checkFavoriteStatus = async () => {
+      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`)
       const data = await r.json()
       if (data.isFavorite !== undefined) {
         setIsFavorite(data.isFavorite)
       }
-    } catch (error) {
-      console.error('检查收藏状态时出错:', error)
     }
-  }
-  // 加入購物車
-  const handleAddToCart = () => {
-    addToCart(product_id)
-  }
 
-  useEffect(() => {
-    if (auth.token) {
-      checkFavoriteStatus()
-    }
+    checkFavoriteStatus()
   }, [product_id])
 
   return (
@@ -107,7 +74,7 @@ export default function ProductCard2({
         <p className={`mb-0 ${style.p}`}>{introduce}</p>
       </div>
       <img src={imgUrl} alt={title} className={style.img} />
-      <button className={style.addBtn} onClick={handleAddToCart}>
+      <button className={style.addBtn}>
         <FaPlus />
       </button>
     </div>

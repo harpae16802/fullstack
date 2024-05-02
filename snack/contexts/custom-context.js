@@ -25,7 +25,64 @@ const emptyAuth = {
 const storageKey = 'Nightmarket-auth'
 
 export function CustomContextProvider({ children }) {
-  const [auth, setAuth] = useState(emptyAuth);
+  const router = useRouter()
+
+  const [auth, setAuth] = useState(emptyAuth)
+
+  // 解決Google的存localStorage的問題
+  // const [isLoginByGoogle, setIsLoginByGoogle] = useState(false)
+  
+
+  //loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
+  const { logoutFirebase, loginGoogleRedirect, initApp, loginGoogle } =
+    useFirebase()
+    
+
+  // // google登入功能
+  const callbackGoogleLoginRedirect = async (providerData) => {
+    console.log(providerData)
+    // 清除 localStorage
+    localStorage.removeItem(storageKey)
+
+    // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
+    const res = await fetch(GOOGLE_LOGIN_POST, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(providerData),
+    })
+
+    const result = await res.json()
+
+    if (result.success) {
+      // 標記 Google 已登入
+      // setIsLoginByGoogle(true)
+      // 把 token 記錄在 localStorage
+      localStorage.setItem(storageKey, JSON.stringify(result.data))
+      setAuth(result.data)
+
+      toast.success('歡迎您！登入成功', {
+        style: {
+          color: '#a32c2d',
+        },
+        iconTheme: {
+          primary: '#29a21e',
+          secondary: '#ffffff',
+        },
+      })
+
+      setTimeout(() => {
+        router.push('/')
+      }, 2000)
+      return true
+    } else {
+      return false
+    }
+  } //callback
+
+
 
   // 登入的功能
   const login = async (account, password) => {
@@ -90,7 +147,17 @@ export function CustomContextProvider({ children }) {
 
   return (
     // login & logout 是function 傳出的是promise
-    <CustomContext.Provider value={{ auth, login, logout,storageKey }}>
+    <CustomContext.Provider
+      value={{
+        auth,
+        login,
+        logout,
+        storageKey,
+        getAuthHeader,
+        callbackGoogleLoginRedirect,
+        
+      }}
+    >
       {children}
     </CustomContext.Provider>
   )

@@ -36,7 +36,7 @@ $white: #fff;
 }
 
 .modal {
-  height: 40rem;
+  max-height: 40rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -66,14 +66,8 @@ $white: #fff;
       padding: 4px 14px;
       border: 1px solid $main;
       background-color: transparent;
-      transition: ease-in 0.2s;
       &:not(:last-child) {
         margin-right: 7px;
-      }
-      &:hover {
-        background-color: #a32c2d;
-        color: #fff;
-        transition: ease-in 0.2s;
       }
     }
   }
@@ -106,7 +100,6 @@ $white: #fff;
         margin-top: -3px;
         margin-right: 4px;
         color: $main;
-        cursor: pointer;
       }
     }
   }
@@ -128,22 +121,4 @@ $white: #fff;
   right: 0;
   bottom: 0;
   background: rgb(7, 5, 5, 0.4);
-}
-
-.active {
-  background-color: #a32c2d !important;
-  color: #fff;
-}
-
-.modal::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal::-webkit-scrollbar-track {
-  margin: 20px;
-}
-
-.modal::-webkit-scrollbar-thumb {
-  background: #e5e5e5;
-  border-radius: 100px;
 }

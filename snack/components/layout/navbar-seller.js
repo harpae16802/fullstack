@@ -211,13 +211,11 @@ export default function NavbarSeller() {
                             掃描QRcode
                           </a>
                         </li>
-                      
-                          <li className="nav-item">
-                            <NavbarLogout
-                              onClick={() => setShowLogoutModal(true)}
-                            />
-                          </li>
-                        
+                        <li>
+                          <NavbarLogout
+                            onClick={() => setShowLogoutModal(true)}
+                          />
+                        </li>
                       </ul>
                     </div>
                     <LogoutModal
