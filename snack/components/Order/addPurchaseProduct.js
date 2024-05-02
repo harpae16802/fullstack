@@ -54,6 +54,7 @@ const DiscountContentItem = ({ items = [] }) => {
     }
   }, [discounts])
 
+  // 折扣獲取
   const fetchDiscounts = async (sellerId) => {
     try {
       const response = await axios.get(`${CARTITEM}discounts/${sellerId}`)
@@ -62,7 +63,36 @@ const DiscountContentItem = ({ items = [] }) => {
       console.error('拿取折扣錯誤', error)
     }
   }
-
+  
+  // 付款完成 將資料 放入order_data 與 刪除購物車中的商品
+  const handleCheckout = async () => {
+    try {
+      const orderResponse = await axios.post('/api/order/create', {
+        seller_id: sellerId,
+        custom_id: customId,
+        discounts: selectedDiscounts,
+        items: cartItems,
+        usePoints,
+        customPoints,
+        totalAmount
+      });
+  
+      if (orderResponse.data.success) {
+        // 訂單創建成功，接下來刪除購物車內的商品
+        const cartResponse = await axios.put('/api/cart/remove-purchased', {
+          custom_id: customId,
+          items: cartItems
+        });
+  
+        if (cartResponse.data.success) {
+          // 全部操作成功後的處理，例如導航到訂單確認頁面
+          console.log('Checkout completed successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Checkout failed:', error);
+    }
+  };
   // 計算訂單的總金額
   const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
 

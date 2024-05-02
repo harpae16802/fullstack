@@ -20,9 +20,20 @@ const ProductsList = () => {
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
 
-  //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+ //拿取seller_id
+
+ const [sellerId, setSellerId] = useState(null)
+
+ // 安全性 確認身分
+ useEffect(() => {
+   const localSellerId = localStorage.getItem('sellerId')
+   if (localSellerId) {
+     setSellerId(localSellerId)
+   } else {
+     router.replace('/login/login-seller')
+   }
+ }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
@@ -53,9 +64,6 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
     setLoading(true) //loading 為 true
     if (sellerId) {
       axios

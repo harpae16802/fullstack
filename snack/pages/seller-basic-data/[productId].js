@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import Image from 'next/image'
 import { SELLER_API, PRODUCTS_API, PRODUCTS_CATEGORIES } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
@@ -20,8 +21,19 @@ export default function AddProducts() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
+
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
@@ -63,30 +75,6 @@ export default function AddProducts() {
     status: '',
   })
 
-  // 樣式
-  const imageContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    border: '2px solid #de4f4f',
-    borderRadius: '10px',
-    padding: '10px',
-    flexWrap: 'wrap',
-  }
-
-  const imageStyle = {
-    maxWidth: '200px',
-    margin: '10px',
-  }
-
-  const mediaQuery = window.matchMedia('(max-width: 400px)')
-  if (mediaQuery.matches) {
-    imageContainerStyle.flexDirection = 'column'
-  } else {
-    imageContainerStyle.flexDirection = 'row'
-  }
-  // 樣式
-
   // 比較資料
   const [originalProductDetails, setOriginalProductDetails] = useState({})
 
@@ -115,9 +103,6 @@ export default function AddProducts() {
 
   // 如果拿取到seller_id執行這裡
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
@@ -208,9 +193,6 @@ export default function AddProducts() {
       newErrors.stock_quantity = '庫存數量不能為空'
     }
 
-    // if (!productDetails.category_id.trim()) {
-    //   newErrors.category_id = "產品種類必須選擇";
-    // }
     if (!productDetails.product_nutrition.trim()) {
       newErrors.product_nutrition = '產品營養表不能為空'
     }
@@ -274,7 +256,7 @@ export default function AddProducts() {
       })
       .catch((error) => {
         setShowUpdateFailModal(true)
-        console.error('更新产品信息失败:', error)
+        console.error('更新失敗:', error)
       })
   }
   // 更新賣家 頭貼 包含顯示
@@ -553,10 +535,16 @@ export default function AddProducts() {
                         )}
                       </div>
 
-                      <div
-                        className="mb-5"
-                        style={imageContainerStyle}
-                      >
+                      <div className="mb-5"
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+                        border: '2px solid #de4f4f',
+                        borderRadius: '10px',
+                        padding: '10px',
+                        flexWrap: 'wrap',
+                      }}>
                         <div>
                           <label htmlFor="store_image" className="form-label">
                             當前產品圖片

@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import Image from 'next/image'
 import { SELLER_API, ADROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
@@ -20,15 +21,26 @@ export default function Ad() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
-  // 預設圖片
-  const IMG = "http://localhost:3000/images/seller.jpg";
 
-  // 往店家網頁
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
   }
-  
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
+
+  // 預設圖片
+  const IMG = "http://localhost:3000/images/seller.jpg";
+
+
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -58,9 +70,6 @@ export default function Ad() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller');  
-    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios

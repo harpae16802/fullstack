@@ -152,5 +152,57 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
 });
 
   
+// 成立訂單
+cartRouter.post('/create', async (req, res) => {
+  const { seller_id, custom_id, discounts, items, usePoints, customPoints, totalAmount } = req.body;
+
+  try {
+    const order_number = randomUUID(); // 生成隨機訂單編號
+    const consume_gamepoint = usePoints ? customPoints : 0;
+    const discount_category_id = discounts.length > 0 ? discounts[0].id : null;
+
+    // 插入 order_data 表
+    const [order] = await db.execute(`
+      INSERT INTO order_data (seller_id, custom_id, order_number, discount_category_id, consume_gamepoint, total_sum)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `, [seller_id, custom_id, order_number, discount_category_id, consume_gamepoint, totalAmount]);
+
+    const order_id = order.insertId;
+
+    // 插入 order_detail 表
+    items.forEach(async (item) => {
+      await db.execute(`
+        INSERT INTO order_detail (order_id, product_id, purchase_quantity)
+        VALUES (?, ?, ?)
+      `, [order_id, item.product_id, item.quantity]);
+    });
+
+    res.status(201).send({ success: true, message: 'Order created successfully', order_id });
+  } catch (error) {
+    console.error('Create order failed:', error);
+    res.status(500).send({ success: false, message: 'Server error' });
+  }
+});
+
+
+// 從購物車中刪除已經購買的商品
+cartRouter.put('/remove-purchased', async (req, res) => {
+  const { custom_id, items } = req.body;
+
+  try {
+    items.forEach(async (item) => {
+      await db.execute(`
+        DELETE FROM cart
+        WHERE custom_id = ? AND product_id = ? AND total_price = ?
+      `, [custom_id, item.product_id, item.total_price]);
+    });
+
+    res.send({ success: true, message: 'Cart updated successfully' });
+  } catch (error) {
+    console.error('Failed to update cart:', error);
+    res.status(500).send({ success: false, message: 'Server error' });
+  }
+});
+
 
 export default cartRouter;
