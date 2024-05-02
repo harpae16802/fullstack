@@ -1,7 +1,7 @@
 import db from "../utils/db.js";
 // import { ISOtodate } from "../utils/day.js";
 import { date } from '../utils/date.js';
-import bcrypt from "bcryptjs";
+
 export const jsonFormTa = async (req, res) => {
     const sql = "insert into products (`author`,`bookname`,`category_sid`,`image`)values(?)"
     const values = [
@@ -25,7 +25,7 @@ export const jsonFormTa = async (req, res) => {
 }
 export const ImgFormTa = async (req, res) => {
     // const customId = req.body.custom_id || 1; // Default to 1 if custom_id is not provided
-    const customId = req.body.custom_id; // Default to 1 if custom_id is not provided
+    const customId = req.body.custom_id ; // Default to 1 if custom_id is not provided
     if (!req.file) {
         // Send a 400 Bad Request if no file is found in the request
         return res.status(400).json({ status: 'false', data: "沒有資料" });
@@ -60,7 +60,7 @@ export const getImgFormTa = async (req, res) => {
     // 圖片資料 
     const results = { status: "Success", result: null }
     // const values = req.body.custom_id||1; 
-    const values = req.body.custom_id || 1;
+    const values = req.body.custom_id||1; 
     // favorite_product 
     const sql = `select custom_image from custom   WHERE custom_id=?`
     await db.query(sql, values)
@@ -76,7 +76,7 @@ export const getImgFormTa = async (req, res) => {
             return res.status(500).json({ error: "An error occurred while processing the request" });
         });
 
-    return res.send(results)
+        return res.send(results)
 }
 export const insertMemberForm = async (req, res) => {
     // 新增顧客資料
@@ -109,10 +109,9 @@ export const updateMemberForm = async (req, res) => {
     try {
         const sql = "UPDATE custom SET custom_account=?, custom_password=?, custom_nickname=?, custom_sex=?, custom_name=?, custom_year=?, custom_month=?, custom_date=?, custom_phone=?, custom_address=? WHERE custom_id=?";
         const custom_id = req.body.custom_id || 1;
-        const hashedPassword = await bcrypt.hash(req.body.custom_password, 10);
         const values = [
             req.body.custom_account,
-            hashedPassword,
+            req.body.custom_password,
             req.body.custom_nickname,
             req.body.custom_sex,
             req.body.custom_name,
@@ -130,15 +129,15 @@ export const updateMemberForm = async (req, res) => {
         return res.status(500).json({ error: "An error occurred while processing the request" });
     }
 }
-export const selectCustom = async (req, res) => {
-    const custom_id = req.body.custom_id || 1;
+export const selectCustom = async (req, res) => { 
+    const custom_id = req.body.custom_id||1;
     const sql = "select * from custom where custom_id=?"
     await db.query(sql, [custom_id])
         .then((res2) => {
             if (!res2) {
                 return res.json({ success: false, error: "Error in signup query" });
-            } else { 
-                return res.send({ success: true, data: res2[0]});
+            } else {
+                return res.send({ success: true, data: res2[0] });
             }
         })
         .catch((err) => {
