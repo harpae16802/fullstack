@@ -5,15 +5,21 @@ import GameRule from '@/components/modal/game-rule'
 
 const BalloonShooterGame = () => {
   const gameContainerRef = useRef(null)
-  const timerRef = useRef(null);
-  const gameIntervalRef = useRef(null);
+  const timerRef = useRef(null)
+  const gameIntervalRef = useRef(null)
+
   // 初始化狀態
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
   const [level, setLevel] = useState(1)
-  // const [gameInterval, setGameInterval] = useState(null)
-  // const [showModal, setShowModal] = useState(false)
-  // const [gamePaused, setGamePaused] = useState(false)
+  const [showModal, setShowModal] = useState(true)
+  const [gameStatus, setGameStatus] = useState('rule') // 初始為顯示遊戲規則
+
+  const [currentLevelInfo, setCurrentLevelInfo] = useState({
+    levelName: '',
+    time: 0,
+    clear: 0,
+  })
 
   // 關卡條件
   const levelConfigs = [
@@ -37,9 +43,11 @@ const BalloonShooterGame = () => {
   const startGame = (level) => {
     // 清除之前的遊戲間隔
     clearInterval(gameIntervalRef.current)
+    clearInterval(timerRef.current)
 
     // 根據關卡設定設置遊戲
     const levelConfig = levelConfigs.find((config) => config.level === level)
+    setCurrentLevelInfo(levelConfig)
     setScore(0)
     setTimer(levelConfig.time)
     setLevel(level)
@@ -50,42 +58,60 @@ const BalloonShooterGame = () => {
     const interval = setInterval(() => {
       createBalloon(levelConfig.speed)
     }, balloonInterval)
-    gameIntervalRef.current = interval;
+    gameIntervalRef.current = interval
 
     // 更新計時器
     const countdown = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1)
     }, 1000)
-    timerRef.current = countdown;
+    timerRef.current = countdown
 
     // 檢查遊戲是否結束
     setTimeout(() => {
-      clearInterval(timerRef.current);
-      clearInterval(gameIntervalRef.current);
-      checkGameResult(levelConfig);
-    }, levelConfig.time * 1000);
-  };
-
-  // 檢查遊戲結果
-  const checkGameResult = (levelConfig) => {
-    const nextLevel = level + 1
-    if (score >= levelConfig.clear && level < 5) {
-      const retry = window.confirm(
-        `恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}，要挑戰下一關嗎？`
-      )
-      if (retry) {
-        startGame(nextLevel)
-      }
-    } else if (score < levelConfig.clear || level === 5) {
-      const message =
-        level === 5
-          ? `恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}。全數通關！`
-          : `${levelConfig.levelName}通關失敗......你的分數是${score}，要繼續挑戰嗎？`
-      window.confirm(message)
-    }
+      clearInterval(timerRef.current)
+      clearInterval(gameIntervalRef.current)
+      // checkGameResult(levelConfig)
+    }, levelConfig.time * 1000)
   }
-  
-  
+
+  useEffect(() => {
+    if (!showModal) {
+      startGame(1)
+    }
+
+    return () => {
+      clearInterval(timerRef.current)
+      clearInterval(gameIntervalRef.current)
+    }
+  }, [showModal])
+  // const checkGameResult = (levelConfig) => {
+  //   if (score >= levelConfig.clear && level < 5) {
+  //     setGameStatus('success') // 通關成功
+  //     setShowModal(true)
+  //   } else if (score < levelConfig.clear && level === 5) {
+  //     setGameStatus('success') // 通關成功
+  //     setShowModal(true)
+  //   } else {
+  //     setGameStatus('failure') // 通關失敗
+  //     setShowModal(true)
+  //   }
+  // }
+  // //監聽分數和 modal 狀態的變化
+
+  useEffect(() => {
+    // 檢查遊戲是否結束
+    const levelConfig = levelConfigs.find((config) => config.level === level)
+    if (score >= levelConfig.clear && level < 5) {
+      setGameStatus('success') // 通關成功
+      setShowModal(true)
+    } else if (score < levelConfig.clear && level === 5) {
+      setGameStatus('success') // 通關成功
+      setShowModal(true)
+    } else if (score < levelConfig.clear && level === 5) {
+      setGameStatus('failure') // 通關失敗
+      setShowModal(true)
+    }
+  }, [score, level])
 
   // 創建氣球
   const createBalloon = (speed) => {
@@ -110,11 +136,11 @@ const BalloonShooterGame = () => {
       const imageUrl = `url('/images/game/${balloonConfig.color}.png')`
       balloonimg.style.backgroundImage = imageUrl
       balloon.appendChild(balloonimg)
-      gameContainerRef.current.appendChild(balloon);
+      gameContainerRef.current.appendChild(balloon)
       setTimeout(() => {
         if (balloon.parentNode === gameContainerRef.current) {
-          balloon.remove();
-          updateScore(0);
+          balloon.remove()
+          updateScore(0)
         }
       }, 5000)
     }
@@ -157,23 +183,20 @@ const BalloonShooterGame = () => {
     })
   }
 
-
-  useEffect(() => {
-    startGame(1);
-    return () => {
-      clearInterval(timerRef.current);
-      clearInterval(gameIntervalRef.current);
-    };
-  }, []);
+  // 當點擊規則模态框上的開始遊戲按鈕時
+  const handleStartGame = () => {
+    setShowModal(false) // 關閉規則模态框
+    startGame(level) // 開始遊戲
+  }
 
   return (
     <div className="game-play-page">
-      {/* <QrcodeCurrent /> */}
-      {/* <div className="black-mode black-show"></div> */}
       <div className="game-main">
         <div className="time-table">
-          <div id="level" className="level">{`第${level}關`}</div>
-
+          <div
+            id="level"
+            className="level"
+          >{`${currentLevelInfo.levelName}`}</div>
           <div className="table-bottom">
             <div className="time-group">
               <div className="time-text">剩餘時間</div>
@@ -189,17 +212,21 @@ const BalloonShooterGame = () => {
             </div>
           </div>
         </div>
-        <GameRule />
+        {showModal && (
+          <GameRule
+            status={gameStatus}
+            levelName={currentLevelInfo.levelName}
+            time={currentLevelInfo.time}
+            clear={currentLevelInfo.clear}
+            onClose={() => setShowModal(false)}
+            onStartGame={handleStartGame}
+          />
+        )}
 
         <div className="play-div ">
-          <div
-            className="balloon-play"
-            id="game-container"
-            ref={gameContainerRef}
-          ></div>
+          <div className="balloon-play" ref={gameContainerRef}></div>
         </div>
       </div>
-
     </div>
   )
 }
