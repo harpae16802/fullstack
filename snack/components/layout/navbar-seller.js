@@ -157,7 +157,9 @@ export default function NavbarSeller() {
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <NavbarLogout onClick={() => setShowLogoutModal(true)} />
+                  <a className="nav-link"  > 
+                    <NavbarLogout onClick={() => setShowLogoutModal(true)} />
+                  </a>
                 </li>
                 {/* 商家會員結束 */}
               </div>
@@ -211,10 +213,12 @@ export default function NavbarSeller() {
                             掃描QRcode
                           </a>
                         </li>
-                        <li>
-                          <NavbarLogout
-                            onClick={() => setShowLogoutModal(true)}
-                          />
+                        <li className="nav-item">
+                          <a>
+                            <NavbarLogout
+                              onClick={() => setShowLogoutModal(true)}
+                            />
+                          </a>
                         </li>
                       </ul>
                     </div>

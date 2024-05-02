@@ -235,7 +235,7 @@ const OrderDetailItem = ({
                   }}
                 >
                   <Image
-                    src={`${BackEndPIMG}${item.image_url}`}
+                    src={`${item.image_url}`}
                     alt={item.product_name}
                     width={60}
                     height={60}
