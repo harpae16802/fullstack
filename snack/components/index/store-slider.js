@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
 import Link from 'next/link'
-import { INDEX_INFO_STORE,IMAGES_SELLER } from '@/components/config/api-path'
+import { INDEX_INFO_STORE,IMAGES_SELLER,API_SERVER } from '@/components/config/api-path'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -116,7 +116,7 @@ function StoreSlider() {
           return (
             <div className="card-store-index" key={i}>
               <img
-                src={`${IMAGES_SELLER}/${v.store_image}`}
+                src={`${API_SERVER}/${v.store_image}`}
                 alt="store-img"
                 className="store-img"
               />

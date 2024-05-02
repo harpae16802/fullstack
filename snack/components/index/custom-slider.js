@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import {
   INDEX_INFO_DISCOUNT,
   IMAGES_SELLER,
+  API_SERVER,
 } from '@/components/config/api-path'
 
 function CustomSlider() {
@@ -77,7 +78,7 @@ function CustomSlider() {
             <Link className="slide-item" href={`/shop-products/${v.seller_id}`} key={i}>
               {/* 點圖片要到 咚咚的 商家頁面 */}
               <Image
-                src={`${IMAGES_SELLER}/${v.store_image}`}
+                src={`${API_SERVER}/${v.store_image}`}
                 alt="discount-img"
                 className="discount-img"
                 width={500}
