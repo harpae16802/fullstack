@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FaRegCheckSquare, FaRegWindowClose } from 'react-icons/fa'
 
 export default function GameRule({

@@ -2,12 +2,16 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import Image from 'next/image'
 import { SELLER_API, ADROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Modal, Button, Form } from 'react-bootstrap'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Ad() {
   // 使用 useRouter
@@ -17,11 +21,31 @@ export default function Ad() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const { seller } = useSeller()
-  const sellerId = seller?.id
+
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
+
+  // 預設圖片
+  const IMG = "http://localhost:3000/images/seller.jpg";
+
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
+
+  // 動畫
+  const [loading, setLoading] = useState(true)
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
@@ -32,6 +56,12 @@ export default function Ad() {
 
   // 儲存狀態
   const [file, setFile] = useState(null)
+
+  // 彈出視窗
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  // 廣告類型
+  const [showAlertModal, setShowAlertModal] = useState(false)
 
   // 使用Ref
   const handleImageClick = () => {
@@ -45,25 +75,22 @@ export default function Ad() {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data // 注意确保这里的路径正确
-          console.log(data) // 查看数据结构
+          const data = response.data.data 
+          console.log(data) 
 
           setSellerData((prevData) => ({
             ...prevData,
-            profilePicture: data.profile_picture || '',
-            // 其他字段...
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
           console.error('获取商家信息失败', error)
         })
-    }
+    } setTimeout(() => {
+      setLoading(false)
+    }, 1000)
   }, [sellerId])
 
-  // 廣告類型
-  const handleAdTypeClick = (type) => {
-    setAdType(type)
-  }
   // 處裡文件
   const handleFileChange = (e) => {
     setFile(e.target.files[0])
@@ -72,34 +99,31 @@ export default function Ad() {
   // 上傳廣告
   const handleUpload = async () => {
     if (!file || !adType) {
-      alert('请选择广告类型并上传文件。');
-      return;
+      setShowAlertModal(true)
+      return
     }
-  
-    const uploadPath = adType === 'type1' ? '/uploadType1' : '/uploadType2';
-    const apiEndpoint = `${ADROUTER}${uploadPath}`;
-  
-    const formData = new FormData();
-    formData.append('adImage', file);
-    formData.append('seller_id', sellerId);
-    formData.append('ad_type', adType);  // 确保后端也处理这个字段
-  
+
+    const formData = new FormData()
+    formData.append('adImage', file)
+    formData.append('seller_id', sellerId)
+    formData.append('ad_type', adType)
+
     try {
-      const response = await axios.post(apiEndpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response.data);
-      setFile(null); // 清空已选文件
-      setAdType(''); // 重置广告类型选择
-      alert('广告上传成功');
+      const response = await axios.post(
+        `${ADROUTER}/upload${adType}`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      )
+      console.log(response.data)
+      setFile(null)
+      setAdType('')
+      setIsModalVisible(true)
     } catch (error) {
-      console.error('广告上传失败', error);
-      alert('广告上传失败');
+      console.error('上船失敗', error)
     }
-  };
-  
+  }
+
+  const closeModal = () => setIsModalVisible(false)
 
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
@@ -138,8 +162,10 @@ export default function Ad() {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-                <img
-                  src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`}
+              <img
+                  // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
+                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
+
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -149,7 +175,9 @@ export default function Ad() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
+                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
                 />
+
 
                 <input
                   type="file"
@@ -215,11 +243,17 @@ export default function Ad() {
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
           <div className="col-md-8 col-12">
+          {loading ? (
+    // 如果正在加载，则显示加载动画
+    <div className={styles.loadingContainer}>
+      <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+    </div>
+  ) : (
             <div className={styles.formCard}>
               <div className={styles.formWrapper}>
-                <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
                 {/* 廣告系統 */}
 
+                <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
                 <div className="container mt-5">
                   <div className="row">
                     <div className="col-md-6">
@@ -230,19 +264,19 @@ export default function Ad() {
                       >
                         <img
                           className="card-img-top"
-                          src="/adimg/ad_type1.jpg"                         //   圖片在這
+                          src="/adimg/ad_type1.jpg" //   圖片在這
                           alt="Ad Type 1"
                         />
-                        <div className="card-body">
+                        <div className="card-body d-flex justify-content-center">
                           <button
                             onClick={() => setAdType('type1')}
                             className={`btn ${
                               adType === 'type1'
                                 ? 'btn-primary'
-                                : 'btn-outline-primary'
+                                : `${styles.btnPrimary}`
                             }`}
                           >
-                            首頁懸浮廣告
+                            產品列表廣告
                           </button>
                         </div>
                       </div>
@@ -257,26 +291,26 @@ export default function Ad() {
                       >
                         <img
                           className="card-img-top"
-                          src="/adimg/ad_type1.jpg"                          //   圖片在這
+                          src="/adimg/ad_type1.jpg" //   圖片在這
                           alt="Ad Type 2"
                         />
-                        <div className="card-body">
+                        <div className="card-body d-flex justify-content-center">
                           <button
                             onClick={() => setAdType('type2')}
                             className={`btn ${
                               adType === 'type2'
                                 ? 'btn-primary'
-                                : 'btn-outline-primary'
+                                : `${styles.btnPrimary}`
                             }`}
                           >
-                            商店懸浮廣告
+                            商家店面廣告
                           </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
+                <br></br>
                 {/* 圖片上傳 */}
                 <div className="mb-3">
                   <label htmlFor="adImage" className="form-label">
@@ -292,25 +326,76 @@ export default function Ad() {
                 </div>
                 {file && (
                   <div className="preview-container">
-                    <p>文件名称: {file.name}</p>
+                    <p>圖片名稱: {file.name}</p>
                     <img
                       src={URL.createObjectURL(file)}
-                      alt="Preview"
+                                            alt="Preview"
                       className="img-preview"
                     />
                   </div>
-                )}
-                {/* 上传按钮 */}
-                <button onClick={handleUpload} className={styles.btnPrimary}>
+                  )}
+                {/* 上傳 */}
+                <button
+                  onClick={handleUpload}
+                  className={`${styles.btnPrimary} ,d-flex justify-content-center`}
+                >
                   上傳廣告
                 </button>
+
                 {/* 廣告系統 */}
               </div>
             </div>
+              )}
           </div>
           {/* 表單 */}
         </div>
-      </div>
+        </div>
+      {isModalVisible && (
+        <Modal show={isModalVisible} onHide={closeModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>上傳成功</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>上傳成功</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Link href="/seller-basic-data/producutsList" passHref>
+              <Button variant="secondary" className={styles.secondary}>
+                前往產品頁
+              </Button>
+            </Link>
+            <Link href="/seller-basic-data" passHref>
+              <Button variant="primary" className={styles.btnPrimary}    onClick={() => goToSellerPage(sellerId)}
+>
+                {' '}
+                前往店家頁
+              </Button>
+            </Link>
+          </Modal.Footer>
+        </Modal>
+      )}
+
+      {showAlertModal && (
+        <Modal
+          show={showAlertModal}
+          onHide={() => setShowAlertModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>提示</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>請選擇廣告類型並上傳檔案。</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="primary"
+              className={styles.btnPrimary}
+              onClick={() => setShowAlertModal(false)}
+            >
+              關閉
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </Section>
   )
 }

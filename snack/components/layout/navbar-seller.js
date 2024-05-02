@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
+// import { FaBars, FaUser, FaShoppingCart, FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import {
   FaBars,
   FaUser,
@@ -10,10 +10,45 @@ import {
   FaAngleDown,
   FaAngleUp,
 } from 'react-icons/fa'
+import NavbarLogout from '@/components/sellerLogout'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import LogoutModal from '@/components/sellerLogoutModal'
 
 export default function NavbarSeller() {
   // 導覽列的名稱樣式
   const router = useRouter()
+
+  // 談窗
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+
+  //拿取seller_id
+  const sellerId =
+    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  // 往店家網頁
+  const goToSellerPage = (sellerId) => {
+    router.push(`/shop-products/${sellerId}`)
+  }
+
+  const handleLogout = () => {
+    // 清除localStorage中的seller_id
+    localStorage.removeItem('sellerId')
+    // 更新Context
+    setSeller(null)
+
+    setTimeout(() => {
+      Replace()
+    }, 3000)
+  }
+  const Replace = () => {
+    router.replace('/')
+  }
+
+  const handleCloseLogoutModal = () => {
+    // 關閉彈窗
+    setShowLogoutModal(false)
+  }
+
   return (
     <>
       {' '}
@@ -96,25 +131,34 @@ export default function NavbarSeller() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="./index">
+                      <a
+                        className="dropdown-item"
+                        href="/seller-basic-data/QRcode"
+                      >
                         掃描QRcode
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => goToSellerPage(sellerId)}
+                      >
                         進入店面
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        href="/seller-basic-data/orderList"
+                      >
                         訂單管理
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    登出
+                  <a className="nav-link"  > 
+                    <NavbarLogout onClick={() => setShowLogoutModal(true)} />
                   </a>
                 </li>
                 {/* 商家會員結束 */}
@@ -143,28 +187,46 @@ export default function NavbarSeller() {
                         aria-labelledby="dropdownMenuLink"
                       >
                         <div className="triangle"></div>
+
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <button
+                            className="dropdown-item"
+                            onClick={() => goToSellerPage(sellerId)}
+                          >
                             進入店面
-                          </a>
+                          </button>
                         </li>
+
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            href="/seller-basic-data/orderList"
+                          >
                             訂單管理
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            href="/seller-basic-data/QRcode"
+                          >
                             掃描QRcode
                           </a>
                         </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            登出
+                        <li className="nav-item">
+                          <a>
+                            <NavbarLogout
+                              onClick={() => setShowLogoutModal(true)}
+                            />
                           </a>
                         </li>
                       </ul>
                     </div>
+                    <LogoutModal
+                      show={showLogoutModal}
+                      onClose={handleCloseLogoutModal}
+                      onConfirm={handleLogout}
+                    />
                     {/* 商家會員 End */}
                   </div>
                 </li>

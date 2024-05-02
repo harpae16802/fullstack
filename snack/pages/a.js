@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
-import GameRule from '@/components/modal/game-rule'
+import React, { useState, useEffect, useRef } from 'react';
+
 
 const BalloonShooterGame = () => {
-  const gameContainerRef = useRef(null)
-  const timerRef = useRef(null);
-  const gameIntervalRef = useRef(null);
+  const gameContainerRef = useRef(null);
   // 初始化狀態
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
   const [level, setLevel] = useState(1)
-  // const [gameInterval, setGameInterval] = useState(null)
-  // const [showModal, setShowModal] = useState(false)
-  // const [gamePaused, setGamePaused] = useState(false)
+  const [gameInterval, setGameInterval] = useState(null)
 
   // 關卡條件
   const levelConfigs = [
@@ -36,7 +30,7 @@ const BalloonShooterGame = () => {
   // 開始遊戲
   const startGame = (level) => {
     // 清除之前的遊戲間隔
-    clearInterval(gameIntervalRef.current)
+    clearInterval(gameInterval)
 
     // 根據關卡設定設置遊戲
     const levelConfig = levelConfigs.find((config) => config.level === level)
@@ -50,21 +44,20 @@ const BalloonShooterGame = () => {
     const interval = setInterval(() => {
       createBalloon(levelConfig.speed)
     }, balloonInterval)
-    gameIntervalRef.current = interval;
+    setGameInterval(interval)
 
     // 更新計時器
     const countdown = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1)
     }, 1000)
-    timerRef.current = countdown;
 
     // 檢查遊戲是否結束
     setTimeout(() => {
-      clearInterval(timerRef.current);
-      clearInterval(gameIntervalRef.current);
-      checkGameResult(levelConfig);
-    }, levelConfig.time * 1000);
-  };
+      clearInterval(countdown)
+      clearInterval(gameInterval)
+      checkGameResult(levelConfig)
+    }, levelConfig.time * 1000)
+  }
 
   // 檢查遊戲結果
   const checkGameResult = (levelConfig) => {
@@ -84,8 +77,6 @@ const BalloonShooterGame = () => {
       window.confirm(message)
     }
   }
-  
-  
 
   // 創建氣球
   const createBalloon = (speed) => {
@@ -95,9 +86,7 @@ const BalloonShooterGame = () => {
       const balloon = document.createElement('div')
       const balloonimg = document.createElement('div')
       balloon.classList.add('balloon')
-      balloon.style.left = `${
-        Math.random() * (gameContainerRef.current.offsetWidth - 77)
-      }px`
+      balloon.style.left = `${Math.random() * (gameContainerRef.current.offsetWidth - 77)}px`
       balloon.style.animation = `moveUp ${speed}s linear forwards`
       const points = balloonConfig.points
       balloon.dataset.points = points
@@ -107,14 +96,14 @@ const BalloonShooterGame = () => {
       balloonimg.classList.add('balloonimg')
       const name = balloonConfig.name
       balloonimg.textContent = name
-      const imageUrl = `url('/images/game/${balloonConfig.color}.png')`
+      const imageUrl =`url('/images/game/${balloonConfig.color}.png')`;
       balloonimg.style.backgroundImage = imageUrl
       balloon.appendChild(balloonimg)
-      gameContainerRef.current.appendChild(balloon);
+      document.getElementById('game-container').appendChild(balloon)
       setTimeout(() => {
-        if (balloon.parentNode === gameContainerRef.current) {
-          balloon.remove();
-          updateScore(0);
+        if (balloon.parentNode === document.getElementById('game-container')) {
+          balloon.remove()
+          updateScore(0)
         }
       }, 5000)
     }
@@ -156,51 +145,60 @@ const BalloonShooterGame = () => {
       }
     })
   }
-
-
   useEffect(() => {
     startGame(1);
-    return () => {
-      clearInterval(timerRef.current);
-      clearInterval(gameIntervalRef.current);
-    };
   }, []);
 
   return (
-    <div className="game-play-page">
-      {/* <QrcodeCurrent /> */}
-      {/* <div className="black-mode black-show"></div> */}
-      <div className="game-main">
-        <div className="time-table">
-          <div id="level" className="level">{`第${level}關`}</div>
 
-          <div className="table-bottom">
-            <div className="time-group">
-              <div className="time-text">剩餘時間</div>
-              <div id="timer" className="game-seconds">{`00:${timer
-                .toString()
-                .padStart(2, '0')}`}</div>
-            </div>
-            <div className="point-group">
-              <div className="point-text">累積分數</div>
-              <div id="score" className="game-point">
-                {score.toString().padStart(5, '0')}
+      <div className="game-play-page">
+        {/* <QrcodeCurrent /> */}
+        {/* <GameRule /> */}
+        {/* <div className="black-mode black-show"></div> */}
+        <div className="game-main">
+          <div className="time-table">
+            <div id="level" className="level">{`第${level}關`}</div>
+
+            <div className="table-bottom">
+              <div className="time-group">
+                <div className="time-text">剩餘時間</div>
+                <div id="timer" className="game-seconds">{`00:${timer
+                  .toString()
+                  .padStart(2, '0')}`}</div>
+              </div>
+              <div className="point-group">
+                <div className="point-text">累積分數</div>
+                <div id="score" className="game-point">
+                  {score.toString().padStart(5, '0')}
+                </div>
               </div>
             </div>
           </div>
+          <div className="play-div ">
+            <div className="balloon-play" id="game-container" ref={gameContainerRef}>
+            </div>
+          </div>
         </div>
-        <GameRule />
 
-        <div className="play-div ">
-          <div
-            className="balloon-play"
-            id="game-container"
-            ref={gameContainerRef}
-          ></div>
-        </div>
+        {/* <div className="chara-group">
+          <div className="talk-group">
+            <div className="triangle"></div>
+            <div className="talk">
+              呼～總算把這些氣球全部射下來了！
+              <br />
+              雖然只是從遙遠的垃圾變成近一點的垃圾......
+            </div>
+          </div>
+          <div className="character">
+            {' '}
+            <img
+              src="/images/game/cha01.png"
+              className="character-obj"
+              alt="..."
+            />
+          </div>
+        </div> */}
       </div>
-
-    </div>
   )
 }
 

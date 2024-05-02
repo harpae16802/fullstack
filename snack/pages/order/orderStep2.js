@@ -66,7 +66,6 @@ export default function Order() {
             <AmountCal
               payment = "1403"
               discount = "14"
-              pointDiscount = "使用點數"
               total =  "1403"
             />
              
@@ -82,28 +81,36 @@ export default function Order() {
 }>
               <h3 className={styles.orderTitle}>【 選擇支付方式 】</h3>
 
-     <div style={{display:'flex'}}>
+  
+
+     <div className={styles.methodFlex}>
               {/* 711繳費 */}
          <div className={styles.payment}>
-         <Image src="/images/7-11.png" width={30} height={30}/>
+         <Image src="/images/7-11.png" width={30} height={30} className={styles.methodImage}/>
          <p className={styles.paymentText}>711繳費</p>
            </div>
 
               {/* linePay繳費 */}
         <div className={styles.payment}>
-        <Image src="/images/line.jpg" width={30} height={30}/>
+        <Image src="/images/line.jpg" width={30} height={30} 
+          className={styles.methodImage}
+        />
         <p className={styles.paymentText}>LINE繳費</p>
            </div>
 
               {/* linePay繳費 */}
          <div className={styles.payment}>
-         <Image src="/images/applePay.png" width={40} height={30}/>
+         <Image src="/images/applePay.png" width={40} height={30}
+          className={styles.methodImage}
+         />
          <p className={styles.paymentText} style={{marginLeft:'35px'}}>APPLEPay繳費</p>
            </div>
 
               {/* linePay繳費 */}
           <div className={styles.payment}>
-          <Image src="/images/ecpay.png" width={30} height={30}/>
+          <Image src="/images/ecpay.png" width={30} height={30}
+            className={styles.methodImage}
+          />
           <p className={styles.paymentText}>ECPay繳費</p>
            </div>
 

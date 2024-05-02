@@ -4,6 +4,7 @@ import { FiHeart } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import styles from '@/styles/Product.module.css'; // 確保引入了正確的樣式文件
 import { RxCross1 } from "react-icons/rx";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function ProductDetailCard({
   imageUrl = "",
@@ -18,13 +19,35 @@ export default function ProductDetailCard({
   return (
     <>
     
-    <div className={styles.detailContainer}>
+   
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" className={styles.seeMoreButton}>
+  看更多
+</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog"  className={styles.modalSize}>
+    <div class="modal-content">
+      
+      {/* 標題 */}
+       {/* 右上角叉叉 */}
+       {/* <RxCross1 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{color: '#A32C2D'}}></RxCross1> */}
+
+        {/* <button type="button" class="btn-close" style={{color: '#A32C2D'}}
+         data-bs-dismiss="modal" aria-label="Close"></button> */}
+
+
+     
+      <div class="modal-body">
+       
+      <div className={styles.detailContainer}>
       {/* 產品圖 */}
        <Image src={imageUrl} width={759} height={726} className={styles.detailPic}/>
 
      <div className={styles.detailTextArray}>
 
-     <RxCross1 className={styles.detailCrossIcon}/>
+     {/* <RxCross1 className={styles.detailCrossIcon}/> */}
+     <RxCross1 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" className={styles.detailCrossIcon} ></RxCross1>
 
       {/* 店家名稱 */}
       <div className={styles.detailSeller}>{seller}</div>
@@ -77,7 +100,22 @@ export default function ProductDetailCard({
     </div>
 
     <FiHeart  className={styles.detailProductCollect}/>
+
+
+      </div>
+      {/* 下方按鈕 */}
+      <div class="modal-footer">
+
+        {/* <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn btn-primary"></button> */}
+
+      </div>
+
+    </div>
+  </div>
+</div>
     
+
     </>
  
   );

@@ -23,7 +23,7 @@
 }
 @media (max-width: 576px) {
     .orderTitle{
-       font-size: 20px;
+       font-size: 18px;
       margin-top: 16px;
     }
   }
@@ -287,6 +287,25 @@
     display: flex;
     flex-direction: column;   
 }
+@media (max-width: 576px) {
+    .paymentMethodBorder{
+       width:calc( 100% - 18px ); 
+       margin-left: 5px;
+       margin-top: 50px;
+       background-color: rgba(255, 255, 255, 0.5);
+       border: none;
+      
+    }
+  }
+
+  .methodFlex{
+    display: flex;
+  }
+  @media (max-width: 576px) {
+    .methodFlex{
+   flex-direction: column;
+    }
+  }
 
 .order1Container{
     margin-top: 50px;
@@ -299,6 +318,7 @@
     .order1Container{
        width: 315px ; 
        margin-left: 8px;
+       
     }
   }
 
@@ -324,25 +344,36 @@
     margin-left: 50px;
     width: calc( 100% - 100px );
     height: auto;
+    max-height: 160px;
     background-color: #fff;
     padding-bottom: 8px;
 }
 @media (max-width: 576px) {
     .orderContainerAdd{
        width: 299px ; 
+       height: 72px;
     }
   }
 
-/* bootstrap手風琴套件:Icon樣式 */
-/* 修改展開 icon 的大小 */
-.accordion-button.collapsed::after {
-    background-size: 1.5em; /* 修改 icon 的大小為 1.5 倍 */
-}
+  /* orderStep1:產品容器 */
+  .orderProductContainer{
+    margin-left: 50px;
+    width: calc( 100% - 100px );
+    height: auto;
+    max-height: 160px;
+    background-color: #fff;
+    padding-bottom: 8px;
+   
+  }
+  @media (max-width: 576px) {
+    .orderProductContainer{
+       width: 245px ; 
+       height: 183px;
+      margin-top: -40px;
+    }
+  }
 
-/* 修改展開 icon 的顏色 */
-.accordion-button.collapsed::after {
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(135deg) brightness(100%) contrast(100%); /* 修改展開 icon 的顏色為紅色 */
-}
+
 
 
 .marketCheckout{
@@ -358,31 +389,37 @@
 @media (max-width: 576px) {
     .sellerIcon{
        font-size: 30px; 
-       margin-left: -40px;
+       margin-left: -35px;
+       margin-top: 20px;
     }
   }
 
+   /* oderStep1:店家名稱 */
 .checkoutMarket{
     margin-left: 60px;
-    margin-top: 10px;
+    margin-top: 20px;
     font-weight: bold;
     font-size: 30px;
 }
 @media (max-width: 576px) {
     .checkoutMarket{
        font-size: 14px; ; 
+       margin-left: 20px;
     }
   }
 
+  /* oderStep1:產品名稱 */
 .checkoutProduct{
     margin-left: 30px;
-    margin-top: 10px;
+    margin-top: 20px;
     font-weight: bold;
     font-size: 30px;
 }
 @media (max-width: 576px) {
     .checkoutProduct{
-       font-size: 14px; ; 
+       font-size: 14px;
+       margin-left: 15px;
+       
     }
   }
 
@@ -409,42 +446,118 @@
 .checkoutDownIcon{
     color: #A32C2D;
     font-size: 34px;
-    margin-left: 20px;
-    margin-top: 10px;
+    margin-left: 25px;
+    margin-top: 20px;
 }
 
 /* 訂單:商品元件外框 */
 .orderDetail{
     display: flex;
    align-items: center;
-   border-bottom: solid 2px #B1B7B5;
-   padding-bottom: 20px;
    background-color: #fff;
 }
+.order2Detail{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+}
+@media (max-width: 576px) {
+    .order2Detail{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 315px;
+        height: 252px;
+        background-color: #fff;
+        margin-left: -45px;
+        margin-top: 0px;
+    }
+  }
 
-.orderPicture{
-    margin-left: 30px;
+.order1Picture{
     margin-top: 25px;
     border-radius: 10px;
 }
+@media (max-width: 576px) {
+    .order1Picture{
+        display: flex;
+       margin-left: -40px;
+     
+    }
+  }
+
+.order2Picture{
+    margin-top: 35px;
+    margin-left: 30px;
+    border-radius: 10px;
+}
+@media (max-width: 576px) {
+    .order2Picture{
+        margin-top: 10px;
+        margin-left: -180px;
+    }
+  }
 
 .productText{
-    margin-top: 15px;
+    margin-top: 30px;
     margin-bottom: 12px;
     margin-left: 50px;
     font-weight: bold;
     font-size: 20px;
 }
+@media (max-width: 576px) {
+    .productText{
+        margin-top: -60px;
+        margin-left: 60px;
+       font-size: 14px;
+    }
+  }
+
+  .productPrice{
+    margin-top: 15px;
+    margin-left: 30px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  @media (max-width: 576px) {
+    .productPrice{
+      font-size: 20px;
+      margin-left: 20px;
+      margin-top: -50px;
+      font-weight: bolder;
+    }
+  }
+
+  .product2Price{
+    margin-top: 15px;
+    margin-left: 30px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  @media (max-width: 576px) {
+    .product2Price{
+      font-size: 20px;
+      margin-left: 190px;
+      margin-top: -25px;
+      font-weight: bolder;
+    }
+  }
 
 /* 數量增減:外框 */
 .numberButton{
     display: flex;
     margin-left: 600px;
 }
+@media (max-width: 576px) {
+    .numberButton{
+       margin-top: 50px;
+       margin-left: -240px;
+    }
+  }
 
 /* 數量增減按鈕 */
 .productNumber{
-    margin-top: 20px;
+    margin-top: 30px;
     margin-left: 3px;
     padding-top: 5px;
     width: 37px;
@@ -453,11 +566,19 @@
     text-align: center;
     font-weight: bolder; 
 }
+@media (max-width: 576px) {
+    .productNumber{
+       font-size: 16px;
+       margin-top: 80px;
+       
+    }
+  }
 
+  /* '移除'按鈕 */
 .removeButton{
     padding-top: 8px;
     margin-left: 20px;
-    margin-top: 15px;
+    margin-top: 30px;
     width: 120px;
     height: 40px;
     color: #fff;
@@ -466,17 +587,34 @@
     text-align: center;
     font-weight: bolder;
 }
+@media (max-width: 576px) {
+    .removeButton{
+        margin-top: 120px;
+      margin-left: 30px;
+      font-size: 14px;
+    }
+  }
 
 .trashIcon{
     font-size: x-large;
 }
 
 /* 產品詳細:底線 */
-/* .orderProductBorder{
-    margin-top: 20px;
-    width: 100%;
-    border-bottom: #B1B7B5 ;
-} */
+.orderProductBorder{
+    margin-top: 15px;
+    margin-left: -71px;
+    width: 1305px;
+    height: 20px;
+    border-bottom:solid 2px #B1B7B5 ;
+}
+@media (max-width: 576px) {
+    .orderProductBorder{
+      width: 315px;
+      margin-top: -10px;
+      margin-left:-72px;
+      font-size: 14px;
+    }
+  }
 
 .discount{
     display: flex;
@@ -488,12 +626,23 @@
     color: rgb(102, 50, 4);
     font-weight: bolder;
 }
+@media (max-width: 576px) {
+    .discountTitle{
+       display: none;
+    }
+  }
+
 
 /* 優惠加購:外層容器 */
 .discountContainer{
     display: flex;
     margin-left: 30px;
 }
+@media (max-width: 576px) {
+    .discountContainer{
+       display: none;
+    }
+  }
 
 /* 優惠加購:產品列容器 */
 .discountContent{
@@ -580,6 +729,15 @@
   font-weight: bolder;
   text-align: center;
 }
+@media (max-width: 576px) {
+    .previousButton{
+        width: 128px;
+        height: 38px;
+      margin-top: 20px;
+      padding-top: 5px;
+    }
+  }
+
 
 .nextButton{
   margin-top: 50px;  
@@ -592,103 +750,267 @@
   font-weight: bolder;
   text-align: center;
 }
+@media (max-width: 576px) {
+    .nextButton{
+        width: 128px;
+        height: 38px;
+      margin-top: 20px;
+      padding-top: 5px;
+    }
+  }
 
 /* orderStep2 */
+
+
+.step2BottomLine{
+     margin-top: 0px;
+     width: 1330px;
+     height: 20px;
+     background-color: #fff;
+     border-bottom: solid 2px #B1B7B5;
+}
+@media (max-width: 576px) {
+    .step2BottomLine{
+      width: 315px;
+      height: 1px;
+      margin-left: -45px;
+     
+    }
+  }
+
+/* 結算金額:容器 */
 .paymentContainer{
     display: flex;
     margin-left: 1000px;
 }
+@media (max-width: 576px) {
+    .paymentContainer{
+      margin-left: -10px;
+     
+    }
+  }
 
-.applyDiscount{
+
+.applyDiscount1{
     margin-left: 30px;
     color: rgb(177, 172, 172);
 }
+@media (max-width: 576px) {
+    .applyDiscount1{
+      margin-top: 35px;
+      margin-left: 15px;
+      font-size: 14px;
+    }
+  }
+
+  .applyDiscount2{
+    margin-left: 30px;
+    color: rgb(177, 172, 172);
+}
+@media (max-width: 576px) {
+    .applyDiscount2{
+      margin-top: 5px;
+      margin-left: 15px;
+      font-size: 14px;
+    }
+  }
 
 .buyText{
     margin-left: 450px;
     color: rgb(163, 44, 45);
     font-weight: bolder;
 }
+@media (max-width: 576px) {
+    .buyText{    
+      font-size: 12px;
+      margin-left: 55px;
+      margin-top: 10px;
+    }
+  }
 
 .amountText{
     margin-top: 50px;
+    margin-left: -50px;
     font-weight: bolder;
-    font-size: larger;
+    font-size: 32px;
 }
+@media (max-width: 576px) {
+    .amountText{    
+      font-size: 13px;
+      margin-top: 10px;
+      margin-left: -20px;
+      font-weight: normal;
+    }
+  }
 
 .amount{
     margin-top: 50px;
     margin-left: 150px;
     font-weight: bolder;
-    font-size: larger;
+    font-size: 32px;
 }
+@media (max-width: 576px) {
+    .amount{  
+      margin-top: 10px;
+      margin-left: 150px;  
+      font-size: 13px;
+      font-weight: normal;
+    }
+  }
 
 .discountText{
     margin-top: 10px;
+    margin-left: -50px;
     font-weight: bolder;
-    font-size: larger;
+    font-size: 32px;
 }
+@media (max-width: 576px) {
+    .discountText{    
+      font-size: 13px;
+      margin-top: 10px;
+      margin-left: -20px;
+      font-weight: normal;
+    }
+  }
 
 .discountAmount{
     margin-top: 10px;
     margin-left: 145px;
     font-weight: bolder;
-    font-size: larger;
+    font-size: 32px;
     color: #ff2828;
 }
+@media (max-width: 576px) {
+    .discountAmount{    
+        margin-top: 10px;
+        margin-left: 150px;  
+        font-size: 13px;
+        font-weight: normal;
+    }
+  }
 
 .pointText{
     margin-top: 10px;
+    margin-left: -50px;
     font-weight: bolder;
-    font-size: larger;
+    font-size: 32px;
 }
+@media (max-width: 576px) {
+    .pointText{    
+      font-size: 13px;
+      margin-top: 10px;
+      margin-left: -20px;
+      font-weight: normal;
+    }
+  }
 
 .usePoint{
-    width: 150px;
-    margin-top: 10px;
-    margin-left: 70px;
-    padding-top: 3px;
+    width: 200px;
+    height: 38px;
+    margin-top: 15px;
+    margin-left: 30px;
+    padding-top: 2px;
     font-weight: bolder;
-    font-size: medium;
+    font-size: 20px;
     color: #fff;
     background-color:rgb(163, 44, 45);
     border-radius: 20px;
     text-align: center;
+    border: none;
 }
+@media (max-width: 576px) {
+    .usePoint{   
+        width: 87px;
+        height: 22px; 
+        margin-top: 10px;
+        margin-left: 80px;  
+        padding-top: 2px;
+        font-size: 11px;
+        font-weight: normal;
+    }
+  }
 
 .sumText{
     margin-top: 100px;
     margin-left: 50px;
     font-weight: bolder;
-   
+    font-size: 64px;
 }
+@media (max-width: 576px) {
+    .sumText{    
+        margin-top: 10px;
+        margin-left: -30px;  
+        font-size: 16px;
+        font-weight: bolder;
+    }
+  }
+
 
 
 .sumTotal{
     margin-top: 100px;
-    margin-left: 950px;
+    margin-left: 800px;
     font-weight: bolder;
+    font-size: 64px;
 }
+@media (max-width: 576px) {
+    .sumTotal{    
+      font-size: 16px;
+      margin-top: 10px;
+      margin-left: 110px;
+      font-weight: bolder;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .SettlementLine{    
+     width: 329px;
+     height: 2px;
+     margin-left: -50px;
+     margin-top: 10px;
+
+     background-color: #ff2828;
+    }
+  }
+  
 
 .payment{
     display: flex;
     margin-top: 50px;
     margin-left: 80px;
     padding-top: 5px;
-    padding-left: 5px;
-    width: 260px;
+    text-align: center;
+    width: 200px;
     height: 40px;
     background-color: #fff;
     border: solid 2px rgb(163, 44, 45);
     border-radius: 10px;
-    
 }
+@media (max-width: 576px) {
+    .payment{    
+     width: 248px;
+     height: 37px;
+     margin-top: 20px;
+     margin-left: 20px;
+     padding-top: 2px;
+     text-align: center;
+    }
+  }
+
+  .methodImage{
+    padding-left: 2px;
+  }
 
 .paymentText{
     color:rgb(163, 44, 45);
     font-weight: bolder;
     margin-left: 70px;;
 }
+@media (max-width: 576px) {
+    .paymentText{    
+     padding-top: 2px;
+    }
+  }
 
 /* page3 */
 .darkOverlay{
@@ -740,7 +1062,20 @@
 }
 
 /* 彈窗:消耗遊戲點數 */
-.cosumeButton{
+
+.consumeContainer{
+    display: flex;
+    flex-direction: column;
+    height: 280px;
+}
+
+.pointConsumeCross{
+    margin-top: 15px;
+    margin-left: 410px;
+    color: rgb(163, 44, 45);
+}
+
+.consumeButton{
     width: 30px;
     height: 30px;
     margin-left: 3px;
@@ -760,6 +1095,7 @@
     border:solid 2px rgb(163, 44, 45);
     border-radius: 20px;
     font-weight: bolder;
+    margin-top: -50px;
 }
 
 .rbButton{
@@ -771,15 +1107,90 @@
     background-color: rgb(163, 44, 45);
     border-radius: 20px;
     font-weight: bolder;
+    margin-top: -50px;
 }
 
 /* 彈窗:付款成功 */
+.paymentSuccessWidth{
+    max-width: 480px;
+}
+
+.paymentSuccessHeight{
+    height: 450px;
+}
+
+.paymentSuccessText{
+    font-size: 28px;
+    color: #A32C2D;
+    margin-top: 20px;
+    margin-left: 160px;
+    font-weight: bolder;
+}
+
+.paymentSuccessCross{
+    margin-top: -40px;
+    margin-left: 420px;
+    color: #A32C2D;
+    font-size: 22px;
+    font-weight: 100;
+}
+
+.successGreenFrame{
+    width: 101px;
+    height: 101px;
+    border:solid 8px #7BDB73;
+    margin-top: 45px;
+    margin-left: 168px;
+    text-align: center;
+    padding-top: 20px;
+    border-radius: 30px;
+}
+
+.successTickIcon{
+    font-size: 45px;
+    font-weight: 900;
+    color: #29A21E;
+}
+
+.successTextContainer{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 30px;
+}
+
 .successText{
     font-size: 16px;
     font-weight: 900;
     color: #A32C2D;
+    margin-left: -15px;
 }
 
-.n{
-    color:#78b270;
+.nextTextButton{
+    text-align: center;
+    padding-top: 7px;
+    width: 144px;
+    height: 38px;
+    color: #fff;
+    background-color: rgb(163, 44, 45);
+    border-radius: 20px;
+    font-weight: bolder;
+    margin-top: 40px;
+    margin-left: 158px;
 }
+
+
+/* 手風琴元件:箭頭Icon設定 */
+.accordion-button.collapsed::after {
+    color: red;
+}
+
+.accordion-button.collapsed::after {
+    right: calc(100% - 100px);
+}
+
+.customAccordionButton::after{
+   margin-left: -40px;
+   color: #A32C2D  !important; 
+}
+

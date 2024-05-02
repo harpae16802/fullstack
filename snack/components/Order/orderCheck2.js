@@ -10,34 +10,44 @@ export default function OrderCheck ({
   material = "",
   discount = "",
   quantity = "",
-  price = "" 
+  price = "" ,
   })  {
 
   return (
 
+<>
 
-    <div className={styles.orderDetail}>
-    <Image src={imageUrl} width={100} height={100}
-     className={styles.orderPicture} 
-    />
+<div className={styles.order2Detail}>
 
-       <div className={styles.productText}>{product}</div>
-   
-    <div>
-       <div className={styles.applyDiscount}>Size:{size},Material: {material}</div>
-       <div className={styles.applyDiscount}>優惠:{discount}</div>
-    </div>
+<Image src={imageUrl} width={100} height={100}
+ className={styles.order2Picture} 
+/>
 
-   <div className={styles.buyText}>購買數量: {quantity}</div>
-  
+   <div className={styles.productText}>{product}</div>
 
-    <div className={styles.productText}>${price}</div>
+<div>
+   <div className={styles.applyDiscount1}>Size:{size},Material: {material}</div>
+   <div className={styles.applyDiscount2}>優惠:{discount}</div>
+</div>
 
+<div className={styles.buyText}>購買數量:  |   {quantity}</div>
 
 
+<div className={styles.product2Price}>${price}</div>
 
-    </div>
+
+
+
+</div>
+
+    <div className={styles.step2BottomLine }></div> 
+
+
+</>
 
   );
+
+
+
 };
 

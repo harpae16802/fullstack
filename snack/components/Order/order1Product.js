@@ -14,15 +14,15 @@ export default function Order1Product ({
 
   return (
 
-    <div className={styles.orderContainerAdd}>
+    <div className={`col ${styles.orderProductContainer}`}>
 
     {/* 下層:訂單內的商品圖片 名稱 */}
-    <div className={` ${styles.orderDetail}`}>
+    <div className={styles.orderDetail}>
     <Image src={imageUrl} width={100} height={100}
-     className={styles.orderPicture}
+     className={styles.order1Picture}
     />
     <div className={styles.productText}>{product}</div>
-    <div className={styles.productText}>${price}</div>
+    <div className={styles.productPrice}>${price}</div>
 
    {/* 產品數量增減 */}
    <div className={styles.numberButton}>
@@ -37,8 +37,8 @@ export default function Order1Product ({
 
     </div>
    
-   {/* <div className={styles.orderProductBorder}></div> */}
-    {/* <hr/> */}
+   <div className={styles.orderProductBorder}></div>
+   
 
 
      {/* orderContainer */}
