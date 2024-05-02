@@ -34,12 +34,44 @@
     }
   }
 
-  .img {
+  .imgDiv {
     width: 120px;
     height: 100%;
-    object-fit: cover;
     position: absolute;
     right: 0;
+    cursor: pointer;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    p {
+      display: none;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      border-radius: 10px;
+      transition: all 0.5s ease;
+    }
+
+    &:hover {
+      &::before {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+      p {
+        display: block;
+        position: absolute;
+        top: 35%;
+        left: 18%;
+        color: #fff;
+      }
+    }
   }
 
   .addBtn {
@@ -54,4 +86,38 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.modal {
+  height: 40rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  overflow: auto;
+  border-radius: 24px;
+  outline: none;
+  overflow: visible;
+}
+
+.close {
+  color: #a32c2d;
+  font-size: 24px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(7, 5, 5, 0.4);
 }

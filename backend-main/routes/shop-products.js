@@ -288,23 +288,121 @@ router.get("/comment/:seller_id", async (req, res) => {
 });
 
 // 增加商品數量
+// router.post("/cart-increase", async (req, res) => {
+//   const { product_id } = req.body;
+//   const custom_id = req.my_jwt.custom_id;
+
+//   try {
+//     if (!custom_id) {
+//       return res.status(401).json({ error: "未授权的访问" });
+//     }
+
+//     // 检查商品是否在购物车中
+//     const getQuantitySql = `
+//       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
+//     `;
+//     const [current] = await db.query(getQuantitySql, [custom_id, product_id]);
+
+//     // 如果商品不在购物车中，则添加进去
+//     if (current.length === 0) {
+//       const getPriceSql = `
+//         SELECT price FROM products WHERE product_id = ?
+//       `;
+//       const [product] = await db.query(getPriceSql, [product_id]);
+
+//       if (product.length === 0) {
+//         return res.status(404).json({ error: "无此商品" });
+//       }
+
+//       const productPrice = product[0].price;
+//       const insertSql = `
+//         INSERT INTO cart (custom_id, product_id, quantity, total_price)
+//         VALUES (?, ?, 1, ?)
+//       `;
+//       await db.query(insertSql, [custom_id, product_id, productPrice]);
+//     } else {
+//       // 如果商品已在购物车中，则增加其数量
+//       const currentQuantity = current[0].quantity;
+//       const newQuantity = currentQuantity + 1; // 默认增加1
+
+//       // 获取商品当前价格
+//       const getPriceSql = `
+//         SELECT price FROM products WHERE product_id = ?
+//       `;
+//       const [product] = await db.query(getPriceSql, [product_id]);
+
+//       if (product.length === 0) {
+//         return res.status(404).json({ error: "无此商品" });
+//       }
+
+//       const productPrice = product[0].price;
+//       const newTotalPrice = newQuantity * productPrice; // 计算新的总价
+
+//       const updateSql = `
+//         UPDATE cart
+//         SET quantity = ?, total_price = ?
+//         WHERE custom_id = ? AND product_id = ?
+//       `;
+//       await db.query(updateSql, [
+//         newQuantity,
+//         newTotalPrice,
+//         custom_id,
+//         product_id,
+//       ]);
+//     }
+
+//     // 重新计算购物车总金额
+//     const totalAmountSql = `
+//       SELECT SUM(total_price) AS totalAmount FROM cart WHERE custom_id = ?
+//     `;
+//     const [totalResult] = await db.query(totalAmountSql, [custom_id]);
+//     const totalAmount = totalResult[0].totalAmount || 0;
+
+//     // 获取更新后的购物车信息
+//     const cartInfoSql = `
+//       SELECT
+//         p.product_id AS product_id,
+//         p.product_name AS product_name,
+//         c.quantity,
+//         c.total_price,
+//         p.image_url
+//       FROM
+//         cart c
+//       JOIN
+//         products p ON c.product_id = p.product_id
+//       WHERE
+//         c.custom_id = ?
+//     `;
+//     const cartInfo = await db.query(cartInfoSql, [custom_id]);
+
+//     // 返回成功响应
+//     res.json({
+//       success: true,
+//       cartInfo: cartInfo,
+//       totalAmount: totalAmount,
+//     });
+//   } catch (error) {
+//     console.error("处理购物车商品数量增加时发生错误:", error);
+//     res.status(500).json({ error: "内部服务器错误" });
+//   }
+// });
 router.post("/cart-increase", async (req, res) => {
-  const { product_id } = req.body;
+  const { product_id, quantity = 1 } = req.body; // 接收前端传过来的 quantity
   const custom_id = req.my_jwt.custom_id;
 
-  try {
-    if (!custom_id) {
-      return res.status(401).json({ error: "未授权的访问" });
-    }
+  if (!custom_id) {
+    return res.status(401).json({ error: "未授权的访问" });
+  }
 
+  try {
     // 检查商品是否在购物车中
     const getQuantitySql = `
       SELECT quantity FROM cart WHERE custom_id = ? AND product_id = ?
     `;
     const [current] = await db.query(getQuantitySql, [custom_id, product_id]);
 
-    // 如果商品不在购物车中，则添加进去
     if (current.length === 0) {
+      // 如果商品不在购物车中，则添加进去
       const getPriceSql = `
         SELECT price FROM products WHERE product_id = ?
       `;
@@ -317,15 +415,19 @@ router.post("/cart-increase", async (req, res) => {
       const productPrice = product[0].price;
       const insertSql = `
         INSERT INTO cart (custom_id, product_id, quantity, total_price)
-        VALUES (?, ?, 1, ?)
+        VALUES (?, ?, ?, ?)
       `;
-      await db.query(insertSql, [custom_id, product_id, productPrice]);
+      await db.query(insertSql, [
+        custom_id,
+        product_id,
+        quantity,
+        quantity * productPrice,
+      ]);
     } else {
       // 如果商品已在购物车中，则增加其数量
       const currentQuantity = current[0].quantity;
-      const newQuantity = currentQuantity + 1; // 默认增加1
+      const newQuantity = currentQuantity + quantity; // 增加传入的数量
 
-      // 获取商品当前价格
       const getPriceSql = `
         SELECT price FROM products WHERE product_id = ?
       `;
@@ -351,14 +453,13 @@ router.post("/cart-increase", async (req, res) => {
       ]);
     }
 
-    // 重新计算购物车总金额
+    // 更新购物车总金额和详情
     const totalAmountSql = `
       SELECT SUM(total_price) AS totalAmount FROM cart WHERE custom_id = ?
     `;
     const [totalResult] = await db.query(totalAmountSql, [custom_id]);
     const totalAmount = totalResult[0].totalAmount || 0;
 
-    // 获取更新后的购物车信息
     const cartInfoSql = `
       SELECT 
         p.product_id AS product_id, 
@@ -375,7 +476,6 @@ router.post("/cart-increase", async (req, res) => {
     `;
     const cartInfo = await db.query(cartInfoSql, [custom_id]);
 
-    // 返回成功响应
     res.json({
       success: true,
       cartInfo: cartInfo,

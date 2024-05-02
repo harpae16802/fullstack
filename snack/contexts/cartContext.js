@@ -19,7 +19,7 @@ export const CartProvider = ({ children }) => {
   const [totalItems, setTotalItems] = useState(0) // 小購物車用的總數
 
   // 添加商品到购物车
-  const addToCart = async (productId) => {
+  const addToCart = async (productId, quantity) => {
     try {
       if (!auth.token) {
         const willLogIn = confirm('請先登入會員')
@@ -35,7 +35,8 @@ export const CartProvider = ({ children }) => {
           ...getAuthHeader(),
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ product_id: productId }),
+        // body: JSON.stringify({ product_id: productId }),
+        body: JSON.stringify({ product_id: productId, quantity: quantity }),
       })
 
       const data = await response.json()

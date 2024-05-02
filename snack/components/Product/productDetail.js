@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { FiHeart } from 'react-icons/fi'
 import { IoIosArrowDown } from 'react-icons/io'
 import styles from '@/styles/Product.module.css' // 確保引入了正確的樣式文件
 import { RxCross1 } from 'react-icons/rx'
 import tstyle from './tstyle.module.scss'
+import { useCartContext } from '@/contexts/cartContext'
 import {
   FaThumbsUp,
   FaPlus,
@@ -24,7 +25,29 @@ export default function ProductDetailCard({
   onClose,
   favorite,
   isFavorite,
+  product_id,
 }) {
+  const { addToCart } = useCartContext()
+
+  const [quantity, setQuantity] = useState(0)
+
+  // 增加数量
+  const increaseQuantity = () => {
+    setQuantity((prev) => prev + 1)
+  }
+
+  // 减少数量，确保数量不会低于0
+  const decreaseQuantity = () => {
+    setQuantity((prev) => (prev > 0 ? prev - 1 : 0))
+  }
+
+  // 加入購物車
+  const handleAddToCart = () => {
+    if (quantity > 0) {
+      addToCart(product_id, quantity)
+      onClose()
+    }
+  }
   return (
     <>
       <div className={styles.detailContainer}>
@@ -51,25 +74,21 @@ export default function ProductDetailCard({
 
           {/* '+ -'按鈕 */}
           <div className={`${tstyle.quantity}`}>
-            <button>
+            <button onClick={decreaseQuantity}>
               <FaMinus />
             </button>
             <input
               type="text"
               min="1"
-              value="0"
+              value={quantity}
               style={{ border: 'none', outline: 'none' }}
               readOnly
             />
-            <button>
+
+            <button onClick={increaseQuantity}>
               <FaPlus />
             </button>
           </div>
-          {/* <div className={styles.detailNumber}>
-            <button className={styles.detailNumberButton}>-</button>
-            <div className={styles.detailNumberShow}>1</div>
-            <button className={styles.detailNumberButton}>+</button>
-          </div> */}
 
           {/* 收藏 加入購物車 */}
           <div
@@ -94,15 +113,14 @@ export default function ProductDetailCard({
               />
             )}
 
-            {/* <FiHeart className={styles.detailHeartIcon} onClick={favorite} /> */}
-
-            <button className={`btn btn-outline-primary ms-3`}>
+            <button
+              className={`btn btn-outline-primary ms-3`}
+              onClick={handleAddToCart}
+            >
               加入購物車
             </button>
-            {/* <button className={styles.addCartButton}>加入購物車</button> */}
 
             <button className="btn btn-primary ms-2">立即購買</button>
-            {/* <button className={styles.immediateBuyButton}>立即購買</button> */}
           </div>
 
           {/* 虛線 */}

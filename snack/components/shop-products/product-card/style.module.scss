@@ -4,29 +4,46 @@ $bdrs: 10px;
 .card {
   max-width: 20rem;
   border-radius: $bdrs;
-  cursor: pointer;
+  position: relative;
 
   .imgDiv {
     position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    p {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      border-radius: $bdrs;
+      transition: all 0.5s ease;
+    }
+
+    &:hover {
+      &::before {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+      p {
+        display: block;
+        position: absolute;
+        top: 44%;
+        left: 36%;
+        color: #fff;
+      }
+    }
 
     .img {
       width: 100%;
       height: 140px;
       border-radius: $bdrs;
       object-fit: cover;
-    }
-
-    .addBtn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: none;
-      position: absolute;
-      bottom: 10px;
-      right: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
 
@@ -47,6 +64,19 @@ $bdrs: 10px;
     .iconThumbsUp {
       margin-right: 4px;
     }
+  }
+
+  .addBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    position: absolute;
+    bottom: 66px;
+    right: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

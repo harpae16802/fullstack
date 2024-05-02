@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 // 套件
 import Modal from 'react-modal'
 // 元件
 import ProductDetailCard from '@/components/Product/productDetail'
 // icons
 import { FaThumbsUp, FaPlus, FaRegHeart, FaHeart } from 'react-icons/fa'
-import { CgClose } from 'react-icons/cg'
 // fetch 網址
 import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
-  PRODUCTS_DATA,
   SHOP_PRODUCTS,
   API_SERVER,
 } from '@/components/config/api-path'
@@ -44,7 +41,7 @@ export default function ProductCard({
   }
   // close
   const closeModal = (e) => {
-    e.stopPropagation()
+    // e.stopPropagation()
     setIsModalOpen(false)
   }
 
@@ -113,12 +110,13 @@ export default function ProductCard({
 
   return (
     <div className={style.card}>
-      <div className={style.imgDiv}>
-        <img src={imgUrl} className={style.img} onClick={openModal} />
-        <button className={style.addBtn} onClick={handleAddToCart}>
-          <FaPlus />
-        </button>
+      <div className={style.imgDiv} onClick={openModal}>
+        <img src={imgUrl} className={style.img} />
+        <p>點圖看更多</p>
       </div>
+      <button className={style.addBtn} onClick={handleAddToCart}>
+        <FaPlus />
+      </button>
       <div className={style.textDiv}>
         <div className={`d-flex align-items-center`}>
           <h5 className={`fw-bold mb-0 ${style.title}`}>{title}</h5>
@@ -163,6 +161,7 @@ export default function ProductCard({
             onClose={closeModal}
             favorite={toggleFavoriteProducts}
             isFavorite={isFavorite}
+            product_id={product_id}
           />
         )}
       </Modal>
