@@ -9,16 +9,17 @@ export default function GameRule({
   score,
   onClose,
   onStartGame, // 新增的 prop，用於開始遊戲
+  showModal, setShowModal,
 }) {
-  const [showModal, setShowModal] = useState(true)
 
-  useEffect(() => {
-    setShowModal(true)
-  }, [status])
+
+  // useEffect(() => {
+  //   setShowModal(true)
+  // }, [status])
 
   const handleClose = () => {
     setShowModal(false)
-    onClose()
+    // onClose()
   }
 
   let content

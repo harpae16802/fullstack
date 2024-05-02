@@ -11,11 +11,14 @@ import {
 } from 'react-icons/fa'
 import { useAuth } from '@/contexts/custom-context'
 import toast, { Toaster } from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import { useSelectedLevel } from '@/contexts/LevelContext'; // 引入剛剛創建的上下文
 
 
 export default function GameSelect() {
-
+  const router = useRouter() // 使用 useRouter 鉤子獲取路由信息
   const [level, setLevel] = useState('')
+  const { setSelectedLevel } = useSelectedLevel(); // 使用選擇的關卡值上下文
   const { auth } = useAuth()
   const startGame = () => {
     if (!level) {
@@ -33,8 +36,10 @@ export default function GameSelect() {
       return;
     }
     // 在這裡處理開始遊戲的邏輯
-    console.log('選擇的關卡:', level,'ID:',auth.custom_id);
-    // 這裡可以繼續處理開始遊戲的邏輯，例如導航到遊戲頁面等
+    setSelectedLevel(level); // 將選擇的關卡值存儲到上下文中
+
+    console.log('選擇的關卡:', level, 'ID:', auth.custom_id);
+    router.push(`/b`);
   }
 
   return (
