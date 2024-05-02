@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
 import ticketStyle from '@/styles/ticket.module.css';
-import Pagination from '@/components/memberS/others/pagination'
+// import Pagination from '@/components/memberS/others/pagination'
 import { ticket01Select01, ticket01Select02, ticket01Select03, remainTicket } from "@/api/ticket"
 export default function ticket() {
   const [tab, settab] = useState(1)
@@ -193,7 +193,7 @@ export default function ticket() {
 
         </div>
       </div>
-      <Pagination />
+   
     </div>
   )
 }

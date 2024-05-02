@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
 import ticketStyle from '@/styles/ticket.module.css';
-import Pagination from '@/components/memberS/others/pagination'
+// import Pagination from '@/components/memberS/others/pagination'
 import { ticket02Select01, ticket02Select02,remainTicket } from "@/api/ticket2"
 export default function ticket() {
   const[point,setPoint]=useState([]);
@@ -138,8 +138,7 @@ export default function ticket() {
           </div>
 
         </div>
-      </div>
-      <Pagination />
+      </div> 
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import mainApi from "./api";
-const favoriteSearch01Product = (formdata,qs="") => {
+const favoriteSearch01Product = (formdata,qs="") => { 
     let url = ""
     if (qs) {
         url = `${mainApi.API_URL}/favorite/favoriteSearch01Product?search=${qs}`
     } else {
-        url = `${mainApi.API_URL}/favorite/favoriteSearch01Product`
+        url = `${mainApi.API_URL}/favorite/favoriteSearch01Product?search=${qs}`
     }
     return fetch(url, {
         method: 'POST', 
@@ -31,13 +31,20 @@ const favoriteSearch01Product = (formdata,qs="") => {
         });
 }
 
-const favoriteSearch02Store = (formdata) => {
-    return fetch(`${mainApi.API_URL}/favorite/favoriteSearch02Store`, {
+const favoriteSearch02Store = (formdata,qs="") => {   
+    let url = ""
+    if (qs) {
+        url = `${mainApi.API_URL}/favorite/favoriteSearch02Store?search=${qs}`
+    } else {
+        url = `${mainApi.API_URL}/favorite/favoriteSearch02Store`
+    }
+    
+    return fetch(`${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
             // 如果有需要，還可以添加其他的請求頭
-        },
+        } ,
         body: JSON.stringify(formdata)
     })
         .then(response => {
@@ -61,14 +68,14 @@ const favoriteSearch02Store = (formdata) => {
         });
 }
 // product del
-const favoriteDel01Product = (formdata) => {
+const favoriteDel01Product = (formdata="") => {
     return fetch(`${mainApi.API_URL}/favorite/favoriteDel01Product`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
             // 如果有需要，還可以添加其他的請求頭
         },
-        body: JSON.stringify(formdata)
+        body: JSON.stringify(formdata="")
     })
         .then(response => {
             if (!response.ok) {

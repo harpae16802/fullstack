@@ -71,9 +71,7 @@ export default function PersonForm() {
     name: "custom_account",
     setting: {
       required: { value: true, message: "此欄位必填" },
-      minLength: { value: 5, message: "不得低過5個字" },
-      maxLength: { value: 10, message: "不得超過10個字" },
-
+      minLength: { value: 5, message: "不得低過5個字" } 
     }
   };
 
@@ -191,11 +189,11 @@ export default function PersonForm() {
       if (result.success) {
         notify(true,'修改成功');  // 如果修改成功，通知用户
       } else {
-        notify(false,'修改失败，请重试');  // 如果返回的结果不是成功的，通知用户失败
+        notify(false,'修改失敗，請重新輸入');  // 如果返回的结果不是成功的，通知用户失败
       }
     } catch (error) {
-      console.error("提交表单时发生错误:", error);
-      notify(false,'提交失败，请检查网络连接并重试');  // 通知用户错误信息
+      console.error("提交失敗，請重新輸入:", error);
+      notify(false,'提交失拜，請檢查');  // 通知用户错误信息
     }
   }
   
@@ -220,7 +218,7 @@ export default function PersonForm() {
           <div className="row">
             <div className={`col-12 col-md-6`}>
               <label htmlFor="exampleInputPassword" className="form-label">密碼</label>
-              <input type="text" id="exampleInputPassword"
+              <input type="password" id="exampleInputPassword"
                 ref={custom_password}
                 className={classNames(errors.custom_password ? "inputErr" : "", "form-control")}
                 {...register("custom_password", custom_password.setting)}
@@ -231,7 +229,7 @@ export default function PersonForm() {
             </div>
             <div className={`col-12 col-md-6`}>
               <label htmlFor="examplerepasswordEmail1" className="form-label">請重新輸入密碼</label>
-              <input type="text"
+              <input type="password"
                 ref={repasswordErrVal}
                 {...register("repasswordErr", repasswordErr.setting)}
                 className={classNames(errors.repasswordErr ? "inputErr" : "", "form-control")}

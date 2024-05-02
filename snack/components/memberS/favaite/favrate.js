@@ -4,7 +4,7 @@ import Point from '../others/point'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
-import Pagination from '@/components/memberS/others/pagination'
+// import Pagination from '@/components/memberS/others/pagination'
 import { FaHeart } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import favStyle from "@/styles/fav.module.css";
@@ -22,8 +22,7 @@ export default function ticket() {
         const fa1Del1 = await favoriteApi.favoriteDel01Product({favorite_id:id,custom_id});
         setProducts(fa1Del1.data);
       }
-      if (type === "store") {
-        alert("Dddv12333")
+      if (type === "store") { 
         const fa1Del2 = await favoriteApi.favoriteDel02Store({favorite_id:id,custom_id});
        alert(fa1Del2)
        console.log(fa1Del2)
