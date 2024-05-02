@@ -17,11 +17,11 @@ import { useSelectedLevel } from '@/contexts/LevelContext'; // 引入剛剛創�
 
 export default function GameSelect() {
   const router = useRouter() // 使用 useRouter 鉤子獲取路由信息
-  const [level, setLevel] = useState('')
-  const { setSelectedLevel } = useSelectedLevel(); // 使用選擇的關卡值上下文
+  // const [level, setLevel] = useState('')
+  const { selectedLevel,setSelectedLevel } = useSelectedLevel(); // 使用選擇的關卡值上下文
   const { auth } = useAuth()
   const startGame = () => {
-    if (!level) {
+    if (!selectedLevel) {
        // 登入失敗，顯示錯誤訊息
       toast.error('請選擇一個關卡', {
         duration: 1500,
@@ -36,9 +36,9 @@ export default function GameSelect() {
       return;
     }
     // 在這裡處理開始遊戲的邏輯
-    setSelectedLevel(level); // 將選擇的關卡值存儲到上下文中
+    
 
-    console.log('選擇的關卡:', level, 'ID:', auth.custom_id);
+    console.log('選擇的關卡:', selectedLevel, 'ID:', auth.custom_id);
     router.push(`/b`);
   }
 
@@ -53,9 +53,9 @@ export default function GameSelect() {
               <div className="game-text">氣</div>
               <div className="game-text">球</div>
             </div>
-            <select className="form-select" aria-label="Default select example" value={level}
+            <select className="form-select" aria-label="Default select example" value={selectedLevel || ''}
           onChange={(e) => {
-            setLevel(e.target.value)
+            setSelectedLevel(e.target.value)
           }}>
               <option value="">請選擇關卡</option>
               <option value={1}>第一關</option>

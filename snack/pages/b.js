@@ -14,7 +14,7 @@ const BalloonShooterGame = () => {
   const { selectedLevel } = useSelectedLevel() // 從上下文中讀取選擇的關卡值
   const [myScore, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
-  const [level, setLevel] = useState(selectedLevel !== null ? Number(selectedLevel) : 0)
+  // const [level, setLevel] = useState(selectedLevel)
 
   const [showModal, setShowModal] = useState(false)
   const [gameStatus, setGameStatus] = useState('rule') // 初始為顯示遊戲規則
@@ -25,6 +25,7 @@ const BalloonShooterGame = () => {
     clear: 0,
   })
 
+  const selLevel=Number(selectedLevel)
   // 關卡條件
   const levelConfigs = [
     { level: 1, levelName: '第一關', time: 20, speed: 3, clear: 1000 },
@@ -44,22 +45,34 @@ const BalloonShooterGame = () => {
   ]
 
   
+  useEffect(() => {
+    if (selectedLevel !== null) {
+      // 確保選擇的關卡存在後才設置遊戲初始狀態
+      const levelConfig = levelConfigs.find((config) => config.level === selLevel)
+      setCurrentLevelInfo(levelConfig)
+      setScore(0)
+      setTimer(levelConfig.time)
+      setShowModal(true) // 顯示規則的模態框
+    }
+  }, [selectedLevel])
+
+
   // 開始遊戲
-  const startGame = (level) => {
+  const startGame = () => {
     // 清除之前的遊戲間隔
     clearInterval(gameIntervalRef.current)
     clearInterval(timerRef.current)
 
     // 根據關卡設定設置遊戲
-    const levelConfig = levelConfigs.find((config) => config.level === level)
+    const levelConfig = levelConfigs.find((config) => config.level === selLevel)
 
 
     setCurrentLevelInfo(levelConfig)
     setScore(0)
     setTimer(levelConfig.time)
-    setLevel(level)
+    // setLevel(selLevel)
 
-    const balloonInterval = level >= 4 ? 400 : 600
+    const balloonInterval = selLevel >= 4 ? 400 : 600
 
     // 設置遊戲間隔
     const interval = setInterval(() => {
@@ -82,14 +95,14 @@ const BalloonShooterGame = () => {
   useEffect(() => {
     setShowModal(true)
   }, [])
-  useEffect(() => {
-    if (selectedLevel !== null) {
-      setLevel(selectedLevel);
-    }
-  }, [selectedLevel]);
+  // useEffect(() => {
+  //   if (selectedLevel !== null) {
+  //     setLevel(selectedLevel);
+  //   }
+  // }, [selectedLevel]);
 
   useEffect(() => {
-    const levelConfig = levelConfigs.find((config) => config.level === level);
+    const levelConfig = levelConfigs.find((config) => config.level === selLevel);
     if (timer === 0) {
       clearInterval(timerRef.current);
       clearInterval(gameIntervalRef.current);
@@ -102,10 +115,10 @@ const BalloonShooterGame = () => {
   //通關條件
   const checkGameResult = (levelConfig, myScore) => {
     console.log({ levelConfig, level, myScore })
-    if (myScore >= levelConfig.clear && level < 5) {
+    if (myScore >= levelConfig.clear && selLevel < 5) {
       setGameStatus('success') // 通關成功
       setShowModal(true)
-    } else if (myScore > levelConfig.clear && level === 5) {
+    } else if (myScore > levelConfig.clear && selLevel === 5) {
       setGameStatus('success2') // 通關成功
       setShowModal(true)
     } else {
@@ -189,7 +202,7 @@ const BalloonShooterGame = () => {
   // 當點擊規則模态框上的開始遊戲按鈕時
   const handleStartGame = () => {
     setShowModal(false) // 關閉規則模态框
-    startGame(level) // 開始遊戲
+    startGame(selLevel) // 開始遊戲
   }
 
   return (
