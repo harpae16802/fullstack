@@ -7,7 +7,6 @@ export default function GameRule({
   clear,
   status,
   score,
-  onClose,
   onStartGame, // 新增的 prop，用於開始遊戲
   showModal,
   setShowModal,
@@ -18,7 +17,6 @@ export default function GameRule({
 
   const handleClose = () => {
     setShowModal(false)
-    // onClose()
   }
 
   let content
@@ -205,13 +203,13 @@ export default function GameRule({
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <button
+                {/* <button
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                   onClick={handleClose}
-                />
+                /> */}
               </div>
               <div className="modal-body">{content}</div>
             </div>
