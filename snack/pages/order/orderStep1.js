@@ -6,7 +6,7 @@ import styles from '@/styles/Order.module.css'
 import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 import { useAuth } from '@/contexts/custom-context'
-
+import CheckoutProduct from '@/components/Order/checkoutProduct'
 export default function Order() {
   // 取得狀態
   const { auth } = useAuth()
@@ -135,8 +135,8 @@ export default function Order() {
             </div>
             <br />
             {/* 訂單詳細 外層容器 */}
-            <div className={styles.order1Container}>
-              {/* {step === 3 && <CheckoutProduct />} */}
+            <div className={styles}>
+              {step === 3 && <CheckoutProduct />}
             </div>
             {/* 優惠加購*/}
 

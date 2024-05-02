@@ -128,6 +128,29 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
       res.status(500).send({ error: "Database error occurred while fetching discounts." });
     }
   });
+
+  // 使用用者點數
+  cartRouter.get('/points/:customId', async (req, res) => {
+    const customId = parseInt(req.params.customId, 10);
+    try {
+        const [results] = await db.execute(`
+            SELECT SUM(ac.get_point) AS total_points
+            FROM clear_data cd
+            JOIN achievement_category ac ON cd.level_id = ac.level_id
+            WHERE cd.user_id = ?
+        `, [customId]);
+
+        if (results.length > 0) {
+            res.json({ points: results[0].total_points || 0 });
+        } else {
+            res.json({ points: 0 });
+        }
+    } catch (error) {
+        console.error('Error fetching points:', error);
+        res.status(500).send('Server error');
+    }
+});
+
   
 
 export default cartRouter;
