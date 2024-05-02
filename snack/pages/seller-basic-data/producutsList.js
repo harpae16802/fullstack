@@ -64,7 +64,7 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    setLoading(true) //loading 為 true
+    setLoading(true) 
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -101,6 +101,7 @@ const ProductsList = () => {
     }
 
     const fetchData = async () => {
+      setLoading(true) 
       try {
         const response = await axios.get(
           `${PRODUCTS_API}/${sellerId}?${queryParams}`
@@ -120,10 +121,11 @@ const ProductsList = () => {
           setCurrentPage(1)
         }
       } catch (error) {
+        console.error('Fetching data failed', error);
       } finally {
         setTimeout(() => {
-          setLoading(false)
-        }, 1000)
+          setLoading(false); // 延迟1秒后设置loading为false
+        }, 1000); 
       }
     }
 
@@ -199,7 +201,7 @@ const ProductsList = () => {
         setCurrentPage(1)
       }
     } catch (error) {
-      console.error('获取产品列表失败', error)
+      console.error('獲取產品失敗', error)
     } finally {
       setLoading(false)
     }
