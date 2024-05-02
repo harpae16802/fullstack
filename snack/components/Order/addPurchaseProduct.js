@@ -7,7 +7,6 @@ import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
 
 const DiscountContentItem = ({ items = [] }) => {
-  
   // 拿取custom_id
   const { auth } = useAuth()
   const customId = auth.custom_id
@@ -16,7 +15,10 @@ const DiscountContentItem = ({ items = [] }) => {
   const [discounts, setDiscounts] = useState([])
 
   // 點數設置
-  const [customPoints, setCustomPoints] = useState(0);
+  const [customPoints, setCustomPoints] = useState(0)
+
+  // 是否使用點數
+  const [usePoints, setUsePoints] = useState(false)
 
   // 從後端接收到的折扣信息，假定默認使用第一個折扣
   const [selectedDiscount, setSelectedDiscount] = useState(null)
@@ -66,7 +68,8 @@ const DiscountContentItem = ({ items = [] }) => {
 
   // 折扣後的總金額計算
   const totalDiscountAmount = selectedDiscount ? selectedDiscount.discount : 0
-  const finalAmount = totalAmount - totalDiscountAmount - (customPoints / 10);
+  const pointsReduction = usePoints ? customPoints / 10 : 0 // 使用點數時才計算減少的金額
+  const finalAmount = totalAmount - totalDiscountAmount - pointsReduction
   // 樣式-------------------------------------------------------
 
   // 商品的左側價格 數量 總價
@@ -106,7 +109,7 @@ const DiscountContentItem = ({ items = [] }) => {
   }
 
   // 樣式-------------------------------------------------------
-  
+
   return (
     <div
       className="container"
@@ -184,6 +187,7 @@ const DiscountContentItem = ({ items = [] }) => {
             <div style={amountStyle}>{totalAmount}</div>
           </div>
 
+          {/* 使用者點數的部分 */}
           <div
             style={{
               ...amountContainerStyle,
@@ -191,10 +195,30 @@ const DiscountContentItem = ({ items = [] }) => {
               borderRadius: '10px',
               padding: '15px',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              flexDirection: 'column', // 垂直排列
+              alignItems: 'flex-start', // 左對齊
             }}
           >
-            <div style={orderItemTextStyle}>您目前持有的點數:</div>
-            <div style={orderItemTextStyle}>{customPoints}</div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <div style={orderItemTextStyle} >您目前持有的點數:</div>
+              <div style={orderItemTextStyle} >{customPoints}</div>
+            </div>
+            <label>
+              <input
+                type="checkbox"
+                checked={usePoints}
+                onChange={(e) => setUsePoints(e.target.checked)}
+                style={orderItemTextStyle}
+              />{' '}
+              使用您的遊戲點數來抵扣購買金額
+            </label>
           </div>
 
           {/* 顯示選定的折扣 */}
