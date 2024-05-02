@@ -13,7 +13,7 @@ const BalloonShooterGame = () => {
   // const { selectedLevel } = useSelectedLevel();
   const [myScore, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
-  const [level, setLevel] = useState(1)
+  const [level, setLevel] = useState(5)
   const [showModal, setShowModal] = useState(false)
   const [gameStatus, setGameStatus] = useState('rule') // 初始為顯示遊戲規則
 
@@ -29,7 +29,7 @@ const BalloonShooterGame = () => {
     { level: 2, levelName: '第二關', time: 20, speed: 2.5, clear: 3000 },
     { level: 3, levelName: '第三關', time: 15, speed: 2, clear: 2000 },
     { level: 4, levelName: '第四關', time: 15, speed: 1.5, clear: 3000 },
-    { level: 5, levelName: '第五關', time: 10, speed: 1.5, clear: 2000 },
+    { level: 5, levelName: '第五關', time: 10, speed: 3, clear: 100 },
   ]
 
   // 氣球的設定
@@ -73,20 +73,30 @@ const BalloonShooterGame = () => {
     setTimeout(() => {
       clearInterval(timerRef.current)
       clearInterval(gameIntervalRef.current)
-      let mmScore = 0;
-      setScore(old=>{
-        console.log({old});
-        mmScore = old;
-        return old;
-      })
-      console.log({myScore, setScore});
-      console.log({mmScore});
-      checkGameResult(levelConfig, mmScore)
+      // let mmScore = 0;
+      // setScore(old=>{
+      //   console.log({old});
+      //   mmScore = old;
+      //   return old;
+      // })
+      // console.log({myScore, setScore});
+      // console.log({mmScore});
+      // checkGameResult(levelConfig, mmScore)
     }, levelConfig.time * 1000)
   }
   useEffect(() => {
     setShowModal(true)
   }, [])
+
+  useEffect(() => {
+    const levelConfig = levelConfigs.find((config) => config.level === level);
+    if (timer === 0) {
+      clearInterval(timerRef.current);
+      clearInterval(gameIntervalRef.current);
+      
+      checkGameResult(levelConfig, myScore);
+    }
+  }, [timer]);
 
   // useEffect(() => {
   //   if (!showModal) {
@@ -105,7 +115,7 @@ const BalloonShooterGame = () => {
       setGameStatus('success') // 通關成功
       setShowModal(true)
     } else if (myScore > levelConfig.clear && level === 5) {
-      setGameStatus('success') // 通關成功
+      setGameStatus('success2') // 通關成功
       setShowModal(true)
     } else {
       setGameStatus('failure') // 通關失敗
@@ -235,7 +245,7 @@ const BalloonShooterGame = () => {
             levelName={currentLevelInfo.levelName}
             time={currentLevelInfo.time}
             clear={currentLevelInfo.clear}
-            score={currentLevelInfo.myScore}
+            score={myScore}
             onClose={() => setShowModal(false)}
             onStartGame={handleStartGame}
             showModal={showModal}

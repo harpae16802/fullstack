@@ -9,10 +9,9 @@ export default function GameRule({
   score,
   onClose,
   onStartGame, // 新增的 prop，用於開始遊戲
-  showModal, setShowModal,
+  showModal,
+  setShowModal,
 }) {
-
-
   // useEffect(() => {
   //   setShowModal(true)
   // }, [status])
@@ -79,6 +78,48 @@ export default function GameRule({
           </button>
           <button type="button" className="btn btn-primary">
             前往下一關
+          </button>
+        </div>
+        {/* 挑戰成功結束 */}
+        <div className="chara-group">
+          <div className="talk-group">
+            <div class="triangle"></div>
+            <div className="talk">
+              呼～總算把這些氣球全部射下來了！
+              <br />
+              雖然只是從遙遠的垃圾變成近一點的垃圾......
+            </div>
+          </div>
+          <div className="character">
+            {' '}
+            <img
+              src="/images/game/cha01.png"
+              className="character-obj"
+              alt="..."
+            />
+          </div>
+        </div>
+      </>
+    )
+  } else if (status === 'success2') {
+    content = (
+      <>
+        {/* 挑戰成功開始 */}
+        <div className="level-text">
+          {levelName}挑戰成功
+          <div className="clear-text">
+            恭喜全數通關！挑戰更多成就吧！
+          </div>
+        </div>
+
+        <FaRegCheckSquare className="fa-success" />
+
+        <div className="rule-group">
+          <div className="point-text">獲得點數:10點{score}</div>
+        </div>
+        <div className="buttons">
+          <button type="button" className="btn btn-primary">
+            回遊戲首頁
           </button>
         </div>
         {/* 挑戰成功結束 */}
@@ -172,10 +213,7 @@ export default function GameRule({
                   onClick={handleClose}
                 />
               </div>
-              <div className="modal-body">
-                {content}
-
-              </div>
+              <div className="modal-body">{content}</div>
             </div>
           </div>
         </div>
