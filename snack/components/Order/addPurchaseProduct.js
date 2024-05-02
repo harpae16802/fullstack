@@ -2,7 +2,11 @@
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { CARTITEM, BackEndPIMG,IMGROUTER } from '../../pages/seller-basic-data/config'
+import {
+  CARTITEM,
+  BackEndPIMG,
+  IMGROUTER,
+} from '../../pages/seller-basic-data/config'
 import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
 
@@ -63,7 +67,7 @@ const DiscountContentItem = ({ items = [] }) => {
       console.error('拿取折扣錯誤', error)
     }
   }
-  
+
   // 付款完成 將資料 放入order_data 與 刪除購物車中的商品
   const handleCheckout = async () => {
     try {
@@ -74,25 +78,25 @@ const DiscountContentItem = ({ items = [] }) => {
         items: cartItems,
         usePoints,
         customPoints,
-        totalAmount
-      });
-  
+        totalAmount,
+      })
+
       if (orderResponse.data.success) {
         // 訂單創建成功，接下來刪除購物車內的商品
         const cartResponse = await axios.put('/api/cart/remove-purchased', {
           custom_id: customId,
-          items: cartItems
-        });
-  
+          items: cartItems,
+        })
+
         if (cartResponse.data.success) {
           // 全部操作成功後的處理，例如導航到訂單確認頁面
-          console.log('Checkout completed successfully');
+          console.log('Checkout completed successfully')
         }
       }
     } catch (error) {
-      console.error('Checkout failed:', error);
+      console.error('Checkout failed:', error)
     }
-  };
+  }
   // 計算訂單的總金額
   const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
 
@@ -237,8 +241,8 @@ const DiscountContentItem = ({ items = [] }) => {
                 width: '100%',
               }}
             >
-              <div style={orderItemTextStyle} >您目前持有的點數:</div>
-              <div style={orderItemTextStyle} >{customPoints}</div>
+              <div style={orderItemTextStyle}>您目前持有的點數:</div>
+              <div style={orderItemTextStyle}>{customPoints}</div>
             </div>
             <label>
               <input
@@ -279,6 +283,58 @@ const DiscountContentItem = ({ items = [] }) => {
           >
             <div style={amountStyle}>總金額:</div>
             <div style={amountStyle}>{Math.round(finalAmount)} </div>
+          </div>
+        </div>
+      </div>
+      {/* 付款方式 */}
+      <div className={styles.paymentMethodBorder}>
+        <h3 className={styles.orderTitle}>【 選擇支付方式 】</h3>
+
+        <div className={styles.methodFlex}>
+          {/* 711繳費 */}
+          <div className={styles.payment}>
+            <Image
+              src="/images/7-11.png"
+              width={30}
+              height={30}
+              className={styles.methodImage}
+            />
+            <p className={styles.paymentText}>711繳費</p>
+          </div>
+
+          {/* linePay繳費 */}
+          <div className={styles.payment}>
+            <Image
+              src="/images/line.jpg"
+              width={30}
+              height={30}
+              className={styles.methodImage}
+            />
+            <p className={styles.paymentText}>LINE繳費</p>
+          </div>
+
+          {/* linePay繳費 */}
+          <div className={styles.payment}>
+            <Image
+              src="/images/applePay.png"
+              width={40}
+              height={30}
+              className={styles.methodImage}
+            />
+            <p className={styles.paymentText} style={{ marginLeft: '35px' }}>
+              APPLEPay繳費
+            </p>
+          </div>
+
+          {/* linePay繳費 */}
+          <div className={styles.payment}>
+            <Image
+              src="/images/ecpay.png"
+              width={30}
+              height={30}
+              className={styles.methodImage}
+            />
+            <p className={styles.paymentText}>ECPay繳費</p>
           </div>
         </div>
       </div>
