@@ -13,6 +13,7 @@ import {
   CATEGORY,
   MARKET,
   STORE_RATINGS,
+  IMAGES_AD_1,
 } from '@/components/config/api-path'
 // 樣式
 import style from './nightmarket-info.module.scss'
@@ -23,6 +24,7 @@ export default function NightmarketInfo({ initialMarketData }) {
 
   const [featuredShops, setFeaturedShops] = useState([]) // 夜市店家圖片(3)
   const [allShops, setAllShops] = useState([]) // 所有商家的數據
+  const [banner, setBanner] = useState([]) // ad banner
 
   // 食物分類，寫死
   const categories = [
@@ -66,59 +68,40 @@ export default function NightmarketInfo({ initialMarketData }) {
 
   const marketInfo = initialMarketData[0] || {}
 
-  // const handleCategoryClick = async (categoryId) => {
-  //   try {
-  //     const response = await fetch(`${CATEGORY}/${categoryId}`)
-  //     const filteredShops = await response.json()
-  //     setAllShops(filteredShops) // 更新顯示篩選後的店家列表
-  //     // 滑動到店家列表
-  //     const shopListElement = document.getElementById('shopList')
-  //     if (shopListElement) {
-  //       shopListElement.scrollIntoView({ behavior: 'smooth' })
-  //     }
-  //   } catch (error) {
-  //     console.error('獲取分類店家數據失敗:', error)
-  //   }
-  // }
-
   const handleCategoryClick = async (categoryId) => {
     try {
       const response = await fetch(`${CATEGORY}/${categoryId}`)
       const filteredShops = await response.json()
-      console.log('Filtered Shops:', filteredShops);  // 调试输出过滤后的商家数据
-  
-      const ratingsPromises = filteredShops.map(shop =>
-        fetch(`${STORE_RATINGS}/${shop.seller_id}`)
-          .then(r => r.json())
-          .then(data => {
-            console.log(`Rating for seller ${shop.seller_id}:`, data);  // 调试输出评分数据
-            return data;
-          })
-      );
-      const ratings = await Promise.all(ratingsPromises);
-      console.log('All ratings:', ratings);  // 调试输出所有评分数据
-  
-      const shopsWithRatings = filteredShops.map(shop => {
-        const ratingInfo = ratings.find(rating => rating.seller_id === shop.seller_id) || {};
-        return {
-          ...shop,
-          score: Number(ratingInfo.average_night_rating || 0),
-          commentCount: ratingInfo.total_comments || 0
-        };
-      });
-  
-      console.log('Shops with ratings:', shopsWithRatings);  // 调试输出合并后的商家数据
-      setAllShops(shopsWithRatings);
-  
-      const shopListElement = document.getElementById('shopList');
+
+      if (filteredShops.length > 0) {
+        const ratingsResponse = await fetch(`${STORE_RATINGS}/${market_id}`)
+        const ratingsData = await ratingsResponse.json()
+
+        const shopsWithRatings = filteredShops.map((shop) => {
+          const ratingInfo =
+            ratingsData.find((rating) => rating.seller_id === shop.seller_id) ||
+            {}
+          return {
+            ...shop,
+            score: Number(ratingInfo.average_night_rating),
+            commentCount: ratingInfo.total_comments,
+          }
+        })
+
+        setAllShops(shopsWithRatings) // 更新显示筛选后的店家列表
+      } else {
+        setAllShops([]) // 如果没有找到任何店家，清空列表
+      }
+
+      // 滑动到店家列表
+      const shopListElement = document.getElementById('shopList')
       if (shopListElement) {
-        shopListElement.scrollIntoView({ behavior: 'smooth' });
+        shopListElement.scrollIntoView({ behavior: 'smooth' })
       }
     } catch (error) {
-      console.error('获取分类店家数据失败:', error);
+      console.error('获取分类店家数据失败:', error)
     }
-  };
-  
+  }
 
   // 休息日的映射函數
   const mapDayToChinese = (dayNumber) => {
@@ -146,7 +129,7 @@ export default function NightmarketInfo({ initialMarketData }) {
       .then(async (data) => {
         let shopsWithRatings = []
 
-        const ratingsResponse = await fetch(`${STORE_RATINGS}/1`)
+        const ratingsResponse = await fetch(`${STORE_RATINGS}/${market_id}`)
         const ratingsData = await ratingsResponse.json()
         shopsWithRatings = data.map((shop) => {
           const ratingInfo =
@@ -166,11 +149,20 @@ export default function NightmarketInfo({ initialMarketData }) {
       .catch((error) => {
         console.error('獲取商家數據失敗:', error)
       })
+
+    fetch(`${MARKET}/ad/banner`)
+      .then((r) => r.json())
+      .then(async (data) => {
+        const fixedPath = data[0].image_path.replace(/\\/g, '/')
+        setBanner(fixedPath)
+        console.log(fixedPath)
+      })
   }, [])
 
   return (
     <SectionNopaddin>
       <img
+        // src={banner}
         src="/images/shop-banner01.jpg"
         alt="bannerAd"
         className={style.bannerAd}

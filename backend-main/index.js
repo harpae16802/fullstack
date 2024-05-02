@@ -25,7 +25,7 @@ import adRouter from "./routes/adRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
+// const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;

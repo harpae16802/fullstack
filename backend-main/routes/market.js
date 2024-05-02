@@ -317,4 +317,15 @@ router.get("/store-ratings/:market_id", async (req, res) => {
   }
 });
 
+// 取得廣告圖路徑
+router.get("/ad/banner", async (req, res) => {
+  try {
+    const sql = "SELECT `image_path` FROM `advertisements` WHERE `ad_type` = 1";
+    const [row] = await db.query(sql);
+    res.json(row);
+  } catch (error) {
+    console.error("bannerAd出錯:", error);
+  }
+});
+
 export default router;

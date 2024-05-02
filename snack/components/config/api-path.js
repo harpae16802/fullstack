@@ -4,6 +4,7 @@ export const API_SERVER = 'http://localhost:3002'
 export const IMAGES_PRODUCTS = `${API_SERVER}/images/products`
 export const IMAGES_NIGHT = `${API_SERVER}/images/night`
 export const IMAGES_SELLER = `${API_SERVER}/images/seller`
+export const IMAGES_AD_1 = `${API_SERVER}/public/adimg/type1`
 
 // === map
 export const MARKET_MAP = `${API_SERVER}/market-map`
