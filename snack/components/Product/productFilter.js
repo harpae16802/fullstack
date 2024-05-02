@@ -11,11 +11,11 @@ export default function FilterOptions () {
 
 
 
-<button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal"  className={`btn btn-primary ${styles.filterConditionButton}`}>
+<button type="button"  data-bs-toggle="modal" data-bs-target="#filterModal"  className={`btn btn-primary ${styles.filterConditionButton}`}>
 篩選條件 <IoIosArrowDown className={styles.filterIcon}/>
 </button>
 
-<div className="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div className="modal fade " id="filterModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="filterModalLabel" aria-hidden="true">
      <div className="modal-dialog">
         <div className="modal-content">
          

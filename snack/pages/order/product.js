@@ -13,15 +13,25 @@ import CategoryCard from '@/components/nightmarket-info/category/category-card'
 import FilterOptions from '@/components/Product/productFilter'
 import { MARKET_SELLER } from '@/components/config/api-path'
 import  tryApi from "@/api/productApi.js/tryApi"
-// import FilterOptions from '@/components/Product/productFilter'
-import ProductFilter from './productFilter'
+import ProductDetailCard from '@/components/Product/productDetail';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
+
 
 // import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios'; 
 
+
 export default function Product() {
   // 熱門產品
   const [popularProducts, setPopularProducts] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleProductClick = (product) => {
+    // 如果點擊的是當前已選定的產品，則取消選定
+    setSelectedProduct(selectedProduct === product ? null : product);
+  };
 
   useEffect(() => {
     const fetchPopularProduct = async () => {
@@ -44,7 +54,7 @@ export default function Product() {
     fetchPopularProduct();
   }, []); // 空的依賴項表示只在組件 mount 時執行一次
 
-  
+
 //隨機推薦
 const [recommendProducts, setRecommendProducts] = useState([]);
 
@@ -68,6 +78,9 @@ useEffect(() => {
 
   fetchRecommendProduct();
 }, []); // 空的依賴項表示只在組件 mount 時執行一次
+
+
+
 
   // 食物分類，寫死
   const categories = [
@@ -219,19 +232,32 @@ useEffect(() => {
 
       <div className={`col ${styles.popularContainer}`}>
 
-      {popularProducts && popularProducts.map((v,i) => {
-          return (
-            <div key={i} className='d-flex'>
-            <PopularProduct 
-              imageUrl = {`/images/products/${v.image_url}`}
-              saleRanking={`No${i+1}`}
-              market = {v.market_name}
-              seller = {v.store_name}
-              product = {v.product_name}
+        {/* 熱門產品 */}
+        {popularProducts && popularProducts.map((product, index) => (
+        <div key={index}>
+          <PopularProduct 
+            imageUrl={`/images/products/${product.image_url}`}
+            saleRanking={`No${index + 1}`}
+            market={product.market_name}
+            seller={product.store_name}
+            product={product.product_name}
+          />
+          <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
+          
+          {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
+          {selectedProduct === product && (
+            <ProductDetailCard 
+              imageUrl={`/images/products/${product.image_url}`}
+              seller={product.store_name}
+              product={product.product_name}
+              description={product.product_description}
+              price={product.price}
+              ingredient={product.product_ingredient}
+              nutrition={product.product_nutrition}
             />
-            </div>
-          )
-        })}
+          )}
+        </div>
+      ))}
 
 {/* 
         <ul>
@@ -243,11 +269,6 @@ useEffect(() => {
           </li>
         ))}
       </ul> */}
-
-
-
-
-
 
 
 
@@ -278,76 +299,86 @@ useEffect(() => {
       {/* 推薦餐點 */}
   <div className={`container-fluid row ${styles.recommendOuter}`} >
 
-  <h4 className={styles.recommendTitle}>今天想減肥</h4>
+{/* 原本標題 */}
+<h4 className={styles.recommendTitle} style={{marginTop:'90px'}}>推薦餐點</h4>
 
     <div className={`col ${styles.recommendContainer}`}>
      
       {/* 第一行 */}
-     {Array(3)
-      .fill(null)
-      .map((v,i) => {
+     {/* {recommendProducts && recommendProducts.map((v,i) => {
+      if (i % 3 === 0) {
         return (
           <div key={i} className='d-flex'>
           <ProductItem 
-            imageUrl = "/images/鹹酥雞.jpg"
-            productName = "海鮮廣東粥"
+            imageUrl = {`/images/products/${v.image_url}`}
+            productName = {v.product_name}
             score = "4.7"
           />
           </div>
         )
+      
+      }
+
       })}
+       */}
+{/* 
+       {recommendProducts && (
+  <div className='d-flex flex-wrap'>
+    {recommendProducts.map((v, i) => (
+
+      <div key={i} className={`col-lg-4 col-md-6 mb-4 `}>
+
+        <ProductItem 
+          imageUrl={`/images/products/${v.image_url}`}
+          productName={v.product_name}
+          score="4.7"
+        />
+
+      </div>
+
+    ))}
+  </div>
+)} */}
+
+
+
+{recommendProducts && (
+  <div className={`d-flex flex-wrap` }>
+    {recommendProducts.map((v, i) => (
+      <div key={i} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}>
+        <div className={styles.productItemContainer}>
+        <ProductItem 
+          imageUrl={`/images/products/${v.image_url}`}
+          productName={v.product_name}
+          score="4.7"
+        />
+        </div>
+
+      </div>
+    ))}
+  </div>
+
+)}
+
 
        </div>
+
+
 
     {/* 第二行 */}
   
-  <h4 className={styles.recommendTitle} style={{marginTop:'90px'}}>今天想減肥</h4>
-  
-    <div className={`col ${styles.recommendContainer}`}>
-     
-      {/* 第一行 */}
-     {Array(3)
-      .fill(null)
-      .map((v,i) => {
-        return (
-          <div key={i} className='d-flex'>
-          <ProductItem 
-            imageUrl = "/images/鹹酥雞.jpg"
-            productName = "海鮮廣東粥"
-            score = "4.7"
-          />
-          </div>
-        )
-      })}
 
-       </div>
 
 
     
     {/* 第三行 */}
-    <h4 className={styles.recommendTitle} style={{marginTop:'90px'}}>今天想減肥</h4>
   
-  <div className={`col ${styles.recommendContainer}`}>
-   
- 
-   {Array(3)
-    .fill(null)
-    .map((v,i) => {
-      return (
-        <div key={i} className='d-flex'>
-        <ProductItem 
-          imageUrl = "/images/鹹酥雞.jpg"
-          productName = "海鮮廣東粥"
-          score = "4.7"
-        />
-        </div>
-      )
-    })}
-
-     </div>
+  
 
 
-        <div className='col' style={{marginTop:'-930px',marginLeft:'48px'}}>
+
+
+        <div className='col' style={{marginTop:'20px',marginLeft:'48px'}}>
           {/* 優惠資訊 */}
 
           <div className='d-flex row'>
@@ -376,3 +407,8 @@ useEffect(() => {
     </>
   )
 }
+
+
+
+
+

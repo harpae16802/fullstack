@@ -13,23 +13,23 @@ export default function ProductDetailCard({
   description = "",
   price = "",
   ingredient = "",
-  nutrition=""
+  nutrition = "",
 }) { 
 
   return (
     <>
     
    
-<button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" className={` ${styles.seeMoreButton}`}>
+{/* <button type="button" data-bs-toggle="modal" data-bs-target="#detailModal" className={` ${styles.seeMoreButton}`}>
   看更多
-</button>
+</button> */}
 
 
-<div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div className="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
   <div className={`modal-dialog ${styles.modalSize}`}>
     <div className="modal-content">
       
-      {/* 標題 */}
+  
        {/* 右上角叉叉 */}
        {/* <RxCross1 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{color: '#A32C2D'}}></RxCross1> */}
 
@@ -42,12 +42,12 @@ export default function ProductDetailCard({
        
       <div className={styles.detailContainer}>
       {/* 產品圖 */}
-       <Image src={imageUrl} width={759} height={726} className={styles.detailPic}/>
+       <Image src={imageUrl} width={759} height={726} className={styles.detailPic} alt={imageUrl}/>
 
      <div className={styles.detailTextArray}>
 
      {/* <RxCross1 className={styles.detailCrossIcon}/> */}
-     <RxCross1 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" className={styles.detailCrossIcon} ></RxCross1>
+     <RxCross1 type="button" data-bs-dismiss="modal" aria-label="Close" className= {`btn-close ${styles.detailCrossIcon}`} ></RxCross1>
 
       {/* 店家名稱 */}
       <div className={styles.detailSeller}>{seller}</div>
@@ -91,7 +91,7 @@ export default function ProductDetailCard({
     <div className={styles.detailSolid}></div>
 
         {/* 營養成分表 */}
-     <div className={styles.nutritionIngredient}>{nutrition}</div>
+     <div className={styles.nutritionIngredient}>營養成分表:{nutrition}</div>
         <IoIosArrowDown className={styles.ingredientDown2}/>
         
 
@@ -104,7 +104,7 @@ export default function ProductDetailCard({
 
       </div>
       {/* 下方按鈕 */}
-      <div class="modal-footer">
+      <div className="modal-footer">
 
         {/* <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"></button>
         <button type="button" class="btn btn-primary"></button> */}

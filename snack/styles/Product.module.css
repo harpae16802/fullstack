@@ -262,6 +262,16 @@
     justify-content:left;
   }
 
+  /* 推薦餐點:最外層容器 */
+ .recommendProductContainer{
+  margin-left: 60px;
+  margin-top: 20px;
+ }
+
+ .productItemContainer{
+  margin-right:750px;
+ }
+
   .recommendTitle{
     margin-left: 60px;
     font-size: 30px;
@@ -277,22 +287,28 @@
 
   .recommendName{
     margin-top: 4px;
-    margin-left: 2px;
+    margin-left: 0px;
     font-weight: bolder;
-    font-size: 28px;
+    font-size: 26px;
+  }
+
+  .RecommendCollectIcon{
+    color: rgb(163, 44, 45);
+    font-size: 26px;
+    margin-top: 12px;
+    margin-left: 18px;
   }
 
   .productScore{
-    width: 53px;
-    height: 54px;
+    width: 75px;
+    height: 40px;
     margin-top: 8px;
-    margin-left: 100px;
-    padding-top: 5px;
-    padding-left: 5px;
+    margin-left: 70px;
     background-color: #E5E1DD;
     border-radius: 50%;
-    padding-top: 15px;
-    padding-left: 15px;
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
     font-size: 16px;
     font-weight: bold;
   }
@@ -516,7 +532,7 @@
 }
 @media(max-width:576px){ 
   .detailCrossIcon{
-   display: none;
+ 
  }
 }
 
