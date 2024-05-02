@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API,IMGROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -535,7 +535,7 @@ export default function SellerBasicData() {
     <br />
     {sellerData.storeImage ? (
       <Image
-        src={`http://localhost:3002${sellerData.storeImage}`}
+        src={`${IMGROUTER}${sellerData.storeImage}`}
         alt="商家現有圖片"
         className="img-fluid"
         style={{ maxWidth: '200px', marginRight: '20px' }}

@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { CARTITEM, BackEndPIMG } from '../../pages/seller-basic-data/config'
+import { CARTITEM, BackEndPIMG,IMGROUTER } from '../../pages/seller-basic-data/config'
 import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
 
@@ -171,7 +171,7 @@ const DiscountContentItem = ({ items = [] }) => {
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Image
-                  src={`${BackEndPIMG}${item.image_url}`}
+                  src={`${IMGROUTER}${item.image_url}`}
                   alt={item.product_name}
                   width={100}
                   height={100}

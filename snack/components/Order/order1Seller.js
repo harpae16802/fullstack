@@ -6,7 +6,7 @@ import axios from 'axios'
 import { FaShopify, FaTrashAlt } from 'react-icons/fa'
 // import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
-import { CARTITEM, BackEndPIMG } from '../../pages/seller-basic-data/config'
+import { CARTITEM, IMGROUTER } from '../../pages/seller-basic-data/config'
 import { FaCheck } from 'react-icons/fa'
 
 // 依照 賣家 id 來渲染不同賣家
@@ -235,7 +235,7 @@ const OrderDetailItem = ({
                   }}
                 >
                   <Image
-                    src={`${item.image_url}`}
+                    src={`http://localhost:3002/${item.image_url}`}
                     alt={item.product_name}
                     width={60}
                     height={60}

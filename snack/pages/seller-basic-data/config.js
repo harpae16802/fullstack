@@ -28,6 +28,7 @@ const BackEndPIMG = 'http://localhost:3002/images/products/'
 //後端賣家圖片
 const BackEndSIMG = 'http://localhost:3002/images/seller/'
 
+const IMGROUTER = 'http://localhost:3002/'
 export {
   SELLER_API,
   PRODUCTS_API,
@@ -39,4 +40,5 @@ export {
   CARTITEM,
   BackEndPIMG,
   BackEndSIMG,
+  IMGROUTER,
 }

@@ -552,7 +552,7 @@ export default function AddProducts() {
                           <br />
                           {productDetails.image_url ? (
                             <img
-                              src={`http://localhost:3002/images/${productDetails.image_url}`}
+                              src={`${IMGROUTER}${productDetails.image_url}`}
                               alt="Current Product Image"
                               className="img-fluid"
                               style={{ maxWidth: '200px', marginRight: '20px' }}
