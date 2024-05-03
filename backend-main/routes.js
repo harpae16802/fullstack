@@ -5,6 +5,7 @@ import { jsonFormTa, ImgFormTa, insertMemberForm, updateMemberForm } from "./con
 import { myProduct, myProduct2 } from "./controllers/qrcodeConstroller.js";
 import { favoriteDel01Product, favoriteSearch01Product,favoriteDel02Store ,favoriteSearch02Store} from "./controllers/favoriteController.js";
 import { gamePassSelect01 } from "./controllers/gameConstroller.js"; 
+import { linePayBox } from "./controllers/lineController.js"; 
 import upload from './utils/multer.js';
 import express from 'express';
 const app = express.Router();
@@ -49,4 +50,6 @@ app.post("/favorite/favoriteSearch01Product", favoriteSearch01Product);
 app.post("/favorite/favoriteDel02Store", favoriteDel02Store);
 app.post("/favorite/favoriteSearch02Store", favoriteSearch02Store);
 
+// linePayBox
+app.post("/linePayBox",linePayBox)
 export default app;

@@ -9,6 +9,7 @@ import {
 } from '../../pages/seller-basic-data/config'
 import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
+import { Modal, Button } from 'react-bootstrap'
 
 const DiscountContentItem = ({ items = [] }) => {
   // 拿取custom_id
@@ -26,6 +27,11 @@ const DiscountContentItem = ({ items = [] }) => {
 
   // 從後端接收到的折扣信息，假定默認使用第一個折扣
   const [selectedDiscount, setSelectedDiscount] = useState(null)
+
+  // 使用彈出視窗
+  const [showModal, setShowModal] = useState(false);
+  const handleShowModal = () => setShowModal(true)
+  const handleCloseModal = () => setShowModal(false)
 
   //  從購物車來的數據 (使用者想購買的商品 )
   useEffect(() => {
@@ -68,14 +74,68 @@ const DiscountContentItem = ({ items = [] }) => {
     }
   }
 
-  // 結帳付款
-  const handleLinePay = () => {
-    const payload = [
-      { name: '訂單總金額', finalAmount: Math.round(finalAmount) },
-    ]
-    console.log('支付資料:', payload)
+  // 結帳付款(發送請球)
+  const handleLinePay = async () => {
+    const currentTime = new Date().toISOString().replace(/\.\d+Z$/, '') + 'Z' // 精簡時間格式
+
+    const linePayRequest = {
+      amount: Math.round(finalAmount),
+      currency: 'TWD',
+      orderId: `order${currentTime}`,
+      packages: [
+        {
+          id: `package${currentTime}`,
+          amount: Math.round(finalAmount),
+          products: [
+            {
+              name: '夜市獵人訂單',
+              quantity: 1,
+              price: Math.round(finalAmount),
+            },
+          ],
+        },
+      ],
+      redirectUrls: {
+        confirmUrl: 'http://127.0.0.1:3000/order/orderStep3',
+        cancelUrl: 'http://127.0.0.1:3000/order/orderStep3',
+      },
+    }
+
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:3002/backRoute/linePayBox',
+        linePayRequest,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      console.log('LINE Pay 響應:', response.data)
+      handleLinePayResponse(response)
+      // 這裡可以將頁面導向到 LINE Pay 的支付頁面或處理其他邏輯
+    } catch (error) {
+      console.error('LINE Pay 請求錯誤', error)
+    }
   }
-  // 發送請求 LINE PAY
+
+  //處裡付款(處裡回傳資料)
+  const handleLinePayResponse = (response) => {
+    const {
+      returnCode,
+      returnMessage,
+      info: { paymentUrl, transactionId },
+    } = response.data
+
+    if (returnCode === '0000') {
+      console.log('Success:', returnMessage)
+      console.log('Transaction ID:', transactionId)
+      const urlToOpen = paymentUrl.web
+      window.open(urlToOpen, '_blank')
+    } else {
+      console.error('Error:', returnMessage)
+    }
+  }
 
   // 計算訂單的總金額
   const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
@@ -83,7 +143,7 @@ const DiscountContentItem = ({ items = [] }) => {
   // 折扣後的總金額計算
   const totalDiscountAmount = selectedDiscount ? selectedDiscount.discount : 0
   const pointsReduction = usePoints ? customPoints / 10 : 0 // 使用點數時才計算減少的金額
-  const finalAmount = totalAmount - totalDiscountAmount - pointsReduction
+  const finalAmount = totalAmount - totalDiscountAmount - pointsReduction // 總金額
   // 樣式-------------------------------------------------------
 
   // 商品的左側價格 數量 總價
@@ -272,7 +332,7 @@ const DiscountContentItem = ({ items = [] }) => {
       </div>
       {/* 付款方式 */}
       <div className={styles.paymentMethodBorder}>
-        <h3 className={styles.orderTitle}>【 選擇支付方式 】</h3>
+        <h3 className={styles.orderTitle}>【 請選擇支付方式來結帳 】</h3>
 
         <div className={styles.methodFlex}>
           {/* 711繳費 */}
@@ -295,7 +355,7 @@ const DiscountContentItem = ({ items = [] }) => {
               className={styles.methodImage}
             />
 
-            <p className={styles.paymentText} onClick={handleLinePay}>
+            <p className={styles.paymentText} onClick={handleShowModal}>
               LINE繳費
             </p>
           </div>
@@ -325,7 +385,27 @@ const DiscountContentItem = ({ items = [] }) => {
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>是否使用LINE Pay 支付?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>即將跳轉頁面 ... </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" className={styles.secondary} onClick={handleCloseModal}>
+            取消支付
+          </Button>
+          <Button variant="primary" className={styles.btnPrimary} onClick={() => {
+            handleCloseModal(); // 先關閉 Modal
+            handleLinePay(); // 然後執行支付
+          }}>
+            確認支付
+          </Button>
+        </Modal.Footer>
+      </Modal>  
     </div>
+    
   )
 }
 

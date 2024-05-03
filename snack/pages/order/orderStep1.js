@@ -45,7 +45,7 @@ export default function Order() {
   const [selectedSeller, setSelectedSeller] = useState(null)
   const [groupedItems, setGroupedItems] = useState({})
 
-  // 第一步篩選出的資料
+  // 第一步 篩選出的資料
   const [selectedItems, setSelectedItems] = useState([])
 
   // 第一步 狀態更新
@@ -178,9 +178,7 @@ export default function Order() {
             <div className={styles.previousButton} onClick={handleBack}>
               上一步
             </div>
-            <div className={styles.nextButton} onClick={handleNext}>
-              下一步
-            </div>
+            {step !== 2 && <div className={styles.nextButton} onClick={handleNext}>下一步</div>}
           </div>
           {/* outerFrame */}
         </div>
