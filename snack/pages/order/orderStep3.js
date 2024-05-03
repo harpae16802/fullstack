@@ -99,35 +99,21 @@ export default function OrderF() {
       console.error('清除購物車該筆訂單出錯', error)
     }
   }
-
   return (
     <Section>
-      <div className={styles.outerFrame} style={{ height: '1250px' }}>
+      <div className={styles.outerFrame}>
         <h2 className={styles.orderTitle}>【 訂單明細 】</h2>
-        <div className={styles.stepBorder}>
-          <div className="container">
-            <div className={styles.step1}>1</div>
-            <div className={styles.connectRed}></div>
-            <div className={styles.step2}>2</div>
-            <div className={styles.connectRed}></div>
-            <div className={styles.step2}>3</div>
+        <div className={styles.orderDetailContainer}>
+          <div className={styles.orderHeader}>
+            <p>訂單號碼：{paymentData.orderNumber}</p>
+            <p>訂單日期：{paymentData.orderDate}</p>
           </div>
-          <br />
-          <div className={styles.textContainer}>
-            <div className={styles.step1Text}>訂單資訊</div>
-            <div className={styles.step2Text}>訂單優惠</div>
-            <div className={styles.step3Text}>完成</div>
-          </div>
-        </div>
-
-         {/* 表格 */}
-        <div className={styles.orderBorder}>
-          <div className={styles.orderDetailText}>訂單詳細</div>
-          <table className={styles.productTable}>
+          <table className={styles.orderTable}>
             <thead>
               <tr>
                 <th>產品名稱</th>
                 <th>數量</th>
+                <th>單價</th>
                 <th>總價</th>
               </tr>
             </thead>
@@ -136,34 +122,84 @@ export default function OrderF() {
                 <tr key={index}>
                   <td>{item.product_name}</td>
                   <td>{item.quantity}</td>
+                  <td>{item.price}</td>
                   <td>{item.total_price}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {/* 表格 */}
-          <div className={styles.order4Container}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <p>
-                選擇的折扣:{' '}
-                {paymentData.selectedDiscount
-                  ? paymentData.selectedDiscount.name
-                  : '無'}
-              </p>
-              <p>最終金額: {paymentData.finalAmount}</p>
-              <p>點數折扣: {paymentData.pointsReduction}</p>
-              <p>總金額: {paymentData.totalAmount}</p>
-              <p>剩餘點數: {paymentData.remainingPoints}</p>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div className={styles.nextButton} style={{ paddingTop: '3px' }}>
-            回到主頁
+          <div className={styles.orderFooter}>
+            <p>總金額: {paymentData.totalAmount}</p>
           </div>
         </div>
       </div>
     </Section>
-  )
+  );
+  
+  // return (
+  //   <Section>
+  //     <div className={styles.outerFrame} style={{ height: '1250px' }}>
+  //       <h2 className={styles.orderTitle}>【 訂單明細 】</h2>
+  //       <div className={styles.stepBorder}>
+  //         <div className="container">
+  //           <div className={styles.step1}>1</div>
+  //           <div className={styles.connectRed}></div>
+  //           <div className={styles.step2}>2</div>
+  //           <div className={styles.connectRed}></div>
+  //           <div className={styles.step2}>3</div>
+  //         </div>
+  //         <br />
+  //         <div className={styles.textContainer}>
+  //           <div className={styles.step1Text}>訂單資訊</div>
+  //           <div className={styles.step2Text}>訂單優惠</div>
+  //           <div className={styles.step3Text}>完成</div>
+  //         </div>
+  //       </div>
+
+  //        {/* 表格 */}
+  //       <div className={styles.orderBorder}>
+  //         <div className={styles.orderDetailText}>訂單詳細</div>
+  //         <table className={styles.productTable}>
+  //           <thead>
+  //             <tr>
+  //               <th>產品名稱</th>
+  //               <th>數量</th>
+  //               <th>總價</th>
+  //             </tr>
+  //           </thead>
+  //           <tbody>
+  //             {paymentData.items.map((item, index) => (
+  //               <tr key={index}>
+  //                 <td>{item.product_name}</td>
+  //                 <td>{item.quantity}</td>
+  //                 <td>{item.total_price}</td>
+  //               </tr>
+  //             ))}
+  //           </tbody>
+  //         </table>
+  //         {/* 表格 */}
+  //         <div className={styles.order4Container}>
+  //           <div style={{ display: 'flex', flexDirection: 'column' }}>
+  //             <p>
+  //               選擇的折扣:{' '}
+  //               {paymentData.selectedDiscount
+  //                 ? paymentData.selectedDiscount.name
+  //                 : '無'}
+  //             </p>
+  //             <p>最終金額: {paymentData.finalAmount}</p>
+  //             <p>點數折扣: {paymentData.pointsReduction}</p>
+  //             <p>總金額: {paymentData.totalAmount}</p>
+  //             <p>剩餘點數: {paymentData.remainingPoints}</p>
+  //           </div>
+  //         </div>
+  //       </div>
+
+  //       <div style={{ display: 'flex', justifyContent: 'center' }}>
+  //         <div className={styles.nextButton} style={{ paddingTop: '3px' }}>
+  //           回到主頁
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </Section>
+  // )
 }
