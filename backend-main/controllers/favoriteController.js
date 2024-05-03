@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { date } from '../utils/date.js';
 import { ISOtodate } from "../utils/day.js"
+const productUrl="http://127.0.0.1:3002/public/images/products/"
+const sellerUrl="http://127.0.0.1:3002/public/images/seller/"
 export async function favoriteDel01Product(req, res) {
     const values = req.body.favorite_id;
     const sql = `DELETE FROM favorite_product WHERE favorite_id=?`;
@@ -38,6 +40,7 @@ export async function favoriteSearch01Product(req, res) {
         queryParams.push(`%${product_name}%`); // 将带有 '%' 符号的查询参数添加到数组中
     }
     const sql = `SELECT 
+    p.image_url as image_url,
     fp.created_at, 
     fp.favorite_id, 
     p.product_name, 
@@ -59,6 +62,7 @@ export async function favoriteSearch01Product(req, res) {
         } else {
 
             res2 = res2.map((v, i) => {
+                v.image_url=productUrl+v.image_url;
                 v.created_at = ISOtodate(v.created_at);
                 return v;
             })
@@ -97,6 +101,7 @@ export async function favoriteDel02Store(req, res) {
 export async function favoriteSearch02Store(req, res) { 
     const values = req.body.custom_id || 1;
     const store_name = req.query.search;  
+    console.log(store_name+"ddd")
     let search = ``;
     let queryParams = [];
     if (req.query.search) {
@@ -104,6 +109,7 @@ export async function favoriteSearch02Store(req, res) {
         queryParams.push(`%${store_name}%`); // 将带有 '%' 符号的查询参数添加到数组中
     }
     const sql = `SELECT 
+    s.store_image as store_image,
     fs.created_at, 
     fs.favorite_id, 
     s.store_name AS seller_id, 
@@ -123,6 +129,7 @@ export async function favoriteSearch02Store(req, res) {
             return res.json({ error: "Error in signup query" });
         } else {
             res2 = res2.map((v, i) => {
+                v.store_image=sellerUrl+v.store_image;
                 v.created_at = ISOtodate(v.created_at);
                 return v;
             })

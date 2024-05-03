@@ -3,14 +3,17 @@
 import db from "../utils/db.js";
 import fs from 'fs';
 import { date } from '../utils/date.js';
-import {ISOtodate} from"../utils/day.js"
+import { ISOtodate } from "../utils/day.js"
+const productUrl="http://127.0.0.1:3002/public/images/products/"
+const sellerUrl="http://127.0.0.1:3002/public/images/seller/"
 export async function recordSearch(req, res) {
   const result = { success: false, data: [] };
 
-  const data = "SELECT a.*, b.*, (SELECT p.product_name FROM products p WHERE p.product_id = b.product_id) AS product_name FROM `order_data` a JOIN order_detail b ON a.order_id = b.order_id WHERE a.custom_id = 1;";
+  const data = "SELECT a.*, b.*,p.image_url, p.product_name  FROM order_data a   JOIN order_detail b ON a.order_id = b.order_id JOIN products p ON b.product_id = p.product_id WHERE a.custom_id = 1";
 
   let [rows] = (await db.query(data));
   rows.map((v, i) => {
+    v.image_url=productUrl+v.image_url
     v.payment_date = ISOtodate(v.payment_date)
     return v
   })
@@ -18,7 +21,7 @@ export async function recordSearch(req, res) {
   result.data = rows
   res.send(result)
 }
-export async function myProduct(req, res) { 
+export async function myProduct(req, res) {
   const custom_id = req.body.custom_id || 1;
   const store_name = req.query.search;
   let search = ` a.custom_id = ${custom_id} `;
@@ -35,6 +38,7 @@ export async function myProduct(req, res) {
       SELECT 
       a.*,
       b.*, 
+      p.image_url as image_url,
         s.store_name   AS seller_name,
         p.product_name AS product_name
         FROM 
@@ -62,6 +66,7 @@ export async function myProduct(req, res) {
     let array = [];
 
     rows.forEach(v => {
+      v.image_url=productUrl+v.image_url;
       v.payment_date = ISOtodate(v.payment_date)
       let index = array.findIndex(a => a.length > 0 && a[0].order_id === v.order_id);
       if (index === -1) {
@@ -102,7 +107,8 @@ export async function myProduct2(req, res) {
     a.*,
     b.*, 
      s.store_name AS seller_name,
-    p.product_name  AS product_name
+    p.product_name  AS product_name,
+    p.image_url  AS image_url
       FROM 
           order_data a 
       JOIN 
@@ -121,6 +127,7 @@ export async function myProduct2(req, res) {
         `;
     let [rows] = await db.query(data, [queryParams]);
     rows.map((v, i) => {
+      v.image_url=productUrl+v.image_url;
       v.payment_date = ISOtodate(v.payment_date)
       return v
     })
@@ -137,7 +144,7 @@ export async function myProduct2(req, res) {
   }
 }
 export async function insertProduct(req, res) {
-  let result = { success: false, data: [] }; 
+  let result = { success: false, data: [] };
   const [qr_id] = await max();
   async function max() {
     // 找最大值id

@@ -5,10 +5,14 @@ import Point from '../others/point'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
+import { useIcon } from '@/data/context/ImgContext';
+
 import ticketStyle from '@/styles/ticket.module.css';
 // import Pagination from '@/components/memberS/others/pagination'
 import { ticket02Select01, ticket02Select02,remainTicket } from "@/api/ticket2"
 export default function ticket() {
+let  { previewUrl } = useIcon(); 
+
   const[point,setPoint]=useState([]);
   const[pointMsg,setPointMsg]=useState([]);
   const [tab, settab] = useState(1);
@@ -105,7 +109,7 @@ export default function ticket() {
               return (
                 <div key={i} className={classnames("card-body time-wrap   border-1-bg  ", styles.flexBetween)}>
                   <h5>
-                    <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
+                    <Image src={previewUrl} alt="Description" width={80} height={80} />
                      {v.level_id}&nbsp; 
                      {v.level_count}
                     </h5>
@@ -123,7 +127,7 @@ export default function ticket() {
  
               return (<div className={classnames("card-body   border-1-bg time-wrap  ")}>
                
-                <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
+                <Image  src={previewUrl} alt="Description" width={80} height={80} />
                 <div className="time ms-3" style={{ textAlign: 'center' }}>
                   <h5 className='p16'>{v.level_id} - {v.level_count}<br /></h5>
                 </div>

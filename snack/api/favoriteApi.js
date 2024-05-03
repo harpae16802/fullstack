@@ -4,7 +4,7 @@ const favoriteSearch01Product = (formdata,qs="") => {
     if (qs) {
         url = `${mainApi.API_URL}/favorite/favoriteSearch01Product?search=${qs}`
     } else {
-        url = `${mainApi.API_URL}/favorite/favoriteSearch01Product?search=${qs}`
+        url = `${mainApi.API_URL}/favorite/favoriteSearch01Product`
     }
     return fetch(url, {
         method: 'POST', 
@@ -32,7 +32,7 @@ const favoriteSearch01Product = (formdata,qs="") => {
 }
 
 const favoriteSearch02Store = (formdata,qs="") => {   
-    let url = ""
+    let url = "" 
     if (qs) {
         url = `${mainApi.API_URL}/favorite/favoriteSearch02Store?search=${qs}`
     } else {

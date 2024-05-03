@@ -99,7 +99,7 @@ export default function creditComponts() {
                 {/* flexBetween */}
                 <div className={classNames(styles['border-1-grey'], qrcodeStyles["wrap3"], "mx-0 px-3 py-3", styles.flexBetween)}>
                   <div style={{ textAlign: "start" }} className={classNames(qrcodeStyles["postion-a1"])}>
-                    <Image src="/ch.jpeg" alt="Description" width={90} height={90} />
+                    <Image src={v.image_url} alt="Description" width={90} height={90} />
                   </div>
                   <div className={classNames(qrcodeStyles["postion-a2"])}>
                     <small>{v.payment_date}</small>

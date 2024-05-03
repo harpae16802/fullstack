@@ -11,31 +11,12 @@ export const linePayBox = async (req, res) => {
   let key = '3283f0fb1477b6c0981cf4188a621fee'
   let nonce = uuid()
   let uri = '/v3/payments/request'
-  let body = {
-    amount: 1,
-    currency: 'TWD',
-    orderId: 'order20210921013',
-    packages: [
-      {
-        id: "20210921003",
-        amount: 1,
-        products: [
-          {
-            name: "買不起的iphone13pro",
-            quantity: 1,
-            price: 1
-          }
-        ]
-      }
-    ],
-    redirectUrls: {
-      confirmUrl: "http://127.0.0.1:3000/confitmUrl",
-      cancelUrl: "http://127.0.0.1:3000/cancelUrl"
-    }
-  }
-
+ 
+  const body=req.body;
+  console.log(body)
   let encrypt =  hmacsha256(key + uri + JSON.stringify(body) + nonce, key)
-  console.log(encrypt)
+ 
+
   //這邊蠻特別的，與官方文件相反，應該是此套件的原因。
   let hmacBase64 = Base64.stringify(encrypt)
   console.log(hmacBase64)

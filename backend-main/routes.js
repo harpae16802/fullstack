@@ -10,6 +10,7 @@ import { jsonFormTa, ImgFormTa,getImgFormTa, insertMemberForm,selectCustom, upda
 import { myProduct, myProduct2 ,recordSearch,insertProduct} from "./controllers/qrcodeConstroller.js";
 // 我的最愛
 import { favoriteDel01Product, favoriteSearch01Product,favoriteDel02Store ,favoriteSearch02Store} from "./controllers/favoriteController.js";
+import { linePayBox} from "./controllers/lineController.js";
 // 遊戲紀錄(測試)
 import { gamePassSelect01 } from "./controllers/gameConstroller.js"; 
 import upload from './utils/multer.js';
@@ -75,6 +76,8 @@ app.post("/favorite/favoriteDel01Product", favoriteDel01Product);
 app.post("/favorite/favoriteSearch01Product", favoriteSearch01Product);
 app.post("/favorite/favoriteDel02Store", favoriteDel02Store);
 app.post("/favorite/favoriteSearch02Store", favoriteSearch02Store);
+
 // linePayBox
 app.post("/linePayBox",linePayBox)
+
 export default app;

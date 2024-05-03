@@ -63,17 +63,17 @@ export default function ticket() {
   const getDataFav=async(searchaString="")=>{
     const custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id
     let searchqs={ custom_id: custom_id };
-    if(searchaString){
-      searchqs["search"]=searchaString;
-    }
+    // if(searchaString){
+    //   searchqs["search"]=searchaString;
+    // }
       try {
         // 給商品
-        const fav1 = await favoriteApi.favoriteSearch01Product(searchqs);
+        const fav1 = await favoriteApi.favoriteSearch01Product(searchqs,searchaString);
         if (fav1.success) {
           setProducts(fav1.data.data);
         }
         // 給商家 
-        const fav2 = await favoriteApi.favoriteSearch02Store(searchqs);
+        const fav2 = await favoriteApi.favoriteSearch02Store(searchqs,searchaString);
         if (fav2.success) {
           setStores(fav2.data);
         }
@@ -126,7 +126,7 @@ export default function ticket() {
                     {/* flexBetween */}
                     <div className={classnames(styles['border-1-grey'], favStyle["wrap2"], "mx-0 px-3 py-3", styles.flexBetween)}>
                       <div style={{ textAlign: "start" }} className={classnames(favStyle["postion-a1"])}>
-                        <Image src="/ch.jpeg" alt="Description" width={90} height={90} />
+                        <Image src={v.image_url} alt="Description" width={90} height={90} />
                       </div>
                       <div className={classnames(favStyle["postion-a2"])}>
                         <small>{v.created_at}</small>
@@ -156,8 +156,7 @@ export default function ticket() {
           <div className={classnames("itemgroup item1", styles["mb-0"])}>
             {/* flexBetween */}
             {stores&&stores.map((v, i) => {
-              const handleRemoveProduct = () => {
-                alert("ddd")
+              const handleRemoveProduct = () => { 
                 removeList("store", v.favorite_id);
               };
               return (
@@ -166,7 +165,7 @@ export default function ticket() {
                     {/* flexBetween */}
                     <div className={classnames(styles['border-1-grey'], favStyle["wrap2"], "mx-0 px-3 py-3", styles.flexBetween)}>
                       <div style={{ textAlign: "start" }} className={classnames(favStyle["postion-a1"])}>
-                        <Image src="/ch.jpeg" alt="Description" width={90} height={90} />
+                        <Image src={v.store_image} alt="Description" width={90} height={90} />
                       </div>
                       <div className={classnames(favStyle["postion-a2"])}>
                         <small>{v.created_at}</small>

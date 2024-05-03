@@ -72,13 +72,8 @@ export default function QrcodeselectMobile1() {
               </div>
               <div className={classNames(styles['border-1'], "px-4 py-3 mt-4", styles["rd-2"])}>
                 <Favaite />
-              </div>
-              <Pagination />
-              <div className="d-flex justify-content-center align-items-center">
-                <QrcodeCurrent />
-                <button type="submit" className={classNames("btn  px-5 mx-2", styles["btn-parmary"], styles["rd-30"])}>上一步 </button>
-                <button type="submit" className={classNames("btn  px-5 mx-2", styles["btn-parmary"], styles["rd-30"])}>下一步 </button>
-              </div>
+              </div> 
+              
             </div>
           </div>
         </div>

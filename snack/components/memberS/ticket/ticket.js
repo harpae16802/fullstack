@@ -6,9 +6,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
 import ticketStyle from '@/styles/ticket.module.css';
+// 大頭貼
+import { useIcon } from '@/data/context/ImgContext';
 // import Pagination from '@/components/memberS/others/pagination'
 import { ticket01Select01, ticket01Select02, ticket01Select03, remainTicket } from "@/api/ticket"
 export default function ticket() {
+  let  { previewUrl } = useIcon(); 
   const [tab, settab] = useState(1)
   const router = useRouter(); 
   // 設定tab資料
@@ -115,7 +118,7 @@ export default function ticket() {
             {tab == 1 && data1.map((v, i) => {
               return (<div key={i} className={classnames(" card-body border-1-bg ", ticketStyle["wrap"], styles.flexBetween)}>
                 <div className={classnames(ticketStyle["postion-a1"])}>
-                  <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
+                  <Image  src={previewUrl} alt="Description" width={80} height={80} />
                 </div>
                 <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
                   <h5 className="time" style={{ textAlign: 'center' }}>
@@ -144,7 +147,7 @@ export default function ticket() {
             {tab == 2 && data2.map((v, i) => {
               return (<div key={i} className={classnames(" card-body border-1-bg ", ticketStyle["wrap"], styles.flexBetween)}>
                 <div className={classnames(ticketStyle["postion-a1"])}>
-                  <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
+                  <Image src={previewUrl} alt="Description" width={80} height={80} />
                 </div>
                 <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
                   <h5 className="time" style={{ textAlign: 'center' }}>
@@ -171,7 +174,7 @@ export default function ticket() {
               return (
                 <div v key={i} className={classnames("card card-body border-1-bg", ticketStyle["wrap"], styles.flexBetween)}>
                   <div className={classnames(ticketStyle["postion-a1"])}>
-                    <Image src="/ch.jpeg" alt="Description" width={80} height={80} />
+                    <Image src={previewUrl} alt="Description" width={80} height={80} />
                   </div>
                   <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
                     <h5 className='ms-3 text-center' >

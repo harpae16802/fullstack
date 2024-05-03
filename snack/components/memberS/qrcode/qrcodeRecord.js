@@ -88,7 +88,7 @@ export default function CreditComponts({ propsData }) {
                       {/* flexBetween */}
                       <div className={classNames(styles['border-1-grey'], qrcodeStyles["wrap0"], "mx-0 px-3 py-3")}>
                         <div className={classNames(qrcodeStyles["postion-a1"], "text-center")}>
-                          <Image src="/ch.jpeg" alt="Description" width={90} height={90} />
+                          <Image src={m.image_url} alt="Description" width={90} height={90} />
                         </div>
                         <div className={classNames(qrcodeStyles["postion-a2"])}>
                           <h6 className={classNames(styles['btn-parmary-transparent'])}>{m.product_name}</h6>
