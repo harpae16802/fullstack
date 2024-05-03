@@ -169,7 +169,7 @@ cartRouter.post('/order_data', async (req, res) => {
       throw new Error('Failed to create order.');  // 如果沒有orderId，拋出錯誤
     }
 
-    // 這裡假設你已經有 items 數組在請求體中
+    // 訂單詳細
     const orderDetailsPromises = req.body.items.map(item =>
       db.query(`
           INSERT INTO order_detail (order_id, product_id, purchase_quantity)
@@ -187,23 +187,6 @@ cartRouter.post('/order_data', async (req, res) => {
 });
 
 
-// 建立訂單詳細
-cartRouter.post('/order_detail', async (req, res) => {
-  const { order_id, product_id, purchase_quantity } = req.body;
-  
-  try {
-      const insertQuery = `
-          INSERT INTO order_detail (order_id, product_id, purchase_quantity)
-          VALUES (?, ?, ?)
-      `;
-      await db.query(insertQuery, [order_id, product_id, purchase_quantity]);
-
-      res.status(201).send({ message: '訂單詳情添加成功' });
-  } catch (error) {
-      console.error('添加訂單失敗:', error);
-      res.status(500).send({ error: 'Database error occurred while adding order detail.' });
-  }
-});
 
 // 清空購物車
 cartRouter.put('/cart/clear', async (req, res) => {
