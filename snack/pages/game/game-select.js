@@ -17,7 +17,6 @@ import { useSelectedLevel } from '@/contexts/LevelContext'; // 引入剛剛創�
 
 export default function GameSelect() {
   const router = useRouter() // 使用 useRouter 鉤子獲取路由信息
-  // const [level, setLevel] = useState('')
   const { selectedLevel,setSelectedLevel } = useSelectedLevel(); // 使用選擇的關卡值上下文
   const { auth } = useAuth()
   const startGame = () => {

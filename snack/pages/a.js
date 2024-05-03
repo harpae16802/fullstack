@@ -15,7 +15,7 @@ const BalloonShooterGame = () => {
     { level: 2, levelName: '第二關', time: 20, speed: 2.5, clear: 3000 },
     { level: 3, levelName: '第三關', time: 15, speed: 2, clear: 2000 },
     { level: 4, levelName: '第四關', time: 15, speed: 1.5, clear: 3000 },
-    { level: 5, levelName: '第五關', time: 10, speed: 1.5, clear: 2000 },
+    { level: 5, levelName: '第五關', time: 10, speed: 1.5, clear: 200 },
   ]
 
   // 氣球的設定

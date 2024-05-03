@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FaRegCheckSquare, FaRegWindowClose } from 'react-icons/fa'
+import Link from 'next/link'
 
 export default function GameRule({
   levelName,
@@ -8,15 +9,48 @@ export default function GameRule({
   status,
   score,
   onStartGame, // 新增的 prop，用於開始遊戲
+  onGoToNextLevel, // 新增的前往下一关事件处理函数
+  onRetryLevel, // 新增的再次挑战事件处理函数
   showModal,
   setShowModal,
 }) {
-  // useEffect(() => {
-  //   setShowModal(true)
-  // }, [status])
+
 
   const handleClose = () => {
     setShowModal(false)
+  }
+
+  let characterTalk = ''
+  if (levelName === '第一關') {
+    characterTalk = (
+      <>
+        不好啦！
+        <br />
+        氣球飛上天空了！
+        <br />
+        這才不是普通的射氣球！！
+      </>
+    )
+  } else if (levelName === '第五關') {
+    characterTalk = (
+      <>
+        這次應該是最後一次了吧？
+        <br />
+        之後又來的話......
+        <br />
+        我就要報警啦！
+      </>
+    )
+  } else {
+    characterTalk = (
+      <>
+        又來了！？
+        <br />
+        你們到底要弄飛幾次氣球啊！
+        <br />
+        我要上了！
+      </>
+    )
   }
 
   let content
@@ -41,13 +75,7 @@ export default function GameRule({
         <div className="chara-group">
           <div className="talk-group">
             <div className="triangle"></div>
-            <div className="talk">
-              不好啦！
-              <br />
-              氣球飛上天空了！
-              <br />
-              這才不是普通的射氣球！！
-            </div>
+            <div className="talk">{characterTalk}</div>
           </div>
           <div className="character">
             {' '}
@@ -71,10 +99,14 @@ export default function GameRule({
           <div className="point-text">獲得點數:10點{score}</div>
         </div>
         <div className="buttons">
-          <button type="button" className="btn btn-outline-primary">
+          <Link type="button" className="btn btn-outline-primary" href={'/game/game-select'}>
             回遊戲首頁
-          </button>
-          <button type="button" className="btn btn-primary">
+          </Link>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={onGoToNextLevel}
+          >
             前往下一關
           </button>
         </div>
@@ -105,9 +137,7 @@ export default function GameRule({
         {/* 挑戰成功開始 */}
         <div className="level-text">
           {levelName}挑戰成功
-          <div className="clear-text">
-            恭喜全數通關！挑戰更多成就吧！
-          </div>
+          <div className="clear-text">恭喜全數通關！挑戰更多成就吧！</div>
         </div>
 
         <FaRegCheckSquare className="fa-success" />
@@ -116,18 +146,20 @@ export default function GameRule({
           <div className="point-text">獲得點數:10點{score}</div>
         </div>
         <div className="buttons">
-          <button type="button" className="btn btn-primary">
+          <Link type="button" className="btn btn-primary" href={'/game/game-select'}>
             回遊戲首頁
-          </button>
+          </Link>
         </div>
         {/* 挑戰成功結束 */}
         <div className="chara-group">
           <div className="talk-group">
             <div className="triangle"></div>
             <div className="talk">
-              好累啊.....終於走到這了！
+              好累啊.....
               <br />
-              接下來還要再繼續喔！
+              終於走到這了！
+              <br />
+              好啦！之後又發生就儘管找我！
             </div>
           </div>
           <div className="character">
@@ -152,10 +184,14 @@ export default function GameRule({
           <div className="point-text">挑戰失敗了......{score}點</div>
         </div>
         <div className="buttons">
-          <button type="button" className="btn btn-outline-primary">
+          <Link type="button" className="btn btn-outline-primary" href={'/game/game-select'}>
             回遊戲首頁
-          </button>
-          <button type="button" className="btn btn-primary">
+          </Link>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={onRetryLevel}
+          >
             再挑戰一次
           </button>
         </div>
@@ -203,13 +239,6 @@ export default function GameRule({
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                {/* <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={handleClose}
-                /> */}
               </div>
               <div className="modal-body">{content}</div>
             </div>

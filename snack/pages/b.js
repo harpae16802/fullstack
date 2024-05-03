@@ -11,10 +11,10 @@ const BalloonShooterGame = () => {
   const gameIntervalRef = useRef(null)
 
   // 初始化狀態
-  const { selectedLevel } = useSelectedLevel() // 從上下文中讀取選擇的關卡值
+  const { selectedLevel,setSelectedLevel } = useSelectedLevel() // 從上下文中讀取選擇的關卡值
   const [myScore, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
-  // const [level, setLevel] = useState(selectedLevel)
+
 
   const [showModal, setShowModal] = useState(false)
   const [gameStatus, setGameStatus] = useState('rule') // 初始為顯示遊戲規則
@@ -199,11 +199,29 @@ const BalloonShooterGame = () => {
     })
   }
 
+  // ===== 傳給modal的按鈕功能
   // 當點擊規則模态框上的開始遊戲按鈕時
   const handleStartGame = () => {
-    setShowModal(false) // 關閉規則模态框
+    setShowModal(false) // 關閉modal
     startGame(selLevel) // 開始遊戲
   }
+
+  const goToNextLevel = () => {
+    setGameStatus('rule')
+    const nextLevel = selLevel + 1;
+    setSelectedLevel(nextLevel);
+    const nextLevelConfig = levelConfigs.find((config) => config.level === nextLevel);
+    setCurrentLevelInfo(nextLevelConfig);
+    setShowModal(false); // 關閉modal
+  };
+
+// 再次挑戰的事件處理函式
+const retryLevel = () => {
+  // 重新開始當前關卡
+  startGame();
+  setShowModal(false); // 關閉modal
+};
+
 
   return (
     <div className="game-play-page">
@@ -235,8 +253,9 @@ const BalloonShooterGame = () => {
             time={currentLevelInfo.time}
             clear={currentLevelInfo.clear}
             score={myScore}
-            
-            onStartGame={handleStartGame}
+            onGoToNextLevel={goToNextLevel} // 前往下一關
+            onRetryLevel={retryLevel} // 再次挑戰
+            onStartGame={handleStartGame} //遊戲開始
             showModal={showModal}
             setShowModal={setShowModal}
           />
