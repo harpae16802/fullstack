@@ -11,11 +11,7 @@ export default function ProductItem  ({
    }) {
     return (
       <div  className={styles.recommendProductContainer}>
-        <Image src={imageUrl} width={345} height={225} style={{
-          borderRadius: '70px',
-          border: 'solid 8px #fff',
-          marginTop: '22px',
-        }} />
+        <Image src={imageUrl} width={370} height={250} className={styles.recommendImage}/>
 
         <div style={{ display: 'flex' }}>
 

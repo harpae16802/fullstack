@@ -10,7 +10,7 @@ export default function PopularProduct(props) {
 
   return (
 
-    <div className={styles.popularProduct} style={{ marginRight: '20px' }}>
+    <div className={styles.popularProduct}>
 
       <div className={styles.popularInfo}>
           {/* 火焰icon */}

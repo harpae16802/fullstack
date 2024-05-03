@@ -26,7 +26,7 @@ export default function FilterOptions () {
 {/* '商品篩選'視窗:外框 */}
 
 
-<ImCross type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{color: '#A32C2D'}}  className={styles.filterCross}
+<ImCross type="button"  data-bs-dismiss="modal" aria-label="Close" style={{color: '#A32C2D'}}  className={`btn-close ${styles.filterCross}`}
 />
 {/* <ImCross className={styles.filterCross} /> */}
 
@@ -39,10 +39,10 @@ export default function FilterOptions () {
 <div className={styles.filterText}>走路10分鐘內</div>
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>走路10分鐘內</div>
+<div className={styles.filterText}>走路20分鐘內</div>
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>走路10分鐘內</div>
+<div className={styles.filterText}>走路30分鐘內</div>
 
 </div>
 
@@ -55,10 +55,10 @@ export default function FilterOptions () {
 <div className="d-flex">
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>4.5分以上</div>
+<div className={styles.filterText}>3.5分以上</div>
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>4.5分以上</div>
+<div className={styles.filterText}>4分以上</div>
 
 <div className={styles.filterCircle}></div>
 <div className={styles.filterText}>4.5分以上</div>

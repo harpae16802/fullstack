@@ -182,6 +182,20 @@ useEffect(() => {
   }, [])
 
 
+  //swiper
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 576);
+    };
+
+    handleResize(); // 確保初始狀態正確
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
 
   return (
     <>
@@ -216,7 +230,7 @@ useEffect(() => {
         <div className="col-2"><CategoryItem /></div>
         <div className="col-2"><CategoryItem /></div>
         <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
+        <div className="col-2"><Caterun dev>
 
         </div>
 
@@ -228,9 +242,26 @@ useEffect(() => {
       <FilterOptions />
 
       {/* 熱門商品 */}
-    <div className="container-fluid row">
 
-      <div className={`col ${styles.popularContainer}`}>
+      <Swiper
+      spaceBetween={50}
+      slidesPerView={3}
+      onSlideChange={() => console.log('slide change')}
+      onSwiper={(swiper) => console.log(swiper)}
+    >
+      <SwiperSlide>
+
+        
+      </SwiperSlide>
+
+
+    </Swiper>
+
+
+      
+    <div className={`container-fluid  ${styles.popularDisplay}`}>
+
+      <div className={`col justify-content-center ${styles.popularContainer}`}>
 
         {/* 熱門產品 */}
         {popularProducts && popularProducts.map((product, index) => (
@@ -259,36 +290,7 @@ useEffect(() => {
         </div>
       ))}
 
-{/* 
-        <ul>
-        {products.map(product => (
-          <li key={product.product_id}>
-            <div>{product.product_name}</div>
-            <img src={product.img_url} alt={product.product_name} />
-            <div>Seller ID: {product.seller_id}</div>
-          </li>
-        ))}
-      </ul> */}
 
-
-
-          {/* <Swiper
-          spaceBetween={50}
-          slidesPerView={3}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-        >
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          <SwiperSlide className="col-12 col-md-3"><PopularProduct /></SwiperSlide>
-          
-          </Swiper> */}
-
-          {/* <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div>
-          <div className="col-12 col-md-3"><PopularProduct /></div> */}
 
           </div>
 
@@ -365,20 +367,14 @@ useEffect(() => {
 
 
 
-    {/* 第二行 */}
-  
-
-
-
     
-    {/* 第三行 */}
   
   
 
 
 
 
-        <div className='col' style={{marginTop:'20px',marginLeft:'48px'}}>
+        <div className={`col ${styles.discountContainer}`} >
           {/* 優惠資訊 */}
 
           <div className='d-flex row'>
