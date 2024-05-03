@@ -10,7 +10,7 @@ export default function Order() {
         <Section>
         {/* 最外層容器 */}
         <div class={styles.outerFrame } style={{height:'1250px'}}>
-            <h2 className={styles.orderTitle}>【 結帳頁面 】</h2>
+            <h2 className={styles.orderTitle}>【 訂單明細 】</h2>
 
             {/* 步驟紅色邊框 */}
             <div className={styles.stepBorder}>
