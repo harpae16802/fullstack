@@ -35,7 +35,7 @@ const uploadType2 = multer({ storage: storageType2 });
 // 方案1
 router.post("/uploadType1", uploadType1.single("adImage"), async (req, res) => {
   const sellerId = req.body.seller_id;
-  const adType = 2;
+  const adType = 1;
   if (!sellerId) {
     return res.status(400).json({
       status: "error",

@@ -9,12 +9,14 @@ import {
 } from '../../pages/seller-basic-data/config'
 import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
+import { usePayment } from '@/contexts/PaymentContext';
 import { Modal, Button } from 'react-bootstrap'
 
 const DiscountContentItem = ({ items = [] }) => {
   // 拿取custom_id
   const { auth } = useAuth()
   const customId = auth.custom_id
+  const [ paymentData, setPaymentData ] = useState([]);
 
   // 折扣
   const [discounts, setDiscounts] = useState([])
@@ -131,6 +133,18 @@ const DiscountContentItem = ({ items = [] }) => {
       console.log('Success:', returnMessage)
       console.log('Transaction ID:', transactionId)
       const urlToOpen = paymentUrl.web
+      
+      // setPaymentData({
+      //   items: [...items],  
+      //   selectedDiscount,
+      //   finalAmount,
+      //   pointsReduction,
+      //   totalAmount,
+      //   remainingPoints,
+      // });
+      // console.log(paymentData)
+      // localStorage.setItem('paymentData', JSON.stringify(paymentData));
+
       window.open(urlToOpen, '_blank')
     } else {
       console.error('Error:', returnMessage)
@@ -144,6 +158,7 @@ const DiscountContentItem = ({ items = [] }) => {
   const totalDiscountAmount = selectedDiscount ? selectedDiscount.discount : 0
   const pointsReduction = usePoints ? customPoints / 10 : 0 // 使用點數時才計算減少的金額
   const finalAmount = totalAmount - totalDiscountAmount - pointsReduction // 總金額
+  const remainingPoints = customPoints - Math.round(finalAmount * 10) // 這是扣除完成的點數要更新到後端
   // 樣式-------------------------------------------------------
 
   // 商品的左側價格 數量 總價
@@ -181,6 +196,21 @@ const DiscountContentItem = ({ items = [] }) => {
   const discountNameStyle = {
     color: '#FA541C',
   }
+
+
+  const updatePaymentData = () => {
+    console.log('測試按鈕')
+    setPaymentData({
+      items: [...items],
+      selectedDiscount: { name: "特殊折扣", discount: 100 },
+      finalAmount: 50,
+      pointsReduction: 100,
+      totalAmount: 1000,
+      remainingPoints: 900,
+    });
+    console.log(paymentData)
+    localStorage.setItem('paymentData', JSON.stringify(paymentData));
+  };
 
   // 樣式-------------------------------------------------------
 
@@ -330,6 +360,11 @@ const DiscountContentItem = ({ items = [] }) => {
           </div>
         </div>
       </div>
+
+      {/* 測試 */}
+      <button type='button' onClick={()=>{updatePaymentData()}}>測試按鈕</button>
+      {/* 測試 */}
+
       {/* 付款方式 */}
       <div className={styles.paymentMethodBorder}>
         <h3 className={styles.orderTitle}>【 請選擇支付方式來結帳 】</h3>

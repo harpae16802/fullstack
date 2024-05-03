@@ -6,6 +6,7 @@ import { CustomContextProvider } from '@/contexts/custom-context'
 import { MiniloginProvider } from '@/contexts/minilogin-context'
 import { LevelProvider } from '@/contexts/LevelContext'
 import { MapProvider } from '@/contexts/mapContext'
+import { PaymentProvider } from '../contexts/PaymentContext';
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
 import { useEffect } from 'react'
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }) {
     ))
 
   return (
+    <PaymentProvider>
     <CustomContextProvider>
       <SellerProvider>
         <MapProvider>
@@ -39,6 +41,7 @@ function MyApp({ Component, pageProps }) {
               <LevelProvider>
                 {getLayout(<Component {...pageProps} />)}
                 {/* <script
+             
                 src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
                 integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
                 crossorigin="anonymous"
@@ -49,6 +52,7 @@ function MyApp({ Component, pageProps }) {
         </MapProvider>
       </SellerProvider>
     </CustomContextProvider>
+    </PaymentProvider>
   )
 }
 
