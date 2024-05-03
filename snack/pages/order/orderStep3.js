@@ -1,125 +1,154 @@
+// pages/order/orderStep3.js 訂單詳細頁面
 import Section from '@/components/layout/section'
-import React, { createContext, useContext } from 'react'
+import React , {useState,useEffect} from 'react'
 import styles from '@/styles/Order.module.css'
+import axios from 'axios'
 import ConsumerInfo from '@/components/Order/consumerInfo'
+import { usePayment } from '@/contexts/PaymentContext'
 import OrderLastCheck from '@/components/Order/orderLastCheck'
+import { CARTITEM, IMGROUTER } from '../seller-basic-data/config'
 
-export default function Order() {
-  return (
-    <>
-        <Section>
-        {/* 最外層容器 */}
-        <div class={styles.outerFrame } style={{height:'1250px'}}>
-            <h2 className={styles.orderTitle}>【 訂單明細 】</h2>
+export default function OrderF() {
 
-            {/* 步驟紅色邊框 */}
-            <div className={styles.stepBorder}>
-                
-                {/* 步驟圓圈&長條 */}
-            <div className="container">
-                <div className={styles.step1}>1</div>
-                <div className={styles.connectRed}></div>
-                <div className={styles.step2}>2</div>
-                <div className={styles.connectRed}></div>
-                <div className={styles.step2}>3</div>
-            </div>
+  // 定義要接收的組件狀態 
+  const [paymentData, setPaymentData] = useState({
+    items: [],
+    selectedDiscount: null,
+    finalAmount: 0,
+    pointsReduction: 0,
+    totalAmount: 0,
+    remainingPoints: 0,
+  });
 
-                <br />
+  // 拿取 第二部結帳的 組件的資料 
+  useEffect(() => {
+    const data = localStorage.getItem('paymentData');
+    if (data) {
+      const parsedData = JSON.parse(data);
+      setPaymentData(parsedData);
+      if (parsedData.items && parsedData.items.length > 0) { 
+        handleOrderCheckout(
+          parsedData.items,
+          parsedData.customId, 
+          [parsedData.selectedDiscount], 
+          parsedData.pointsReduction
+        );
+      }
+    }
+  }, []);
 
-                {/* 步驟文字 */}
-                <div className={styles.textContainer}>
-                  <div className={styles.step1Text}>訂單資訊</div>
-                  <div className={styles.step2Text}>訂單優惠</div>
-                  <div className={styles.step3Text}>完成</div>
-                </div>
-               
-          </div>
-
-           {/* 訂單詳細 紅色邊框 */}
-          <div className={styles.orderBorder}>
-
-          <div className={styles.orderDetailText}>訂單詳細</div>
-
-           {/* 訂單詳細 外層容器 */}
-            <div className={styles.order4Container}>
-            
-             {/*買家資訊 文字 */}
   
-              {/*買家資訊*/}
-              <ConsumerInfo
-                account = "Test123"
-                orderId = "20240206280"
-                orderDate = "2024-02-06"
-                totalSum = "2800"
-              />
+// 將數據注入資料庫 order_data
+const handleOrderCheckout = async (items, customId, discounts, pointsUsed) => {
+  try {
+    // 生成隨機訂單編號
+    const orderNumber = Math.floor(100000 + Math.random() * 900000); // 生成 6 位數的隨機數字
+
+    // 其他訂單相關數據
+    const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0);
+    const discountId = discounts.length ? discounts[0].id : null;
+
+    // 發送訂單信息到 order_data
+    const orderDataResponse = await axios.post(`${CARTITEM}order_data`, {
+      custom_id: customId,
+      seller_id: items[0].seller_id,
+      order_number: orderNumber,
+      discount_category_id: discountId,
+      consume_gamepoint: pointsUsed ? pointsUsed : 0,
+      total_sum: totalAmount
+    });
+
+    const orderId = orderDataResponse.data.order_id;
+
+    // 為每個產品創建訂單詳細信息
+    const orderDetailsPromises = items.map(item =>
+      axios.post(`${CARTITEM}order_detail`, {
+        order_id: orderId,
+        product_id: item.product_id,
+        purchase_quantity: item.quantity
+      })
+    );
+
+    await Promise.all(orderDetailsPromises);
+    console.log('訂單提交成功！');
+
+    // 清除 localStorage 中的 paymentData
+    localStorage.removeItem('paymentData');
+
+    // 在成功下單後清除購物車中的商品
+    await handleClearCart(customId, items); 
+
+  } catch (error) {
+    console.error('提交訂單時出現錯誤：', error);
+  }
+};
 
 
-              {/* 訂單詳細:列 */}
-            <div style={{display:'flex',flexDirection:'column'}}>
-                {/* 訂單詳細:行 */}
-                <div style={{display:'flex',justifyContent:'space-between',marginTop:'10px'}}>
-                    <div className={styles.orderInformation1}>商品名稱</div>
-                    <div className={styles.orderInformation2}>商品數量</div>
-                    <div className={styles.orderInformation2} >商品價格</div>
-                    <div className={styles.orderInformation2}>商品總價</div>
-                </div>
 
-                <OrderLastCheck
-                   product = "雞排"
-                   number = "5"
-                   price = "120"
-                   total = "600"
-                />
+  // 刪除購物車中的商品
+  const handleClearCart = async (customId, items) => {
+    try {
+      // 從商品中提取產品ID
+      const productIds = items.map(item => item.product_id); 
+      await axios.put(`${CARTITEM}cart/clear`, {
+        custom_id: customId,
+        product_ids: productIds,
+      });
+      console.log('購物車已經成功清除');
+    } catch (error) {
+      console.error('清除購物車該筆訂單出錯', error);
+    }
+  };
+  
+    
+    
 
-                <OrderLastCheck
-                   product = "雞排"
-                   number = "5"
-                   price = "120"
-                   total = "600"
-                />
-
-                  <OrderLastCheck
-                   product = "雞排"
-                   number = "5"
-                   price = "120"
-                   total = "600"
-                />
-
-                  <OrderLastCheck
-                   product = "雞排"
-                   number = "5"
-                   price = "120"
-                   total = "600"
-                />
-
-                  <OrderLastCheck
-                   product = "雞排"
-                   number = "5"
-                   price = "120"
-                   total = "600"
-                />
-
-
-            </div>
-
-              {/* orderContainer */}
-            </div>
-
- 
-            {/* orderBorder */}
+  
+  return (
+    <Section>
+      <div className={styles.outerFrame} style={{ height: '1250px' }}>
+        <h2 className={styles.orderTitle}>【 訂單明細 】</h2>
+        <div className={styles.stepBorder}>
+          <div className="container">
+            <div className={styles.step1}>1</div>
+            <div className={styles.connectRed}></div>
+            <div className={styles.step2}>2</div>
+            <div className={styles.connectRed}></div>
+            <div className={styles.step2}>3</div>
           </div>
-          
-
-       {/* '查看商品 繼續選購'按鈕 */}
-          <div style={{display:'flex',justifyContent:'center'}}>
-            <div className={styles.previousButton}>查看商品</div>
-            <div className={styles.nextButton} style={{paddingTop:'3px'}}>繼續選購</div>
+          <br />
+          <div className={styles.textContainer}>
+            <div className={styles.step1Text}>訂單資訊</div>
+            <div className={styles.step2Text}>訂單優惠</div>
+            <div className={styles.step3Text}>完成</div>
           </div>
-
-          {/* outerFrame */}
         </div>
 
-        </Section>
-    </>
+        <div className={styles.orderBorder}>
+          <div className={styles.orderDetailText}>訂單詳細</div>
+          <div className={styles.order4Container}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <p>
+                  選擇的折扣:{' '}
+                  {paymentData.selectedDiscount
+                    ? paymentData.selectedDiscount.name
+                    : '無'}
+                </p>
+                <p>最終金額: {paymentData.finalAmount}</p>
+                <p>點數折扣: {paymentData.pointsReduction}</p>
+                <p>總金額: {paymentData.totalAmount}</p>
+                <p>剩餘點數: {paymentData.remainingPoints}</p>
+              </div>
+            </div>
+          
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className={styles.nextButton} style={{ paddingTop: '3px' }}>
+            回到主頁
+          </div>
+        </div>
+      </div>
+    </Section>
   )
 }

@@ -136,7 +136,7 @@ export default function Order() {
             <br />
             {/* 訂單詳細 外層容器 */}
             <div className={styles}>
-              {step === 3 && <CheckoutProduct />}
+              {/* {step === 3 && <CheckoutProduct />} */}
             </div>
             {/* 優惠加購*/}
 

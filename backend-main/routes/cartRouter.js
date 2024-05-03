@@ -151,7 +151,77 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
     }
 });
 
-// 
+// 建立訂單
+cartRouter.post('/order_data', async (req, res) => {
+  // 提取請求體數據
+  const { custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum } = req.body;
+
+  try {
+    // 插入訂單數據到 order_data 表
+    const [orderResult] = await db.query(`
+        INSERT INTO order_data (custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `, [custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum]);
+
+    const orderId = orderResult.insertId;
+
+    if (!orderId) {
+      throw new Error('Failed to create order.');  // 如果沒有orderId，拋出錯誤
+    }
+
+    // 這裡假設你已經有 items 數組在請求體中
+    const orderDetailsPromises = req.body.items.map(item =>
+      db.query(`
+          INSERT INTO order_detail (order_id, product_id, purchase_quantity)
+          VALUES (?, ?, ?)
+      `, [orderId, item.product_id, item.quantity])
+    );
+
+    await Promise.all(orderDetailsPromises);
+
+    res.status(201).send({ message: '訂單創建成功', order_id: orderId });
+  } catch (error) {
+    console.error('創建訂單錯誤：', error);
+    res.status(500).send({ error: 'Database error occurred while creating order.' });
+  }
+});
+
+
+// 建立訂單詳細
+cartRouter.post('/order_detail', async (req, res) => {
+  const { order_id, product_id, purchase_quantity } = req.body;
+  
+  try {
+      const insertQuery = `
+          INSERT INTO order_detail (order_id, product_id, purchase_quantity)
+          VALUES (?, ?, ?)
+      `;
+      await db.query(insertQuery, [order_id, product_id, purchase_quantity]);
+
+      res.status(201).send({ message: '訂單詳情添加成功' });
+  } catch (error) {
+      console.error('添加訂單失敗:', error);
+      res.status(500).send({ error: 'Database error occurred while adding order detail.' });
+  }
+});
+
+// 清空購物車
+cartRouter.put('/cart/clear', async (req, res) => {
+  const { custom_id, product_ids } = req.body;
+
+  try {
+      const placeholders = product_ids.map(() => '?').join(',');
+      await db.query(`
+          DELETE FROM cart
+          WHERE custom_id = ? AND product_id IN (${placeholders})
+      `, [custom_id, ...product_ids]);
+
+      res.send({ message: '購物車已清空' });
+  } catch (error) {
+      console.error('清空購物車錯誤：', error);
+      res.status(500).send({ error: 'Database error occurred while clearing cart.' });
+  }
+});
 
 
 export default cartRouter;
