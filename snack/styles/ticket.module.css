@@ -1,0 +1,81 @@
+
+.ticket .wrap2 {
+  display: flex;
+  flex-direction: row;
+}
+@media (max-width: 800px) {
+  .ticket h5{
+    font-size: 16px;
+  }
+  
+  .ticket .just-end{
+    justify-content: end !important;
+  }
+
+  .ticket ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 !important;
+  }
+  .ticket ul li {
+    width: 100%;
+  }
+
+  
+  .px-5 {
+    padding: 0 !important;
+  }
+
+  .wrap {
+    display: grid;
+    grid-template-columns: auto 0.1fr auto;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'a1 . a2'
+      'a1 .  a3';
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .ticket .wrap2 {
+    display: flex;
+    flex-direction: column !important;
+  }
+  
+  .postion-a1 {
+    grid-area: a1;
+  }
+ 
+  .postion-a6 {
+    grid-area: a6;
+  }
+  .postion-a2 {
+    grid-area: a2;
+  }
+ 
+  .postion-a3 {
+    grid-area: a3; 
+    justify-self: center;
+    align-self: center;
+  }
+  .postion-a3 div{ 
+
+    text-align:right;
+  }
+  .postion-a4 { 
+    text-align: end;
+    grid-area: a4;
+  }
+  .ticket  span{
+    text-align: center;
+    font-size: 12px;
+  }
+  .ticket h1 span{
+    text-align: center;
+    font-size: 25px;
+  }
+}

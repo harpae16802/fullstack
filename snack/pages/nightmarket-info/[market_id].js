@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+// 套件
+import Slider from 'react-slick'
 // 元件
 import SectionNopaddin from '@/components/layout/section-nopaddin'
 import SearchBar from '@/components/common/search-bar'
@@ -15,6 +17,8 @@ import {
   API_SERVER,
 } from '@/components/config/api-path'
 // 樣式
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import style from './nightmarket-info.module.scss'
 
 export default function NightmarketInfo({ initialMarketData }) {
@@ -24,6 +28,18 @@ export default function NightmarketInfo({ initialMarketData }) {
   const [featuredShops, setFeaturedShops] = useState([]) // 夜市店家圖片(3)
   const [allShops, setAllShops] = useState([]) // 所有商家的數據
   const [banner, setBanner] = useState([]) // ad banner
+
+  var settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 8000,
+    autoplaySpeed: 8000,
+    cssEase: 'linear',
+    pauseOnDotsHover: true,
+  }
 
   // 食物分類，寫死
   const categories = [
@@ -151,21 +167,29 @@ export default function NightmarketInfo({ initialMarketData }) {
 
     fetch(`${MARKET}/ad/banner`)
       .then((r) => r.json())
-      .then(async (data) => {
-        const fixedPath = data[0].image_path.replace(/\\/g, '/')
-        setBanner(fixedPath)
-        console.log(fixedPath)
+      .then((data) => {
+        const fixedPaths = data.map((ad) => ({
+          ...ad,
+          image_path: ad.image_path.replace(/\\/g, '/'),
+        }))
+        setBanner(fixedPaths)
+        console.log(fixedPaths)
       })
   }, [])
 
   return (
     <SectionNopaddin>
-      <img
-        // src={banner}
-        src="/images/shop-banner01.jpg"
-        alt="bannerAd"
-        className={style.bannerAd}
-      />
+      <Slider {...settings} className={style.bannerAd}>
+        {banner.map((v, i) => (
+          <div key={i}>
+            <img
+              src={`${API_SERVER}/public/${v.image_path}`}
+              alt={`Image ${i + 1}`}
+              className={style.bannerImg}
+            />
+          </div>
+        ))}
+      </Slider>
 
       <SearchBar />
 

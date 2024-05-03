@@ -6,11 +6,7 @@ import L from 'leaflet'
 // context
 import { useMapContext } from '@/contexts/mapContext'
 // fetch 網址
-import {
-  MARKET_DATA,
-  IMAGES_NIGHT,
-  API_SERVER,
-} from '@/components/config/api-path'
+import { MARKET_DATA, API_SERVER } from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -29,7 +25,7 @@ function MapUpdater({ mapPosition }) {
       const popupContent = `
       <div class=${style.card}>
       <img
-        src="${IMAGES_NIGHT}/${details.market_img}"
+        src="${API_SERVER}/${details.market_img}"
         alt=${details.market_img}
         class=${style.img}
       />

@@ -189,6 +189,66 @@ body {
     }
   }
 
+  // 普通Modal
+  .nomal-modal {
+    .modal {
+      @media (max-width: 992px) {
+        width: 100%;
+      }
+      --bs-modal-width: 400px;
+    }
+    .modal-header {
+      @media (max-width: 992px) {
+        padding: 10px;
+      }
+      border-bottom: none;
+    }
+  
+    .modal-dialog {
+      @media (min-width: 576px) {
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: -5%;
+        overflow: visible;
+      }
+      margin-right: 30px;
+      margin-left: 30px;
+      overflow: visible;
+    }
+  
+   .btn-close {
+      --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a32c2d'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e");
+      --bs-btn-close-opacity: 1;
+    }
+    .modal-body {
+      @media (max-width: 992px) {
+        gap: 25px;
+        padding-bottom: 40px;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding-bottom: 60px;
+      gap: 35px;
+
+      .buttons {
+        @media (max-width: 992px) {
+          flex-direction: column;
+          width: 180px;
+          align-self: stretch;
+          margin: auto;
+        }
+        display: flex;
+        flex-direction: row;
+        gap: 17px;
+      }
+    }
+  }
+
+
+
+
   // 以下是layout設定
   .my-container-fluid {
     @media (max-width: 992px) {
@@ -551,7 +611,7 @@ body {
           border: $primary solid 10px;
           border-top: none;
           border-radius: 30px 30px 0px 0px;
-          padding: 15px 20px 25px 20px;
+          padding: 10px 20px 20px 20px;
         }
         background-color: $secondary;
         border-radius: 70px 70px 0px 0px;
@@ -573,22 +633,56 @@ body {
           font-size: 1.2rem;
           font-weight: bolder;
           line-height: normal;
+          
         }
 
-        .news {
+        .newsup{
           display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          .vol{
+            @media (max-width: 992px) {
+              display: none;
+            }
+            margin-left: 5px;
+            font-size: 25px;
+          }
+        }
+        .news {
           a {
             @media (max-width: 992px) {
               font-size: 12px;
             }
-            width: 350px;
-            margin-left: 1.2rem;
             text-wrap: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             color: $black;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            p {
+              @media (max-width: 992px) {
+                line-height: 12px;
+              }
+              margin: 0;
+              line-height: 16px;
+            }:hover{
+              color: $primary;
+            }
           }
+        }
+        .slick-arrow {
+          display: none !important;
+        }
+        .slick-slide {
+          @media (max-width: 992px) {
+            padding-right: 12px;
+          // padding-right: 6px;
+          }
+          padding-right: 16px;
+
         }
       }
 
@@ -643,11 +737,57 @@ body {
       }
       .section-index.index-nop.discount {
         @media (max-width: 992px) {
-          height: 40vh;
+          // height: 40vh;
         }
         padding: 0px;
-        // padding: 80px 0px 150px 0px;
-        // height: 80vh;
+        position: relative;
+
+        .bgc-tapi {
+          @media (max-width: 992px) {
+            top: -10px;
+            left: -30px;
+            width: 170px;
+            height: 170px;
+          }
+          position: absolute;
+          top: -70px;
+          left: -80px;
+          z-index: 0;
+          overflow: hidden;
+          height: 520px;
+          width: 500px;
+          .tapioca {
+            @media (max-width: 992px) {
+              width: 170px;
+              height: 170px;
+              opacity: 0.1;
+            }
+            transform: rotate(-15deg);
+            opacity: 0.06;
+          }
+        }
+        .bgc-tofu {
+          @media (max-width: 992px) {
+            bottom: 10px;
+            right: 0px;
+            width: 160px;
+          }
+          position: absolute;
+          bottom: -150px;
+          right: 0px;
+          z-index: 0;
+          width: 600px;
+          overflow: hidden;
+          .tofu {
+            @media (max-width: 992px) {
+              width: 180px;
+              height: 180px;
+              opacity: 0.1;
+            }
+            transform: rotate(5deg);
+            opacity: 0.07;
+          }
+        }
       }
       // 一般的section
       .section {
@@ -811,7 +951,7 @@ body {
               text-align: end;
               gap: 10px;
             }
-            justify-content: end;
+            justify-content: flex-end;
             .footer-item {
               @media (max-width: 992px) {
                 padding: 0;

@@ -35,7 +35,7 @@ const uploadType2 = multer({ storage: storageType2 });
 // 方案1
 router.post("/uploadType1", uploadType1.single("adImage"), async (req, res) => {
   const sellerId = req.body.seller_id;
-  const adType = 2;
+  const adType = 1;
   if (!sellerId) {
     return res.status(400).json({
       status: "error",
@@ -44,7 +44,7 @@ router.post("/uploadType1", uploadType1.single("adImage"), async (req, res) => {
   }
 
   if (req.file) {
-    const imagePath = path.join("adimg/type1", req.file.filename); 
+    const imagePath = path.join("adimg/type1", req.file.filename);
     try {
       const result = await db.query(
         "INSERT INTO advertisements (seller_id, image_path, ad_type) VALUES (?, ?, ?)",
@@ -81,7 +81,7 @@ router.post("/uploadType2", uploadType2.single("adImage"), async (req, res) => {
   }
 
   if (req.file) {
-    const imagePath = path.join("adimg/type2", req.file.filename); 
+    const imagePath = path.join("adimg/type2", req.file.filename);
 
     try {
       const result = await db.query(

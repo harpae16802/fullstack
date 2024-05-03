@@ -1,5 +1,6 @@
 import Section from '@/components/layout/section'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import useFirebase from '@/hooks/use-firebase'
 import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import Link from 'next/link'
@@ -7,30 +8,72 @@ import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { SIGN_UP_POST } from '@/components/config/api-path'
+import { SIGN_UP_POST, GOOGLE_LOGIN_POST } from '@/components/config/api-path'
 import { z } from 'zod'
-
-// 用在分頁的icon
-import {
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-  FaAngleLeft,
-  FaAngleRight,
-} from 'react-icons/fa'
+import toast, { Toaster } from 'react-hot-toast'
 
 // 註冊檢查用
 const schemaEmail = z.string().email({ message: '請填寫正確的E-MAIL格式' })
 const schemaPwd = z.string().min(6, { message: '請填寫正確的密碼格式' })
 
+// //google使用
+// const emptyAuth = {
+//   custom_id: 0,
+//   account: '',
+//   google_uid: '',
+//   token: '',
+// }
+
+// // 設定 localStorage 的key
+// const storageKey = 'Nightmarket-auth'
+
 export default function LoginCustom() {
   const router = useRouter()
+
   // 會員登入登出的勾子
-  const { auth, login, logout } = useAuth()
+  const { auth, login, logout, callbackGoogleLoginRedirect,isLoginByGoogle } = useAuth()
 
   // 處理手機板的註冊登入的頁面呈現
   const { selectedContent, handleLinkClick } = useContext(MiniloginContext)
+  
 
-  // 處理必填欄位的CSS
+  // ===== Google的註冊與登入
+  // const [googleLoginSuccess, setGoogleLoginSuccess] = useState(false);
+  // const [googleAuth, setGoogleAuth] = useState(emptyAuth)
+
+  //loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
+  const { logoutFirebase, loginGoogleRedirect, initApp, loginGoogle } =
+    useFirebase()
+
+  // const callbackGoogleLoginRedirect = async (providerData) => {
+  //   console.log(providerData)
+
+  //   // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
+  //   const res = await fetch(GOOGLE_LOGIN_POST, {
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     method: 'POST',
+  //     body: JSON.stringify(providerData),
+  //   })
+
+  //   const result = await res.json()
+
+  //   if (result.success) {
+  //     // 把 token 記錄在 localStorage
+  //     localStorage.setItem(storageKey, JSON.stringify(result.data))
+  //     setGoogleAuth(result.data)
+  //     setTimeout(() => {
+  //       router.push('/')
+  //     }, 1500)
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // } //callback
+
+  // ===== 處理登入註冊的必填欄位的CSS
   const [isAccountEmpty, setIsAccountEmpty] = useState(false) // 帳號狀態
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false) // 密碼狀態
 
@@ -84,8 +127,6 @@ export default function LoginCustom() {
     password3: '',
     password4: '',
   })
-
-  //
 
   // 多欄位共用事件函式
   const handleFieldChange = (e) => {
@@ -166,43 +207,55 @@ export default function LoginCustom() {
     })
     const result = await r.json()
     if (result.success) {
-      //
-      router.push(`/`)
+      toast.success('註冊成功！將導向登入頁', {
+        style: {
+          color: '#a32c2d',
+        },
+        iconTheme: {
+          primary: '#29a21e',
+          secondary: '#ffffff',
+        },
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
     } else {
-      //
       alert('資料新增發生錯誤')
     }
-
-    //   const r = await fetch(AB_ADD_POST, {
-    //     method: "POST",
-    //     body: JSON.stringify(myForm),
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   const result = await r.json();
-    //   console.log({ result });
-    //   if (result.success) {
-    //     //
-    //     router.push(`/address-book`);
-    //   } else {
-    //     //
-    //     alert("資料新增發生錯誤");
-    //   }
-    // };
-    // const res = await fetch('http://localhost:3005/api/member', {
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   method: 'POST',
-    //   body: JSON.stringify(user),
-    // })
-
-    // const data = await res.json()
-
-    // console.log(data)
   }
+
+  // =====google的部分
+  // useEffect(() => {
+  //   if (isLoginByGoogle) {
+  //     toast.success('歡迎您！登入成功', {
+  //       style: {
+  //         color: '#a32c2d',
+  //       },
+  //       iconTheme: {
+  //         primary: '#29a21e',
+  //         secondary: '#ffffff',
+  //       },
+  //     })
+  //     setTimeout(() => {
+  //       router.push('/')
+  //     }, 2000)
+  //   }
+  // }, [isLoginByGoogle]);
+
+  useEffect(() => {
+    initApp(callbackGoogleLoginRedirect)
+  }, [])
+  // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
+  // useEffect(() => {
+  //   initApp(callbackGoogleLoginRedirect)
+  // }, [])
+
+  // useEffect(() => {
+  //   // 如果已經登入，將用戶導向首頁
+  //   if (auth.custom_id) {
+  //     router.push('/')
+  //   }
+  // }, [auth, router])
 
   return (
     <>
@@ -388,7 +441,9 @@ export default function LoginCustom() {
                       </button>
                     </form>
 
-                    <button className="google-login mt-4">
+                    <button className="google-login mt-4" onClick={() => {
+                        loginGoogleRedirect()
+                      }}>
                       <Image
                         src="/images/login/Google.svg"
                         alt=""
@@ -396,7 +451,7 @@ export default function LoginCustom() {
                         width={33}
                         height={33}
                       />
-                      <span>使用Google帳戶註冊</span>
+                      <span>使用Google帳戶登入</span>
                     </button>
                   </div>
                 </div>
@@ -429,14 +484,34 @@ export default function LoginCustom() {
                           setIsPasswordEmpty(true)
                           return // 如果密碼為空，停止表單提交
                         }
-                        login(account, password).then((success) => {
-                          if (success) {
+                        login(account, password).then((result) => {
+                          if (result) {
                             // 登入成功後的操作，例如導航到另一個頁面
-                            alert('登入成功')
-                            router.replace(`/`)
+
+                            toast.success('歡迎您！登入成功', {
+                              style: {
+                                color: '#a32c2d',
+                              },
+                              iconTheme: {
+                                primary: '#29a21e',
+                                secondary: '#ffffff',
+                              },
+                            })
+
+                            setTimeout(() => {
+                              router.push('/')
+                            }, 2000)
                           } else {
                             // 登入失敗，顯示錯誤訊息
-                            alert('登入失敗，請檢查帳號和密碼')
+                            toast.error('登入失敗，請檢查帳號和密碼', {
+                              style: {
+                                color: '#ff0101',
+                              },
+                              iconTheme: {
+                                primary: '#ff0101',
+                                secondary: '#ffffff',
+                              },
+                            })
                           }
                         })
                       }}
@@ -501,7 +576,10 @@ export default function LoginCustom() {
                           請輸入密碼
                         </div>
                       </div>
-                      <button type="submit" className="btn btn-primary mb-4 mt-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary mb-4 mt-4"
+                      >
                         登入
                       </button>
                       <div className="forget-text">
@@ -510,7 +588,12 @@ export default function LoginCustom() {
                         </Link>
                       </div>
                     </form>
-                    <button className="google-login mt-5">
+                    <button
+                      className="google-login mt-5"
+                      onClick={() => {
+                        loginGoogleRedirect()
+                      }}
+                    >
                       <Image
                         src="/images/login/Google.svg"
                         alt=""
@@ -625,7 +708,7 @@ export default function LoginCustom() {
                     width={33}
                     height={33}
                   />
-                  <span>使用Google帳戶註冊</span>
+                  <span>使用Google帳戶登入</span>
                 </button>
               </div>
             </div>
@@ -664,14 +747,33 @@ export default function LoginCustom() {
                       setIsPasswordEmpty(true)
                       return // 如果密碼為空，停止表單提交
                     }
-                    login(account, password).then((success) => {
-                      if (success) {
+                    login(account, password).then((result) => {
+                      if (result) {
                         // 登入成功後的操作，例如導航到另一個頁面
-                        alert('登入成功')
-                        router.replace(`/`)
+
+                        toast.success('歡迎您！登入成功', {
+                          style: {
+                            color: '#a32c2d',
+                          },
+                          iconTheme: {
+                            primary: '#29a21e',
+                            secondary: '#ffffff',
+                          },
+                        })
+                        setTimeout(() => {
+                          router.push('/')
+                        }, 2000)
                       } else {
                         // 登入失敗，顯示錯誤訊息
-                        alert('登入失敗，請檢查帳號和密碼')
+                        toast.error('登入失敗，請檢查帳號和密碼', {
+                          style: {
+                            color: '#ff0101',
+                          },
+                          iconTheme: {
+                            primary: '#ff0101',
+                            secondary: '#ffffff',
+                          },
+                        })
                       }
                     })
                   }}
@@ -756,6 +858,7 @@ export default function LoginCustom() {
             </div>
           </div>
         </div>
+        <Toaster />
       </Section>
     </>
   )

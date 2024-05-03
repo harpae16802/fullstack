@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
+import Link from 'next/link'
+import { INDEX_INFO_STORE,IMAGES_SELLER } from '@/components/config/api-path'
+
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
@@ -43,8 +46,9 @@ const CustomNextArrow = (props) => {
     </div>
   )
 }
+
 function StoreSlider() {
-  const settings = {
+  const [settings, setSettings] = useState({
     dots: false,
     infinite: true,
     speed: 500,
@@ -52,46 +56,78 @@ function StoreSlider() {
     slidesToScroll: 4,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
-  }
+    autoplay: false,
+  })
+
+  // 抓首頁資料的部分
+  const [listData, setListData] = useState([])
+
+  // 箭頭的useEffect
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 992) {
+        setSettings({
+          dots: false,
+          className: 'center',
+          centerMode: true,
+          infinite: true,
+          centerPadding: '80px',
+          slidesToShow: 1,
+          speed: 500,
+          prevArrow: null,
+          nextArrow: null,
+          autoplay: false,
+        })
+      } else {
+        setSettings({
+          dots: false,
+          infinite: true,
+          speed: 500,
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          prevArrow: <CustomPrevArrow />,
+          nextArrow: <CustomNextArrow />,
+          autoplay: false,
+        })
+      }
+    }
+
+    handleResize() // 初始化時呼叫一次以設定原始狀態
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // 抓資料
+  useEffect(() => {
+    fetch(`${INDEX_INFO_STORE}`)
+      .then((r) => r.json())
+      .then((result) => {
+        // console.log(result)
+        setListData(result)
+      })
+  }, [])
 
   return (
     <div className="slider-container store-index-gruop">
       <Slider {...settings}>
-        <div className="card-store-index">
-          <div className="store-name">月氏激蛋葱油餅</div>
-          <div className="store-market">寧夏夜市</div>
-          <button type="button" className="btn btn-light">
-            看更多
-          </button>
-        </div>
-        <div className="card-store-index">
-          <div className="store-name">月氏激蛋葱油餅</div>
-          <div className="store-market">寧夏夜市</div>
-          <button type="button" className="btn btn-light">
-            看更多
-          </button>
-        </div>
-        <div className="card-store-index">
-          <div className="store-name">月氏激蛋葱油餅</div>
-          <div className="store-market">寧夏夜市</div>
-          <button type="button" className="btn btn-light">
-            看更多
-          </button>
-        </div>
-        <div className="card-store-index">
-          <div className="store-name">月氏激蛋葱油餅</div>
-          <div className="store-market">寧夏夜市</div>
-          <button type="button" className="btn btn-light">
-            看更多
-          </button>
-        </div>
-        <div className="card-store-index">
-          <div className="store-name">月氏激蛋葱油餅</div>
-          <div className="store-market">寧夏夜市</div>
-          <button type="button" className="btn btn-light">
-            看更多
-          </button>
-        </div>
+        {listData?.map((v, i) => {
+          return (
+            <div className="card-store-index" key={i}>
+              <img
+                src={`${IMAGES_SELLER}/${v.store_image}`}
+                alt="store-img"
+                className="store-img"
+              />
+              <div className="store-name">{v.store_name}</div>
+              <div className="store-market">{v.market_name}</div>
+              <Link type="button" className="btn btn-light" href={`/shop-products/${v.seller_id}`}>
+                  看更多
+              </Link>
+            </div>
+          )
+        })}
       </Slider>
     </div>
   )

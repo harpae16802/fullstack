@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+// 套件
+import Slider from 'react-slick'
 // 元件
 import SectionProducts from '@/components/layout/section-nopaddin'
 import ShopInfo from '@/components/shop-products/shop-info/shop-info'
@@ -17,6 +19,8 @@ import {
   API_SERVER,
 } from '@/components/config/api-path'
 // 樣式
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import style from './shop-products.module.scss'
 
 const StickyCart = dynamic(
@@ -41,6 +45,20 @@ export default function ShopProducts() {
   const [drink, setDrink] = useState([]) // 渲染過濾的商品
   const [rating, setRating] = useState([]) // 評分
   const [productRating, setProductRating] = useState([]) // 評分
+  const [discount, setDiscount] = useState([]) // 優惠
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 7,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 5000,
+    autoplaySpeed: 4000,
+    cssEase: 'linear',
+    arrows: false,
+    centerMode: true,
+  }
 
   // 關鍵字搜尋
   const handleSearch = (searchTerm) => {
@@ -187,10 +205,22 @@ export default function ShopProducts() {
       }
     }
 
+    const fetchDiscount = async () => {
+      try {
+        const r = await fetch(`${SHOP_PRODUCTS}/seller-discount/${seller_id}`)
+        if (!r.ok) throw new Error('网络响应错误')
+        let data = await r.json()
+        setDiscount(data[0])
+      } catch (error) {
+        console.error('获取评论数据错误:', error)
+      }
+    }
+
     fetchData()
     fetchProducts()
     fetchRating()
     fetchProductRating()
+    fetchDiscount()
   }, [seller_id])
 
   // 處理購物車寬度
@@ -236,7 +266,18 @@ export default function ShopProducts() {
               />
             )}
           </div>
-
+          {/* 優惠輪播 */}
+          {discount ? (
+            <Slider {...settings} className={style.slider}>
+              {Array(10)
+                .fill(1)
+                .map((v, i) => (
+                  <span key={i}>{discount ? discount.name : 'loading...'}</span>
+                ))}
+            </Slider>
+          ) : (
+            ''
+          )}
           {/* search & nav */}
           <div className={`row d-flex align-items-center ${style.search}`}>
             <div className="col-12 col-md-3">

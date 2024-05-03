@@ -14,6 +14,25 @@ router.get("/seller/:seller_id", async (req, res) => {
   }
 });
 
+// 獲取店家優惠
+router.get("/seller-discount/:seller_id", async (req, res) => {
+  try {
+    const sql = `
+    SELECT * 
+    FROM 
+      seller_discounts sd 
+    JOIN 
+      discount_category dc ON sd.discount_category_id = dc.id 
+    WHERE 
+      sd.seller_id = ?
+    `;
+    const [row] = await db.query(sql, [req.params.seller_id]);
+    res.json(row);
+  } catch (error) {
+    console.error("資料庫查詢店家出錯:", error);
+  }
+});
+
 // 獲取店家商品資料
 router.get("/products/:seller_id", async (req, res) => {
   try {

@@ -49,9 +49,22 @@ export const BUS_AND_DISTANCE = `${MARKET}/bus-distance`
 // 停車場
 export const CART_STOPS = `${MARKET}/car-distance`
 
-// 登入
-// ===
+// =====註冊登入
+// 一般登入
 export const JWT_LOGIN_POST = `${API_SERVER}/login-jwt`
-
-// 註冊
+// 一般註冊
 export const SIGN_UP_POST = `${API_SERVER}/sign-up/custom-sign`
+// google登入註冊
+export const GOOGLE_LOGIN_POST = `${API_SERVER}/google-login`
+
+
+
+// 首頁的部分
+    //商店 
+export const INDEX_INFO_STORE = `${API_SERVER}/index-info/store`
+    //商品
+export const INDEX_INFO_PRODUCT = `${API_SERVER}/index-info/product` 
+    //優惠
+    export const INDEX_INFO_DISCOUNT = `${API_SERVER}/index-info/discount` 
+
+

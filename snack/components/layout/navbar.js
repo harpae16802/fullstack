@@ -235,7 +235,7 @@ export default function Navbar() {
                           </a>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <a className="dropdown-item" href="/">
                             商家會員【登入/註冊】
                           </a>
                         </li>
