@@ -31,7 +31,7 @@ export default function LoginCustom() {
   const router = useRouter()
 
   // 會員登入登出的勾子
-  const { auth, login, logout, callbackGoogleLoginRedirect,isLoginByGoogle } = useAuth()
+  const { auth, login, logout, callbackGoogleLoginRedirect } = useAuth()
 
   // 處理手機板的註冊登入的頁面呈現
   const { selectedContent, handleLinkClick } = useContext(MiniloginContext)
@@ -443,6 +443,7 @@ export default function LoginCustom() {
 
                     <button className="google-login mt-4" onClick={() => {
                         loginGoogleRedirect()
+                        // loginGoogle(callbackGoogleLoginRedirect)
                       }}>
                       <Image
                         src="/images/login/Google.svg"
@@ -592,6 +593,7 @@ export default function LoginCustom() {
                       className="google-login mt-5"
                       onClick={() => {
                         loginGoogleRedirect()
+                        // loginGoogle(callbackGoogleLoginRedirect)
                       }}
                     >
                       <Image
