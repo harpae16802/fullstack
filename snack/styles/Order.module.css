@@ -1203,48 +1203,43 @@
 
 
 
-
-/* 在 Order.module.css 中添加以下 CSS */
-.orderDetailContainer {
-  width: 90%;
-  margin: 20px auto;
-  background-color: #fff;
-  border: 2px solid #d1a073; /* 修改为你喜欢的颜色 */
-  border-radius: 8px;
+/* Order.module.css */
+.outerFrame11 {
+  width: 90%; /* 根据设计图调整宽度 */
+  margin: 0 auto; /* 居中显示 */
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.orderHeader {
-  font-size: 18px;
-  color: #333;
-  text-align: left;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #d1a073;
+/* 分隔線 */
+.orderDetailContainer {
+  background-color: #fff;
+  border: 2px solid #d1a073;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20px; 
 }
 
 .orderTable {
-  width: 100%;
+  width: 100%; /* 表格宽度 */
+  margin: 20px 0; /* 上下边距 */
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
-.orderTable th,
-.orderTable td {
+.orderTable th, .orderTable td {
   border: 1px solid #d1a073;
-  padding: 8px 15px;
+  padding: 10px;
   text-align: left;
-  font-size: 16px;
-  color: #333;
+  font-size: 18px; /* 增大字号 */
+  font-weight: bold; /* 字体加粗 */
 }
 
 .orderTable th {
   background-color: #f8f8f8;
 }
-
-.orderFooter {
+.orderFooter1 {
   text-align: right;
-  padding-top: 10px;
-  font-size: 16px;
-  color: #333;
+  font-size: 18px; /* 增大字号 */
+  font-weight: bold; /* 字体加粗 */
+  color: red; /* 总金额显示为红色 */
 }

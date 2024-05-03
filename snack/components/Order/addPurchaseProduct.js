@@ -134,16 +134,21 @@ const DiscountContentItem = ({ items = [] }) => {
       console.log('Transaction ID:', transactionId)
       const urlToOpen = paymentUrl.web
       
-      // setPaymentData({
-      //   items: [...items],  
-      //   selectedDiscount,
-      //   finalAmount,
-      //   pointsReduction,
-      //   totalAmount,
-      //   remainingPoints,
-      // });
-      // console.log(paymentData)
-      // localStorage.setItem('paymentData', JSON.stringify(paymentData));
+      // 付款成功就 僵直存到locastorage
+      const newPaymentData = {
+        items: [...items], 
+        selectedDiscount: selectedDiscount,
+        finalAmount: finalAmount,
+        pointsReduction: pointsReduction,
+        totalAmount: totalAmount,
+        remainingPoints: remainingPoints,
+      };
+    
+       // 更新組件狀態
+    setPaymentData(newPaymentData);
+  
+    // 存儲到 localStorage
+    localStorage.setItem('paymentData', JSON.stringify(newPaymentData));
 
       window.open(urlToOpen, '_blank')
     } else {
@@ -199,17 +204,20 @@ const DiscountContentItem = ({ items = [] }) => {
 
 
   const updatePaymentData = () => {
-    console.log('測試按鈕')
-    setPaymentData({
-      items: [...items],
-      selectedDiscount: { name: "特殊折扣", discount: 100 },
-      finalAmount: 50,
-      pointsReduction: 100,
-      totalAmount: 1000,
-      remainingPoints: 900,
-    });
-    console.log(paymentData)
-    localStorage.setItem('paymentData', JSON.stringify(paymentData));
+    const newPaymentData = {
+      items: [...items],  // 確保 items 是一個數組
+      selectedDiscount: selectedDiscount,
+      finalAmount: finalAmount,
+      pointsReduction: pointsReduction,
+      totalAmount: totalAmount,
+      remainingPoints: remainingPoints,
+    };
+  
+    // 更新組件狀態
+    setPaymentData(newPaymentData);
+  
+    // 存儲到 localStorage
+    localStorage.setItem('paymentData', JSON.stringify(newPaymentData));
   };
 
   // 樣式-------------------------------------------------------
