@@ -179,7 +179,7 @@ export default function NightmarketInfo({ initialMarketData }) {
 
   return (
     <SectionNopaddin>
-      <Slider {...settings} className={style.bannerAd}>
+      <Slider {...settings} className={`col-12 ${style.bannerAd}`}>
         {banner.map((v, i) => (
           <div key={i}>
             <img

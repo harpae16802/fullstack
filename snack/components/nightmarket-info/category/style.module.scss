@@ -1,6 +1,9 @@
 .card {
   width: 170px;
   cursor: pointer;
+  @media (max-width: 576px) {
+    width: 155px;
+  }
 
   .imageContainer {
     width: 100%;
@@ -13,6 +16,9 @@
     .image {
       width: 280px;
       position: relative;
+      @media (max-width: 576px) {
+        width: 260px;
+      }
     }
   }
 
