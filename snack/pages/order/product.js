@@ -16,6 +16,13 @@ import  tryApi from "@/api/productApi.js/tryApi"
 import ProductDetailCard from '@/components/Product/productDetail';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
+// fetch 網址
+import {
+  FAVORITE_PRODUCTS,
+  C_FAVORITE_PRODUCTS,
+} from '@/components/config/api-path'
+// 加入收藏:樣式
+// import style from './style.module.scss'
 
 
 // import { Container, Row, Col } from 'react-bootstrap';
@@ -267,6 +274,7 @@ useEffect(() => {
         {popularProducts && popularProducts.map((product, index) => (
         <div key={index}>
           <PopularProduct 
+            product_id={product.product_id}
             imageUrl={`/images/products/${product.image_url}`}
             saleRanking={`No${index + 1}`}
             market={product.market_name}
@@ -346,12 +354,13 @@ useEffect(() => {
 
 {recommendProducts && (
   <div className={`d-flex flex-wrap` }>
-    {recommendProducts.map((v, i) => (
-      <div key={i} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}>
+    {recommendProducts.map((product, index) => (
+      <div key={index} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}>
         <div className={styles.productItemContainer}>
         <ProductItem 
-          imageUrl={`/images/products/${v.image_url}`}
-          productName={v.product_name}
+          product_id = {product.product_id}
+          imageUrl={`/images/products/${product.image_url}`}
+          productName={product.product_name}
           score="4.7"
         />
         </div>

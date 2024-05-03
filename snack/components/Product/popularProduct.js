@@ -1,12 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { FaRegHeart } from 'react-icons/fa';
+import { FaRegHeart,FaHeart } from 'react-icons/fa';
 import styles from '@/styles/Product.module.css';
 import ProductDetailCard from '@/components/Product/productDetail';
+// fetch 網址
+import {
+  FAVORITE_PRODUCTS,
+  C_FAVORITE_PRODUCTS,
+} from '@/components/config/api-path'
+
 
 export default function PopularProduct(props) {
-  console.log('props',props)
+  console.log('props',props.product_id)
+  const product_id = props.product_id
 
+
+  const [isFavorite, setIsFavorite] = useState(false) // 最愛
+
+  // 加入收藏 - 商品
+  const toggleFavoriteProducts = async () => {
+    try {
+      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
+      const data = await r.json()
+      if (data.success) {
+        setIsFavorite(data.action === 'add')
+      }
+    } catch (error) {
+      console.error('加入最愛 錯誤:', error)
+    }
+  }
 
   return (
 
@@ -27,12 +49,25 @@ export default function PopularProduct(props) {
 
       <p  className={styles.bestSeller} style={{marginTop: '-18px' }}>{props.seller} </p>
 
-      <div className={styles.bestProduct}>{props.product}
-      <FaRegHeart className={styles.collectIcon}/></div>
+      <p  className={styles.bestProduct} style={{marginTop: '-18px' }}>{props.product} </p>
 
+      {/* <div className={styles.bestProduct}>{props.product}
+      <FaRegHeart  className={styles.collectIcon}  onClick={toggleFavoriteProducts}/></div> */}
+      {isFavorite ? (
+            <FaHeart
+              className={styles.collectIcon}
+              onClick={toggleFavoriteProducts}
+            />
+          ) : (
+            <FaRegHeart
+              className={styles.collectIcon}
+              onClick={toggleFavoriteProducts}
+            />
+          )}
       <br />
 
-  
+      
+   
             
 
     </div>

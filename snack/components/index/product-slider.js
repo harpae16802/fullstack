@@ -73,7 +73,9 @@ function ProductSlider() {
   const handleQuantityChange = (index, increment) => {
     const newListData = [...listData]
     const newQuantity = newListData[index].quantity || 0
-    const updatedQuantity = increment ? newQuantity + 1 : Math.max(newQuantity - 1, 0)
+    const updatedQuantity = increment
+      ? newQuantity + 1
+      : Math.max(newQuantity - 1, 0)
     newListData[index].quantity = updatedQuantity
     setListData(newListData)
   }
@@ -152,8 +154,8 @@ function ProductSlider() {
                   <div className="price">${v.price}</div>
                   <div className="butinput">
                     <div className="quantity">
-                      <button onClick={() => handleQuantityChange(i, true)}>
-                        <FaPlus />
+                      <button onClick={() => handleQuantityChange(i, false)}>
+                        <FaMinus />
                       </button>
                       <input
                         type="text"
@@ -163,8 +165,8 @@ function ProductSlider() {
                         style={{ border: 'none', outline: 'none' }}
                         readOnly
                       />
-                      <button onClick={() => handleQuantityChange(i, false)}>
-                        <FaMinus />
+                      <button onClick={() => handleQuantityChange(i, true)}>
+                        <FaPlus />
                       </button>
                     </div>
                     <button type="button" className="btn btn-primary">

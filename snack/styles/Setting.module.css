@@ -40,9 +40,6 @@
   .popularContainer{
     margin-top: 50px;
     display: flex;
-    justify-content: space-between; /* 將六張圖片平均分佈在容器中 */
-  
- 
   }
 
   /* 人氣商品:圖片 文字設定 */
@@ -92,6 +89,10 @@
     margin-left: 2px;
     font-weight: bolder;
     font-size: 28px;
+  }
+
+  .recommendCollectIcon{
+    
   }
 
   .productScore{

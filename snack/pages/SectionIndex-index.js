@@ -6,6 +6,7 @@ import NewsSlider from '@/components/index/news-slider'
 import ProductSlider from '@/components/index/product-slider'
 import SearchBarIndex from '@/components/common/search-bar-index'
 import { FaVolumeDown } from "react-icons/fa";
+import Link from 'next/link'
 
 
 export default function SectionIndex() {
@@ -19,6 +20,7 @@ export default function SectionIndex() {
   return (
     <>
       {' '}
+      <div className="topicon"  onClick={()=>window.scrollTo(0, 0)}>↑TOP</div>
       <div className="simple-news">
         <div className="col-2 col-md-1 newsup">
           <h6>即時消息</h6><FaVolumeDown className='vol'/>

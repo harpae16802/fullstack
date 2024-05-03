@@ -73,16 +73,16 @@ export default function FilterOptions () {
 <div className="d-flex">
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>$50以上</div>
+<div className={styles.filterText}>$50以下</div>
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>$100以上</div>
+<div className={styles.filterText}>$100以下</div>
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>$150以上</div>
+<div className={styles.filterText}>$150以下</div>
 
 <div className={styles.filterCircle}></div>
-<div className={styles.filterText}>$200以上</div>
+<div className={styles.filterText}>$200以下</div>
 
 </div>
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API,IMGROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -19,9 +19,19 @@ export default function bank() {
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
 
-  //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+//拿取seller_id
+const [sellerId, setSellerId] = useState(null)
+
+// 安全性 確認身分
+useEffect(() => {
+  const localSellerId = localStorage.getItem('sellerId')
+  if (localSellerId) {
+    setSellerId(localSellerId)
+  } else {
+    router.replace('/login/login-seller')
+  }
+}, [])
+
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
@@ -58,9 +68,6 @@ export default function bank() {
 
   // 總查詢
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)

@@ -20,9 +20,20 @@ const ProductsList = () => {
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
 
-  //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+ //拿取seller_id
+
+ const [sellerId, setSellerId] = useState(null)
+
+ // 安全性 確認身分
+ useEffect(() => {
+   const localSellerId = localStorage.getItem('sellerId')
+   if (localSellerId) {
+     setSellerId(localSellerId)
+   } else {
+     router.replace('/login/login-seller')
+   }
+ }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
@@ -53,10 +64,7 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
-    setLoading(true) //loading 為 true
+    setLoading(true) 
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -93,6 +101,7 @@ const ProductsList = () => {
     }
 
     const fetchData = async () => {
+      setLoading(true) 
       try {
         const response = await axios.get(
           `${PRODUCTS_API}/${sellerId}?${queryParams}`
@@ -112,10 +121,11 @@ const ProductsList = () => {
           setCurrentPage(1)
         }
       } catch (error) {
+        console.error('Fetching data failed', error);
       } finally {
         setTimeout(() => {
-          setLoading(false)
-        }, 1000)
+          setLoading(false); // 延迟1秒后设置loading为false
+        }, 1000); 
       }
     }
 
@@ -191,7 +201,7 @@ const ProductsList = () => {
         setCurrentPage(1)
       }
     } catch (error) {
-      console.error('获取产品列表失败', error)
+      console.error('獲取產品失敗', error)
     } finally {
       setLoading(false)
     }

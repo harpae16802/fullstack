@@ -68,15 +68,36 @@ const DiscountContentItem = ({ items = [] }) => {
     }
   }
 
-  // 結帳付款
-  const handleLinePay = () => {
-    const payload = [
-      { name: '訂單總金額', finalAmount: Math.round(finalAmount) },
-    ]
-    console.log('支付資料:', payload)
-  }
-  // 發送請求 LINE PAY
+  // 付款完成 將資料 放入order_data 與 刪除購物車中的商品
+  // const handleCheckout = async () => {
+  //   try {
+  //     const orderResponse = await axios.post(`${CARTITEM}create`, {
+  //       seller_id: sellerId,
+  //       custom_id: customId,
+  //       discounts: selectedDiscount,
+  //       items: cartItems,
+  //       usePoints,
+  //       customPoints,
+  //       totalAmount,
+  //     })
 
+  //     if (orderResponse.data.success) {
+  //       // 訂單創建成功，接下來刪除購物車內的商品
+  //       const cartResponse = await axios.put(`${CARTITEM}/remove-purchased`, {
+  //         custom_id: customId,
+  //         items: cartItems,
+  //       })
+
+  //       if (cartResponse.data.success) {
+  //         // 全部操作成功後的處理，例如導航到訂單確認頁面
+  //         console.log('Checkout completed successfully')
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Checkout failed:', error)
+  //   }
+  // }
+  
   // 計算訂單的總金額
   const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
 
@@ -126,135 +147,118 @@ const DiscountContentItem = ({ items = [] }) => {
 
   return (
     <div>
-      <div
-        className="container"
-        style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '10px',
-          padding: '20px',
-        }}
-      >
-        {items.map((item, index) => (
+    <div
+      className="container"
+      style={{
+        backgroundColor: '#ffffff',
+        borderRadius: '10px',
+        padding: '20px',
+      }}
+    >
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className="row"
+          style={{
+            marginBottom: '20px',
+            backgroundColor: '#ffffff',
+            borderRadius: '10px',
+            padding: '15px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <div className="col">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Image
+                  src={`${IMGROUTER}${item.image_url}`}
+                  alt={item.product_name}
+                  width={100}
+                  height={100}
+                  unoptimized
+                  objectFit="cover"
+                  style={{
+                    borderRadius: '10px',
+                    objectFit: 'cover',
+                    marginRight: '15px',
+                  }}
+                />
+                <div style={orderItemTextStyle}>{item.product_name}</div>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <div style={orderItemPriceStyle}>產品價格: ${item.price}</div>
+                <div style={orderItemPriceStyle}>購買數量: {item.quantity}</div>
+                <div style={amountStyle}>產品總價: ${item.total_price}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* 結算部分 */}
+      <div className="row">
+        <div className="col">
           <div
-            key={index}
-            className="row"
             style={{
-              marginBottom: '20px',
+              ...amountContainerStyle,
               backgroundColor: '#ffffff',
               borderRadius: '10px',
               padding: '15px',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             }}
           >
-            <div className="col">
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Image
-                    src={`${IMGROUTER}${item.image_url}`}
-                    alt={item.product_name}
-                    width={100}
-                    height={100}
-                    unoptimized
-                    objectFit="cover"
-                    style={{
-                      borderRadius: '10px',
-                      objectFit: 'cover',
-                      marginRight: '15px',
-                    }}
-                  />
-                  <div style={orderItemTextStyle}>{item.product_name}</div>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <div style={orderItemPriceStyle}>產品價格: ${item.price}</div>
-                  <div style={orderItemPriceStyle}>
-                    購買數量: {item.quantity}
-                  </div>
-                  <div style={amountStyle}>產品總價: ${item.total_price}</div>
-                </div>
-              </div>
-            </div>
+            <div style={orderItemTextStyle}>目前訂單金額:</div>
+            <div style={amountStyle}>{totalAmount}</div>
           </div>
-        ))}
 
-        {/* 結算部分 */}
-        <div className="row">
-          <div className="col">
+          {/* 使用者點數的部分 */}
+          <div
+            style={{
+              ...amountContainerStyle,
+              backgroundColor: '#ffffff',
+              borderRadius: '10px',
+              padding: '15px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              flexDirection: 'column', // 垂直排列
+              alignItems: 'flex-start', // 左對齊
+            }}
+          >
             <div
               style={{
-                ...amountContainerStyle,
-                backgroundColor: '#ffffff',
-                borderRadius: '10px',
-                padding: '15px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <div style={orderItemTextStyle}>目前訂單金額:</div>
-              <div style={amountStyle}>{totalAmount}</div>
-            </div>
-
-            {/* 使用者點數的部分 */}
-            <div
-              style={{
-                ...amountContainerStyle,
-                backgroundColor: '#ffffff',
-                borderRadius: '10px',
-                padding: '15px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                 display: 'flex',
-                flexDirection: 'column', // 垂直排列
-                alignItems: 'flex-start', // 左對齊
+                justifyContent: 'space-between',
+                width: '100%',
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}
-              >
-                <div style={orderItemTextStyle}>您目前持有的點數:</div>
-                <div style={orderItemTextStyle}>{customPoints}</div>
-              </div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={usePoints}
-                  onChange={(e) => setUsePoints(e.target.checked)}
-                  style={orderItemTextStyle}
-                />{' '}
-                使用您的遊戲點數來抵扣購買金額
-              </label>
+              <div style={orderItemTextStyle}>您目前持有的點數:</div>
+              <div style={orderItemTextStyle}>{customPoints}</div>
             </div>
+            <label>
+              <input
+                type="checkbox"
+                checked={usePoints}
+                onChange={(e) => setUsePoints(e.target.checked)}
+                style={orderItemTextStyle}
+              />{' '}
+              使用您的遊戲點數來抵扣購買金額
+            </label>
+          </div>
 
-            {/* 顯示選定的折扣 */}
-            {selectedDiscount && (
-              <div
-                style={{
-                  ...amountContainerStyle,
-                  backgroundColor: '#ffffff',
-                  borderRadius: '10px',
-                  padding: '15px',
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                }}
-              >
-                <div style={orderItemTextStyle}>折扣名稱:</div>
-                <div style={orderItemTextStyle}>{selectedDiscount.name}</div>
-              </div>
-            )}
-
-            {/* 總金額 */}
+          {/* 顯示選定的折扣 */}
+          {selectedDiscount && (
             <div
               style={{
                 ...amountContainerStyle,
@@ -264,14 +268,30 @@ const DiscountContentItem = ({ items = [] }) => {
                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <div style={amountStyle}>總金額:</div>
-              <div style={amountStyle}>{Math.round(finalAmount)} </div>
+              <div style={orderItemTextStyle}>折扣名稱:</div>
+              <div style={orderItemTextStyle}>{selectedDiscount.name}</div>
             </div>
+          )}
+
+          {/* 總金額 */}
+          <div
+            style={{
+              ...amountContainerStyle,
+              backgroundColor: '#ffffff',
+              borderRadius: '10px',
+              padding: '15px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <div style={amountStyle}>總金額:</div>
+            <div style={amountStyle}>{Math.round(finalAmount)} </div>
           </div>
         </div>
       </div>
-      {/* 付款方式 */}
-      <div className={styles.paymentMethodBorder}>
+
+    </div>
+          {/* 付款方式 */}
+          <div className={styles.paymentMethodBorder}>
         <h3 className={styles.orderTitle}>【 選擇支付方式 】</h3>
 
         <div className={styles.methodFlex}>
@@ -294,10 +314,8 @@ const DiscountContentItem = ({ items = [] }) => {
               height={30}
               className={styles.methodImage}
             />
-
-            <p className={styles.paymentText} onClick={handleLinePay}>
-              LINE繳費
-            </p>
+            
+            <p className={styles.paymentText}>LINE繳費</p>
           </div>
 
           {/* linePay繳費 */}

@@ -119,9 +119,8 @@
   .popularContainer {
     margin-top: 50px;
     display: flex;
-    margin-left: -100px;
+   
   }
-  
   @media (max-width: 576px) {
     .popularContainer {
       margin-left: 0;
@@ -223,8 +222,9 @@
 
    .collectIcon{
     font-weight: bolder;
-    margin-bottom: 5px;
-    margin-left: 20px;
+    font-size: 30px;
+    margin-top: -95px;
+    margin-left: 130px;
     color: rgb(163, 44, 45);
    }
    @media(max-width:576px){ 

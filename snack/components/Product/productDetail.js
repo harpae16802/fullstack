@@ -1,12 +1,21 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Image from 'next/image';
 import { FiHeart } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import styles from '@/styles/Product.module.css'; // 確保引入了正確的樣式文件
 import { RxCross1 } from "react-icons/rx";
 import 'bootstrap/dist/css/bootstrap.min.css';
+// fetch 網址
+import {
+  FAVORITE_PRODUCTS,
+  C_FAVORITE_PRODUCTS,
+} from '@/components/config/api-path'
+// 樣式
+import style from '@/components/shop-products/product-card/style.module.scss'
+
 
 export default function ProductDetailCard({
+  product_id,
   imageUrl = "",
   seller = "",
   product = "",
@@ -16,11 +25,42 @@ export default function ProductDetailCard({
   nutrition = "",
 }) { 
 
+  const [isFavorite, setIsFavorite] = useState(false) // 最愛
+
+  // 加入收藏 - 商品
+  const toggleFavoriteProducts = async () => {
+    console.log(123345);
+    try {
+      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
+      const data = await r.json()
+      if (data.success) {
+        setIsFavorite(data.action === 'add')
+      }
+    } catch (error) {
+      console.error('加入最愛 錯誤:', error)
+    }
+  }
+
+  useEffect(() => {
+    // 检查收藏状态
+    const checkFavoriteStatus = async () => {
+      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`)
+      const data = await r.json()
+      if (data.isFavorite !== undefined) {
+        setIsFavorite(data.isFavorite)
+      }
+    }
+
+    checkFavoriteStatus()
+  }, [product_id])
+
+
+
   return (
     <>
     
    
-{/* <button type="button" data-bs-toggle="modal" data-bs-target="#detailModal" className={` ${styles.seeMoreButton}`}>
+{/* <button onClick={() => handleProductClick(product)} type="button" data-bs-toggle="modal" data-bs-target="#detailModal" className={` ${styles.seeMoreButton}`}>
   看更多
 </button> */}
 
@@ -69,7 +109,9 @@ export default function ProductDetailCard({
     {/* 收藏 加入購物車 */}
     <div style={{display:'flex', marginTop:'20px',marginLeft:'115px',color:'#A32C2D',fontSize:'30px'}}>
 
-    <FiHeart  className={styles.detailHeartIcon}/>
+  {/* 加入收藏 */}
+    <FiHeart  className={styles.detailHeartIcon}  onClick={toggleFavoriteProducts}
+    />
 
     <button className={styles.addCartButton}>加入購物車</button>
 

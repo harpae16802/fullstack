@@ -31,7 +31,8 @@ const NavbarLogout = () => {
 
     return (
         <>
-        <button onClick={handleLogout} className="dropdown-item">
+        <button onClick={handleLogout}
+         className="dropdown-item">
             登出
         </button>
 

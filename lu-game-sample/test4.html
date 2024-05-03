@@ -16,26 +16,34 @@
       }
 
       #game-container {
+        user-select:none;
+
         position: relative;
         width: 1050px;
         height: 610px;
         border: 2px solid #000;
         overflow: hidden;
         border-radius: 70px;
+        background-image: url('./game-bgc2.png'); /* 替換成你的圖片路徑 */
+        background-size: 100%;
+        /* object-fit: contain; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-position-y: bottom;
       }
 
       .balloon {
         position: absolute;
-        width: 70px;
+        width: 77px;
         height: 70px;
         overflow: visible;
-        /* border-radius: 50%; */
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-
-        /* padding-top: 18px; */
+        user-select:none;
         line-height: 75px;
         font-size: 24px;
         color: white;
@@ -65,157 +73,233 @@
       }
 
       #score {
-        position: absolute;
+
         top: 10px;
         right: 10px;
         font-size: 24px;
       }
 
       #timer {
-        position: absolute;
+
         top: 10px;
         left: 10px;
+        font-size: 24px;
+      }
+      #level {
+
+        top: 10px;
+        left: 30%;
         font-size: 24px;
       }
     </style>
   </head>
   <body>
-    <div id="game-container">
-      <div id="score">Score: 0</div>
-      <div id="timer">Time: 00</div>
+    <div class="time-table">
+      <div id="level">第一關</div>
+      <div class="table-bottom">
+        <div class="time-text">剩餘時間</div>
+        <div id="timer" class="game-seconds">00秒</div>
+      </div>
+      <div class="point-group">
+        <div class="point-text">累積分數</div>
+        <div id="score" class="game-point">00000</div>
+      </div>
+    </div>
+    <div class="play-div">
+      <div id="game-container" class="balloon-play"></div>
     </div>
 
     <script>
-       // 獲得遊戲容器、分數顯示區和計時器顯示區
-      const gameContainer = document.getElementById('game-container');
-      const scoreDisplay = document.getElementById('score');
-      const timerDisplay = document.getElementById('timer');
+               // 獲得遊戲容器、關卡顯示、分數顯示區和計時器顯示區
+              const gameContainer = document.getElementById('game-container');
+              const scoreDisplay = document.getElementById('score');
+              const timerDisplay = document.getElementById('timer');
+              const levelDisplay = document.getElementById('level');
 
 
-      //初始化分數和計時器
-      let score = 0;
-      let timer = 30;
+              //初始化分數和計時器
+              let score = 0;
+              let timer = 30;
 
-      // 定義遊戲循環間隔的變數
-      let gameInterval;
+              // 定義遊戲循環間隔的變數
+              let gameInterval;
 
-      // 關卡條件
-      const levelConfigs = [
-        { level: 1, time: 20, speed: 3, clear: 1000 },
-        { level: 2, time: 20, speed: 2.5 },
-        { level: 3, time: 15, speed: 2 },
-        { level: 4, time: 10, speed: 2 },
-        { level: 5, time: 10, speed: 1.5 },
-      ];
+              // 關卡條件
+              const levelConfigs = [
+                { level: 1,levelName: '第一關', time: 20, speed: 3,clear:1000 },
+                { level: 2,levelName: '第二關', time: 20, speed: 2.5,clear:3000 },
+                { level: 3,levelName: '第三關', time: 15, speed: 2 ,clear:2000 },
+                { level: 4,levelName: '第四關', time: 15, speed: 1.5 ,clear:3000 },
+                { level: 5,levelName: '第五關', time: 10, speed: 1.5,clear:2000 },
+              ];
 
-      // 氣球的設定
-      const balloonConfigs = [
-          { color: 'green',name:'10', points: 10 },
-          { color: 'blue',name:'30', points: 30 },
-          { color: 'red',name:'50', points: 50 },
-          { color: 'purple', name:'x2',points: 'x2' }, // 分數為目前分數的兩倍
-          { color: 'orange',name:'0', points:'0'} // 分數為0
-      ];
+              // 氣球的設定
+              const balloonConfigs = [
+                  { color: 'green',name:'10', points: 10 },
+                  { color: 'blue',name:'30', points: 30 },
+                  { color: 'red',name:'50', points: 50 },
+                  { color: 'orange',name:'0', points:'0'}, // 分數為0
+                  { color: 'purple', name:'x2',points: 'x2' } // 分數為目前分數的兩倍
+              ];
 
-      // 製作氣球
-      function createBalloon(speed) {
-          const numBalloons = Math.floor(Math.random() * 3) + 1; // 生成 1 到 4 個氣球
-          for (let i = 0; i < numBalloons; i++) {
-              const balloonConfig = chooseBalloonConfig(); // 隨機選擇氣球配置
-              const balloon = document.createElement('div');
-              const balloonimg = document.createElement('div');
+              // 製作氣球
+              function createBalloon(speed) {
+                  const numBalloons = Math.floor(Math.random() * 3) + 1; // 生成 1 到 3 個氣球
+                  for (let i = 0; i < numBalloons; i++) {
+                      const balloonConfig = chooseBalloonConfig(); // 隨機選擇氣球配置
+                      const balloon = document.createElement('div');
+                      const balloonimg = document.createElement('div');
 
-              // 根據配置設定氣球的樣式和屬性
-              balloon.classList.add('balloon');
-              balloon.style.left = `${Math.random() * (gameContainer.offsetWidth - 50)}px`;
-              const points = balloonConfig.points; // 分數
-              balloon.dataset.points = points; // 點選氣球時的分數
-              balloon.addEventListener('click', () => {
-                  popBalloon(balloon);
-              });
-              balloon.style.animation = `moveUp ${speed}s linear forwards`;
-              balloonimg.classList.add('balloonimg');
-              const name= balloonConfig.name // 名字
-              balloonimg.textContent = name; // 給氣球的名字
-              const imageUrl = `url('./${balloonConfig.color}.png')`; // 根據氣球顏色設定不同的圖片路徑
-              balloonimg.style.backgroundImage = imageUrl;
+                      // 根據配置設定氣球的樣式和屬性
+                      balloon.classList.add('balloon');
+                      balloon.style.left = `${Math.random() * (gameContainer.offsetWidth - 50)}px`;
+                      const points = balloonConfig.points; // 分數
+                      balloon.dataset.points = points; // 點選氣球時的分數
+                      balloon.addEventListener('click', () => {
+                          popBalloon(balloon);
+                      });
+                      balloon.style.animation = `moveUp ${speed}s linear forwards`;
+                      balloonimg.classList.add('balloonimg');
+                      const name= balloonConfig.name // 名字
+                      balloonimg.textContent = name; // 給氣球的名字
+                      const imageUrl = `url('./${balloonConfig.color}.png')`; // 根據氣球顏色設定不同的圖片路徑
+                      balloonimg.style.backgroundImage = imageUrl;
 
 
-                 // 將氣球圖片添加到氣球中
-                balloon.appendChild(balloonimg);
+                         // 將氣球圖片添加到氣球中
+                        balloon.appendChild(balloonimg);
 
-                // 將氣球添加到遊戲容器中
-                gameContainer.appendChild(balloon);
+                        // 將氣球添加到遊戲容器中
+                        gameContainer.appendChild(balloon);
 
-              setTimeout(() => {
-                  if (balloon.parentNode === gameContainer) {
-                      balloon.remove();
-                      updateScore(0);
+                      setTimeout(() => {
+                          if (balloon.parentNode === gameContainer) {
+                              balloon.remove();
+                              updateScore(0);
+                          }
+                      }, 5000);
                   }
-              }, 5000);
+              }
+
+
+
+              function chooseBalloonConfig() {
+                const randomNumber = Math.random();
+                if (randomNumber < 0.3) {
+                  return balloonConfigs[0]; // 30% 的機率獲得綠色氣球（10 分）
+                } else if (randomNumber < 0.6) {
+                  return balloonConfigs[1]; // 30% 的機率獲得藍色氣球（30 分）
+                } else if (randomNumber < 0.77) {
+                  return balloonConfigs[2]; // 17% 的機率獲得紅色氣球（50 分）
+                } else if (randomNumber < 0.92) {
+                  return balloonConfigs[3]; // 15% 的機率獲得橘色氣球（0 分）
+                } else {
+                  return balloonConfigs[4]; // 8% 的機率獲得紫色氣球（翻倍分數）
+                }
+              }
+
+              // 點擊氣球時觸發的函數
+              function popBalloon(balloon) {
+                  // 獲取氣球的分數並將其轉為整數
+                  const points = parseInt(balloon.dataset.points);
+                  // 獲取氣球的名稱
+                  const balloonName = balloon.textContent;
+
+                  // 移除被點擊的氣球
+                  balloon.remove();
+
+                  // 更新分數
+                  updateScore(points, balloonName);
+              }
+
+              // 更新分數的函式
+              function updateScore(points, balloonName) {
+                if (balloonName === "0") {
+                score = 0; // 如果氣球名字是 0 分數歸 0
+                } else if (balloonName === "x2") {
+                score *= 2; // 如果氣球名字是 2 分數乘以 2
+                } else {
+                score += points; // 都不是時 將分數累加
+                }
+
+                  // 更新分數顯示的內容
+                  scoreDisplay.textContent = `${score.toString().padStart(5, '0')}`;
+              }
+
+
+              // 開始遊戲的函式
+              function startGame(level) {
+                score = 0; // 將分數重設為0
+                const levelConfig = levelConfigs.find(config => config.level === level);
+                timer = levelConfig.time;
+                const speed = levelConfig.speed;
+                levelDisplay.textContent = `${levelConfig.levelName}`;
+
+
+                   // 清除上一個遊戲的計時器
+                  clearInterval(gameInterval);
+
+
+                  let balloonInterval;
+                  if (level >= 4) {
+                    balloonInterval = 400; // 第四關和第五關每隔 0.4 秒生成一次氣球
+                  } else {
+                     balloonInterval = 600; // 其他關卡每隔 0.6 秒生成一次氣球
+                  }
+
+                  // 設置遊戲循環 每隔一段時間調用一次 createBalloon 函式生成氣球
+                  gameInterval = setInterval(() => {
+                      createBalloon(speed);
+                  }, balloonInterval);
+
+                  // 更新計時器顯示
+                  timerDisplay.textContent = `${timer.toString().padStart(2, '0')}秒`;
+
+                  let countdown = setInterval(() => {
+                  timer--;
+                  timerDisplay.textContent = `${timer.toString().padStart(2, '0')}秒`;
+                  if (timer <= 0) {
+                    clearInterval(countdown);
+                    clearInterval(gameInterval);
+
+                    setTimeout(() => {
+              if (score >= levelConfig.clear) {
+                if (level === 5) {
+                  alert(`恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}。全數通關！`);
+                  saveGameData(score, level, speed);
+                } else {
+                  const nextLevel = level + 1;
+                  const nextLevelConfig = levelConfigs.find(config => config.level === nextLevel);
+                  const retry = confirm(`恭喜你${levelConfig.levelName}通關成功! 你的分數是 ${score}，要挑戰下一關嗎？`);
+                  saveGameData(score, level, speed);
+                  if (retry) {
+                    startGame(nextLevel); // 開始下一關
+                  }
+                }
+              } else {
+                const retry = confirm(`${levelConfig.levelName}通關失敗......你的分數是${score}，要繼續挑戰嗎？`);
+                if (retry) {
+                  startGame(level); // 重新挑戰相同的關卡
+                }
+              }
+            }, 1000); // 將提示框延遲 1 秒顯示
           }
-      }
-
-      // 跟據氣球配置的概率隨機選擇氣球配置
-      function chooseBalloonConfig() {
-          const randomIndex = Math.floor(Math.random() * balloonConfigs.length);
-          return balloonConfigs[randomIndex];
-      }
-
-      // 點擊氣球時觸發的函數
-      function popBalloon(balloon) {
-          // 獲取氣球的分數並將其轉為整數
-          const points = parseInt(balloon.dataset.points);
-          // 獲取氣球的名稱
-          const balloonName = balloon.textContent;
-
-          // 移除被點擊的氣球
-          balloon.remove();
-
-          // 更新分數
-          updateScore(points, balloonName);
-      }
-
-      // 更新分數的函式
-      function updateScore(points, balloonName) {
-        if (balloonName === "0") {
-        score = 0; // 如果氣球名字是 0 分數歸 0
-        } else if (balloonName === "x2") {
-        score *= 2; // 如果氣球名字是 2 分數乘以 2
-        } else {
-        score += points; // 都不是時 將分數累加
-        }
-
-          // 更新分數顯示的內容
-          scoreDisplay.textContent = `Score: ${score}`;
+        }, 1000);
       }
 
 
-      // 開始遊戲的函式
-      function startGame(level) {
-        const levelConfig = levelConfigs.find(config => config.level === level);
-        timer = levelConfig.time;
-        const speed = levelConfig.speed;
-          // 設置遊戲循環 每秒調用一次 createBalloon 函式生成氣球
-          gameInterval = setInterval(() => {
-              createBalloon(speed);
-          }, 600);
+              function saveGameData(score, level,speed) {
+                // 要傳送的資料
+                const data = {
+                  score: score,
+                  level: level,
+                  speed:speed,
+                };
+                console.log(data);
+              }
 
-          //在規定時間後結束遊戲
-          setTimeout(() => {
-              clearInterval(gameInterval); // 清除遊戲循環
-              alert(`Game Over! Your score is ${score}`); // 彈出提示框顯示最終分數
-          }, timer * 1000);
-
-          // 每秒更新一次剩餘時間 並更新計時器
-          setInterval(() => {
-              timer--;
-              timerDisplay.textContent = `Time: ${timer}`;
-          }, 1000);
-      }
-
-      // 啟動遊戲
-      startGame(1);
+              // 啟動遊戲
+              startGame(1);
     </script>
   </body>
 </html>
