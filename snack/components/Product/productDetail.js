@@ -28,7 +28,6 @@ export default function ProductDetailCard({
   product_id,
 }) {
   const { addToCart } = useCartContext()
-
   const [quantity, setQuantity] = useState(0)
 
   // 增加数量
@@ -43,10 +42,8 @@ export default function ProductDetailCard({
 
   // 加入購物車
   const handleAddToCart = () => {
-    if (quantity > 0) {
-      addToCart(product_id, quantity)
-      onClose()
-    }
+    addToCart(product_id, quantity)
+    onClose()
   }
 
   return (

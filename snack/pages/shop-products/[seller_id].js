@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-// 套件
-import toast from 'react-hot-toast'
 // 元件
 import SectionProducts from '@/components/layout/section-nopaddin'
 import ShopInfo from '@/components/shop-products/shop-info/shop-info'
@@ -16,7 +14,6 @@ import {
   SHOP_PRODUCTS,
   SELLER_DATA,
   PRODUCTS_DATA,
-  IMAGES_PRODUCTS,
   API_SERVER,
 } from '@/components/config/api-path'
 // 樣式

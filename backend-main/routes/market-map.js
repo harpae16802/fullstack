@@ -4,11 +4,43 @@ import db from "../utils/db.js";
 const router = express.Router();
 
 // 取得夜市資料
-router.get("/market-data", async (req, res) => {
-  const sql = "SELECT * FROM market_data";
-  const [rows] = await db.query(sql);
+// router.get("/market-data", async (req, res) => {
+//   const sql = "SELECT * FROM market_data";
+//   const [rows] = await db.query(sql);
 
-  res.json(rows);
+//   res.json(rows);
+// });
+// 获取夜市资料及其夜市评分平均值
+router.get("/market-data", async (req, res) => {
+  try {
+    // 查询市场数据
+    const sqlMarket = "SELECT * FROM market_data";
+    const [marketRows] = await db.query(sqlMarket);
+
+    // 查询夜市评分平均值
+    const sqlRating = `
+          SELECT market_id, AVG(night_rating) as average_night_rating
+          FROM comment
+          WHERE night_rating IS NOT NULL
+          GROUP BY market_id;
+      `;
+    const [ratingRows] = await db.query(sqlRating);
+
+    // 将评分平均值合并到市场数据中
+    const enrichedData = marketRows.map((market) => {
+      const rating = ratingRows.find((r) => r.market_id === market.market_id);
+      return {
+        ...market,
+        average_night_rating: rating ? rating.average_night_rating : null, // 如果没有评分则返回null
+      };
+    });
+
+    // 返回合并后的数据
+    res.json(enrichedData);
+  } catch (error) {
+    console.error("查询失败:", error);
+    res.status(500).json({ error: "服务器内部错误" });
+  }
 });
 
 // 地圖搜尋

@@ -8,6 +8,7 @@ import {
   IMAGES_SELLER,
   BUS_AND_DISTANCE,
   CART_STOPS,
+  API_SERVER,
 } from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
@@ -74,7 +75,7 @@ export default function Night({
         {/* 桌面版 */}
         <div className={`col-lg-8 d-none d-lg-block ${style.left}`}>
           <img
-            src={`${IMAGES_NIGHT}/${nightImg}`}
+            src={`${API_SERVER}/${nightImg}`}
             alt={nightImg}
             className={style.bigImage}
           />
@@ -88,7 +89,7 @@ export default function Night({
               return (
                 <div className={`col-4`}>
                   <img
-                    src={`${IMAGES_SELLER}/${imgUrl}`}
+                    src={`${API_SERVER}/${imgUrl}`}
                     alt={`商店圖片 ${index}`}
                     className={`${style.smallImage}`}
                   />
@@ -101,25 +102,19 @@ export default function Night({
         <div className="col-12 d-lg-none p-0 mb-2">
           <div className={`d-flex overflow-auto ${style.scrollbar}`}>
             <img
-              src={`/images/night/${nightImg}`}
+              src={`${API_SERVER}/${nightImg}`}
               alt={nightImg}
               className={`${style.mobileImg} img-fluid`}
             />
-            <img
-              src="/images/shop02.jpg"
-              alt="商店一"
-              className={`${style.mobileImg} img-fluid`}
-            />
-            <img
-              src="/images/shop02.jpg"
-              alt="商店二"
-              className={`${style.mobileImg} img-fluid`}
-            />
-            <img
-              src="/images/shop02.jpg"
-              alt="商店三"
-              className={`${style.mobileImg} img-fluid`}
-            />
+            {store_image.map((imgUrl, index) => {
+              return (
+                <img
+                  src={`${API_SERVER}/${imgUrl}`}
+                  alt={`商店圖片 ${index}`}
+                  className={`${style.mobileImg} img-fluid`}
+                />
+              )
+            })}
           </div>
         </div>
 

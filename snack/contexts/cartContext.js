@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
-// 套件
 // api-path
 import {
   CART_ADD,
@@ -28,6 +27,12 @@ export const CartProvider = ({ children }) => {
           window.location.href = '/login/login-custom'
         }
         return
+      }
+
+      // 检查商品数量是否大于0
+      if (quantity <= 0) {
+        alert('請選擇至少一個商品數量')
+        return // 如果数量不大于0，则不进行添加操作
       }
 
       const response = await fetch(CART_ADD, {

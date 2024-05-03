@@ -6,7 +6,11 @@ import L from 'leaflet'
 // context
 import { useMapContext } from '@/contexts/mapContext'
 // fetch 網址
-import { MARKET_DATA, IMAGES_NIGHT } from '@/components/config/api-path'
+import {
+  MARKET_DATA,
+  IMAGES_NIGHT,
+  API_SERVER,
+} from '@/components/config/api-path'
 // 樣式
 import style from './style.module.scss'
 
@@ -126,7 +130,7 @@ const MapComponent = () => {
           <Popup offset={L.point(46, -24)} className={style.popup}>
             <div className={style.card}>
               <img
-                src={`${IMAGES_NIGHT}/${point.market_img}`}
+                src={`${API_SERVER}/${point.market_img}`}
                 alt=""
                 className={style.img}
               />
@@ -145,7 +149,9 @@ const MapComponent = () => {
                 <div
                   className={`d-flex justify-content-center align-items-center ${style.score}`}
                 >
-                  <h6 className="fw-bold m-0">4.7</h6>
+                  <h6 className="fw-bold m-0">
+                    {Number(point.average_night_rating).toFixed(1)}
+                  </h6>
                 </div>
               </div>
             </div>

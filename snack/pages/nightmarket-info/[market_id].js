@@ -9,11 +9,10 @@ import ShopCard from '@/components/nightmarket-info/shop-card/shop-card'
 // api-path
 import {
   MARKET_SELLER,
-  IMAGES_SELLER,
   CATEGORY,
   MARKET,
   STORE_RATINGS,
-  IMAGES_AD_1,
+  API_SERVER,
 } from '@/components/config/api-path'
 // 樣式
 import style from './nightmarket-info.module.scss'
@@ -222,7 +221,7 @@ export default function NightmarketInfo({ initialMarketData }) {
                 className={`col-3 d-flex justify-content-center ${style.col}`}
               >
                 <ShopCard
-                  imgUrl={`${IMAGES_SELLER}/${seller.store_image}`}
+                  imgUrl={`${API_SERVER}/${seller.store_image}`}
                   title={seller.store_name}
                   time1={`每周${restDayChinese}休息`}
                   time2={`下午${openingTime}到凌晨${closingTime}`}
