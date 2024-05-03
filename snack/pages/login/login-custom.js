@@ -579,15 +579,15 @@ export default function LoginCustom() {
                       </div>
                       <button
                         type="submit"
-                        className="btn btn-primary mb-4 mt-4"
+                        className="btn btn-primary mb-5 mt-5"
                       >
                         登入
                       </button>
-                      <div className="forget-text">
+                      {/* <div className="forget-text">
                         <Link href="/opt" className="forget-p mb-5">
                           <p>忘記密碼？</p>
                         </Link>
-                      </div>
+                      </div> */}
                     </form>
                     <button
                       className="google-login mt-5"
@@ -840,11 +840,11 @@ export default function LoginCustom() {
                   <button type="submit" className="btn btn-primary mb-4 mt-4">
                     登入
                   </button>
-                  <div className="forget-text">
+                  {/* <div className="forget-text">
                     <Link href="/opt" className="forget-p">
                       <p>忘記密碼？</p>
                     </Link>
-                  </div>
+                  </div> */}
                 </form>
                 <button className="google-login mt-4">
                   <Image

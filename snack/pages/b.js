@@ -295,6 +295,7 @@ const BalloonShooterGame = () => {
           <div className="balloon-play" ref={gameContainerRef}></div>
         </div>
       </div>
+      
     </div>
   )
 }

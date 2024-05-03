@@ -295,6 +295,16 @@ const BalloonShooterGame = () => {
           <div className="balloon-play" ref={gameContainerRef}></div>
         </div>
       </div>
+       {/* <div className="chara-group">
+          <div className="character">
+            {' '}
+            <img
+              src="/images/game/cha01.png"
+              className="character-obj"
+              alt="..."
+            />
+          </div>
+        </div> */}
     </div>
   )
 }
