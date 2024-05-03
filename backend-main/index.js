@@ -27,6 +27,7 @@ import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
 import categoriesRouter from './routes/categoriesRouter.js'
 import cartRouter from './routes/cartRouter.js'
+import gameDataRouter from "./routes/game-data.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -225,6 +226,7 @@ app.get("/jwt-data", async (req, res) => {
 
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
+app.use("/game-data", gameDataRouter);
 
 // ====恆
 app.use("/orderRouter",orderRouter); 

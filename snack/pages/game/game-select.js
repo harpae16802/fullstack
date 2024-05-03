@@ -38,7 +38,7 @@ export default function GameSelect() {
     
 
     console.log('選擇的關卡:', selectedLevel, 'ID:', auth.custom_id);
-    router.push(`/b`);
+    router.push(`/game/game-play`);
   }
 
   return (

@@ -8,6 +8,7 @@ export default function GameRule({
   clear,
   status,
   score,
+  getPoint,
   onStartGame, // 新增的 prop，用於開始遊戲
   onGoToNextLevel, // 新增的前往下一关事件处理函数
   onRetryLevel, // 新增的再次挑战事件处理函数
@@ -60,7 +61,7 @@ export default function GameRule({
         {/* 規則開始 */}
         <div className="level-text">{levelName}通關規則</div>
         <div className="rule-group">
-          <div className="point-text">時間限制 : {time} 秒</div>
+          <div className="point-text">時間限制 : {time}秒</div>
           <div className="score-text">通關分數 : {clear}</div>
         </div>
         <button
@@ -96,7 +97,7 @@ export default function GameRule({
         <FaRegCheckSquare className="fa-success" />
 
         <div className="rule-group">
-          <div className="point-text">獲得點數:10點{score}</div>
+          <div className="point-text">獲得點數:{getPoint}點</div>
         </div>
         <div className="buttons">
           <Link type="button" className="btn btn-outline-primary" href={'/game/game-select'}>
@@ -143,7 +144,7 @@ export default function GameRule({
         <FaRegCheckSquare className="fa-success" />
 
         <div className="rule-group">
-          <div className="point-text">獲得點數:10點{score}</div>
+          <div className="point-text">獲得點數:{getPoint}點</div>
         </div>
         <div className="buttons">
           <Link type="button" className="btn btn-primary" href={'/game/game-select'}>
