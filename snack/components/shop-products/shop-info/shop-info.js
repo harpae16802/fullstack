@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fa'
 // context
 import { useAuth } from '@/contexts/custom-context'
+import { useIcon } from '@/data/context/ImgContext'
 // api-path
 import {
   FAVORITE_STORE,
@@ -35,6 +36,7 @@ export default function ShopInfo({
   comment = '',
 }) {
   const { auth, getAuthHeader } = useAuth()
+  let { previewUrl } = useIcon()
 
   const [isFavorite, setIsFavorite] = useState(false) // 最愛
   const [modalIsOpen, setIsModalOpen] = useState(false) // 彈窗
@@ -366,7 +368,7 @@ export default function ShopInfo({
                 <div className={style.userComment}>
                   <div className={`d-flex ${style.user}`}>
                     <img
-                      src="/avatar.png"
+                      src={previewUrl}
                       alt=""
                       className={`rounded-circle ${style.avatar}`}
                     />

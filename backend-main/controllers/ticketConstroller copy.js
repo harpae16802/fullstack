@@ -7,6 +7,8 @@ import { date } from '../utils/date.js';
 // if those modules use CommonJS syntax. They need to either use ESM syntax or be adapted via dynamic import() where necessary.
 const perPage = 3;
 const step = (desc, page) => ` ORDER BY ${desc} DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
+
+
 export const selectGainedTicket01 = async (req, res) => {
     const userId = req.body.userId || 1;
     try {
@@ -24,58 +26,28 @@ export const selectGainedTicket01 = async (req, res) => {
         );`;
         let [result1] = await db.query(sql);
         const sql2 = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_id and a.custom_id=${userId}`;
-        let [result2] = await db.query(sql2); 
-        if (!result1 || !result2) {
-            return res.json({ success: false, error: "Error in signup query" });
-        } 
-   
-        result2 = result2.map((v, i) => { 
-            v.play_date = ISOtodate(v.payment_date)
-            return v;
-        });
-        result1 = result1.map((v, i) => {
-            v.play_date = ISOtodate(v.play_date)
-            return v;
-        });
-   
-
-        const allResult = [...result1, ...result2];
-        allResult.sort((a, b) => a.play_date.localeCompare(b.play_date));
-        res.json({ allResult});
-
-    } catch (err) {
-        console.error("Error executing SQL query:", err);
-        return res.status(500).json({ error: "An error occurred while processing the request" });
-    };
-};
-
-export const selectGainedTicket0101 = async (req, res) => {
-    const userId = req.body.userId || 1;
-    const pageGet=req.query.page||1;
-    try {
-        const sql = `SELECT a.*, (
-            SELECT b.play_date
-            FROM clear_data b
-            WHERE b.user_id = ${userId} AND a.level_id = b.level_id
-            LIMIT 1
-        ) AS play_date
-        FROM achievement_category a 
-        WHERE a.clear_times <= (
-            SELECT COUNT(b.user_id)
-            FROM clear_data b
-            WHERE b.user_id = ${userId} AND a.level_id = b.level_id
-        );`;
-        let [result1] = await db.query(sql);
-        const sql2 = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_id and a.custom_id=${userId}`;
         let [result2] = await db.query(sql2);
-    
+        const sqlCount = `SELECT COUNT(*) AS record_count FROM (
+            SELECT a.*, (
+                        SELECT b.play_date
+                        FROM clear_data b
+                        WHERE b.user_id = ${userId} AND a.level_id = b.level_id
+                        LIMIT 1
+                    ) AS play_date
+                    FROM achievement_category a 
+                    WHERE a.clear_times <= (
+                        SELECT COUNT(b.user_id)
+                        FROM clear_data b
+                        WHERE b.user_id = ${userId} AND a.level_id = b.level_id
+                    )
+        ) AS subquery`
+        let  [totalRows]= await db.query(sqlCount);
+        totalPages = Math.ceil(totalRows / perPage); 
+        const recordCount = result3[0].record_count;
         if (!result1 || !result2) {
             return res.json({ success: false, error: "Error in signup query" });
         } 
-        // 結合分業
-        const recordCount = result1.length+result2.length;
-        const totalPages = Math.ceil(recordCount / perPage); 
-      // 格式轉換
+   
         result2 = result2.map((v, i) => { 
             v.play_date = ISOtodate(v.payment_date)
             return v;
@@ -84,13 +56,11 @@ export const selectGainedTicket0101 = async (req, res) => {
             v.play_date = ISOtodate(v.play_date)
             return v;
         });
-      // 合一
-        // 分業過濾資料
+   
+
         const allResult = [...result1, ...result2];
         allResult.sort((a, b) => a.play_date.localeCompare(b.play_date));
-        allResult=
-
-        res.json({ allResult,totalPages:totalPages,recordCount });
+        res.json({ allResult,rowPage:totalRows });
 
     } catch (err) {
         console.error("Error executing SQL query:", err);
