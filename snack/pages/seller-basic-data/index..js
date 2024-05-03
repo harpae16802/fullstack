@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
-import { SELLER_API,IMGROUTER } from './config'
+import { SELLER_API, IMGROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -23,21 +23,20 @@ export default function SellerBasicData() {
 
   //拿取seller_id
 
-  const [sellerId, setSellerId] = useState(null);
-  
+  const [sellerId, setSellerId] = useState(null)
+
   // 往店家網頁
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
   }
   useEffect(() => {
-    const localSellerId = localStorage.getItem('sellerId');
+    const localSellerId = localStorage.getItem('sellerId')
     if (localSellerId) {
-      setSellerId(localSellerId);
+      setSellerId(localSellerId)
     } else {
       router.replace('/login/login-seller')
     }
-  }, []);
-
+  }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
@@ -57,7 +56,7 @@ export default function SellerBasicData() {
     companyDescription: '',
     openingHours: '09:00',
     closingHours: '22:00',
-    restDay:'0',
+    restDay: '0',
     profilePicture: '',
   })
 
@@ -518,55 +517,57 @@ export default function SellerBasicData() {
                     )}
                   </div>
 
-{/* 商家圖片 */}
-<div className="mb-5" style={{
-  display: 'flex',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  border: '2px solid #de4f4f',
-  borderRadius: '10px',
-  padding: '10px',
-  flexWrap: 'wrap',
-}}>
-  <div>
-    <label htmlFor="store_image" className="form-label">
-      現有商家圖片
-    </label>
-    <br />
-    {sellerData.storeImage ? (
-      <Image
-        src={`${IMGROUTER}${sellerData.storeImage}`}
-        alt="商家現有圖片"
-        className="img-fluid"
-        style={{ maxWidth: '200px', marginRight: '20px' }}
-        width={200}
-        height={200}
-      />
-    ) : (
-      <p>暫無圖片</p>
-    )}
-  </div>
+                  {/* 商家圖片 */}
+                  <div
+                    className="mb-5"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                      border: '2px solid #de4f4f',
+                      borderRadius: '10px',
+                      padding: '10px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <div>
+                      <label htmlFor="store_image" className="form-label">
+                        現有商家圖片
+                      </label>
+                      <br />
+                      {sellerData.storeImage ? (
+                        <Image
+                          src={`${IMGROUTER}${sellerData.storeImage}`}
+                          alt="商家現有圖片"
+                          className="img-fluid"
+                          style={{ maxWidth: '200px', marginRight: '20px' }}
+                          width={200}
+                          height={200}
+                        />
+                      ) : (
+                        <p>暫無圖片</p>
+                      )}
+                    </div>
 
-  <div>
-    <label htmlFor="store_image" className="form-label">
-      新上傳圖片預覽
-    </label>
-    <br />
-    {newImagePreviewUrl ? (
-      <Image
-        src={newImagePreviewUrl}
-        alt="新上傳圖片預覽"
-        className="img-fluid"
-        style={{ maxWidth: '200px' }}
-        width={200}
-        height={200}
-      />
-    ) : (
-      <p>請選擇圖片以預覽</p>
-    )}
-  </div>
-</div>
-
+                    <div>
+                      <label htmlFor="store_image" className="form-label">
+                        新上傳圖片預覽
+                      </label>
+                      <br />
+                      {newImagePreviewUrl ? (
+                        <Image
+                          src={newImagePreviewUrl}
+                          alt="新上傳圖片預覽"
+                          className="img-fluid"
+                          style={{ maxWidth: '200px' }}
+                          width={200}
+                          height={200}
+                        />
+                      ) : (
+                        <p>請選擇圖片以預覽</p>
+                      )}
+                    </div>
+                  </div>
 
                   <label htmlFor="store_image" className="form-label">
                     上傳商家圖片

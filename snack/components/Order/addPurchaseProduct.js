@@ -98,8 +98,8 @@ const DiscountContentItem = ({ items = [] }) => {
         },
       ],
       redirectUrls: {
-        confirmUrl: 'http://127.0.0.1:3000/order/orderStep3',
-        cancelUrl: 'http://127.0.0.1:3000/order/orderStep3',
+        confirmUrl: 'http://localhost:3000/order/orderStep3',
+        cancelUrl: 'http://localhost:3000/order/orderStep3',
       },
     }
 
@@ -216,6 +216,7 @@ const DiscountContentItem = ({ items = [] }) => {
     // 更新組件狀態
     setPaymentData(newPaymentData);
   
+    console.log(newPaymentData)
     // 存儲到 localStorage
     localStorage.setItem('paymentData', JSON.stringify(newPaymentData));
   };

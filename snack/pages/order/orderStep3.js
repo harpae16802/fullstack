@@ -21,22 +21,22 @@ export default function OrderF() {
 
   // 拿取 第二部結帳的 組件的資料
   useEffect(() => {
-    const data = localStorage.getItem('paymentData')
+    const data = localStorage.getItem('paymentData');
     if (data) {
-      const parsedData = JSON.parse(data)
-      parsedData.items = parsedData.items 
-      setPaymentData(parsedData)
-      console.log(parsedData)
-      if (parsedData.items.length > 0) {
+      const parsedData = JSON.parse(data);
+      setPaymentData(parsedData);
+
+      // 檢查是否有項目和自定義 ID
+      if (parsedData.items && parsedData.items.length > 0 && parsedData.customId) {
         handleOrderCheckout(
           parsedData.items,
           parsedData.customId,
           [parsedData.selectedDiscount],
           parsedData.pointsReduction
-        )
+        );
       }
     }
-  }, [])
+  }, []);
 
   // 將數據注入資料庫 order_data
   const handleOrderCheckout = async (
