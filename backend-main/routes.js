@@ -75,5 +75,6 @@ app.post("/favorite/favoriteDel01Product", favoriteDel01Product);
 app.post("/favorite/favoriteSearch01Product", favoriteSearch01Product);
 app.post("/favorite/favoriteDel02Store", favoriteDel02Store);
 app.post("/favorite/favoriteSearch02Store", favoriteSearch02Store);
-
+// linePayBox
+app.post("/linePayBox",linePayBox)
 export default app;
