@@ -68,7 +68,7 @@ sellerRouter.get('/:sellerId', async (req, res) => {
   }
 });
 
-// 賣家資訊編輯 PUT 路由
+// 賣家資訊編輯 PUT 包含商店圖片
 sellerRouter.put('/:sellerId/edit', upload.fields([
   { name: 'profilePicture', maxCount: 1 },
   { name: 'store_image', maxCount: 1 }
@@ -88,7 +88,7 @@ sellerRouter.put('/:sellerId/edit', upload.fields([
   } = req.body;
 
   const profilePicture = req.files['profilePicture'] ? req.files['profilePicture'][0].filename : null;
-  const storeImage = req.files['store_image'] ? req.files['store_image'][0].filename : null;
+  const storeImage = req.files['store_image'] ? 'images/seller/' + req.files['store_image'][0].filename : null;
 
   try {
     const sellerQuery = `

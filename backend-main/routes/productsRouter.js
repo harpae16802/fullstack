@@ -151,8 +151,9 @@ productsRouter.get("/:sellerId", async (req, res) => {
   }
 });
 
-// 新增產品包含上船圖檔
+// 新增產品 包含上傳圖檔
 productsRouter.post("/add", upload.single("image"), async (req, res) => {
+  
   const {
     category,
     category_id,
@@ -165,7 +166,7 @@ productsRouter.post("/add", upload.single("image"), async (req, res) => {
     seller_id,
   } = req.body;
 
-  const imageUrl = req.file ? `/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
+  const imageUrl = req.file ? `images/products/${req.file.filename}` : null; // 從 req.file 中取得上傳的圖片檔名
   const status = 1; // 根據您的業務規則設置，例如，新建產品預設為上架狀態
   const favoriteCount = 0; // 新建產品的初始蒐藏數為0
 
@@ -239,7 +240,7 @@ productsRouter.put("/update-product/:productId", upload.single("image"), async (
 
   console.log(req.body);  
  
-  const imageUrl = req.file ? `/products/${req.file.filename}` : null;
+  const imageUrl = req.file ? `images/products/${req.file.filename}` : null;
   console.log(imageUrl);
 
   try {
