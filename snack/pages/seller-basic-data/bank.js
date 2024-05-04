@@ -45,8 +45,12 @@ useEffect(() => {
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
-    profilePicture: '', // 賣家頭像
-    bankAccounts: [], // 初始化為空數組
+    profilePicture: '',
+    bankAccounts: [
+      { account_number: '', bank_code: '' },
+      { account_number: '', bank_code: '' },
+      { account_number: '', bank_code: '' }
+  ], 
   })
 
   //彈出視窗
@@ -75,6 +79,10 @@ useEffect(() => {
           const { profile_picture, bankAccounts } = response.data.data // 解構出我的資料
           console.log('後端的數據:', response.data) // debug
 
+          while (bankAccounts.length < 3) {
+            bankAccounts.push({ account_number: '', bank_code: '' });
+        }
+        
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: profile_picture || `${IMG}`,

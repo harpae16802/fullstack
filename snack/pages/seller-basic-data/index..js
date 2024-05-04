@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
-import { SELLER_API, IMGROUTER,BackEndSIMG } from './config'
+import { SELLER_API, IMGROUTER, BackEndSIMG } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -13,6 +13,7 @@ import { Modal, Button, Form } from 'react-bootstrap'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PasswordToggle from './PasswordToggle'
 
 export default function SellerBasicData() {
   // 使用 useRouter
