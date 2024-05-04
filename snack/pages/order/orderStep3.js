@@ -5,10 +5,16 @@ import styles from '@/styles/Order.module.css'
 import axios from 'axios'
 import { useAuth } from '../../contexts/custom-context'
 import { CARTITEM } from '../seller-basic-data/config'
+
+
 export default function OrderF() {
+
+  // 拿取custom_id
   const { auth } = useAuth()
   const customId = auth.custom_id
   console.log(customId)
+
+  // 設定資料
   const [paymentData, setPaymentData] = useState({
     items: [],
     selectedDiscount: null,
@@ -16,7 +22,9 @@ export default function OrderF() {
     pointsReduction: 0,
     remainingPoints: 0,
   })
-
+  
+  // 訂單提交的狀態
+  const [orderSubmitted, setOrderSubmitted] = useState(false) 
   // 拿取 locastorage中的資料
   useEffect(() => {
     const data = localStorage.getItem('paymentData')
@@ -28,7 +36,7 @@ export default function OrderF() {
 
   // 如果有資料 就發送請求到後端
   useEffect(() => {
-    if (paymentData.items.length > 0 && customId) {
+    if (!orderSubmitted && paymentData.items.length > 0 && customId) {
       handleOrderCheckout(
         paymentData.items,
         customId,
@@ -36,7 +44,7 @@ export default function OrderF() {
         paymentData.pointsReduction
       )
     }
-  }, [paymentData, customId])
+  }, [paymentData, customId, orderSubmitted])
 
   //  發送糗求到後端
   async function handleOrderCheckout(
@@ -69,7 +77,16 @@ export default function OrderF() {
         })),
       })
       console.log('訂單成功提交')
+      // 清除 localStorage 中的 paymentData
+      localStorage.removeItem('paymentData')
+      
       await handleClearCart(customId, items)
+      setOrderSubmitted(true) // 設置訂單已提交標誌
+      setPaymentData(prevData => ({
+        ...prevData,
+        orderNumber,
+        orderDate: new Date().toLocaleDateString()
+      }))
     } catch (error) {
       console.error('提交訂單時出現錯誤：', error)
     }
