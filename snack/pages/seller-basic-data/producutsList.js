@@ -477,7 +477,7 @@ const ProductsList = () => {
 
               <div
                 className="d-flex justify-content-center align-items-center mt-3"
-                style={{ minHeight: '200px' }}
+                style={{ minHeight: '450px' ,  maxHeight: '500px;'}}
               >
                 {loading ? (
                   <div className="text-center">

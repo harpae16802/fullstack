@@ -469,8 +469,8 @@ export default function Order() {
                 {/* 這裡要能搜索產品名稱 */}
                 {/* 我在這裡要實現資料的顯示 */}
                 <div
-                  className="d-flex justify-content-center align-items-center mt-3"
-                  style={{ minHeight: '200px' }}
+                  className="d-flex justify-content-center align-items-center mt-3" 
+                  style={{ minHeight: '450px' ,  maxHeight: '500px;' }}
                 >
                   {loading ? (
                     <div className="text-center">
