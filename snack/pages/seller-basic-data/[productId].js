@@ -583,7 +583,7 @@ export default function AddProducts() {
                               src={`${IMGROUTER}${productDetails.image_url}`}
                               alt="Current Product Image"
                               className="img-fluid"
-                              style={{ maxWidth: '200px', marginRight: '20px' }}
+                              style={{ maxWidth: '190px', marginRight: '20px' }}
                             />
                           ) : (
                             <p>無當前圖片</p>
@@ -600,7 +600,7 @@ export default function AddProducts() {
                               src={previewImage}
                               alt="新上傳圖片預覽"
                               className="img-fluid"
-                              style={{ maxWidth: '200px' }}
+                              style={{ maxWidth: '190px' }}
                             />
                           ) : (
                             <p>請選擇圖片以預覽</p>

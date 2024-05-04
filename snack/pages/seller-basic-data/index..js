@@ -561,9 +561,9 @@ export default function SellerBasicData() {
                           src={`${IMGROUTER}${sellerData.storeImage}`}
                           alt="商家現有圖片"
                           className="img-fluid"
-                          style={{ maxWidth: '200px', marginRight: '20px' }}
-                          width={200}
-                          height={200}
+                          style={{ maxWidth: '190px', marginRight: '20px' }}
+                          width={190}
+                          height={190}
                         />
                       ) : (
                         <p>暫無圖片</p>
@@ -580,9 +580,9 @@ export default function SellerBasicData() {
                           src={newImagePreviewUrl}
                           alt="新上傳圖片預覽"
                           className="img-fluid"
-                          style={{ maxWidth: '200px' }}
-                          width={200}
-                          height={200}
+                          style={{ maxWidth: '190px' }}
+                          width={190}
+                          height={190}
                         />
                       ) : (
                         <p>請選擇圖片以預覽</p>
