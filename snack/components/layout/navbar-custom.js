@@ -24,11 +24,11 @@ export default function NavbarCustom() {
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <Link className="navbar-brand" href="/">
+            <Link className="navbar-brand" href="/order/orderStep1">
               <Image src="/logo-o.svg" alt="" width={180} height={70} />
             </Link>
             <div className="right-icons">
-              <a className="navbar-brand min-cart" href="/">
+              <a className="navbar-brand min-cart" href="/order/orderStep1">
                 <FaShoppingCart />
               </a>
               <button
@@ -190,9 +190,9 @@ export default function NavbarCustom() {
                   </div>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a className="nav-link"href="/order/orderStep1">
                     <div className="nav-icons">
-                      <FaShoppingCart className="fa-solid fa-cart-shopping" />
+                      <FaShoppingCart href="/order/orderStep1" className="fa-solid fa-cart-shopping" />
                     </div>
                   </a>
                 </li>
