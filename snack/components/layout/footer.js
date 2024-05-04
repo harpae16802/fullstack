@@ -61,11 +61,11 @@ export default function Footer() {
             </div>
             <div className="web-info">
               <div className="tel">
-                <span className="tel-item col-6">電話 . 0911222333</span>
-                <span className="tel-item col-6">傳真 . 0911222333</span>
+                <span className="tel-item col-6">手機 . 0987-432-123</span>
+                <span className="tel-item col-6">電話 . 02-6631-6588</span>
               </div>
               <span className="col-12">信箱 . nightmarket@gmail.com</span>
-              <span className="col-12">地址 . 新北市中和區某某路100號10樓</span>
+              <span className="col-12">地址 . 台北市大安區復興南路一段390號2樓</span>
               <span className="copy col-12">
                 Copyright © 2024 Nightmarket Hunter All Rights Reserved.
               </span>

@@ -15,8 +15,9 @@ export default function GameIndex() {
     <>
       <Section>
         {/* <Image src="/images/layout/icons.png" alt="" width={500} height={500} /> */}
-        <SearchBar />
-        <h1>在這裡放你切好的版,記得就是用兩個Section包住</h1>
+        {/* <SearchBar />
+        <h1>在這裡放你切好的版,記得就是用兩個Section包住</h1> */}
+        <div className="bb" style={{height:'30vh'}}></div>
       </Section>
     </>
   )
