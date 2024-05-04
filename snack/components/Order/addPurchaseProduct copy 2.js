@@ -169,19 +169,14 @@ const DiscountContentItem = ({ items = [] }) => {
   // 計算訂單的總金額
   const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
 
-  // 折扣後 與點數 的總金額計算
+  // 折扣後的總金額計算
+
   const calculateFinalAmount = () => {
-    const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0);
-    let discountAmount = 0;
-    // 检查是否有选择折扣且折扣条件满足
-    if (selectedDiscount && totalAmount >= selectedDiscount.min_amount) {
-      discountAmount = selectedDiscount.discount;
-    }
-    const pointsReduction = usePoints ? customPoints / 10 : 0;
-    const finalAmount = totalAmount - discountAmount - pointsReduction;
-    return Math.round(finalAmount); // 使用 Math.round 进行四舍五入
+    const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
+    const discountAmount = selectedDiscount ? selectedDiscount.discount : 0
+    const pointsReduction = usePoints ? customPoints / 10 : 0
+    return totalAmount - discountAmount - pointsReduction
   }
-  
 
   // const totalDiscountAmount = selectedDiscount ? selectedDiscount.discount : 0
   // const pointsReduction = usePoints ? customPoints / 10 : 0 // 使用點數時才計算減少的金額
@@ -489,8 +484,8 @@ const DiscountContentItem = ({ items = [] }) => {
             variant="primary"
             className={styles.btnPrimary}
             onClick={() => {
-              handleCloseModal() 
-              handleLinePay() 
+              handleCloseModal() // 先關閉 Modal
+              handleLinePay() // 然後執行支付
             }}
           >
             確認支付

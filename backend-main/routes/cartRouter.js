@@ -106,28 +106,33 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
     }
   });
 
-  //優惠資訊
-  cartRouter.get("/discounts/:seller_id", async (req, res) => {
-    const sellerId = req.params.seller_id;
-    const query = `
-      SELECT sd.seller_id, dc.name, dc.min_amount, dc.discount
-      FROM seller_discounts sd 
-      JOIN discount_category dc ON sd.discount_category_id = dc.id 
-      WHERE sd.seller_id = ?
-    `;
-  
-    try {
-      const [results] = await db.query(query, [sellerId]);
-      if (results.length > 0) {
-        res.send({ discounts: results });
-      } else {
-        res.status(404).send({ error: "No discounts found for this seller." });
-      }
-    } catch (error) {
-      console.error("Database error:", error);
-      res.status(500).send({ error: "Database error occurred while fetching discounts." });
+// 優惠資訊路由
+cartRouter.get("/discounts/:seller_id", async (req, res) => {
+  const sellerId = req.params.seller_id;
+  const query = `
+    SELECT 
+      sd.seller_id, 
+      dc.name, 
+      dc.min_amount, 
+      dc.discount, 
+      dc.id as discount_category_id  
+    FROM seller_discounts sd
+    JOIN discount_category dc ON sd.discount_category_id = dc.id
+    WHERE sd.seller_id = ?
+  `;
+
+  try {
+    const [results] = await db.query(query, [sellerId]);
+    if (results.length > 0) {
+      res.send({ discounts: results });
+    } else {
+      res.status(404).send({ error: "No discounts found for this seller." });
     }
-  });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).send({ error: "Database error occurred while fetching discounts." });
+  }
+});
 
   // 使用用者點數
   cartRouter.get('/points/:customId', async (req, res) => {

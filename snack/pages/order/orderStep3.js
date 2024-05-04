@@ -7,8 +7,14 @@ import ConsumerInfo from '@/components/Order/consumerInfo'
 import { usePayment } from '@/contexts/PaymentContext'
 import OrderLastCheck from '@/components/Order/orderLastCheck'
 import { CARTITEM, IMGROUTER } from '../seller-basic-data/config'
+import { useAuth } from '../../contexts/custom-context'
+
 
 export default function OrderF() {
+
+  const { auth } = useAuth()
+  const customId = auth.custom_id
+
   // 定義要接收的組件狀態
   const [paymentData, setPaymentData] = useState({
     items: [],
@@ -21,22 +27,34 @@ export default function OrderF() {
 
   // 拿取 第二部結帳的 組件的資料
   useEffect(() => {
-    const data = localStorage.getItem('paymentData');
+    const data = localStorage.getItem('paymentData')
     if (data) {
-      const parsedData = JSON.parse(data);
-      setPaymentData(parsedData);
+      const parsedData = JSON.parse(data)
+      setPaymentData(parsedData)
 
-      // 檢查是否有項目和自定義 ID
-      if (parsedData.items && parsedData.items.length > 0 && parsedData.customId) {
+      console.log(parsedData)
+      
+      if (
+        parsedData.items &&
+        parsedData.items.length > 0 &&
+        parsedData.customId
+      ) {
         handleOrderCheckout(
           parsedData.items,
           parsedData.customId,
           [parsedData.selectedDiscount],
           parsedData.pointsReduction
-        );
+        )
+          .then(() => {
+            // 可能需要在這裡清除 localStorage 或做其他事情
+            console.log('訂單處理完畢')
+          })
+          .catch((error) => {
+            console.error('訂單處理錯誤', error)
+          })
       }
     }
-  }, []);
+  }, [])
 
   // 將數據注入資料庫 order_data
   const handleOrderCheckout = async (
