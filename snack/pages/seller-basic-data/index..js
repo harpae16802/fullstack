@@ -405,7 +405,7 @@ export default function SellerBasicData() {
                       <div className="invalid-feedback">{errors.account}</div>
                     )}
                   </div>
-                  <div className="mb-3 container">
+                  {/* <div className="mb-3 container">
                     <label htmlFor="password" className="form-label">
                       使用者密碼
                     </label>
@@ -442,7 +442,26 @@ export default function SellerBasicData() {
                         {passwordShown ? <FaEyeSlash /> : <FaEye />}
                       </i>
                     </div>
+                  </div> */}
+                  <div className="mb-5 col-12container">
+                    <label htmlFor="password" className="form-label">
+                      使用者密碼
+                    </label>
+                    <div className="input-wrapper row">
+                      {' '}
+                      <PasswordToggle
+                        name="password"
+                        value={sellerData.password}
+                        onChange={handleChange}
+                      />
+                      {errors.password && (
+                        <div className="invalid-feedback">
+                          {errors.password}
+                        </div>
+                      )}
+                    </div>
                   </div>
+
                   <div className="mb-5">
                     <label htmlFor="storeName" className="form-label">
                       商家店名
