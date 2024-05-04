@@ -55,7 +55,7 @@ sellerRouter.get('/:sellerId', async (req, res) => {
         ...sellerRows[0],
         ...accountInfo,
         bankAccounts: bankAccounts,
-        storeImage: `/public/images/seller/${sellerRows[0].store_image}`
+        storeImage: `${sellerRows[0].store_image}`
       };
 
       res.json({ success: true, data: sellerData });
