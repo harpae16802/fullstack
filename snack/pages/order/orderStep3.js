@@ -3,112 +3,80 @@ import Section from '@/components/layout/section'
 import React, { useState, useEffect } from 'react'
 import styles from '@/styles/Order.module.css'
 import axios from 'axios'
-import ConsumerInfo from '@/components/Order/consumerInfo'
-import { usePayment } from '@/contexts/PaymentContext'
-import OrderLastCheck from '@/components/Order/orderLastCheck'
-import { CARTITEM, IMGROUTER } from '../seller-basic-data/config'
 import { useAuth } from '../../contexts/custom-context'
-
-
+import { CARTITEM } from '../seller-basic-data/config'
 export default function OrderF() {
-
   const { auth } = useAuth()
   const customId = auth.custom_id
-
-  // 定義要接收的組件狀態
+  console.log(customId)
   const [paymentData, setPaymentData] = useState({
     items: [],
     selectedDiscount: null,
     finalAmount: 0,
     pointsReduction: 0,
-    totalAmount: 0,
     remainingPoints: 0,
   })
 
-  // 拿取 第二部結帳的 組件的資料
+  // 拿取 locastorage中的資料
   useEffect(() => {
     const data = localStorage.getItem('paymentData')
     if (data) {
       const parsedData = JSON.parse(data)
       setPaymentData(parsedData)
-
-      console.log(parsedData)
-      
-      if (
-        parsedData.items &&
-        parsedData.items.length > 0 &&
-        parsedData.customId
-      ) {
-        handleOrderCheckout(
-          parsedData.items,
-          parsedData.customId,
-          [parsedData.selectedDiscount],
-          parsedData.pointsReduction
-        )
-          .then(() => {
-            // 可能需要在這裡清除 localStorage 或做其他事情
-            console.log('訂單處理完畢')
-          })
-          .catch((error) => {
-            console.error('訂單處理錯誤', error)
-          })
-      }
     }
   }, [])
 
-  // 將數據注入資料庫 order_data
-  const handleOrderCheckout = async (
+  // 如果有資料 就發送請求到後端
+  useEffect(() => {
+    if (paymentData.items.length > 0 && customId) {
+      handleOrderCheckout(
+        paymentData.items,
+        customId,
+        paymentData.selectedDiscount,
+        paymentData.pointsReduction
+      )
+    }
+  }, [paymentData, customId])
+
+  //  發送糗求到後端
+  async function handleOrderCheckout(
     items,
     customId,
-    discounts,
-    pointsUsed
-  ) => {
+    selectedDiscount,
+    pointsReduction
+  ) {
+    if (
+      !customId ||
+      !selectedDiscount ||
+      !selectedDiscount.discount_category_id
+    ) {
+      console.error('Invalid data: ', { customId, selectedDiscount })
+      return
+    }
+
     try {
-      // 生成隨機訂單編號
-      const orderNumber = Math.floor(100000 + Math.random() * 900000) // 生成 6 位數的隨機數字
-
-      // 其他訂單相關數據
-      const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0)
-      const discountId = discounts.length ? discounts[0].id : null
-
-      // 發送訂單信息到 order_data
-      const orderDataResponse = await axios.post(`${CARTITEM}order_data`, {
+      const orderNumber = Math.floor(100000 + Math.random() * 900000)
+      await axios.post(`${CARTITEM}order_data`, {
         custom_id: customId,
         seller_id: items[0].seller_id,
         order_number: orderNumber,
-        discount_category_id: discountId,
-        consume_gamepoint: pointsUsed ? pointsUsed : 0,
-        total_sum: totalAmount,
-      })
-
-      const orderId = orderDataResponse.data.order_id
-
-      // 為每個產品創建訂單詳細信息
-      const orderDetailsPromises = items.map((item) =>
-        axios.post(`${CARTITEM}order_detail`, {
-          order_id: orderId,
+        discount_category_id: selectedDiscount.discount_category_id,
+        consume_gamepoint: pointsReduction,
+        total_sum: paymentData.finalAmount,
+        items: items.map((item) => ({
           product_id: item.product_id,
           purchase_quantity: item.quantity,
-        })
-      )
-
-      await Promise.all(orderDetailsPromises)
-      console.log('訂單提交成功！')
-
-      // 清除 localStorage 中的 paymentData
-      localStorage.removeItem('paymentData')
-
-      // 在成功下單後清除購物車中的商品
+        })),
+      })
+      console.log('訂單成功提交')
       await handleClearCart(customId, items)
     } catch (error) {
       console.error('提交訂單時出現錯誤：', error)
     }
   }
 
-  // 刪除購物車中的商品
-  const handleClearCart = async (customId, items) => {
+  async function handleClearCart(customId, items) {
     try {
-      // 從商品中提取產品ID
       const productIds = items.map((item) => item.product_id)
       await axios.put(`${CARTITEM}cart/clear`, {
         custom_id: customId,

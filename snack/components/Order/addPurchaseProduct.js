@@ -74,6 +74,7 @@ const DiscountContentItem = ({ items = [] }) => {
       setSelectedDiscount(discounts[0]) // 默認選擇第一個折扣
     }
     console.log(discounts)
+    
   }, [discounts])
 
   // 折扣獲取
@@ -144,22 +145,9 @@ const DiscountContentItem = ({ items = [] }) => {
       console.log('Transaction ID:', transactionId)
       const urlToOpen = paymentUrl.web
 
-      // 付款成功就 僵直存到locastorage
-      const newPaymentData = {
-        items: [...items],
-        selectedDiscount: selectedDiscount,
-        finalAmount: finalAmount,
-        pointsReduction: pointsReduction,
-        totalAmount: remainingPoints,
-        remainingPoints: remainingPoints,
-      }
-
-      // 更新組件狀態
-      setPaymentData(newPaymentData)
-
-      // 存儲到 localStorage
-      localStorage.setItem('paymentData', JSON.stringify(newPaymentData))
-
+      // 當支付成功 將資料儲存在 locastorage
+      updatePaymentData(selectedDiscount);
+      
       window.open(urlToOpen, '_blank')
     } else {
       console.error('Error:', returnMessage)
@@ -173,20 +161,13 @@ const DiscountContentItem = ({ items = [] }) => {
   const calculateFinalAmount = () => {
     const totalAmount = items.reduce((acc, item) => acc + item.total_price, 0);
     let discountAmount = 0;
-    // 检查是否有选择折扣且折扣条件满足
     if (selectedDiscount && totalAmount >= selectedDiscount.min_amount) {
       discountAmount = selectedDiscount.discount;
     }
     const pointsReduction = usePoints ? customPoints / 10 : 0;
-    const finalAmount = totalAmount - discountAmount - pointsReduction;
-    return Math.round(finalAmount); // 使用 Math.round 进行四舍五入
+    return Math.round(totalAmount - discountAmount - pointsReduction);
   }
   
-
-  // const totalDiscountAmount = selectedDiscount ? selectedDiscount.discount : 0
-  // const pointsReduction = usePoints ? customPoints / 10 : 0 // 使用點數時才計算減少的金額
-  // const finalAmount = totalAmount - totalDiscountAmount - pointsReduction // 總金額
-  // const remainingPoints = customPoints - Math.round(finalAmount * 10) // 這是扣除完成的點數要更新到後端
   // 樣式-------------------------------------------------------
 
   // 商品的左側價格 數量 總價
@@ -225,22 +206,30 @@ const DiscountContentItem = ({ items = [] }) => {
     color: '#FA541C',
   }
 
+  
+  // 將資料劗送到locastorage
   const updatePaymentData = (discount) => {
-    const finalAmount = calculateFinalAmount()
+    const finalAmount = calculateFinalAmount();
+    const pointsReduction = usePoints ? Math.round(finalAmount * 10) : 0; 
+    const remainingPoints = customPoints - pointsReduction;  
+    const selectedDiscountId = discount ? discount.discount_category_id : null; 
     const newPaymentData = {
       items,
       selectedDiscount: discount,
+      discount_category_id: selectedDiscountId,
       finalAmount,
-      pointsReduction: usePoints ? customPoints / 10 : 0,
+      pointsReduction,
       totalAmount: finalAmount,
-      remainingPoints: customPoints - Math.round(finalAmount * 10),
+      remainingPoints: remainingPoints > 0 ? remainingPoints : 0, 
     }
-    setPaymentData(newPaymentData)
-    localStorage.setItem('paymentData', JSON.stringify(newPaymentData))
+    
+    setPaymentData(newPaymentData);
+    console.log(newPaymentData);
+    localStorage.setItem('paymentData', JSON.stringify(newPaymentData));
   }
-
+  
   // 樣式-------------------------------------------------------
-
+  
   return (
     <div>
       <div
@@ -408,7 +397,7 @@ const DiscountContentItem = ({ items = [] }) => {
       <button
         type="button"
         onClick={() => {
-          updatePaymentData()
+          updatePaymentData(selectedDiscount)
         }}
       >
         測試按鈕

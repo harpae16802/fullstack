@@ -159,7 +159,7 @@ cartRouter.get("/discounts/:seller_id", async (req, res) => {
 // 建立訂單
 cartRouter.post('/order_data', async (req, res) => {
   // 提取請求體數據
-  const { custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum } = req.body;
+  const { custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum, items } = req.body;
 
   try {
     // 插入訂單數據到 order_data 表
@@ -170,17 +170,18 @@ cartRouter.post('/order_data', async (req, res) => {
 
     const orderId = orderResult.insertId;
 
+    // 確保有 orderId 生成
     if (!orderId) {
-      throw new Error('Failed to create order.');  // 如果沒有orderId，拋出錯誤
+      throw new Error('Failed to create order.');
     }
 
     // 訂單詳細
-    const orderDetailsPromises = req.body.items.map(item =>
-      db.query(`
+    const orderDetailsPromises = items.map(item => {
+      return db.query(`
           INSERT INTO order_detail (order_id, product_id, purchase_quantity)
           VALUES (?, ?, ?)
-      `, [orderId, item.product_id, item.quantity])
-    );
+      `, [orderId, item.product_id, item.purchase_quantity]); // 確保 purchase_quantity 正確傳遞
+    });
 
     await Promise.all(orderDetailsPromises);
 
@@ -190,6 +191,7 @@ cartRouter.post('/order_data', async (req, res) => {
     res.status(500).send({ error: 'Database error occurred while creating order.' });
   }
 });
+
 
 
 
