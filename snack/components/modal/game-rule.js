@@ -182,7 +182,7 @@ export default function GameRule({
         <FaRegWindowClose className="fa-fail" />
 
         <div className="rule-group">
-          <div className="point-text">挑戰失敗了......{score}點</div>
+          <div className="point-text">挑戰失敗了......</div>
         </div>
         <div className="buttons">
           <Link type="button" className="btn btn-outline-primary" href={'/game/game-select'}>
