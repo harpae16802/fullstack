@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
-import { FaShopify, FaTrashAlt } from 'react-icons/fa'
+import { FaShopify, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
 // import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
 import { CARTITEM, IMGROUTER } from '../../pages/seller-basic-data/config'
 import { FaCheck } from 'react-icons/fa'
+// 加減號
+import QuantityControls from './QuantityControls'
 
 // 依照 賣家 id 來渲染不同賣家
 const groupItemsBySeller = (items) => {
@@ -136,14 +138,14 @@ const OrderDetailItem = ({
   }
 
   // 商家勾選
-  const handleSelectSeller = (seller,sellerId) => {
+  const handleSelectSeller = (seller, sellerId) => {
     setSelectedSeller(seller)
     if (groupedItems[seller]) {
-      const newSelectedItems = groupedItems[seller].map(item => ({
+      const newSelectedItems = groupedItems[seller].map((item) => ({
         ...item,
-        seller_id: sellerId, 
-      }));
-      setSelectedItems(newSelectedItems) 
+        seller_id: sellerId,
+      }))
+      setSelectedItems(newSelectedItems)
       setSelectedProducts(
         new Set(newSelectedItems.map((item) => item.product_id))
       )
@@ -151,7 +153,7 @@ const OrderDetailItem = ({
     } else {
       setSelectedItems([])
       setSelectedProducts(new Set())
-      onSelectSeller(seller, []) 
+      onSelectSeller(seller, [])
     }
   }
 
@@ -168,128 +170,148 @@ const OrderDetailItem = ({
 
   return (
     <>
-     <div className="container" style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '20px' }}>
-      {Object.entries(groupedItems).map(([seller, items], index) => (
-        <div
-          key={seller}
-          style={{
-            marginBottom: '20px',
-            padding: '10px',
-            borderRadius: '10px',
-            border: '1px solid #eaeaea',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            backgroundColor: selectedSeller === seller ? '#f0f0f0' : '#ffffff',
-          }}
-        >
-          <h2
+      <div
+        className="container"
+        style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '10px',
+          padding: '20px',
+        }}
+      >
+        {Object.entries(groupedItems).map(([seller, items], index) => (
+          <div
+            key={seller}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: '10px',
-              cursor: 'pointer',
+              marginBottom: '20px',
+              padding: '10px',
+              borderRadius: '10px',
+              border: '1px solid #eaeaea',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              backgroundColor:
+                selectedSeller === seller ? '#f0f0f0' : '#ffffff',
             }}
-            onClick={() => handleSelectSeller(seller, items[0].seller_id)}  
-            >
-            {seller}
-
-            {selectedSeller === seller ? (
-              <FaCheck style={{ marginRight: '5px' }} />
-            ) : null}
-          </h2>
-          {items.map((item) => (
-            <div
-              key={item.product_id}
+          >
+            <h2
               style={{
                 display: 'flex',
-                justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: '10px',
-                padding: '10px',
-                borderRadius: '10px',
-                backgroundColor: '#f9f9f9',
+                cursor: 'pointer',
               }}
+              onClick={() => handleSelectSeller(seller, items[0].seller_id)}
             >
+              {seller}
+
+              {selectedSeller === seller ? (
+                <FaCheck style={{ marginRight: '5px' }} />
+              ) : null}
+            </h2>
+            {items.map((item) => (
               <div
+                key={item.product_id}
                 style={{
                   display: 'flex',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginRight: 'auto',
+                  marginBottom: '10px',
+                  padding: '10px',
+                  borderRadius: '10px',
+                  backgroundColor: '#f9f9f9',
                 }}
               >
-                <input
-                  type="checkbox"
-                  checked={selectedProducts.has(item.product_id)}
-                  onChange={() => handleProductSelect(item.product_id)}
-                  style={{ marginRight: '10px' }}
-                />
-
                 <div
                   style={{
-                    padding: '5px',
-                    borderRadius: '10px',
-                    border: '1px solid #eaeaea',
                     display: 'flex',
-                    justifyContent: 'center',
                     alignItems: 'center',
-                    marginRight: '10px', 
+                    marginRight: 'auto',
                   }}
                 >
-                  <Image
-                    src={`http://localhost:3002/${item.image_url}`}
-                    alt={item.product_name}
-                    width={60}
-                    height={60}
-                    unoptimized
-                    style={{ borderRadius: '10px', objectFit: 'cover' }}
+                  <input
+                    type="checkbox"
+                    checked={selectedProducts.has(item.product_id)}
+                    onChange={() => handleProductSelect(item.product_id)}
+                    style={{ marginRight: '10px' }}
                   />
-                </div>
-                <div>
-                  <div style={{ fontWeight: 'bold', padding: '2px 0' }}>
-                    {item.product_name}
-                  </div>
-                  <div style={{ padding: '2px 0' }}>${item.price}</div>
-                  <div style={{ padding: '2px 0' }}>
-                    總價格: ${item.total_price}
-                  </div>
-                </div>
-              </div>
 
-              {/* 操作部分 */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <button
-                  onClick={() =>
-                    handleDecreaseQuantity(seller, item.product_id)
-                  }
-                  style={{ marginRight: '5px' }}
-                >
-                  -
-                </button>
-                <span style={{ margin: '0 10px' }}>{item.quantity}</span>
-                <button
-                  onClick={() =>
-                    handleIncreaseQuantity(seller, item.product_id)
-                  }
-                  style={{ marginLeft: '5px' }}
-                >
-                  +
-                </button>
+                  <div
+                    style={{
+                      padding: '5px',
+                      borderRadius: '10px',
+                      border: '1px solid #eaeaea',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: '10px',
+                    }}
+                  >
+                    <Image
+                      src={`http://localhost:3002/${item.image_url}`}
+                      alt={item.product_name}
+                      width={60}
+                      height={60}
+                      unoptimized
+                      style={{ borderRadius: '10px', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 'bold', padding: '2px 0' }}>
+                      {item.product_name}
+                    </div>
+                    <div style={{ padding: '2px 0' }}>${item.price}</div>
+                    <div style={{ padding: '2px 0' }}>
+                      總價格: ${item.total_price}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 操作部分 */}
+                <QuantityControls
+                  seller={seller}
+                  item={item}
+                  handleIncreaseQuantity={handleIncreaseQuantity}
+                  handleDecreaseQuantity={handleDecreaseQuantity}
+                />
                 <button
                   onClick={() => handleRemoveProduct(seller, item.product_id)}
-                  style={{ marginLeft: '10px', color: 'red' }}
+                  style={{ color: 'red' }}
                 >
                   <FaTrashAlt />
                 </button>
+                {/* <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <button
+                    onClick={() =>
+                      handleDecreaseQuantity(seller, item.product_id)
+                    }
+                    style={{ marginRight: '5px' }}
+                  >
+                    <FaMinus />
+                  </button>
+                  <span style={{ margin: '0 10px' }}>{item.quantity}</span>
+                  <button
+                    onClick={() =>
+                      handleIncreaseQuantity(seller, item.product_id)
+                    }
+                    style={{ marginLeft: '5px' }}
+                  >
+                    <FaPlus />
+                  </button>
+                  <button
+                    onClick={() => handleRemoveProduct(seller, item.product_id)}
+                    style={{ marginLeft: '10px', color: 'red' }}
+                  >
+                    <FaTrashAlt />
+                  </button>
+                </div> */}
               </div>
-            </div>
-          ))}
-        </div>
-      ))}
-     </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </>
   )
 }
