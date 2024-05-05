@@ -9,14 +9,13 @@ export default function FilterOptions () {
     return (
     <>
 
+    <button type="button"  data-bs-toggle="modal" data-bs-target="#filterModal"  className={`btn btn-primary ${styles.filterConditionButton}`}>
+    篩選條件 <IoIosArrowDown className={styles.filterIcon}/>
+    </button>
 
 
-<button type="button"  data-bs-toggle="modal" data-bs-target="#filterModal"  className={`btn btn-primary ${styles.filterConditionButton}`}>
-篩選條件 <IoIosArrowDown className={styles.filterIcon}/>
-</button>
-
-<div className="modal fade " id="filterModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="filterModalLabel" aria-hidden="true">
-     <div className="modal-dialog">
+<div className={`modal fade ${styles.modalLocation}`} id="filterModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="filterModalLabel" aria-hidden="true">
+     <div className={`modal-dialog ${styles.filterModalSize}`} >
         <div className="modal-content">
          
               <div className="modal-body body">

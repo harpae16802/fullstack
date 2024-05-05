@@ -109,11 +109,19 @@
    @media(max-width:576px){ 
     .filterConditionButton{
       width: 106px;
-      height: 25.5px;
+      height: 26px;
       font-size: 12px;
-      margin-left: 200px;
+      padding-bottom: 3px;
+      padding-left: -5px;
+      margin-right: 1400px;
+      margin-top: 10px;
     }
    }
+
+
+
+
+
 
   /* 人氣商品:外層容器 */
   .popularContainer {
@@ -240,7 +248,7 @@
     height: 38px;
     border:solid 3px #A32C2D;
     margin-top: -10px;
-    margin-left: 275px;
+    margin-left: 25px;
     font-size: 16px;
     border-radius: 20px;
     color: #A32C2D;
@@ -274,32 +282,51 @@
   }
 
   .popularInfo {
-   
     display: flex;
      align-items: center; 
-     
   }
 
   .recommendOuter{
     margin-top: 100px;
     margin-left: -20px;
   }
+  @media(max-width:576px){ 
+    .recommendOuter{
+     font-size: 16px;
+     margin-left: 720px;
+     margin-top: 10px;
+    }
+   }
 
   .recommendContainer{
     display: flex;
     justify-content:left;
   }
-
+  
   /* 推薦餐點:最外層容器 */
  .recommendProductContainer{
   margin-left: 80px;
   margin-top: 75px;
+ }
+ @media(max-width:576px){ 
+  .recommendProductContainer{
+   margin-left: 20px;
+   margin-top: 5px;
+  }
  }
 
  .recommendImage{
   border-radius: 70px;
   border:solid 8px #fff;
   margin-top: 22px;
+ } 
+ @media(max-width:576px){ 
+  .recommendImage{
+   width: 239px;
+   height: 132px;
+   border:solid 4px #fff;
+   border-radius: 20px;
+  }
  }
 
  .productItemContainer{
@@ -309,16 +336,28 @@
 
 
   .recommendTitle{
+    margin-top: 90px;
     margin-left: 60px;
     font-size: 30px;
     color:rgb(163, 44, 45);
     font-weight: bolder;
   }
+  @media(max-width:576px){ 
+    .recommendTitle{
+     font-size: 16px;
+     margin-left: 30px;
+    }
+   }
 
   .recommendProduct{
     font-weight: bolder;
     font-size: 20px;
   }
+  @media(max-width:576px){ 
+    .recommendProduct{
+     font-size: 16px;
+    }
+   }
 
 
   .recommendName{
@@ -327,6 +366,11 @@
     font-weight: bolder;
     font-size: 26px;
   }
+  @media(max-width:576px){ 
+    .recommendName{
+     font-size: 16px;
+    }
+   }
 
   .RecommendCollectIcon{
     color: rgb(163, 44, 45);
@@ -334,6 +378,11 @@
     margin-top: 12px;
     margin-left: 18px;
   }
+  @media(max-width:576px){ 
+    .RecommendCollectIcon{
+     display: none;
+    }
+   }
 
   .productScore{
     width: 53px;
@@ -348,6 +397,15 @@
     font-size: 16px;
     font-weight: bold;
   }
+  @media(max-width:576px){ 
+    .productScore{
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
+    padding-top: 12px;
+    padding-left: 10px;
+    }
+   }
 
   .discountContainer{
     margin-top: 20px;
@@ -480,8 +538,16 @@
    @media(max-width:576px){ 
     .filterIcon{
       font-size: 18px;
+      margin-left: 0px;
     }
    }
+
+   .modalLocation{
+    margin-left: 500px;
+    margin-top: 430px;
+   }
+
+
 
    .filterButton{
     width: 92px;
@@ -531,7 +597,7 @@
  }
 
  /* 產品詳細:手風琴元件設定 */
- .modalSize{
+ .detailModalSize{
   margin-top: 50px;
   margin-left: 150px;
   border-radius: 20px;

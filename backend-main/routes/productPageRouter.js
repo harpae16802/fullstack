@@ -37,11 +37,28 @@ router.get("/recommendProduct", async (req, res) => {
     }
   });
 
+  //產品評分
+  router.get("/productScore", async (req, res) => {
+    const sql =
+      "SELECT p.product_id, COALESCE(ROUND(AVG(c.product_rating), 1), 4.3) AS avg FROM products p LEFT JOIN comment c ON p.product_id = c.product_id GROUP BY p.product_id  HAVING COUNT(c.product_id) <= (SELECT COUNT(*) FROM products) ORDER BY p.product_id ASC";
+    // console.log('eddie',req.params);
+  
+    try {
+      const [results] = await db.query(sql, [req.params.product_id]);
+      return res.send({ success: true, data: results });
+    } catch (err) {
+      console.error("Error executing SQL query:", err);
+      return res
+        .status(500)
+        .json({ error: "An error occurred while processing the request" });
+    }
+  });
+
   
 
 // 篩選產品
 //小於50
-router.get("/recommendProduct", async (req, res) => {
+router.get("/filterProductLessThan50", async (req, res) => {
   const sql =
     "SELECT product_id, product_name, price FROM products WHERE price <= 50";
   // console.log('eddie',req.params);
@@ -56,85 +73,6 @@ router.get("/recommendProduct", async (req, res) => {
   }
 });
 
-//小於100
-router.get("/recommendProduct", async (req, res) => {
-  const sql =
-    "SELECT product_id, product_name, price FROM products WHERE price <= 100";
-  // console.log('eddie',req.params);
-  try {
-    const [results] = await db.query(sql, [req.params.product_id]);
-    return res.send({ success: true, data: results });
-  } catch (err) {
-    console.error("Error executing SQL query:", err);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while processing the request" });
-  }
-});
-
-
-//小於150
-router.get("/recommendProduct", async (req, res) => {
-  const sql =
-    "SELECT product_id, product_name, price FROM products WHERE price <= 150";
-  // console.log('eddie',req.params);
-  try {
-    const [results] = await db.query(sql, [req.params.product_id]);
-    return res.send({ success: true, data: results });
-  } catch (err) {
-    console.error("Error executing SQL query:", err);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while processing the request" });
-  }
-});
-
-
-//小於200
-router.get("/recommendProduct", async (req, res) => {
-  const sql =
-    "SELECT product_id, product_name, price FROM products WHERE price <= 200";
-  // console.log('eddie',req.params);
-  try {
-    const [results] = await db.query(sql, [req.params.product_id]);
-    return res.send({ success: true, data: results });
-  } catch (err) {
-    console.error("Error executing SQL query:", err);
-    return res
-      .status(500)
-      .json({ error: "An error occurred while processing the request" });
-  }
-});
-
-
-
-// router.put('/getorderId', async (req, res) => {
-//   try {
-//     const { seller_id } = req.params;
-//     const sql = `
-//       SELECT
-//         c.store_rating,
-//         c.photo,
-//         c.comment,
-//         c.datetime,
-//         cu.custom_account
-//       FROM
-//         comment c
-//       JOIN
-//         order_data od ON c.order_id = od.order_id
-//       JOIN
-//         custom cu ON od.custom_id = cu.custom_id
-//       WHERE
-//         c.seller_id = ?;
-//     `;
-//     const [rows] = await db.query(sql, [seller_id]);
-//    return res.json(rows);
-
-//   } catch (error) {
-//     console.error("Error fetching comments:", error);
-//     res.status(500).json({ error: "Error fetching comments" });
-//   }
-// })
 
 
 

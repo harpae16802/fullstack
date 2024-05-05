@@ -87,6 +87,30 @@ useEffect(() => {
 }, []); // 空的依賴項表示只在組件 mount 時執行一次
 
 
+// 商品的評分
+const [productScore, setProductScore] = useState([]);
+
+useEffect(() => {
+  const fetchProductScore = async () => {
+    try {
+      const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('eddie',data.data); // 檢查從後端獲得的資料
+      // 解構第一個產品資料並設置到狀態中
+  
+      setProductScore(data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // 處理錯誤
+    }
+  };
+
+  fetchProductScore();
+}, []); // 空的依賴項表示只在組件 mount 時執行一次
+
 
 
   // 食物分類，寫死
@@ -209,7 +233,7 @@ useEffect(() => {
       <Section>
 
 
-      <div className="">
+      <div >
         <SearchBar /> 
       </div>
       
@@ -217,6 +241,7 @@ useEffect(() => {
 
       <div className={`row ${style.content}`}>
 
+      {/* 產品種類 */}
       <div className={`col ${style.category}`}>
           {categories.map((category, index) => (
             <div
@@ -245,7 +270,7 @@ useEffect(() => {
 
       
 
-      {/* <button className={styles.filterConditionButton} >篩選條件 <IoIosArrowDown className={styles.filterIcon}/></button> */}
+
       <FilterOptions />
 
       {/* 熱門商品 */}
@@ -272,31 +297,36 @@ useEffect(() => {
 
         {/* 熱門產品 */}
         {popularProducts && popularProducts.map((product, index) => (
-        <div key={index}>
-          <PopularProduct 
-            product_id={product.product_id}
-            imageUrl={`/images/products/${product.image_url}`}
-            saleRanking={`No${index + 1}`}
-            market={product.market_name}
-            seller={product.store_name}
-            product={product.product_name}
-          />
-          <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
-          
-          {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
-          {selectedProduct === product && (
-            <ProductDetailCard 
-              imageUrl={`/images/products/${product.image_url}`}
-              seller={product.store_name}
-              product={product.product_name}
-              description={product.product_description}
-              price={product.price}
-              ingredient={product.product_ingredient}
-              nutrition={product.product_nutrition}
-            />
-          )}
-        </div>
-      ))}
+  <div key={index} className='col-12 col-sm-3'>
+    <PopularProduct 
+      product_id={product.product_id}
+      imageUrl={`/${product.image_url}`}
+      saleRanking={`No${index + 1}`}
+      market={product.market_name}
+      seller={product.store_name}
+      product={product.product_name}
+      // 将 selectedProduct 设置为选定的商品状态
+      selectedProduct={selectedProduct}
+    />
+
+    <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
+    
+    {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
+    {selectedProduct === product && (
+      <ProductDetailCard 
+        imageUrl={`/${product.image_url}`}
+        seller={product.store_name}
+        product={product.product_name}
+        description={product.product_description}
+        price={product.price}
+        ingredient={product.product_ingredient}
+        nutrition={product.product_nutrition}
+        // 将 selectedProduct 设置为选定的商品状态
+        selectedProduct={selectedProduct}
+      />
+    )}
+  </div>
+))}
 
 
 
@@ -310,56 +340,21 @@ useEffect(() => {
   <div className={`container-fluid row ${styles.recommendOuter}`} >
 
 {/* 原本標題 */}
-<h4 className={styles.recommendTitle} style={{marginTop:'90px'}}>推薦餐點</h4>
+<div className={styles.recommendTitle}>推薦餐點</div>
 
     <div className={`col ${styles.recommendContainer}`}>
      
       {/* 第一行 */}
-     {/* {recommendProducts && recommendProducts.map((v,i) => {
-      if (i % 3 === 0) {
-        return (
-          <div key={i} className='d-flex'>
-          <ProductItem 
-            imageUrl = {`/images/products/${v.image_url}`}
-            productName = {v.product_name}
-            score = "4.7"
-          />
-          </div>
-        )
-      
-      }
-
-      })}
-       */}
-{/* 
-       {recommendProducts && (
-  <div className='d-flex flex-wrap'>
-    {recommendProducts.map((v, i) => (
-
-      <div key={i} className={`col-lg-4 col-md-6 mb-4 `}>
-
-        <ProductItem 
-          imageUrl={`/images/products/${v.image_url}`}
-          productName={v.product_name}
-          score="4.7"
-        />
-
-      </div>
-
-    ))}
-  </div>
-)} */}
-
 
 
 {recommendProducts && (
-  <div className={`d-flex flex-wrap` }>
+  <div className={`d-flex flex-wrap overflow-hidden`} style={{overflowX: 'auto'}}>
     {recommendProducts.map((product, index) => (
       <div key={index} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}>
         <div className={styles.productItemContainer}>
         <ProductItem 
           product_id = {product.product_id}
-          imageUrl={`/images/products/${product.image_url}`}
+          imageUrl={`/${product.image_url}`}
           productName={product.product_name}
           score="4.7"
         />
@@ -371,14 +366,7 @@ useEffect(() => {
 
 )}
 
-
        </div>
-
-
-
-    
-  
-  
 
 
 

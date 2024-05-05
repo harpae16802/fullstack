@@ -66,7 +66,7 @@ export default function ProductDetailCard({
 
 
 <div className="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-  <div className={`modal-dialog ${styles.modalSize}`}>
+  <div className={`modal-dialog ${styles.detailModalSize}`}>
     <div className="modal-content">
       
   

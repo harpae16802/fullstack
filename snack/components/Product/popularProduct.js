@@ -32,7 +32,7 @@ export default function PopularProduct(props) {
 
   return (
 
-    <div className={styles.popularProduct}>
+    <div className={`col-xs-12 col-sm-3 ${styles.popularProduct}`}>
 
       <div className={styles.popularInfo}>
           {/* 火焰icon */}
