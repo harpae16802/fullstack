@@ -81,7 +81,7 @@ export default function GameRule({
           <div className="character">
             {' '}
             <img
-              src="/images/game/cha01.png"
+              src="/images/game/cha07.png"
               className="character-obj"
               alt="..."
             />
@@ -124,7 +124,7 @@ export default function GameRule({
           <div className="character">
             {' '}
             <img
-              src="/images/game/cha01.png"
+              src="/images/game/cha04.png"
               className="character-obj"
               alt="..."
             />
@@ -166,7 +166,7 @@ export default function GameRule({
           <div className="character">
             {' '}
             <img
-              src="/images/game/cha01.png"
+              src="/images/game/cha06.png"
               className="character-obj"
               alt="..."
             />
@@ -211,7 +211,7 @@ export default function GameRule({
           <div className="character">
             {' '}
             <img
-              src="/images/game/cha01.png"
+              src="/images/game/cha05.png"
               className="character-obj"
               alt="..."
             />

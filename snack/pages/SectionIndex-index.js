@@ -38,7 +38,7 @@ export default function SectionIndex() {
               <span className="publicity">全台夜市</span>
             </div>
             <div className="publicity-buttom">
-              <span className="publicity-big">999</span>
+              <span className="publicity-big">125</span>
               <span className="publicity">處</span>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function SectionIndex() {
               <span className="publicity">收集最棒小吃</span>
             </div>
             <div className="publicity-buttom">
-              <span className="publicity-big">9999</span>
+              <span className="publicity-big">3684</span>
               <span className="publicity">種</span>
             </div>
           </div>
@@ -56,7 +56,7 @@ export default function SectionIndex() {
               <span className="publicity">總計夜市小吃</span>
             </div>
             <div className="publicity-buttom">
-              <span className="publicity-big">99999</span>
+              <span className="publicity-big">8574</span>
               <span className="publicity">種</span>
             </div>
           </div>
