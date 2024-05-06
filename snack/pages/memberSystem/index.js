@@ -10,8 +10,7 @@ import classNames from "classnames";
 import Section from "@/components/layout/section";
 import AuthContent from "@/data/context/Authcontnet";
 export default function Home() {
-  return (
-  
+  return ( 
       <Section>
         <div className="container">
           <div className="row">
@@ -30,8 +29,6 @@ export default function Home() {
                     <Setimgicon />
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>

@@ -24,8 +24,6 @@ export default function ticket() {
       }
       if (type === "store") { 
         const fa1Del2 = await favoriteApi.favoriteDel02Store({favorite_id:id,custom_id});
-       alert(fa1Del2)
-       console.log(fa1Del2)
         setStores(fa1Del2.data);
 
       }
@@ -136,7 +134,7 @@ export default function ticket() {
                             className='text-color iconsize' />)}</h6> 
                       </div>  
                       <div className={classnames("md-content mx-full", favStyle["postion-a4"])}>
-                        {isBigScreen && (<button type="submit" style={{ height: "50px" }} className={classnames("btn  recordBtn", styles["btn-parmary"])}>移除最愛<FaHeart className=' ms-2 colorw iconsize' /> </button>)}
+                        {isBigScreen && (<button type="submit"    onClick={handleRemoveProduct}  style={{ height: "50px" }} className={classnames("btn  recordBtn", styles["btn-parmary"])}>移除最愛<FaHeart className=' ms-2 colorw iconsize' /> </button>)}
 
                       </div>
 

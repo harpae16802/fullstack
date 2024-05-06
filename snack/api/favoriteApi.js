@@ -75,7 +75,7 @@ const favoriteDel01Product = (formdata="") => {
             'Content-Type': 'application/json', // 指定請求的Content-Type為JSON格式
             // 如果有需要，還可以添加其他的請求頭
         },
-        body: JSON.stringify(formdata="")
+        body: JSON.stringify(formdata)
     })
         .then(response => {
             if (!response.ok) {
@@ -84,6 +84,7 @@ const favoriteDel01Product = (formdata="") => {
             return response.json();
         })
         .then(data => {
+            console.log(JSON.stringify(data))
             return data;
 
         })
