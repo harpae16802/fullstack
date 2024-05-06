@@ -7,9 +7,13 @@ import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 import { useAuth } from '@/contexts/custom-context'
 import CheckoutProduct from '@/components/Order/checkoutProduct'
+import { Modal, Button } from 'react-bootstrap';
 export default function Order() {
   // 取得狀態
   const { auth } = useAuth()
+
+  // 彈出視窗
+  const [showAlertModal, setShowAlertModal] = useState(false);
 
   // 儲存目前選購狀態
   const [selectedSeller, setSelectedSeller] = useState(null)
@@ -50,7 +54,7 @@ export default function Order() {
     console.log('Selected Seller: ', chosenSeller)
     console.log('Selected Items: ', selectedItems)
     if (!chosenSeller || selectedItems.length === 0) {
-      alert('請先選擇要結帳的商品')
+      setShowAlertModal(true); 
       return
     }
     if (step < 3) {
@@ -145,13 +149,34 @@ export default function Order() {
 
           {/* '上一步 下一步'按鈕 */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div className={styles.previousButton} onClick={handleBack}>
-              上一步
-            </div>
+  
+            {step !== 1 && <div className={styles.previousButton} onClick={handleBack}>上一步</div>}
             {step !== 2 && <div className={styles.nextButton} onClick={handleNext}>下一步</div>}
           </div>
+          <br></br>
           {/* outerFrame */}
         </div>
+
+         {showAlertModal && (
+        <Modal
+          show={showAlertModal}
+          onHide={() => setShowAlertModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>提示</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>您還沒有選擇任何商品結帳喔~</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="primary"
+              onClick={() => setShowAlertModal(false)}
+            >
+              關閉
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
       </Section>
     </>
   )
