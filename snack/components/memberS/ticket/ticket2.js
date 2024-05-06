@@ -40,9 +40,10 @@ let  { previewUrl } = useIcon();
   }, [])
   // 設定分數
   useEffect(() => {
-    (async function () {
+    (async function () { 
       try {
-        const data= await remainTicket()
+        let custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
+        const data= await remainTicket({custom_id:custom_id})
    
         setPoint("第"+data.data+"關");
         setPointMsg("目前進度:")
@@ -57,7 +58,8 @@ let  { previewUrl } = useIcon();
     if (tab == 2) { 
       (async function () {
         // 成就紀錄
-        const result = await ticket02Select02();
+        let custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
+        const result = await ticket02Select02({custom_id:custom_id});
         if (result.success) {
           setdata(result.data);
         } else {
@@ -72,7 +74,8 @@ let  { previewUrl } = useIcon();
     if(tab == 1) {
       //通關紀錄
       (async function () {
-        const result = await ticket02Select01();
+        let custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
+        const result = await ticket02Select01({custom_id:custom_id});
         if (result.success) {
           setdata(result.data);
         } else {
@@ -125,13 +128,13 @@ let  { previewUrl } = useIcon();
                 {/*成就紀錄*/}
             {tab == 2 && data.map((v, i) => {
  
-              return (<div className={classnames("card-body   border-1-bg time-wrap  ")}>
-               
+              return ( 
+                <div key={i} className={classnames("card-body time-wrap   border-1-bg  ", styles.flexBetween)}>
                 <Image  src={previewUrl} alt="Description" width={80} height={80} />
-                <div className="time ms-3" style={{ textAlign: 'center' }}>
-                  <h5 className='p16'>{v.level_id} - {v.level_count}<br /></h5>
-                </div>
-                <div className='ma-md-no ma-auto' > 
+           
+                  <h5 className='p16' style={{ margin: "auto"}}>{v.level_id} - {v.level_count}<br /></h5>
+               
+                <div className='p16'>
                   <h5> <span className='text-color'> +  {v.get_point}點</span></h5>
                 </div>
               </div>

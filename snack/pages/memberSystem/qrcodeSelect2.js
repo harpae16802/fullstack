@@ -59,7 +59,7 @@ export default function QrcodeselectMobile1() {
     // 記得%
     const newQRcodeDataCreate = QRcodeDataCreate.filter(item => item.isinput);  
      const result = await insertProduct(newQRcodeDataCreate);
-     alert(JSON.stringify(result))
+    //  alert(JSON.stringify(result))
      setQRcodeDataOrder(newQRcodeDataCreate)
      sessionStorage.setItem('QrcodeOrder', JSON.stringify(newQRcodeDataCreate));
 

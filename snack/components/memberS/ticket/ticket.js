@@ -43,9 +43,11 @@ export default function ticket() {
   }, [])
   // 設定分數
   useEffect(() => {
+    
     (async function () {
       try {
-        const data = await remainTicket()
+        const custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
+        const data = await remainTicket({custom_id:custom_id})
 
         setPoint(data.data + "點");
         setPointMsg("目前點數:")
@@ -56,11 +58,13 @@ export default function ticket() {
   }, [])
 
   // 切換資料
+  
   useEffect(() => {
+    let custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
     (async function () {
       try { 
         // 已獲得
-        const result = await ticket01Select02();
+        const result = await ticket01Select02({custom_id:custom_id});
         if (result.success) {
           setdata2(result.data);
           // 設定預設值 
@@ -69,15 +73,15 @@ export default function ticket() {
         }
 
         // 已使用
-        const result3 = await ticket01Select03();
+        const result3 = await ticket01Select03({custom_id:custom_id});
         if (result3.success) {
           setdata3(result3.data);
         } else {
           setdata3([]);
         }
 
-        // 全部
-        const result1 = await ticket01Select01();
+        // 全部 
+        const result1 = await ticket01Select01({custom_id:custom_id});
         if (result1.success) {
           setdata1(result1.data);
         } else {
@@ -171,13 +175,12 @@ export default function ticket() {
             {/* 已使用 */}
 
             {tab == 3 && data3.map((v, i) => {
-              return (
-                <div v key={i} className={classnames("card card-body border-1-bg", ticketStyle["wrap"], styles.flexBetween)}>
-                  <div className={classnames(ticketStyle["postion-a1"])}>
-                    <Image src={previewUrl} alt="Description" width={80} height={80} />
+              return (<div key={i} className={classnames(" card-body border-1-bg ", ticketStyle["wrap"], styles.flexBetween)}>
+              <div className={classnames(ticketStyle["postion-a1"])}>  
+                <Image src={previewUrl} alt="Description" width={80} height={80} />
                   </div>
                   <div className={classnames(styles.flexBetween, ticketStyle["postion-a2"])}>
-                    <h5 className='ms-3 text-center' >
+                  <h5 className="time" style={{ textAlign: 'center' }}>
                       <span> {v.payment_date}</span>
                       <br />
                       商品折價 </h5>

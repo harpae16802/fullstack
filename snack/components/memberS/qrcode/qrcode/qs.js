@@ -10,7 +10,7 @@ export default function QrWithQRCodeGenerator({jsonData}) {
     return (
       <div>
         <QRCode value={QRcodeData} />
-        <p>{QRcodeData}</p>
+       {/* <p>{QRcodeData}</p>*/}
       </div>
     );
  

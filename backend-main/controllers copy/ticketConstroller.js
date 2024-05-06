@@ -9,7 +9,7 @@ const perPage = 3;
 const step=(desc,page)=> ` ORDER BY ${desc} DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
 
 
-export const selectGainedTicket01 = async (req, res) => { 
+export const selectGainedTicket01 = async (req, res) => {
     const userId = req.body.custom_id || 1;
     try {
         const sql = `SELECT a.*, (
