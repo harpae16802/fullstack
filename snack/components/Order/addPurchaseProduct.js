@@ -89,19 +89,22 @@ const DiscountContentItem = ({ items = [] }) => {
 
   // 結帳付款(發送請球)
   const handleLinePay = async () => {
-    const currentTime = new Date().toISOString().replace(/\.\d+Z$/, '') + 'Z' // 精簡時間格式
-
+    const currentTime = new Date().toISOString().replace(/\.\d+Z$/, '') + 'Z'
+  
+    
+    const finalAmount = calculateFinalAmount();
+  
     const linePayRequest = {
-      amount: Math.round(finalAmount),
+      amount: Math.round(finalAmount), 
       currency: 'TWD',
       orderId: `order${currentTime}`,
       packages: [
         {
           id: `package${currentTime}`,
-          amount: Math.round(finalAmount),
+          amount: Math.round(finalAmount), 
           products: [
             {
-              name: '夜市獵人訂單',
+              name: 'Night Market Hunter Order',
               quantity: 1,
               price: Math.round(finalAmount),
             },
@@ -113,7 +116,7 @@ const DiscountContentItem = ({ items = [] }) => {
         cancelUrl: 'http://localhost:3000/order/orderStep3',
       },
     }
-
+  
     try {
       const response = await axios.post(
         'http://127.0.0.1:3002/backRoute/linePayBox',
@@ -124,14 +127,14 @@ const DiscountContentItem = ({ items = [] }) => {
           },
         }
       )
-      console.log('LINE Pay 響應:', response.data)
+      console.log('LINE Pay Response:', response.data)
       handleLinePayResponse(response)
-      // 這裡可以將頁面導向到 LINE Pay 的支付頁面或處理其他邏輯
+    
     } catch (error) {
-      console.error('LINE Pay 請求錯誤', error)
+      console.error('LINE Pay Request Error', error)
     }
   }
-
+  
   //處裡付款(處裡回傳資料)
   const handleLinePayResponse = (response) => {
     const {
@@ -262,7 +265,7 @@ const DiscountContentItem = ({ items = [] }) => {
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <Image
-                    src={`${IMGROUTER}${item.image_url}`}
+                    src={`${IMGROUTER}public/${item.image_url}`}
                     alt={item.product_name}
                     width={100}
                     height={100}
@@ -394,14 +397,14 @@ const DiscountContentItem = ({ items = [] }) => {
       </div>
 
       {/* 測試 */}
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           updatePaymentData(selectedDiscount)
         }}
       >
         測試按鈕
-      </button>
+      </button> */}
       {/* 測試 */}
 
       {/* 付款方式 */}

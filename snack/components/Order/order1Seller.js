@@ -245,7 +245,7 @@ const OrderDetailItem = ({
                     }}
                   >
                     <Image
-                      src={`http://localhost:3002/${item.image_url}`}
+                      src={`http://localhost:3002/public/${item.image_url}`}
                       alt={item.product_name}
                       width={60}
                       height={60}

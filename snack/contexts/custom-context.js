@@ -134,6 +134,7 @@ export function CustomContextProvider({ children }) {
     const str = localStorage.getItem(storageKey)
     try {
       const data = JSON.parse(str)
+      console.log(data)
       if (data) {
         setAuth(data)
       }

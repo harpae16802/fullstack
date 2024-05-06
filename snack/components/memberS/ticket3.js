@@ -4,7 +4,7 @@ import Point from './others/point'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
-import Pagination from '@/components/memberS/others/pagination'
+// import Pagination from '@/components/memberS/others/pagination'
 export default function ticket() {
   return (
     <div>
@@ -51,7 +51,7 @@ export default function ticket() {
 
         </div>
       </div>
-      <Pagination/>
+   
     </div>
   )
 }

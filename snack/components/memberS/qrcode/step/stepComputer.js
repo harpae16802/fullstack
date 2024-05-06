@@ -45,10 +45,10 @@ export default function StepComputer({ stepLevel }) {
           <StepCard title="選擇商品" value="可選擇多樣商品，但只能來自同一家商店喔!" color={stepLevel == 1 ? 'true' : 'false'}  />
         </div>)}
         {(isBigScreen ||stepLevel=="2") && (<div className='d-flex justify-content-center border-0'>
-          <StepCard title="確認商品" value="可選擇多樣商品，但只能來自同一家商店喔!" color={stepLevel == 2 ? 'true' : 'false'}  />
+          <StepCard title="確認商品" value="可選擇同筆訂單的商品!" color={stepLevel == 2 ? 'true' : 'false'}  />
         </div>)}
         {(isBigScreen ||stepLevel=="3") && ( <div className='d-flex justify-content-center border-0'>
-          <StepCard title="兌換QRcode" value="可選擇多樣商品，但只能來自同一家商店喔!" color={stepLevel == 3 ? 'true' : 'false'}  />
+          <StepCard title="兌換QRcode" value="產生QRcode，掃描進行兌換!" color={stepLevel == 3 ? 'true' : 'false'}  />
         </div>)}
       </div>
     </div>

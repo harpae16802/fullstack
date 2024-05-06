@@ -9,8 +9,13 @@ import { MapProvider } from '@/contexts/mapContext'
 import { PaymentProvider } from '../contexts/PaymentContext';
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
-import { useEffect } from 'react'
+import {NotifyProvider} from "@/data/context/use-notify"
+
+import { ImgProvider } from '@/data/context/ImgContext'
+import { QrcodeProvider } from '@/data/context/QrcodeContext'
 import Sesson from '@/components/layout/section'
+
+import { useEffect } from 'react'
 import '@/styles/globals.scss'
 import '../styles/form.css'
 import '@/styles/index.scss'
@@ -33,6 +38,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <PaymentProvider>
+    <NotifyProvider>
+    <ImgProvider>   
+    <QrcodeProvider>
     <CustomContextProvider>
       <SellerProvider>
         <MapProvider>
@@ -52,6 +60,9 @@ function MyApp({ Component, pageProps }) {
         </MapProvider>
       </SellerProvider>
     </CustomContextProvider>
+    </QrcodeProvider>
+    </ImgProvider>
+    </NotifyProvider>
     </PaymentProvider>
   )
 }
