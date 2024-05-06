@@ -27,7 +27,7 @@ const StickyCart = dynamic(
   () => {
     return import('react-stickynode')
   },
-  { ssr: false } // 设置 ssr 为 false 来关闭服务器端渲染
+  { ssr: false }, // 设置 ssr 为 false 来关闭服务器端渲染
 )
 
 export default function ShopProducts() {
@@ -64,7 +64,7 @@ export default function ShopProducts() {
   const handleSearch = (searchTerm) => {
     const search = searchTerm.toLowerCase().trim()
     const allProductElements = document.querySelectorAll(
-      `.${style.productCardCol}, .${style.productCardCol2}`
+      `.${style.productCardCol}, .${style.productCardCol2}`,
     )
 
     let found = false
@@ -132,7 +132,7 @@ export default function ShopProducts() {
         const productsData = await r.json()
 
         const ratingsResponse = await fetch(
-          `${SHOP_PRODUCTS}/product-ratings/${seller_id}`
+          `${SHOP_PRODUCTS}/product-ratings/${seller_id}`,
         )
         if (!ratingsResponse.ok) {
           throw new Error('網絡回應錯誤')
@@ -152,28 +152,28 @@ export default function ShopProducts() {
 
         // 根據評分降序排序所有產品，然後選擇前四個作為人氣精選
         const sortedProducts = productsWithRatings.sort(
-          (a, b) => b.average_night_rating - a.average_night_rating
+          (a, b) => b.average_night_rating - a.average_night_rating,
         )
         setProducts(sortedProducts.slice(0, 4)) // 設置人氣精選的產品
 
         // 過濾並設置每個分類的產品
         const mainDishProducts = productsWithRatings.filter(
-          (product) => product.category === '主食'
+          (product) => product.category === '主食',
         )
         setMainDishes(mainDishProducts)
 
         const snackProducts = productsWithRatings.filter(
-          (product) => product.category === '小吃'
+          (product) => product.category === '小吃',
         )
         setSnack(snackProducts)
 
         const sweetProducts = productsWithRatings.filter(
-          (product) => product.category === '甜品'
+          (product) => product.category === '甜品',
         )
         setSweet(sweetProducts)
 
         const drinkProducts = productsWithRatings.filter(
-          (product) => product.category === '飲料'
+          (product) => product.category === '飲料',
         )
         setDrink(drinkProducts)
       } catch (error) {
@@ -259,9 +259,9 @@ export default function ShopProducts() {
                 shopName={seller.store_name}
                 time1={`每周${mapDayToChinese(seller.rest_day)}休息`}
                 time2={`下午${formatTime(
-                  seller.opening_hours
+                  seller.opening_hours,
                 )}到凌晨${formatTime(seller.closing_hours)}`}
-                score={Number(rating.average_night_rating).toFixed(1)}
+                score={rating && Number(rating.average_night_rating).toFixed(1)}
                 comment={`${rating.total_comments}則留言`}
               />
             )}
@@ -324,7 +324,7 @@ export default function ShopProducts() {
                 >
                   {products.map((product) => {
                     const productRatings = productRating.find(
-                      (r) => r.product_id === product.product_id
+                      (r) => r.product_id === product.product_id,
                     )
                     return (
                       <div
@@ -333,13 +333,13 @@ export default function ShopProducts() {
                       >
                         <ProductCard
                           product_id={product.product_id}
-                          imgUrl={`${API_SERVER}/${product.image_url}`}
+                          imgUrl={`${API_SERVER}/public/${product.image_url}`}
                           title={product.product_name}
                           price={product.price}
                           percentage={
                             productRatings
                               ? Number(
-                                  productRatings.average_night_rating
+                                  productRatings.average_night_rating,
                                 ).toFixed(1)
                               : '無評分'
                           }
@@ -374,7 +374,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${API_SERVER}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/public/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -406,7 +406,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${API_SERVER}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/public/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -438,7 +438,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${API_SERVER}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/public/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>
@@ -470,7 +470,7 @@ export default function ShopProducts() {
                               : '無評分'
                           }
                           pepole={dish.total_comments || 0}
-                          imgUrl={`${API_SERVER}/${dish.image_url}`}
+                          imgUrl={`${API_SERVER}/public/${dish.image_url}`}
                           introduce={dish.product_description}
                         />
                       </div>

@@ -75,7 +75,7 @@ export default function Night({
         {/* 桌面版 */}
         <div className={`col-lg-8 d-none d-lg-block ${style.left}`}>
           <img
-            src={`${API_SERVER}/${nightImg}`}
+            src={`${API_SERVER}/public/${nightImg}`}
             alt={nightImg}
             className={style.bigImage}
           />
@@ -89,7 +89,7 @@ export default function Night({
               return (
                 <div className={`col-4`}>
                   <img
-                    src={`${API_SERVER}/${imgUrl}`}
+                    src={`${API_SERVER}/public/${imgUrl}`}
                     alt={`商店圖片 ${index}`}
                     className={`${style.smallImage}`}
                   />
@@ -102,14 +102,14 @@ export default function Night({
         <div className="col-12 d-lg-none p-0 mb-2">
           <div className={`d-flex overflow-auto ${style.scrollbar}`}>
             <img
-              src={`${API_SERVER}/${nightImg}`}
+              src={`${API_SERVER}/public/${nightImg}`}
               alt={nightImg}
               className={`${style.mobileImg} img-fluid`}
             />
             {store_image.map((imgUrl, index) => {
               return (
                 <img
-                  src={`${API_SERVER}/${imgUrl}`}
+                  src={`${API_SERVER}/public/${imgUrl}`}
                   alt={`商店圖片 ${index}`}
                   className={`${style.mobileImg} img-fluid`}
                 />

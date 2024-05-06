@@ -1,7 +1,8 @@
-// pages/seller-basic-data/index.js
+// pages/seller-basic-data/ad.js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import Image from 'next/image'
 import { SELLER_API, ADROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
@@ -20,15 +21,25 @@ export default function Ad() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
-  // 預設圖片
-  const IMG = "http://localhost:3000/images/seller.jpg";
 
-  // 往店家網頁
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
   }
-  
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
+
+  // 預設圖片
+  const IMG = 'http://localhost:3000/images/seller.jpg'
+
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
 
@@ -51,6 +62,10 @@ export default function Ad() {
   // 廣告類型
   const [showAlertModal, setShowAlertModal] = useState(false)
 
+  // 圖片放大
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -58,16 +73,13 @@ export default function Ad() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller');  
-    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
-          const data = response.data.data 
-          console.log(data) 
+          const data = response.data.data
+          console.log(data)
 
           setSellerData((prevData) => ({
             ...prevData,
@@ -75,9 +87,10 @@ export default function Ad() {
           }))
         })
         .catch((error) => {
-          console.error('获取商家信息失败', error)
+          console.error('拿取頭貼失敗', error)
         })
-    } setTimeout(() => {
+    }
+    setTimeout(() => {
       setLoading(false)
     }, 1000)
   }, [sellerId])
@@ -85,6 +98,12 @@ export default function Ad() {
   // 處裡文件
   const handleFileChange = (e) => {
     setFile(e.target.files[0])
+  }
+
+  // 廣告放大
+  const toggleImageModal = (imageSrc) => {
+    setCurrentImage(imageSrc)
+    setShowImageModal(!showImageModal)
   }
 
   // 上傳廣告
@@ -103,7 +122,7 @@ export default function Ad() {
       const response = await axios.post(
         `${ADROUTER}/upload${adType}`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        { headers: { 'Content-Type': 'multipart/form-data' } },
       )
       console.log(response.data)
       setFile(null)
@@ -132,10 +151,10 @@ export default function Ad() {
       })
       .then((response) => {
         alert('頭像上傳成功')
-        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setImageVersion((prevVersion) => prevVersion + 1)
         setSellerData((prevData) => ({
           ...prevData,
-          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+          profilePicture: response.data.imageUrl,
         }))
       })
       .catch((error) => {
@@ -153,10 +172,13 @@ export default function Ad() {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-              <img
+                <img
                   // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
-                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
-
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -166,9 +188,11 @@ export default function Ad() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
-                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
-
 
                 <input
                   type="file"
@@ -234,113 +258,128 @@ export default function Ad() {
           <div className="col-md-1 col-12"></div> {/* 用於分隔 */}
           {/* 表單 */}
           <div className="col-md-8 col-12">
-          {loading ? (
-    // 如果正在加载，则显示加载动画
-    <div className={styles.loadingContainer}>
-      <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-    </div>
-  ) : (
-            <div className={styles.formCard}>
-              <div className={styles.formWrapper}>
-                {/* 廣告系統 */}
+            {loading ? (
+              // 如果正在加载，则显示加载动画
+              <div className={styles.loadingContainer}>
+                <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+              </div>
+            ) : (
+              <div className={styles.formCard}>
+                <div className={styles.formWrapper}>
+                  {/* 廣告系統 */}
 
-                <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
-                <div className="container mt-5">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div
-                        className={`card ${
-                          adType === 'type1' ? styles.adCardActive : ''
-                        }`}
-                      >
-                        <img
-                          className="card-img-top"
-                          src="/adimg/ad_type1.jpg" //   圖片在這
-                          alt="Ad Type 1"
-                        />
-                        <div className="card-body d-flex justify-content-center">
-                          <button
-                            onClick={() => setAdType('type1')}
-                            className={`btn ${
-                              adType === 'type1'
-                                ? 'btn-primary'
-                                : `${styles.btnPrimary}`
-                            }`}
-                          >
-                            產品列表廣告
-                          </button>
+                  <h2 className={`${styles.formTitle}`}>廣告投放系統</h2>
+                  <div className="container mt-5">
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div
+                          className={`card ${
+                            adType === 'type1' ? styles.adCardActive : ''
+                          }`}
+                        >
+                          <img
+                            className="card-img-top"
+                            src="/adimg/ad_type1.jpg" //   圖片在這
+                            alt="Ad Type 1"
+                            onClick={() =>
+                              toggleImageModal('/adimg/ad_type1.jpg')
+                            }
+                          />
+                          <div className="card-body d-flex justify-content-center">
+                            <button
+                              onClick={() => setAdType('type1')}
+                              className={`btn ${
+                                adType === 'type1'
+                                  ? 'btn-primary'
+                                  : `${styles.btnPrimary}`
+                              }`}
+                            >
+                              產品列表廣告
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* 廣告類型2 */}
-                    <div className="col-md-6">
-                      <div
-                        className={`card ${
-                          adType === 'type2' ? styles.adCardActive : ''
-                        }`}
-                      >
-                        <img
-                          className="card-img-top"
-                          src="/adimg/ad_type1.jpg" //   圖片在這
-                          alt="Ad Type 2"
-                        />
-                        <div className="card-body d-flex justify-content-center">
-                          <button
-                            onClick={() => setAdType('type2')}
-                            className={`btn ${
-                              adType === 'type2'
-                                ? 'btn-primary'
-                                : `${styles.btnPrimary}`
-                            }`}
-                          >
-                            商家店面廣告
-                          </button>
+                      {/* 廣告類型2 */}
+                      <div className="col-md-6">
+                        <div
+                          className={`card ${
+                            adType === 'type2' ? styles.adCardActive : ''
+                          }`}
+                        >
+                          <img
+                            className="card-img-top"
+                            src="/adimg/ad_type2.jpg" //   圖片在這
+                            alt="Ad Type 2"
+                            onClick={() =>
+                              toggleImageModal('/adimg/ad_type1.jpg')
+                            }
+                          />
+                          <div className="card-body d-flex justify-content-center">
+                            <button
+                              onClick={() => setAdType('type2')}
+                              className={`btn ${
+                                adType === 'type2'
+                                  ? 'btn-primary'
+                                  : `${styles.btnPrimary}`
+                              }`}
+                            >
+                              商家店面廣告
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <br></br>
-                {/* 圖片上傳 */}
-                <div className="mb-3">
-                  <label htmlFor="adImage" className="form-label">
-                    上傳廣告圖片
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="adImage"
-                    name="adImage"
-                    onChange={handleFileChange}
-                  />
-                </div>
-                {file && (
-                  <div className="preview-container">
-                    <p>圖片名稱: {file.name}</p>
-                    <img
-                      src={URL.createObjectURL(file)}
-                                            alt="Preview"
-                      className="img-preview"
+                  <br></br>
+                  {/* 圖片上傳 */}
+                  <div className="mb-3">
+                    <label htmlFor="adImage" className="form-label">
+                      上傳廣告圖片
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="adImage"
+                      name="adImage"
+                      onChange={handleFileChange}
                     />
                   </div>
+                  {file && (
+                    <div
+                      className="preview-container"
+                      onClick={() =>
+                        toggleImageModal(URL.createObjectURL(file))
+                      }
+                    >
+                      <p>圖片名稱: {file.name}</p>
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt="Preview"
+                        className="img-preview"
+                        width={300}
+                        height={300}
+                      />
+                    </div>
                   )}
-                {/* 上傳 */}
-                <button
-                  onClick={handleUpload}
-                  className={`${styles.btnPrimary} ,d-flex justify-content-center`}
-                >
-                  上傳廣告
-                </button>
 
-                {/* 廣告系統 */}
+                  {/* 上傳 */}
+                  <br></br>
+                  <button
+                    onClick={handleUpload}
+                    className={`${styles.btnPrimary} ,d-flex justify-content-center`}
+                  >
+                    上傳廣告
+                  </button>
+
+                  {/* 廣告系統 */}
+                </div>
               </div>
-            </div>
-              )}
+            )}
           </div>
           {/* 表單 */}
         </div>
-        </div>
+      </div>
       {isModalVisible && (
         <Modal show={isModalVisible} onHide={closeModal} centered>
           <Modal.Header closeButton>
@@ -356,8 +395,11 @@ export default function Ad() {
               </Button>
             </Link>
             <Link href="/seller-basic-data" passHref>
-              <Button variant="primary" className={styles.btnPrimary}    onClick={() => goToSellerPage(sellerId)}
->
+              <Button
+                variant="primary"
+                className={styles.btnPrimary}
+                onClick={() => goToSellerPage(sellerId)}
+              >
                 {' '}
                 前往店家頁
               </Button>
@@ -385,6 +427,24 @@ export default function Ad() {
               關閉
             </Button>
           </Modal.Footer>
+        </Modal>
+      )}
+      {showImageModal && (
+        <Modal
+          show={showImageModal}
+          onHide={() => setShowImageModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>圖片預覽</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <img
+              src={currentImage}
+              alt="Enlarged"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </Modal.Body>
         </Modal>
       )}
     </Section>

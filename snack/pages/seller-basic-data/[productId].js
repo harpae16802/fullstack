@@ -2,7 +2,13 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API, PRODUCTS_API, PRODUCTS_CATEGORIES } from './config'
+import Image from 'next/image'
+import {
+  SELLER_API,
+  PRODUCTS_API,
+  PRODUCTS_CATEGORIES,
+  IMGROUTER,
+} from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -20,8 +26,19 @@ export default function AddProducts() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
+
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
@@ -42,7 +59,12 @@ export default function AddProducts() {
   // 驗證
   const [errors, setErrors] = useState({})
 
-  // 預覽圖片
+  // 圖片狀態檢測更新
+  const [isFileSelected, setIsFileSelected] = useState(false)
+
+  // 在狀態中添加圖片預覽和模態顯示的變數
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
@@ -62,30 +84,6 @@ export default function AddProducts() {
     image_url: '',
     status: '',
   })
-
-  // 樣式
-  const imageContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    border: '2px solid #de4f4f',
-    borderRadius: '10px',
-    padding: '10px',
-    flexWrap: 'wrap',
-  }
-
-  const imageStyle = {
-    maxWidth: '200px',
-    margin: '10px',
-  }
-
-  const mediaQuery = window.matchMedia('(max-width: 400px)')
-  if (mediaQuery.matches) {
-    imageContainerStyle.flexDirection = 'column'
-  } else {
-    imageContainerStyle.flexDirection = 'row'
-  }
-  // 樣式
 
   // 比較資料
   const [originalProductDetails, setOriginalProductDetails] = useState({})
@@ -115,9 +113,6 @@ export default function AddProducts() {
 
   // 如果拿取到seller_id執行這裡
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
@@ -174,6 +169,11 @@ export default function AddProducts() {
       category,
     }))
   }
+  // 函數來顯示圖片預覽模態
+  const toggleImageModal = (image) => {
+    setCurrentImage(image)
+    setShowImageModal(!showImageModal)
+  }
 
   // 更新產品 (可控表單)
   const handleChange = (e) => {
@@ -208,9 +208,6 @@ export default function AddProducts() {
       newErrors.stock_quantity = '庫存數量不能為空'
     }
 
-    // if (!productDetails.category_id.trim()) {
-    //   newErrors.category_id = "產品種類必須選擇";
-    // }
     if (!productDetails.product_nutrition.trim()) {
       newErrors.product_nutrition = '產品營養表不能為空'
     }
@@ -226,13 +223,15 @@ export default function AddProducts() {
   const handleFileChange = (e) => {
     const file = e.target.files[0]
     if (file) {
+      setIsFileSelected(true)
       const reader = new FileReader()
       reader.onload = (e) => {
         setPreviewImage(e.target.result)
       }
       reader.readAsDataURL(file)
     } else {
-      setPreviewImage(null) // 清除预览
+      setIsFileSelected(false)
+      setPreviewImage(null)
     }
   }
 
@@ -240,16 +239,22 @@ export default function AddProducts() {
   const handleSubmit = (event) => {
     event.preventDefault()
 
+    console.log('当前文件:', fileInputRef.current.files[0])
+
     if (!validateProductDetails()) {
       console.error('表單驗證失敗:', errors)
       return
     }
+
     if (
-      JSON.stringify(productDetails) === JSON.stringify(originalProductDetails)
+      JSON.stringify(productDetails) ===
+        JSON.stringify(originalProductDetails) &&
+      !isFileSelected
     ) {
-      setShowNoChangeModal(true) // 顯示資料未變更的彈窗
+      setShowNoChangeModal(true)
       return
     }
+
     const formData = new FormData()
     formData.append('product_name', productDetails.product_name)
     formData.append('product_description', productDetails.product_description)
@@ -260,7 +265,15 @@ export default function AddProducts() {
     formData.append('category', productDetails.category)
     formData.append('category_id', productDetails.category_id)
     formData.append('status', productDetails.status)
-    formData.append('image', fileInputRef.current.files[0])
+
+    // 检查是否有选择文件
+    if (fileInputRef.current && fileInputRef.current.files[0]) {
+      formData.append('image', fileInputRef.current.files[0])
+    } else {
+      console.error('未选择文件')
+      alert('請選擇圖片')
+      return
+    }
 
     axios
       .put(`${PRODUCTS_API}/update-product/${productId}`, formData, {
@@ -269,12 +282,15 @@ export default function AddProducts() {
         },
       })
       .then((response) => {
-        setShowUpdateSuccessModal(true)
-        // alert('產品更新成功')
+        setShowUpdateSuccessModal(true) // 更新成功
+        // 更新页面上的图片预览
+        if (response.data.imageUrl) {
+          setPreviewImage(response.data.imageUrl)
+        }
       })
       .catch((error) => {
         setShowUpdateFailModal(true)
-        console.error('更新产品信息失败:', error)
+        console.error('更新失敗:', error)
       })
   }
   // 更新賣家 頭貼 包含顯示
@@ -555,26 +571,40 @@ export default function AddProducts() {
 
                       <div
                         className="mb-5"
-                        style={imageContainerStyle}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-around',
+                          alignItems: 'center',
+                          border: '2px solid #de4f4f',
+                          borderRadius: '10px',
+                          padding: '10px',
+                          flexWrap: 'wrap',
+                        }}
                       >
-                        <div>
+                        <div
+                          onClick={() =>
+                            toggleImageModal(
+                              `${IMGROUTER}public/${productDetails.image_url}`
+                            )
+                          }
+                        >
                           <label htmlFor="store_image" className="form-label">
                             當前產品圖片
                           </label>
                           <br />
                           {productDetails.image_url ? (
                             <img
-                              src={`http://localhost:3002/images/${productDetails.image_url}`}
+                              src={`${IMGROUTER}public/${productDetails.image_url}`}
                               alt="Current Product Image"
                               className="img-fluid"
-                              style={{ maxWidth: '200px', marginRight: '20px' }}
+                              style={{ maxWidth: '190px', marginRight: '20px' }}
                             />
                           ) : (
                             <p>無當前圖片</p>
                           )}
                         </div>
 
-                        <div>
+                        <div onClick={() => toggleImageModal(previewImage)}>
                           <label htmlFor="store_image" className="form-label">
                             新上傳圖片預覽
                           </label>
@@ -582,9 +612,9 @@ export default function AddProducts() {
                           {previewImage ? (
                             <img
                               src={previewImage}
-                              alt="新上傳圖片預覽"
+                              alt="新增產品圖片"
                               className="img-fluid"
-                              style={{ maxWidth: '200px' }}
+                              style={{ maxWidth: '190px' }}
                             />
                           ) : (
                             <p>請選擇圖片以預覽</p>
@@ -593,15 +623,17 @@ export default function AddProducts() {
                       </div>
 
                       <label htmlFor="store_image" className="form-label">
-                        上傳商家圖片
+                        更新產品圖片
                       </label>
                       <input
                         type="file"
-                        className={`form-control col-6`}
                         id="store_image"
                         name="store_image"
                         onChange={handleFileChange}
+                        ref={fileInputRef}
+                        className={`form-control col-6`}
                       />
+
                       <br></br>
                       <div className={styles.selectGroup}>
                         <div className="col-md-auto col-12 mb-3">
@@ -745,6 +777,22 @@ export default function AddProducts() {
             關閉
           </Button>
         </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showImageModal}
+        onHide={() => setShowImageModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>圖片預覽</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img
+            src={currentImage}
+            alt="Enlarged"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </Modal.Body>
       </Modal>
     </Section>
   )

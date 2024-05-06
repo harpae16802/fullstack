@@ -20,8 +20,18 @@ export default function AddProducts() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
@@ -30,30 +40,6 @@ export default function AddProducts() {
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
   }
-
-  // 樣式
-  const imageContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    border: '2px solid #de4f4f',
-    borderRadius: '10px',
-    padding: '10px',
-    flexWrap: 'wrap',
-  }
-
-  const imageStyle = {
-    maxWidth: '200px',
-    margin: '10px',
-  }
-
-  const mediaQuery = window.matchMedia('(max-width: 400px)')
-  if (mediaQuery.matches) {
-    imageContainerStyle.flexDirection = 'column'
-  } else {
-    imageContainerStyle.flexDirection = 'row'
-  }
-  // 樣式
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -83,6 +69,10 @@ export default function AddProducts() {
 
   // 預覽圖片
   const [imagePreview, setImagePreview] = useState(null)
+
+  // 圖片縮放
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
 
   // 彈出視窗
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -144,9 +134,6 @@ export default function AddProducts() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
     setTimeout(() => {
       setLoading(false)
     }, 500)
@@ -195,6 +182,12 @@ export default function AddProducts() {
     } else {
       setNewProductData((prevData) => ({ ...prevData, [name]: value }))
     }
+  }
+
+  //  圖片放大
+  const toggleImageModal = (imageSrc) => {
+    setCurrentImage(imageSrc)
+    setShowImageModal(!showImageModal)
   }
 
   // 送出表單
@@ -509,7 +502,18 @@ export default function AddProducts() {
                     )}
                   </div>
 
-                  <div className="mb-3" style={imageContainerStyle}>
+                  <div
+                    className="mb-3"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                      border: '2px solid #de4f4f',
+                      borderRadius: '10px',
+                      padding: '10px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
                     <label htmlFor="store_image" className="form-label">
                       上傳產品圖片
                     </label>
@@ -523,15 +527,17 @@ export default function AddProducts() {
                       onChange={handleInputChange}
                     />
                     {imagePreview && (
-                      <img
-                        src={imagePreview}
-                        alt="Image Preview"
-                        style={{
-                          marginTop: '10px',
-                          width: '100%',
-                          height: 'auto',
-                        }}
-                      />
+                      <div onClick={() => toggleImageModal(imagePreview)}>
+                        <img
+                          src={imagePreview}
+                          alt="Image Preview"
+                          style={{
+                            marginTop: '10px',
+                            width: '100%',
+                            height: 'auto',
+                          }}
+                        />
+                      </div>
                     )}
                     {errors.store_image && (
                       <div className="invalid-feedback">
@@ -636,6 +642,22 @@ export default function AddProducts() {
             關閉
           </Button>
         </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showImageModal}
+        onHide={() => setShowImageModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>圖片預覽</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img
+            src={currentImage}
+            alt="Enlarged"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </Modal.Body>
       </Modal>
     </Section>
   )

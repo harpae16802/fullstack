@@ -6,52 +6,11 @@ import { date } from '../utils/date.js';
 // Note: You might need to update the file extensions or the way files are exported in `mysql2-connect.js` and `day.js`
 // if those modules use CommonJS syntax. They need to either use ESM syntax or be adapted via dynamic import() where necessary.
 const perPage = 3;
-const step = (desc, page) => ` ORDER BY ${desc} DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
-export const selectGainedTicket01 = async (req, res) => {
-    const userId = req.body.userId || 1;
-    try {
-        const sql = `SELECT a.*, (
-            SELECT b.play_date
-            FROM clear_data b
-            WHERE b.user_id = ${userId} AND a.level_id = b.level_id
-            LIMIT 1
-        ) AS play_date
-        FROM achievement_category a 
-        WHERE a.clear_times <= (
-            SELECT COUNT(b.user_id)
-            FROM clear_data b
-            WHERE b.user_id = ${userId} AND a.level_id = b.level_id
-        );`;
-        let [result1] = await db.query(sql);
-        const sql2 = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_id and a.custom_id=${userId}`;
-        let [result2] = await db.query(sql2); 
-        if (!result1 || !result2) {
-            return res.json({ success: false, error: "Error in signup query" });
-        } 
-   
-        result2 = result2.map((v, i) => { 
-            v.play_date = ISOtodate(v.payment_date)
-            return v;
-        });
-        result1 = result1.map((v, i) => {
-            v.play_date = ISOtodate(v.play_date)
-            return v;
-        });
-   
+const step=(desc,page)=> ` ORDER BY ${desc} DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
 
-        const allResult = [...result1, ...result2];
-        allResult.sort((a, b) => a.play_date.localeCompare(b.play_date));
-        res.json({ allResult});
 
-    } catch (err) {
-        console.error("Error executing SQL query:", err);
-        return res.status(500).json({ error: "An error occurred while processing the request" });
-    };
-};
-
-export const selectGainedTicket0101 = async (req, res) => {
-    const userId = req.body.userId || 1;
-    const pageGet=req.query.page||1;
+export const selectGainedTicket01 = async (req, res) => { 
+    const userId = req.body.custom_id || 1;
     try {
         const sql = `SELECT a.*, (
             SELECT b.play_date
@@ -68,15 +27,9 @@ export const selectGainedTicket0101 = async (req, res) => {
         let [result1] = await db.query(sql);
         const sql2 = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_id and a.custom_id=${userId}`;
         let [result2] = await db.query(sql2);
-    
-        if (!result1 || !result2) {
-            return res.json({ success: false, error: "Error in signup query" });
-        } 
-        // 結合分業
-        const recordCount = result1.length+result2.length;
-        const totalPages = Math.ceil(recordCount / perPage); 
-      // 格式轉換
-        result2 = result2.map((v, i) => { 
+
+        result2 = result2.map((v, i) => {
+
             v.play_date = ISOtodate(v.payment_date)
             return v;
         });
@@ -84,13 +37,13 @@ export const selectGainedTicket0101 = async (req, res) => {
             v.play_date = ISOtodate(v.play_date)
             return v;
         });
-      // 合一
-        // 分業過濾資料
+
+        if (!result1 || !result2) {
+            return res.json({ success: false, error: "Error in signup query" });
+        }
         const allResult = [...result1, ...result2];
         allResult.sort((a, b) => a.play_date.localeCompare(b.play_date));
-        allResult=
-
-        res.json({ allResult,totalPages:totalPages,recordCount });
+        res.json({ allResult });
 
     } catch (err) {
         console.error("Error executing SQL query:", err);
@@ -99,8 +52,8 @@ export const selectGainedTicket0101 = async (req, res) => {
 };
 
 export const selectGainedTicket02 = async (req, res) => {
-    const userId = req.body.userId || 1;
-
+    const userId = req.body.custom_id;
+console.log(userId)
     const sql = `SELECT a.*, (
         SELECT b.play_date
         FROM clear_data b
@@ -111,7 +64,7 @@ export const selectGainedTicket02 = async (req, res) => {
     WHERE a.clear_times <= (
         SELECT COUNT(b.user_id)
         FROM clear_data b
-        WHERE b.user_id = 1 AND a.level_id = b.level_id
+        WHERE b.user_id = ${userId} AND a.level_id = b.level_id
     );`;
 
     await db.query(sql)
@@ -132,7 +85,7 @@ export const selectGainedTicket02 = async (req, res) => {
 };
 
 export const selectGainedTicket03 = async (req, res) => {
-    const userId = req.body.userId || 1;
+    const userId = req.body.custom_id || 1;
 
     const sql = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_Id and b.custom_Id=${userId}`;
     await db.query(sql)
@@ -187,20 +140,30 @@ export const selectGainedTicketPoint01 = async (req, res) => {
     };
 };
 export const remainTicket = async (req, res) => {
-    const userId = req.body.userId || 1;
-
+    const userId = req.body.custom_id || 1;
+    console.log(userId)
     try {
-        const sql = `SELECT  sum(get_point) as get_point
+        const sql = `SELECT  sum(a.get_point) as get_point
         FROM achievement_category a 
+        JOIN (
+            SELECT level_id, MIN(play_date) AS play_date
+            FROM clear_data
+            WHERE user_id = ${userId}
+            GROUP BY level_id
+        ) b ON a.level_id = b.level_id 
         WHERE a.clear_times <= (
-            SELECT COUNT(b.user_id)
-            FROM clear_data b 
-            WHERE b.user_id = ${userId} AND a.level_id = b.level_id
-            group by get_point
-        ) `;
+            SELECT COUNT(user_id)
+            FROM clear_data
+            WHERE user_id = ${userId} AND a.level_id = level_id
+        )  
+         `;  
         let [result1] = await db.query(sql);
-
-        const sql2 = `SELECT sum(a.consume_gamepoint) as consume_gamepoint FROM order_data a JOIN custom b ON a.custom_id=b.custom_id and a.custom_id=${userId} group by  a.order_number`;
+// SELECT sum(a.consume_gamepoint)  as consume_gamepoint FROM nightmarker.order_data a JOIN nightmarker.custom b ON a.custom_id=b.custom_Id and b.custom_Id=35
+        const sql2 = `SELECT sum(a.consume_gamepoint) as consume_gamepoint
+        FROM  nightmarker.order_data a 
+        JOIN  nightmarker.custom b ON a.custom_id=b.custom_id 
+        and a.custom_id= ${userId}
+        group by  a.custom_id`;
         let [result2] = await db.query(sql2);
 
         const point = result1[0].get_point - result2[0].consume_gamepoint;
@@ -209,7 +172,7 @@ export const remainTicket = async (req, res) => {
             return res.json({ success: false, error: "Error in signup query" });
         }
 
-        res.json({ success: true, data: point });
+        res.json({ success: true, data: point,data2:result1[0].get_point,data4:result2 });
 
     } catch (err) {
         console.error("Error executing SQL query:", err);

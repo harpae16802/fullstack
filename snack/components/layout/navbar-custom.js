@@ -31,7 +31,7 @@ export default function NavbarCustom() {
               <Image src="/logo-o.svg" alt="" width={180} height={70} />
             </Link>
             <div className="right-icons">
-              <a className="navbar-brand min-cart" href="/">
+              <a className="navbar-brand min-cart" href="/order/orderStep1">
                 <FaShoppingCart />
                 {/* 添加商品數量顯示 */}
                 {totalItems > 0 && (
@@ -83,9 +83,13 @@ export default function NavbarCustom() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      router.pathname === '/game/game-select' ? 'active' : ''
+                      router.pathname === '/game/game-index' ||
+                      router.pathname === '/game/game-select' ||
+                      router.pathname === '/game/game-play'
+                        ? 'active'
+                        : ''
                     }`}
-                    href="/game/game-select"
+                    href="/game/game-index"
                   >
                     趣味遊戲
                   </Link>
@@ -118,12 +122,19 @@ export default function NavbarCustom() {
                         className="dropdown-item"
                         href="/memberSystem/qrcodeSelect"
                       >
+                      <Link
+                        className="dropdown-item"
+                        href="/memberSystem/qrcodeSelect"
+                      >
                         商品與QRcode
+                      </Link>
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" href="/memberSystem">
+                      <Link className="dropdown-item" href="/memberSystem">
                         編輯基本資料
+                      </Link>
                       </Link>
                     </li>
                   </ul>
@@ -135,7 +146,9 @@ export default function NavbarCustom() {
                     onClick={(e) => {
                       e.preventDefault()
 
+
                       logout()
+                      router.push(`/login/login-custom`)
                       router.push(`/login/login-custom`)
                     }}
                   >
@@ -172,7 +185,9 @@ export default function NavbarCustom() {
 
                         <li>
                           <Link className="dropdown-item" href="/memberSystem">
+                          <Link className="dropdown-item" href="/memberSystem">
                             編輯基本資料
+                          </Link>
                           </Link>
                         </li>
                         <li>
@@ -180,7 +195,12 @@ export default function NavbarCustom() {
                             className="dropdown-item"
                             href="/memberSystem/qrcodeSelect"
                           >
+                          <Link
+                            className="dropdown-item"
+                            href="/memberSystem/qrcodeSelect"
+                          >
                             商品與QRcode
+                          </Link>
                           </Link>
                         </li>
                         <li>
@@ -190,7 +210,9 @@ export default function NavbarCustom() {
                             onClick={(e) => {
                               e.preventDefault()
 
+
                               logout()
+                              router.push(`/login/login-custom`)
                               router.push(`/login/login-custom`)
                             }}
                           >
@@ -203,7 +225,7 @@ export default function NavbarCustom() {
                   </div>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a className="nav-link"href="/order/orderStep1">
                     <div className="nav-icons">
                       <FaShoppingCart className="fa-solid fa-cart-shopping" />
                       {totalItems > 0 && (

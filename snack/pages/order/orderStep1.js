@@ -1,153 +1,190 @@
+// pages/order/orderStep1.js 總結帳頁面
 import Section from '@/components/layout/section'
-import React, { createContext, useContext,useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from '@/styles/Order.module.css'
-import { MdArrowBackIosNew } from "react-icons/md";
-import { MdArrowForwardIos } from "react-icons/md";
 import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
+import { useAuth } from '@/contexts/custom-context'
 import CheckoutProduct from '@/components/Order/checkoutProduct'
-
-const OrderStep1 = () => {
-
-  //訂單數量
-  const [dataCount, setDataCount] = useState(0); // 使用useState来存储数据数量
-  const [productCount, setProductCount] = useState(0)
-
-  // 模拟从后台获取数据的效果，你需要根据实际情况修改这部分代码
-  useEffect(() => {
-    // 这里可以是从后台获取数据的逻辑，这里暂时模拟一个数量
-    const fetchDataCount = async () => {
-      // 模拟从后台获取数据的过程
-      const count = 3; // 假设从后台获取到的数据数量为3
-      setDataCount(count);
-    };
-
-    const fetchProductCount = async () => {
-      // 模拟从后台获取数据的过程
-      const productCount = 2; // 假设从后台获取到的数据数量为3
-      setProductCount(productCount);
-    };
-
-    fetchDataCount();
-    fetchProductCount();
-
-  }, [dataCount,productCount]);
-
-}
-
+import { Modal, Button } from 'react-bootstrap'
 
 export default function Order() {
+  // 取得狀態
+  const { auth } = useAuth()
+
+  // 彈出視窗
+  const [showAlertModal, setShowAlertModal] = useState(false)
+
+  // 儲存目前選購狀態
+  const [selectedSeller, setSelectedSeller] = useState(null)
+  const [groupedItems, setGroupedItems] = useState({})
+
+  // 第一步 篩選出的資料
+  const [selectedItems, setSelectedItems] = useState([])
+
+  // 第一步 狀態更新
+  const [chosenSeller, setChosenSeller] = useState(null)
+
+  // 第一步 狀態更新
+  const [chosenItems, setChosenItems] = useState([])
+
+  // 設定進度條
+  const [step, setStep] = useState(1)
+
+  // 從購物車組件中拿取產品資廖
+  useEffect(() => {
+    if (selectedSeller) {
+      setSelectedItems(groupedItems[selectedSeller])
+    }
+    console.log('當前進度', step)
+    console.log('選則的項目', selectedItems)
+  }, [selectedSeller, groupedItems])
+
+  // 儲存第一步的資料
+  const handleSelectSeller = (seller, items) => {
+    if (items.length > 0) {
+      setChosenSeller(seller)
+      setChosenItems(items)
+    } else {
+    }
+  }
+
+  // 設定進度條
+  const handleNext = () => {
+    console.log('Selected Seller: ', chosenSeller)
+    console.log('Selected Items: ', selectedItems)
+    if (!chosenSeller || selectedItems.length === 0) {
+      setShowAlertModal(true)
+      return
+    }
+    if (step < 3) {
+      setStep(step + 1)
+    }
+  }
+
+  const handleBack = () => {
+    if (step > 1) {
+      setStep(step - 1)
+    }
+  }
+
   return (
     <>
-        <Section>
+      <Section>
         {/* 最外層容器 */}
         <div class={styles.outerFrame}>
-            <div className={styles.orderTitle}>【 結帳頁面 】</div>
+          <div className={styles.orderTitle}>【 結帳頁面 】</div>
 
-            {/* 步驟紅色邊框 */}
-            <div className={styles.stepBorder}>
-                
-                  {/* 步驟圓圈&長條 */}
-              <div className="container">
-                  <div className={styles.step1}>1</div>
-                  <div className={styles.connectGrey}></div>
-                  <div className={styles.stepUndo}>2</div>
-                  <div className={styles.connectGrey}></div>
-                  <div className={styles.stepUndo}>3</div>
+          {/* 步驟紅色邊框 */}
+          <div className={styles.stepBorder}>
+            {/* 步驟圓圈&長條 */}
+            <div className="container">
+              <div className={step >= 1 ? styles.step1 : styles.stepUndo}>
+                1
               </div>
 
-                  <br />
+              <div
+                className={step >= 2 ? styles.connectRed : styles.connectGrey}
+              ></div>
 
-                  {/* 步驟文字 */}
-                  <div className={styles.textContainer}>
-                    <div className={styles.step1Text}>訂單資訊</div>
-                    <div className={styles.step2UndoText}>訂單優惠</div>
-                    <div className={styles.step3UndoText}>完成</div>
-                  </div>
-                 
+              <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
+                2
+              </div>
+
+              <div
+                className={step >= 3 ? styles.connectRed : styles.connectGrey}
+              ></div>
+              <div className={step >= 3 ? styles.step2 : styles.stepUndo}>
+                3
+              </div>
+
+              <br />
             </div>
 
-           {/* 訂單詳細 紅色邊框 */}
+            {/* 步驟文字 */}
+            <div className={styles.textContainer}>
+              <div className={step === 1 ? styles.step1Text : styles.step1Text}>
+                訂單資訊
+              </div>
+              <div
+                className={step >= 2 ? styles.step2Text : styles.step2UndoText}
+              >
+                訂單優惠
+              </div>
+              <div
+                className={step === 3 ? styles.step3Text : styles.step3UndoText}
+              >
+                完成
+              </div>
+            </div>
+          </div>
+
+          {/* 訂單詳細 紅色邊框 */}
           <div className={styles.orderBorder}>
+            {/* 訂單詳細 外層容器 */}
+            <div className={` mt-5 ${styles}`}>
+              {step === 1 && (
+                <OrderDetailItem
+                  onSelectSeller={handleSelectSeller}
+                  onGroupedItemsChange={setGroupedItems}
+                  setSelectedItems={setSelectedItems}
+                />
+              )}
+            </div>
+            <br />
+            {/* 訂單詳細 外層容器 */}
+            <div className={styles}>
+              {step === 2 && <DiscountContentItem items={selectedItems} />}
+            </div>
+            <br />
+            {/* 訂單詳細 外層容器 */}
+            <div className={styles}>
+              {/* {step === 3 && <CheckoutProduct />} */}
+            </div>
+            {/* 優惠加購*/}
 
-           {/* 訂單詳細 外層容器 */}
-           <div className={styles.order1Container}>
-           <CheckoutProduct />
-           </div>
-         
-
-            <br/>
-          
-           {/* 訂單詳細 外層容器 */}
-           <div className={styles.order1Container}>
-           <CheckoutProduct />
-           </div>
-
-            <br/>
-
-           {/* 訂單詳細 外層容器 */}
-           <div className={styles.order1Container}>
-           <CheckoutProduct />
-           </div>
-
-<h2 className={styles.discountTitle}>【優惠加購】</h2>
-
-
-
-    {/* 優惠加購:產品列容器*/}
-    <div className={styles.discountContainer}>
-    
-    <MdArrowBackIosNew className={styles.leftArrow}/>
-
-    <div className={styles.discountArrangement}>
-
-            {/* 優惠加購:產品內容1 */}
-           <DiscountContentItem
-            seller = "姊姊抓的餅"
-            product = "豬排蛋"
-            imageUrl = "/images/蛋塔.jpg"
-            price="70"
-           /> 
-
-       {/* 優惠加購:產品內容2 */}
-       <DiscountContentItem
-            seller = "姊姊抓的餅"
-            product = "豬排蛋"
-            imageUrl = "/images/蛋塔.jpg"
-            price="70"
-           /> 
-
-     {/* 優惠加購:產品內容3 */}
-     <DiscountContentItem
-            seller = "姊姊抓的餅"
-            product = "豬排蛋"
-            imageUrl = "/images/蛋塔.jpg"
-            price="70"
-           /> 
-
-        {/* discountArrangement */}
-    </div>
-
-      <MdArrowForwardIos className={styles.rightArrow} />
-
-        {/* discountContainer */}
-    </div> 
-
- 
-            {/* orderBorder */}
+            {/* 優惠加購 */}
           </div>
 
-       {/* '上一步 下一步'按鈕 */}
-          <div style={{display:'flex',justifyContent:'center'}}>
-            <div className={styles.previousButton}>上一步</div>
-            <div className={styles.nextButton}>下一步</div>
+          {/* '上一步 下一步'按鈕 */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {step !== 1 && (
+              <div className={styles.previousButton} onClick={handleBack}>
+                上一步
+              </div>
+            )}
+            {step !== 2 && (
+              <div className={styles.nextButton} onClick={handleNext}>
+                下一步
+              </div>
+            )}
           </div>
-
+          <br></br>
           {/* outerFrame */}
         </div>
 
-        </Section>
+        {showAlertModal && (
+          <Modal
+            show={showAlertModal}
+            onHide={() => setShowAlertModal(false)}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>提示</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>您還沒有選擇任何商品結帳喔~</Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
+                onClick={() => setShowAlertModal(false)}
+              >
+                關閉
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
+      </Section>
     </>
   )
 }

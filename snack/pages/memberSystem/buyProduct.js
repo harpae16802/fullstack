@@ -1,6 +1,6 @@
 import React from 'react'
 import selectMenu from "@/components/memberS/person/selectMenu"
-import BuyPro from "@/components/memberS/qrcode/product"
+import BuyPro from "@/components/memberS/try/product"
 export default function buyProduct() {
   return (
     <div className="container">

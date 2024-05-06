@@ -232,7 +232,7 @@ export default function NightmarketInfo({ initialMarketData }) {
           {allShops.map((seller, index) => {
             const handleCardClick = () => {
               router.push(
-                `http://localhost:3000/shop-products/${seller.seller_id}`
+                `http://localhost:3000/shop-products/${seller.seller_id}`,
               )
             }
             const restDayChinese = mapDayToChinese(seller.rest_day)
@@ -245,7 +245,7 @@ export default function NightmarketInfo({ initialMarketData }) {
                 className={`col-3 d-flex justify-content-center ${style.col}`}
               >
                 <ShopCard
-                  imgUrl={`${API_SERVER}/${seller.store_image}`}
+                  imgUrl={`${API_SERVER}/public/${seller.store_image}`}
                   title={seller.store_name}
                   time1={`每周${restDayChinese}休息`}
                   time2={`下午${openingTime}到凌晨${closingTime}`}

@@ -6,6 +6,7 @@ import { SELLER_API, ORDERDETAIL } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -19,9 +20,21 @@ export default function Order() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
+
   // 預設圖片
-  const IMG = "http://localhost:3000/images/seller.jpg";
+  const IMG = 'http://localhost:3000/images/seller.jpg'
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -32,7 +45,7 @@ export default function Order() {
   })
 
   // 載入動畫
-  const [loading, setLoading] = useState(false) 
+  const [loading, setLoading] = useState(false)
 
   // 資料過濾
   const [query, setQuery] = useState({
@@ -89,11 +102,9 @@ export default function Order() {
   ])
 
   // 後端資料仔入
+  // 加載訂單的函數，帶有延遲加載效果
   function loadOrders() {
-    if (!sellerId) {
-      router.replace('/login/login-seller');  
-    }
-    setLoading(true) // 動畫
+    setLoading(true) // 在請求之前開始加載
     axios
       .get(`${ORDERDETAIL}/`, {
         params: {
@@ -112,17 +123,16 @@ export default function Order() {
           setTotalPages(response.data.totalPages)
         } else {
           console.log('Unexpected response structure:', response)
-          setOrders([])
+          setOrders([]) // 如果響應不如預期，清除訂單
         }
       })
       .catch((error) => {
-        console.error('查询销售数据失败', error)
+        console.error('', error)
       })
       .finally(() => {
-        // 動畫
         setTimeout(() => {
-          setLoading(false)
-        }, 1000)
+          setLoading(false) // 延遲後停止加載
+        }, 2000) // 根據用戶體驗調整或刪除延遲
       })
   }
 
@@ -193,7 +203,7 @@ export default function Order() {
 
   //分頁
   const renderPageNumbers = () => {
-    if (totalPages <= 1) return null 
+    if (totalPages <= 1) return null
 
     const pageNumbers = []
     let startPage = Math.max(currentPage - 2, 1)
@@ -209,7 +219,7 @@ export default function Order() {
           key={i}
           className={`page-item ${i === currentPage ? 'active' : ''}`}
         >
-          <button className="page-link" onClick={() => setCurrentPage(i)}>
+          <button className="page-link" onClick={() => handlePageChange(i)}>
             {i}
           </button>
         </li>
@@ -218,6 +228,7 @@ export default function Order() {
 
     return pageNumbers
   }
+
   // 分頁
   const handlePageChange = (newPage) => {
     if (newPage !== currentPage) {
@@ -263,10 +274,13 @@ export default function Order() {
             {/* 這裡的賣家頭像直接連結伺服器 */}
             <div className={styles.profileContainer}>
               <div className={styles.profileWrapper}>
-              <img
+                <img
                   // src={`http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion} `}
-                  src={sellerData.profilePicture ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}` : IMG}
-
+                  src={
+                    sellerData.profilePicture
+                      ? `http://localhost:3002/public/seller/${sellerData.profilePicture}?v=${imageVersion}`
+                      : IMG
+                  }
                   alt="賣家頭像"
                   className={styles.profilePicture}
                   style={{
@@ -276,7 +290,10 @@ export default function Order() {
                     borderRadius: '50px',
                   }}
                   onClick={handleImageClick} // 使用handleImageClick
-                  onError={(e) => { e.target.onerror = null; e.target.src = IMG; }}// 圖片錯誤處裡
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = IMG
+                  }} // 圖片錯誤處裡
                 />
 
 
@@ -452,27 +469,26 @@ export default function Order() {
                 <br></br>
                 {/* 這裡要能搜索產品名稱 */}
                 {/* 我在這裡要實現資料的顯示 */}
-                {loading ? (
-                  <div
-                    className="d-flex justify-content-center align-items-center mt-3"
-                    style={{ minHeight: '200px' }}
-                  >
-                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-                    {/* <p className="mt-2">加載中...</p> */}
-                  </div>
-                ) : (
-                  <table className={`${styles.table}`}>
-                    <thead>
-                      <tr>
-                        <th>產品名稱</th>
-                        <th>產品類別</th>
-                        <th>銷售數量</th>
-                        <th>訂單收入</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Array.isArray(orders) &&
-                        orders.map((order) => (
+                <div
+                  className="d-flex justify-content-center align-items-center mt-3" 
+                  style={{ minHeight: '450px' ,  maxHeight: '500px;' }}
+                >
+                  {loading ? (
+                    <div className="text-center">
+                      <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                    </div>
+                  ) : (
+                    <table className={`${styles.table}`}>
+                      <thead>
+                        <tr>
+                          <th>產品名稱</th>
+                          <th>產品類別</th>
+                          <th>銷售數量</th>
+                          <th>訂單收入</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order) => (
                           <tr key={order.order_id}>
                             <td>{order.product_name}</td>
                             <td>{order.category_name}</td>
@@ -480,9 +496,10 @@ export default function Order() {
                             <td>${order.total_sum}</td>
                           </tr>
                         ))}
-                    </tbody>
-                  </table>
-                )}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
                 {/* 我在這裡要實現資料的顯示 */}
                 {/* 訂單總金額 */}
                 <div className="col-md-12 mt-3 col-12">
@@ -513,6 +530,21 @@ export default function Order() {
                 {/* 分頁 */}
                 <nav>
                   <ul className="pagination justify-content-center">
+                    {/* 前往第一頁按鈕 */}
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1}
+                      >
+                        <i className="bi bi-chevron-double-left"></i>
+                      </button>
+                    </li>
+                    {/* 前往前一頁按鈕 */}
                     <li
                       className={`page-item ${
                         currentPage === 1 ? 'disabled' : ''
@@ -521,25 +553,44 @@ export default function Order() {
                       <button
                         className="page-link"
                         onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
                       >
                         <i className="bi bi-chevron-left "></i>
                       </button>
                     </li>
+                    {/* 動態生成的頁碼按鈕 */}
                     {renderPageNumbers()}
+                    {/* 前往下一頁按鈕 */}
                     <li
-                      className={`page-item  ${
+                      className={`page-item ${
                         currentPage === totalPages ? 'disabled' : ''
                       }`}
                     >
                       <button
                         className="page-link"
                         onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
                       >
-                        <i className="bi bi-chevron-right "></i>
+                        <i className="bi bi-chevron-right"></i>
+                      </button>
+                    </li>
+                    {/* 前往最後一頁按鈕 */}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(totalPages)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <i className="bi bi-chevron-double-right"></i> 
                       </button>
                     </li>
                   </ul>
                 </nav>
+
                 {/* 分頁 */}
               </div>
             </div>

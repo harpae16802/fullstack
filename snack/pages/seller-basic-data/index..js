@@ -1,8 +1,9 @@
 // pages/seller-basic-data/index.js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API, IMGROUTER, BackEndSIMG } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -12,6 +13,7 @@ import { Modal, Button, Form } from 'react-bootstrap'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PasswordToggle from './PasswordToggle'
 
 export default function SellerBasicData() {
   // 使用 useRouter
@@ -21,42 +23,23 @@ export default function SellerBasicData() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+  const [sellerId, setSellerId] = useState(null)
 
   // 往店家網頁
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
   }
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
-
-  // 樣式
-  const imageContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    border: '2px solid #de4f4f',
-    borderRadius: '10px',
-    padding: '10px',
-    flexWrap: 'wrap',
-  }
-
-  const imageStyle = {
-    maxWidth: '200px',
-    margin: '10px',
-  }
-
-  // 會出錯暫時註解 - tung
-  // const mediaQuery = window.matchMedia('(max-width: 400px)')
-  // if (mediaQuery.matches) {
-  //   imageContainerStyle.flexDirection = 'column'
-  // } else {
-  //   imageContainerStyle.flexDirection = 'row'
-  // }
-  // 樣式
 
   // 賣家頭像 初始與更新
   const [imageVersion, setImageVersion] = useState(0)
@@ -97,6 +80,10 @@ export default function SellerBasicData() {
   // 上傳的新圖片
   const [newImagePreviewUrl, setNewImagePreviewUrl] = useState(null)
 
+  // 圖片縮放
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -104,10 +91,6 @@ export default function SellerBasicData() {
 
   // 修改前 如果拿取到seller_id執行這裡
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
-
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -131,6 +114,7 @@ export default function SellerBasicData() {
             profilePicture: data.profile_picture || `${IMG}`,
           }))
           setOriginData(data)
+          console.log(data)
         })
 
         .catch((error) => {
@@ -220,6 +204,7 @@ export default function SellerBasicData() {
     }
   }
 
+  //表單送出
   const handleSubmit = (e) => {
     e.preventDefault()
     setErrors({})
@@ -263,6 +248,12 @@ export default function SellerBasicData() {
       })
   }
 
+  // 控制圖片 大小
+  const toggleImageModal = (imageSrc) => {
+    setCurrentImage(imageSrc)
+    setShowImageModal(!showImageModal)
+  }
+
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]
@@ -287,7 +278,7 @@ export default function SellerBasicData() {
       })
       .catch((error) => {
         setfilePictureFailModal(ture)
-        alert('頭像上傳失敗')
+        // alert('頭像上傳失敗')
       })
   }
   // 生成24小時時間選項
@@ -320,17 +311,13 @@ export default function SellerBasicData() {
                       : IMG
                   }
                   alt="賣家頭像"
+                  width={100}
+                  height={100}
                   className={styles.profilePicture}
-                  style={{
-                    border: '2px solid black',
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50px',
-                  }}
                   onClick={handleImageClick} // 使用handleImageClick
                   onError={(e) => {
                     e.target.onerror = null
-                    e.target.src = IMG
+                    e.target.src = '/images/seller.jpg'
                   }} // 圖片錯誤處裡
                 />
 
@@ -428,20 +415,15 @@ export default function SellerBasicData() {
                       <div className="invalid-feedback">{errors.account}</div>
                     )}
                   </div>
-                  <div className="mb-3 container">
+                  <div className="mb-5 col-12container">
                     <label htmlFor="password" className="form-label">
                       使用者密碼
                     </label>
                     <div className="input-wrapper row">
-                      <input
-                        type={passwordShown ? 'text' : 'password'}
-                        className={`form-control col-6 ${
-                          errors.password ? 'is-invalid' : ''
-                        }`}
-                        id="password"
+                      {' '}
+                      <PasswordToggle
                         name="password"
-                        placeholder="至少包含英文 數字長度不少於8位數 不大於16位數"
-                        value={sellerData.password || ''}
+                        value={sellerData.password}
                         onChange={handleChange}
                       />
                       {errors.password && (
@@ -449,23 +431,9 @@ export default function SellerBasicData() {
                           {errors.password}
                         </div>
                       )}
-                      <i
-                        className="icon-toggle col-6"
-                        onClick={togglePasswordVisibility}
-                        style={{
-                          position: 'absolute',
-                          top: '265px',
-                          left: '150px',
-                          transform: 'translateY(-50%)',
-                          fontSize: '30px',
-                          cursor: 'pointer',
-                          zIndex: '2',
-                        }}
-                      >
-                        {passwordShown ? <FaEyeSlash /> : <FaEye />}
-                      </i>
                     </div>
                   </div>
+
                   <div className="mb-5">
                     <label htmlFor="storeName" className="form-label">
                       商家店名
@@ -542,18 +510,37 @@ export default function SellerBasicData() {
                     )}
                   </div>
 
-                  <div className="mb-5" style={imageContainerStyle}>
+                  {/* 商家圖片 */}
+                  <div
+                    className="mb-5"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                      border: '2px solid #de4f4f',
+                      borderRadius: '10px',
+                      padding: '10px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
                     <div>
                       <label htmlFor="store_image" className="form-label">
                         現有商家圖片
                       </label>
                       <br />
                       {sellerData.storeImage ? (
-                        <img
-                          src={`http://localhost:3002${sellerData.storeImage}`}
+                        <Image
+                          src={`${IMGROUTER}public/${sellerData.storeImage}`}
                           alt="商家現有圖片"
                           className="img-fluid"
-                          style={{ maxWidth: '200px', marginRight: '20px' }}
+                          style={{ maxWidth: '190px', marginRight: '20px' }}
+                          width={190}
+                          height={190}
+                          onClick={() =>
+                            toggleImageModal(
+                              `${IMGROUTER}public/${sellerData.storeImage}`
+                            )
+                          }
                         />
                       ) : (
                         <p>暫無圖片</p>
@@ -566,11 +553,18 @@ export default function SellerBasicData() {
                       </label>
                       <br />
                       {newImagePreviewUrl ? (
-                        <img
+                        <Image
                           src={newImagePreviewUrl}
                           alt="新上傳圖片預覽"
                           className="img-fluid"
-                          style={{ maxWidth: '200px' }}
+                          style={{ maxWidth: '190px' }}
+                          width={190}
+                          height={190}
+                          onClick={() =>
+                            toggleImageModal(
+                              newImagePreviewUrl
+                            )
+                          }
                         />
                       ) : (
                         <p>請選擇圖片以預覽</p>
@@ -795,6 +789,22 @@ export default function SellerBasicData() {
           </Button>
         </Modal.Footer>
       </Modal>
+ 
+
+<Modal
+  show={showImageModal}
+  onHide={() => setShowImageModal(false)}
+  centered
+>
+  <Modal.Header closeButton>
+    <Modal.Title>圖片預覽</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <img src={currentImage} alt="Enlarged" style={{ maxWidth: '100%', height: 'auto' }} />
+  </Modal.Body>
+</Modal>
+
+
     </Section>
   )
 }

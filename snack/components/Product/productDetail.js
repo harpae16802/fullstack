@@ -46,6 +46,18 @@ export default function ProductDetailCard({
     onClose()
   }
 
+  // 加入购物车并跳转
+  const handleBuyNow = () => {
+    if (quantity > 0) {
+      // 确保有选择数量
+      addToCart(product_id, quantity)
+      onClose()
+      window.location.href = '/order/orderStep1'
+    } else {
+      alert('请选择商品数量！')
+    }
+  }
+
   return (
     <>
       <div className={styles.detailContainer}>
@@ -118,7 +130,13 @@ export default function ProductDetailCard({
               加入購物車
             </button>
 
-            <button className="btn btn-primary ms-2">立即購買</button>
+            <a
+              href="/order/orderStep1"
+              className="btn btn-primary ms-2"
+              onClick={handleBuyNow}
+            >
+              立即購買
+            </a>
           </div>
 
           {/* 虛線 */}

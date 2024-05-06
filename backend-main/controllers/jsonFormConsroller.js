@@ -68,7 +68,7 @@ export const getImgFormTa = async (req, res) => {
             if (!res2) {
                 return res.json({ error: "Error in signup query" });
             }
-            results.result = res2[0][0].custom_image
+            results.result = res2[0][0].custom_image||"http://127.0.0.1:3002/images/1714108180720-a.png"
 
         })
         .catch((err) => {

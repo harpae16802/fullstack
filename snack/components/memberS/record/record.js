@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
-import Pagination from '@/components/memberS/others/pagination'
+// import Pagination from '@/components/memberS/others/pagination'
 import recordStyle from "@/styles/record.module.css"
 import { FaAngleDown, FaHeart } from "react-icons/fa";
 

@@ -3,10 +3,12 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import ProductDetailCard from '../Product/productDetail'
+import IndexProductDetailCard from './indexproductdetail'
 import { FaSistrix, FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
 import {
   INDEX_INFO_PRODUCT,
   IMAGES_PRODUCTS,
+  API_SERVER,
 } from '@/components/config/api-path'
 
 // Prev 箭頭自定義
@@ -69,11 +71,16 @@ function ProductSlider() {
     setSelectedProductIndex(index)
   }
 
+  const handleCloseModal=(index)=>{
+    setSelectedProductIndex(null)
+  }
   // 加減的按鈕
   const handleQuantityChange = (index, increment) => {
     const newListData = [...listData]
     const newQuantity = newListData[index].quantity || 0
-    const updatedQuantity = increment ? newQuantity + 1 : Math.max(newQuantity - 1, 0)
+    const updatedQuantity = increment
+      ? newQuantity + 1
+      : Math.max(newQuantity - 1, 0)
     newListData[index].quantity = updatedQuantity
     setListData(newListData)
   }
@@ -122,6 +129,7 @@ function ProductSlider() {
 
   return (
     <>
+
       <div className="slider-container product-index-gruop">
         <Slider {...settings}>
           {listData?.map((v, i) => {
@@ -135,7 +143,7 @@ function ProductSlider() {
                   </div>
                   <div className="product-img">
                     <img
-                      src={`${IMAGES_PRODUCTS}/${v.image_url}`}
+                      src={`${API_SERVER}/public/${v.image_url}`}
                       alt="product"
                       className="product"
                     />
@@ -152,8 +160,8 @@ function ProductSlider() {
                   <div className="price">${v.price}</div>
                   <div className="butinput">
                     <div className="quantity">
-                      <button onClick={() => handleQuantityChange(i, true)}>
-                        <FaPlus />
+                      <button onClick={() => handleQuantityChange(i, false)}>
+                        <FaMinus />
                       </button>
                       <input
                         type="text"
@@ -163,8 +171,8 @@ function ProductSlider() {
                         style={{ border: 'none', outline: 'none' }}
                         readOnly
                       />
-                      <button onClick={() => handleQuantityChange(i, false)}>
-                        <FaMinus />
+                      <button onClick={() => handleQuantityChange(i, true)}>
+                        <FaPlus />
                       </button>
                     </div>
                     <button type="button" className="btn btn-primary">
@@ -180,14 +188,15 @@ function ProductSlider() {
       </div>
       {selectedProductIndex !== null && (
         <div className="product-detail">
-          <ProductDetailCard
-            imageUrl={`${IMAGES_PRODUCTS}/${listData[selectedProductIndex].image_url}`}
+          <IndexProductDetailCard
+            imageUrl={`${API_SERVER}/public/${listData[selectedProductIndex].image_url}`}
             seller={listData[selectedProductIndex].store_name}
             product={listData[selectedProductIndex].product_name}
             description={listData[selectedProductIndex].product_description}
             price={listData[selectedProductIndex].price}
             ingredient={listData[selectedProductIndex].product_ingredient}
             nutrition="營養成分表"
+            handleCloseModal={handleCloseModal}
           />
         </div>
       )}

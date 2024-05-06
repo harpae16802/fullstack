@@ -1,11 +1,11 @@
 
 // routes/categoriesRouter.js
 import express from 'express';
-import db from '../utils/db.js'; // 确保这里的路径正确
+import db from '../utils/db.js'; 
 
 const categoriesRouter = express.Router();
 
-// 获取所有产品种类的API
+//產品總類
 categoriesRouter.get('/', async (req, res) => {
   try {
     const [categories] = await db.query('SELECT category_id, category_name FROM product_categories ORDER BY category_name');

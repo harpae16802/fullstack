@@ -4,6 +4,320 @@
 
 // @import '~bootstrap/scss/bootstrap';
 
+.game-index {
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: initial;
+    gap: 40px;
+  }
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  height: 600px;
+
+  @keyframes lapmlight {
+    0% {
+          opacity: 1;
+
+    }
+    25%{
+      opacity: 0.9;
+
+    }
+    50% {
+      opacity: 0.8;
+    }
+    75%{
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes vendors {
+    0% {
+          opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .lampR {
+    @media (max-width: 992px) {
+      display: none;
+    }
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    mix-blend-mode: hard-light;
+    // opacity: 0.8;
+    animation: lapmlight 1s linear infinite;
+    img {
+      width: 100%;
+    }
+  }
+  .lampL {
+    @media (max-width: 992px) {
+      display: none;
+    }
+    position: absolute;
+    left: -80px;
+    top: -80px;
+    z-index: 0;
+    mix-blend-mode: hard-light;
+    opacity: 0.4;
+    width: 600px;
+    height: 200px;
+    overflow: hidden;
+    animation: lapmlight 1s linear infinite;
+    border-radius: 60px 0px 0px 0px;
+
+    img {
+      position: absolute;
+      top: -180px;
+      width: 550px;
+    }
+  }
+  .vendor {
+    @media (max-width: 992px) {
+      display: none;
+    }
+    position: absolute;
+    bottom: -151px;
+    left: -80px;
+    z-index: 0;
+    mix-blend-mode: color-burn;
+    animation: vendors 1.5s linear infinite;
+
+    img {
+      width: 1807px;
+    }
+  }
+  .game-rule {
+    @media (max-width: 992px) {
+      flex-direction: column;
+      padding: 20px;
+      height: initial;
+    }
+    border-radius: 20px;
+    background-color: rgb(246, 238, 222);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.24);
+    height: 500px;
+    margin-top: 40px;
+    z-index: 1;
+    padding: 80px;
+    gap: 40px;
+
+    .left {
+      @media (max-width: 992px) {
+        padding: 0;
+      }
+      padding: 0px 20px;
+      img {
+        width: 100%;
+      }
+    }
+    .right {
+      @media (max-width: 992px) {
+        padding: 0px 20px;
+      }
+      padding: 0px 35px;
+      .t1 {
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .t2 {
+        @media (max-width: 992px) {
+          margin-bottom: 20px;
+        }
+        font-size: 32px;
+        font-weight: 700;
+        color: $primary;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .t3 {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+      }
+      .t4 {
+        @media (max-width: 992px) {
+          margin-bottom: 20px;
+          margin-top: 20px;
+        }
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        text-align: center;
+        color: $primary;
+        margin-top: 30px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+ 
+  @keyframes jump {
+    0% {
+      top: 10px;
+    }
+    50% {
+      top: 18px;
+    }
+    100% {
+      top: 10px;
+    }
+  }
+  @keyframes jump2 {
+    0% {
+      top: 70px;
+    }
+    50% {
+      top: 60px;
+    }
+    100% {
+      top: 70px;
+    }
+  }
+  .cha-start {
+    @media (max-width: 992px) {
+      top: 0;
+      height: 300px;
+      right: 0;
+    }
+    border-radius: 20px;
+    background-color: #f6eede;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 37%;
+    right: 3%;
+    position: relative;
+    height: 400px;
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.24);
+    .btn {
+      @media (max-width: 992px) {
+        top: 20px;
+        right: 22%;
+        font-size: 18px;
+        height: 45px;
+        width: 165px;
+      }
+      position: absolute;
+      right: 30px;
+      bottom: 20%;
+      height: 62px;
+      width: 270px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 1;
+    }
+    .chara-group {
+      @media (max-width: 992px) {
+        left: 0;
+      }
+
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+
+      .character {
+        @media (max-width: 992px) {
+          bottom: 0;
+          left: 0;
+          top: 70px;
+          height: 100%;
+        }
+        position: absolute;
+        top: 10px;
+        left: -5px;
+        // height: 60%;
+        width: 100%;
+        overflow: hidden;
+        .character-obj {
+          @media (max-width: 992px) {
+            width: 55%;
+          }
+          width: 300px;
+          // transform: scaleX(-1);
+          // position: absolute;
+        }
+      }
+      .character:hover {
+        @media (max-width: 992px) {
+          animation: jump2 0.5s linear infinite;
+        }
+        animation: jump 0.5s linear infinite;
+      }
+
+      .talk-group {
+        @media (max-width: 992px) {
+          width: 130px;
+          height: 130px;
+          padding: 20px;
+
+          left: 52%;
+          top: 35%;
+        }
+        overflow-wrap: break-word;
+        overflow: visible;
+        background: #fff;
+        display: flex;
+        width: 180px;
+        height: 150px;
+        left: 55%;
+        top: 15%;
+        padding: 30px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset;
+        position: relative;
+        .triangle {
+          @media (max-width: 992px) {
+            border-color: transparent #ffffff transparent transparent;
+            border-width: 25px;
+            top: 40%;
+            left: -30%;
+          }
+          position: absolute;
+          border-color: transparent #ffffff transparent transparent;
+          border-style: solid solid solid solid;
+          border-width: 25px;
+          bottom: 50px;
+          left: -44px;
+          height: 0px;
+          width: 0px;
+        }
+        .talk {
+          @media (max-width: 992px) {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.3rem;
+          }
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+        }
+      }
+    }
+  }
+}
+
 .game-select-page {
   @media (max-width: 992px) {
     border: $primary solid 10px;
@@ -100,6 +414,7 @@
     margin-top: 0px;
     height: 91vh;
   }
+  user-select: none;
   background: linear-gradient(
       0deg,
       rgba(225, 209, 178, 0.8) 0%,
@@ -124,6 +439,36 @@
     left: 0;
     z-index: 1;
   }
+  @keyframes shoot {
+    0% {
+      left: 170px;
+    }
+    50% {
+      left: 160px;
+    }
+    
+    100% {
+      left: 170px;
+
+
+    }
+  }
+  .obj-hidden {
+    display: none;
+  }
+  .shooting{
+    animation: shoot 0.3s linear infinite;
+  }
+  .desket-obj{
+    @media (max-width: 992px) {
+      display: none;
+    }
+    // 
+  }
+  .desket-obj.chara-group{
+    width: 300px;
+    left: 170px;
+  }
   .chara-group {
     @media (max-width: 992px) {
       top: 0;
@@ -131,11 +476,12 @@
     }
     position: absolute;
     top: -20px;
-    left: 60px;
+    left: 50px;
     height: 100%;
     width: 100%;
     z-index: 1;
 
+ 
     .character {
       @media (max-width: 992px) {
         bottom: 0;
@@ -153,7 +499,7 @@
           width: 50%;
         }
         width: 300px;
-        transform: scaleX(-1);
+        // transform: scaleX(-1);
         position: absolute;
       }
     }
@@ -346,7 +692,7 @@
     .play-div {
       @media (max-width: 992px) {
         //  background-image: url(/images/game/game-bgc2-min.png);
-        background-image: url(/images/game/game-main-min.png);
+        background-image: url(/images/game/game-bgc2-min.png);
         height: 100%;
         width: 100%;
         border-radius: 0px;
@@ -354,31 +700,63 @@
         padding: 155px 10px 80px 10px;
       }
       // background-image: url(/images/game/game-bgc2.png);
-      background-image: url(/images/game/game-main.png);
+      background-image: url(/images/game/game-bgc2.png);
       background-size: cover;
       background-position-y: bottom;
       display: flex;
       width: 1100px;
       height: 700px;
-      padding: 30px 20px 80px 20px;
+      padding: 0px 20px 80px 20px;
       justify-content: center;
       align-items: center;
       gap: 10px;
       background-color: #fff;
       border-radius: 70px;
       border: 5px solid var(--primary, #a32c2d);
+      overflow: hidden;
       .balloon-play {
         width: 100%;
         height: 100%;
         overflow: hidden;
+        position: relative;
+
         // 圈出氣球出現的範圍用
         // border: #621b1b 1px solid;
-        .balloon-obj {
+        @keyframes moveUp {
+          from {
+            bottom: -70px;
+          }
+          to {
+            bottom: 700px;
+          }
+        }
+        .balloon {
           @media (max-width: 992px) {
             width: 60px;
           }
-          width: 100px;
-          display: none;
+          position: absolute;
+          width: 77px;
+          height: 70px;
+          overflow: visible;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          user-select: none;
+          line-height: 75px;
+          font-size: 24px;
+          color: white;
+          font-weight: bold;
+          animation: moveUp 4s linear forwards;
+        }
+        .balloonimg {
+          position: absolute;
+          background-image: url('/images/game/blue.png'); /* 替換成你的圖片路徑 */
+          background-size: cover; /*調整圖片大小以填滿氣球 */
+          text-align: center;
+          width: 70px;
+          height: 120px;
+          /* background-color: #000; */
         }
       }
     }
@@ -410,7 +788,98 @@
     margin-left: 30px;
     margin-top: 25%;
     overflow: visible;
+    position: relative;
 
+    .modal-content {
+      @media (max-width: 992px) {
+        height: 292px;
+      }
+      height: 473px;
+    }
+    .chara-group {
+      @media (max-width: 992px) {
+        top: 162px;
+        left: 0;
+      }
+      position: absolute;
+      top: -170px;
+      left: -781px;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+
+      .character {
+        @media (max-width: 992px) {
+          bottom: -120px;
+          left: 0;
+          height: 100%;
+        }
+        position: absolute;
+        bottom: -328px;
+        left: 8%;
+        height: 88%;
+        width: 100%;
+        overflow: hidden;
+        .character-obj {
+          @media (max-width: 992px) {
+            width: 55%;
+          }
+          width: 300px;
+          transform: scaleX(-1);
+          position: absolute;
+        }
+      }
+      .talk-group {
+        @media (max-width: 992px) {
+          width: 130px;
+          height: 180px;
+          padding: 20px;
+          left: 58%;
+          top: 63%;
+        }
+        overflow-wrap: break-word;
+        overflow: visible;
+        background: #fff;
+        display: flex;
+        width: 280px;
+        height: 280px;
+        left: 9%;
+        top: 20%;
+        padding: 40px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5) inset;
+        position: relative;
+        .triangle {
+          @media (max-width: 992px) {
+            border-color: transparent #ffffff transparent transparent;
+            border-width: 25px;
+            top: 40%;
+            left: -30%;
+          }
+          position: absolute;
+          border-color: #ffffff transparent transparent transparent;
+          border-style: solid solid solid solid;
+          border-width: 30px;
+          bottom: -50px;
+          right: 20%;
+          height: 0px;
+          width: 0px;
+        }
+        .talk {
+          @media (max-width: 992px) {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.3rem;
+          }
+          font-size: 24px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+        }
+      }
+    }
   }
 
   .btn-close {
@@ -436,6 +905,17 @@
       }
       font-size: 28px;
       font-weight: 700;
+      text-align: center;
+      .clear-text {
+        @media (max-width: 992px) {
+          font-size: 14px;
+          font-weight: 500;
+        }
+        padding-top: 5px;
+        font-size: 18px;
+        font-weight: 500;
+        color: $primary;
+      }
     }
     .rule-group {
       @media (max-width: 992px) {

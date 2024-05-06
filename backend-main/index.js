@@ -25,12 +25,14 @@ import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
+import { join } from 'path';
 import categoriesRouter from './routes/categoriesRouter.js'
-
+import cartRouter from './routes/cartRouter.js'
+import gameDataRouter from "./routes/game-data.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
+const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
 
 const app = express();
 const PORT = process.env.WEB_PORT || 3003;
@@ -44,6 +46,9 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+// 宜 加入token黑名單
+// const blacklist = ['/backRoute'];
 // ==== 如
 
 // 自訂的頂層middleware
@@ -58,17 +63,8 @@ app.use((req, res, next) => {
       // res.locals.my_jwt(放在此比較安全但現在res.req不同)
       //要確認my_jwt沒用過,像req.body已經被使用了
       req.my_jwt = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (ex) {
-      console.error("JWT verification failed:", ex);
-      return res.status(401).json({ error: "Invalid token" });
-    }
+    } catch (ex) {}
   }
-
-  // ***** 只用在測試用戶
-  // req.my_jwt = {
-  //   custom_id: 35,
-  //   account: "luki@gg.com",
-  // };
 
   next(); //呼叫他才能往下 不然網頁會一直停留在讀取旋轉
 });
@@ -235,11 +231,14 @@ app.get("/jwt-data", async (req, res) => {
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
 
+app.use("/game-data", gameDataRouter);
 
 // ====恆
 app.use("/orderRouter",orderRouter); 
 // app.use("/product2Router",productPageRouter); 
 app.use("/productPage",productPageRouter)
+
+
 
 
 // ==== 弘
@@ -297,6 +296,10 @@ app.use("/comment", commentRouter);
 //賣家廣告路由
 app.use("/ad", adRouter);
 
+// 購物車結帳路由
+app.use('/cartItem', cartRouter);  
+
+
 // ==== 咚
 // 店家產品路由
 app.use("/shop-products", shopRouter);
@@ -309,7 +312,7 @@ app.use("/market-map", marketMapRouter);
 
 // ==== 蓁
 // 會員路由
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/images", express.static(path.join(__dirname, "public/discuss/")));
 app.use("/backRoute", index);
 
 /*---其他路由放在這之前---*/

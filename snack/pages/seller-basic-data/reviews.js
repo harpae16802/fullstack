@@ -14,6 +14,7 @@ import ReplyModal from '@/components/ReplyModal'
 import ReplySuccessModal from '@/components/ReplySuccessModal'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 export default function Reviews() {
   // 使用 useRouter
@@ -22,8 +23,19 @@ export default function Reviews() {
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
 
-  //拿取seller_id
-  const sellerId = typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null;
+//拿取seller_id
+const [sellerId, setSellerId] = useState(null)
+
+// 安全性 確認身分
+useEffect(() => {
+  const localSellerId = localStorage.getItem('sellerId')
+  if (localSellerId) {
+    setSellerId(localSellerId)
+  } else {
+    router.replace('/login/login-seller')
+  }
+}, [])
+
   // 預設圖片
   const IMG = "http://localhost:3000/images/seller.jpg";
 
@@ -57,9 +69,7 @@ export default function Reviews() {
 
   // 總查詢
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller');  
-    }
+
     console.log('index.js中的sellerId', sellerId)
     if (sellerId) {
       axios
@@ -98,16 +108,22 @@ export default function Reviews() {
   const renderCommentStars = (count) => {
     let stars = []
     for (let i = 0; i < count; i++) {
-      stars.push(<FontAwesomeIcon icon={faStar} key={i} />)
+      stars.push(
+        <span key={i} >
+          <FontAwesomeIcon style={{ width:'20px' }} icon={faStar} />
+        </span>
+      )
     }
     return <>{stars}</>
   }
+  
 
   // 拿取評論
   const fetchData = async () => {
     try {
       const response = await axios.get(`${COMMENT}/${sellerId}`)
       setComments(response.data) //設定評論
+      console.log(response)
     } catch (error) {
       console.error('獲取評論失敗:', error)
     }
@@ -306,7 +322,9 @@ export default function Reviews() {
                             用戶：{comment.custom_account}
                           </h5>
                           <h6 className="card-subtitle mb-2 text-muted">
+                            <div>
                             評分：{renderCommentStars(comment.store_rating)}
+                            </div>
                           </h6>
                           <p className="card-text">{comment.comment}</p>
                           <p className="card-text">

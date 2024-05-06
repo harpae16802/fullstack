@@ -4,8 +4,7 @@ import db from "../utils/db.js";
 import fs from 'fs';
 import { date } from '../utils/date.js';
 import { ISOtodate } from "../utils/day.js"
-const productUrl="http://127.0.0.1:3002/public/images/products/"
-const sellerUrl="http://127.0.0.1:3002/public/images/seller/"
+const productUrl="http://127.0.0.1:3002/public/" 
 export async function recordSearch(req, res) {
   const result = { success: false, data: [] };
 

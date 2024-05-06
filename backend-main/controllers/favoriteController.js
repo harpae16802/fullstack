@@ -3,24 +3,29 @@ import fs from 'fs';
 import path from 'path';
 import { date } from '../utils/date.js';
 import { ISOtodate } from "../utils/day.js"
-const productUrl="http://127.0.0.1:3002/public/images/products/"
-const sellerUrl="http://127.0.0.1:3002/public/images/seller/"
-export async function favoriteDel01Product(req, res) {
+const productUrl="http://127.0.0.1:3002/public/" 
+export async function favoriteDel01Product(req, res) { 
     const values = req.body.favorite_id;
-    const sql = `DELETE FROM favorite_product WHERE favorite_id=?`;
-
+    const sql = `DELETE FROM favorite_product WHERE favorite_id=?`; 
     try {
+       
         const res2 = await db.query(sql, values);
         if (!res2) {
             return res.json({ error: "Error in signup query" });
         } else {
             const values2 = req.body.custom_id;
-            const sql = `SELECT created_at, favorite_id, (SELECT product_name FROM products WHERE product_id=favorite_product.product_id) AS product_name, (SELECT custom_name FROM custom WHERE custom_id=favorite_product.custom_id) AS custom_name FROM favorite_product WHERE custom_id=?`;
-            const res2 = await db.query(sql, values2);
+            const sql = `SELECT created_at, favorite_id,(SELECT image_url FROM products WHERE product_id=favorite_product.product_id) AS image_url, (SELECT product_name FROM products WHERE product_id=favorite_product.product_id) AS product_name, (SELECT custom_name FROM custom WHERE custom_id=favorite_product.custom_id) AS custom_name FROM favorite_product WHERE custom_id=?`;
+            let res2 = await db.query(sql, values2);
             if (!res2) {
                 return res.json({ error: "Error in signup query" });
             } else {
-                return res.send({ status: "Success", data: res2[0] });
+                res2 = res2[0].map((v, i) => {
+                    v.image_url=productUrl+v.image_url;
+                    v.created_at = ISOtodate(v.created_at);
+                    return v;
+                })
+        
+                return res.send({ status: "Success", data: res2 });
             }
 
         }
@@ -76,20 +81,29 @@ export async function favoriteSearch01Product(req, res) {
 
 export async function favoriteDel02Store(req, res) {
     const values = req.body.favorite_id;
-    const sql = `DELETE FROM favorite_store WHERE favorite_id=?`;
-
+    const sql = `DELETE FROM favorite_store WHERE favorite_id=?`; 
     try {
         const result = await db.query(sql, values);
         if (!result) {
             return res.json({ error: "Error in signup query" });
         } else {
             const values2 = req.body.custom_id || 1;
-            const sql2 = `SELECT created_at, favorite_id, (SELECT store_name FROM seller WHERE seller_id=favorite_store.seller_id) AS seller_id, (SELECT custom_name FROM custom WHERE custom_id=favorite_store.custom_id) AS custom_name FROM favorite_store WHERE custom_id=?`;
-            const result2 = await db.query(sql2, values2);
+            const sql2 = `SELECT created_at, favorite_id,
+             (SELECT store_name FROM seller WHERE seller_id=favorite_store.seller_id) AS seller_id,
+              (SELECT custom_name FROM custom WHERE custom_id=favorite_store.custom_id) AS custom_name, 
+             (SELECT store_image FROM seller WHERE seller_id=favorite_store.seller_id) AS store_image
+              FROM favorite_store 
+             WHERE custom_id=?`;
+            let result2 = await db.query(sql2, values2);
+            result2 = result2[0].map((v, i) => {
+                v.store_image=productUrl+v.store_image;
+                v.created_at = ISOtodate(v.created_at);
+                return v;
+            })
             if (!result2) {
                 return res.json({ error: "Error in signup query" });
             }
-            return res.send({ success: true, data: result2[0] });
+            return res.send({ success: true, data: result2 });
         }
     } catch (err) {
         console.error("Error executing SQL query:", err);
@@ -129,7 +143,7 @@ export async function favoriteSearch02Store(req, res) {
             return res.json({ error: "Error in signup query" });
         } else {
             res2 = res2.map((v, i) => {
-                v.store_image=sellerUrl+v.store_image;
+                v.store_image=productUrl+v.store_image;
                 v.created_at = ISOtodate(v.created_at);
                 return v;
             })

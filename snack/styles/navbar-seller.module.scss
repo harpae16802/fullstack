@@ -588,3 +588,36 @@ $mobile-width: 480px;
 .selectedRow {
   background-color: #f8d7da; /* 调整为你希望的颜色 */
 }
+
+
+
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modalContent {
+  width: 70%;  /* 控制 Modal 的寬度為屏幕寬度的 70% */
+  max-height: 70%; /* 控制 Modal 的最大高度為屏幕高度的 70% */
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;  /* 水平居中 */
+  align-items: center;  /* 垂直居中 */
+  overflow: auto;  /* 允許滾動 */
+  padding: 20px;
+}
+
+.modalContent img {
+  max-width: 100%;  /* 圖片最大寬度限制為容器寬度的 100% */
+  height: auto;  /* 高度自動 */
+}

@@ -54,8 +54,7 @@ sellerRouter.get('/:sellerId', async (req, res) => {
       const sellerData = {
         ...sellerRows[0],
         ...accountInfo,
-        bankAccounts: bankAccounts,
-        storeImage: `/public/images/seller/${sellerRows[0].store_image}`
+        bankAccounts: bankAccounts
       };
 
       res.json({ success: true, data: sellerData });
@@ -68,11 +67,8 @@ sellerRouter.get('/:sellerId', async (req, res) => {
   }
 });
 
-// 賣家資訊編輯 PUT 路由
-sellerRouter.put('/:sellerId/edit', upload.fields([
-  { name: 'profilePicture', maxCount: 1 },
-  { name: 'store_image', maxCount: 1 }
-]), async (req, res) => {
+// 編輯賣家資訊
+sellerRouter.put("/:sellerId/edit", upload.array(), async (req, res) => {
   const sellerId = req.params.sellerId;
   const {
     storeName,
@@ -86,24 +82,9 @@ sellerRouter.put('/:sellerId/edit', upload.fields([
     account,
     password
   } = req.body;
-
-  const profilePicture = req.files['profilePicture'] ? req.files['profilePicture'][0].filename : null;
-  const storeImage = req.files['store_image'] ? req.files['store_image'][0].filename : null;
-
   try {
-    const sellerQuery = `
-      UPDATE seller SET
-      store_name=?,
-      contact_number=?,
-      email=?,
-      company_address=?,
-      company_description=?,
-      store_image=?,
-      opening_hours=?,
-      closing_hours=?,
-      rest_day=?,
-      profile_picture=?
-      WHERE seller_id=?`;
+    const sellerQuery =
+      "UPDATE seller SET store_name=?, contact_number=?, email=?, company_address=?, company_description=?, store_image=?, opening_hours=?, closing_hours=?, rest_day=?, profile_picture=? WHERE seller_id=?";
     await db.query(sellerQuery, [
       storeName,
       contactNumber,
@@ -169,7 +150,7 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
 
         // 提交事务
         await conn.commit();
-        res.json({ success: true, message: "银行账户更新成功" });
+        res.json({ success: true, message: "銀行帳號更新成功" });
       } catch (error) {
         // 出现错误则回滚事务
         await conn.rollback();
@@ -180,8 +161,8 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("更新银行账户失败:", error);
-    res.status(500).json({ success: false, message: "服务器错误" });
+    console.error("銀行帳號更新失敗:", error);
+    res.status(500).json({ success: false, message: "伺服器錯誤" });
   }
 });
 

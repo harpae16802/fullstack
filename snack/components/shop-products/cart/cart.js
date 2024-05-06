@@ -36,7 +36,7 @@ export default function Cart() {
             {cartItems.map((item) => (
               <div key={item.product_id} className={`d-flex ${style.product}`}>
                 <img
-                  src={`${API_SERVER}/${item.image_url}`}
+                  src={`${API_SERVER}/public/${item.image_url}`}
                   alt={item.title}
                   className={style.cartItemImage}
                 />
@@ -87,7 +87,9 @@ export default function Cart() {
                 <p>${total}</p>
               </div>
             )}
-            <button className="btn btn-light">去購物車結帳</button>
+            <a href="/order/orderStep1" className="btn btn-light">
+              去購物車結帳
+            </a>
           </div>
         </div>
       ) : (

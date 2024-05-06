@@ -12,6 +12,9 @@ import styles from '../../styles/navbar-seller.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Button } from 'react-bootstrap'
 
 const ProductsList = () => {
   // 使用 useRouter
@@ -21,8 +24,18 @@ const ProductsList = () => {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+
+  const [sellerId, setSellerId] = useState(null)
+
+  // 安全性 確認身分
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
@@ -41,6 +54,11 @@ const ProductsList = () => {
   const [showFailModal, setShowFailModal] = useState(false)
 
   const [loading, setLoading] = useState(false) // 新增 loading 狀態
+  //彈出視窗
+  const [showModal, setShowModal] = useState(false)
+  const [showFailModal, setShowFailModal] = useState(false)
+
+  const [loading, setLoading] = useState(false) // 新增 loading 狀態
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
@@ -53,22 +71,22 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
-    setLoading(true) //loading 為 true
+    setLoading(true)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
           const data = response.data.data
+          const data = response.data.data
 
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || `${IMG}`,
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
+          console.error('獲取失敗', error)
           console.error('獲取失敗', error)
         })
     }
@@ -85,6 +103,7 @@ const ProductsList = () => {
       try {
         const response = await axios.get(
           `${PRODUCTS_API}/${sellerId}/categories`
+          `${PRODUCTS_API}/${sellerId}/categories`
         )
         setCategories(response.data.categories)
       } catch (error) {
@@ -93,8 +112,10 @@ const ProductsList = () => {
     }
 
     const fetchData = async () => {
+      setLoading(true)
       try {
         const response = await axios.get(
+          `${PRODUCTS_API}/${sellerId}?${queryParams}`
           `${PRODUCTS_API}/${sellerId}?${queryParams}`
         )
         const categoryMap = new Map(
@@ -112,22 +133,26 @@ const ProductsList = () => {
           setCurrentPage(1)
         }
       } catch (error) {
+        console.error('Fetching data failed', error)
       } finally {
         setTimeout(() => {
-          setLoading(false)
+          setLoading(false) // 延迟1秒后设置loading为false
         }, 1000)
       }
     }
 
     if (sellerId) {
+    if (sellerId) {
       fetchData()
       fetchCategories()
     }
+  }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems])
   }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems])
 
   // 處裡分頁
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const renderPageNumbers = () => {
+    if (totalItems <= itemsPerPage) return null
     if (totalItems <= itemsPerPage) return null
 
     const pageNumbers = []
@@ -191,7 +216,7 @@ const ProductsList = () => {
         setCurrentPage(1)
       }
     } catch (error) {
-      console.error('获取产品列表失败', error)
+      console.error('獲取產品失敗', error)
     } finally {
       setLoading(false)
     }
@@ -381,13 +406,14 @@ const ProductsList = () => {
                       type="button"
                       onClick={() => setSearchTerm('')}
                     >
-                      初始化搜尋
+                        初始化搜尋
                     </button>
                   </div>
                 </div>
                 {/* 清除搜索词按钮 */}
               </div>
               {/* 搜索框 */}
+              <br></br>
               <br></br>
               <br></br>
               {/* 篩選 */}
@@ -468,7 +494,7 @@ const ProductsList = () => {
 
               <div
                 className="d-flex justify-content-center align-items-center mt-3"
-                style={{ minHeight: '200px' }}
+                style={{ minHeight: '450px' ,  maxHeight: '500px;'}}
               >
                 {loading ? (
                   <div className="text-center">
@@ -532,7 +558,7 @@ const ProductsList = () => {
                   </table>
                 )}
               </div>
-
+<br></br>
               <div className={styles.buttonGroup}>
                 <button
                   onClick={() => handleBatchUpdateStatus(0)}
@@ -550,6 +576,72 @@ const ProductsList = () => {
               <br></br>
               {/* 分頁 */}
               <nav>
+                <ul className="pagination justify-content-center">
+                  {/* 前往第一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === 1 ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageChange(1)}
+                      disabled={currentPage === 1}
+                    >
+                      <i className="bi bi-chevron-double-left"></i> 
+                    </button>
+                  </li>
+                  {/* 前往前一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === 1 ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() =>
+                        currentPage > 1 && handlePageChange(currentPage - 1)
+                      }
+                    >
+                      <i className="bi bi-chevron-left cursor:'pointer'"></i>
+                    </button>
+                  </li>
+                  {/* 現有的分頁號碼 */}
+                  {renderPageNumbers()}
+                  {/* 前往下一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === totalPages ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() =>
+                        currentPage < totalPages &&
+                        handlePageChange(currentPage + 1)
+                      }
+                    >
+                      <i className="bi bi-chevron-right cursor:'pointer'"></i>
+                    </button>
+                  </li>
+                  {/* 前往最後一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === totalPages ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageChange(totalPages)}
+                      disabled={currentPage === totalPages}
+                    >
+                      <i className="bi bi-chevron-double-right"></i> 
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+
+              {/* <nav>
                 <ul className="pagination justify-content-center">
                   <li
                     className={`page-item ${
@@ -582,7 +674,7 @@ const ProductsList = () => {
                     </button>
                   </li>
                 </ul>
-              </nav>
+              </nav> */}
             </div>
           </div>
         </div>

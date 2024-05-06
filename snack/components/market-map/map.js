@@ -25,7 +25,7 @@ function MapUpdater({ mapPosition }) {
       const popupContent = `
       <div class=${style.card}>
       <img
-        src="${API_SERVER}/${details.market_img}"
+        src="${API_SERVER}/public/${details.market_img}"
         alt=${details.market_img}
         class=${style.img}
       />
@@ -126,7 +126,7 @@ const MapComponent = () => {
           <Popup offset={L.point(46, -24)} className={style.popup}>
             <div className={style.card}>
               <img
-                src={`${API_SERVER}/${point.market_img}`}
+                src={`${API_SERVER}/public/${point.market_img}`}
                 alt=""
                 className={style.img}
               />

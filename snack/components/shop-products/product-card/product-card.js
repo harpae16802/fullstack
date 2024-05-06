@@ -151,7 +151,7 @@ export default function ProductCard({
       >
         {selectedProduct && (
           <ProductDetailCard
-            imageUrl={`${API_SERVER}/${selectedProduct.image_url}`}
+            imageUrl={`${API_SERVER}/public/${selectedProduct.image_url}`}
             seller={selectedProduct.store_name}
             product={selectedProduct.product_name}
             description={selectedProduct.product_description}

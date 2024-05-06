@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API } from './config'
+import { SELLER_API,IMGROUTER } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -19,9 +19,19 @@ export default function bank() {
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
 
-  //拿取seller_id
-  const sellerId =
-    typeof window !== 'undefined' ? localStorage.getItem('sellerId') : null
+//拿取seller_id
+const [sellerId, setSellerId] = useState(null)
+
+// 安全性 確認身分
+useEffect(() => {
+  const localSellerId = localStorage.getItem('sellerId')
+  if (localSellerId) {
+    setSellerId(localSellerId)
+  } else {
+    router.replace('/login/login-seller')
+  }
+}, [])
+
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
 
@@ -35,8 +45,12 @@ export default function bank() {
 
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
-    profilePicture: '', // 賣家頭像
-    bankAccounts: [], // 初始化為空數組
+    profilePicture: '',
+    bankAccounts: [
+      { account_number: '', bank_code: '' },
+      { account_number: '', bank_code: '' },
+      { account_number: '', bank_code: '' }
+  ], 
   })
 
   //彈出視窗
@@ -58,9 +72,6 @@ export default function bank() {
 
   // 總查詢
   useEffect(() => {
-    if (!sellerId) {
-      router.replace('/login/login-seller')
-    }
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -68,6 +79,10 @@ export default function bank() {
           const { profile_picture, bankAccounts } = response.data.data // 解構出我的資料
           console.log('後端的數據:', response.data) // debug
 
+          while (bankAccounts.length < 3) {
+            bankAccounts.push({ account_number: '', bank_code: '' });
+        }
+        
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: profile_picture || `${IMG}`,

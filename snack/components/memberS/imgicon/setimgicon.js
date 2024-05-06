@@ -2,8 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/form.module.css"
-import classNames from "classnames";
-
+import classNames from "classnames"; 
+import { useIcon } from '@/data/context/ImgContext';
 import { useEffect, useState,useRef } from "react"; 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -11,11 +11,12 @@ const inter = Inter({ subsets: ["latin"] });
 // 選擇圖片
 export default function Setimg() {
   const [file, setFile] = useState(null); 
-  const fileInputRef = useRef(null); 
+  const fileInputRef = useRef(null);   
+  let  { previewUrl,setPreviewUrl } = useIcon(); 
+
    // 選中的檔案
    const [selectedFile, setSelectedFile] = useState(null)
    // 預覽圖片(呼叫URL.createObjectURL得到的網址)
-   const [previewUrl, setPreviewUrl] = useState("/face/ch.jpeg")
  
    // 選擇檔案有變動時的處理函式
    const handleFileChange = (e) => {
@@ -35,6 +36,7 @@ export default function Setimg() {
      }
    }
  
+ 
    // 上傳到伺服器 
    const handleFileUpload = async (event) => {
     // const selectedFile = event.target.files[0];
@@ -44,17 +46,17 @@ export default function Setimg() {
       const objjectUrl=URL.createObjectURL(file)
       setPreviewUrl(objjectUrl)
     }
-
+    const custom_id =JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id
     const formData = new FormData();
     formData.append('file', selectedFile);
+    formData.append('custom_id', JSON.parse(custom_id));
     try {
-      const response = await fetch('http://127.0.0.1:3006/backRoute/bigImg', {
+      const response = await fetch('http://127.0.0.1:3002/backRoute/bigImg', {
         method: 'POST',
         body: formData
       });
       const data = await response.json();
-      console.log('Upload successful:', data);
-
+      console.log('Upload successful:', data);  
     } catch (error) {
       console.error('Error uploading image:', error);
     }
