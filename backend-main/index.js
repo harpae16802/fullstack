@@ -15,7 +15,7 @@ import sellerRouter from "./routes/sellerRouter.js";
 import productsRouter from "./routes/productsRouter.js";
 import authRouter from "./routes/authRouter.js";
 import orderRouter from "./routes/orderRouter.js"
- import productPageRouter from "./routes/productPageRouter.js"
+import productPageRouter from "./routes/productPageRouter.js"
 import shopRouter from "./routes/shop-products.js";
 import marketRouter from "./routes/market.js";
 import marketMapRouter from "./routes/market-map.js";
@@ -235,9 +235,12 @@ app.use("/index-info", indexInfoRouter);
 app.use("/game-data", gameDataRouter);
 
 // ====恆
-app.use("/orderRouter",orderRouter); 
-// app.use("/product2Router",productPageRouter); 
-app.use("/productPage",productPageRouter)
+
+
+//商品列表頁
+app.use("/productPageRouter",productPageRouter)
+//訂單頁--orderStep1
+app.use("/orderRouter", orderRouter); 
 
 
 

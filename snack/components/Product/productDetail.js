@@ -1,164 +1,108 @@
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { FiHeart } from 'react-icons/fi'
-import { IoIosArrowDown } from 'react-icons/io'
-import styles from '@/styles/Product.module.css' // 確保引入了正確的樣式文件
-import { RxCross1 } from 'react-icons/rx'
-import tstyle from './tstyle.module.scss'
-import { useCartContext } from '@/contexts/cartContext'
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { FiHeart, FiMinus, FiPlus } from 'react-icons/fi'; // Make sure to import FiMinus and FiPlus if used
+import styles from '@/styles/Product.module.css'; // Ensure the correct style file is referenced
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-  FaThumbsUp,
-  FaPlus,
-  FaRegHeart,
-  FaHeart,
-  FaMinus,
-} from 'react-icons/fa'
+  FAVORITE_PRODUCTS,
+  C_FAVORITE_PRODUCTS,
+} from '@/components/config/api-path';
 
 export default function ProductDetailCard({
-  imageUrl = '',
-  seller = '',
-  product = '',
-  description = '',
-  price = '',
-  ingredient = '',
-  nutrition = '',
-  onClose,
-  favorite,
-  isFavorite,
   product_id,
+  imageUrl = "",
+  seller = "",
+  product = "",
+  description = "",
+  price = "",
+  ingredient = "",
+  nutrition = "",
 }) {
-  const { addToCart } = useCartContext()
-  const [quantity, setQuantity] = useState(0)
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [quantity, setQuantity] = useState(1); // Default quantity
 
-  // 增加数量
-  const increaseQuantity = () => {
-    setQuantity((prev) => prev + 1)
-  }
-
-  // 减少数量，确保数量不会低于0
-  const decreaseQuantity = () => {
-    setQuantity((prev) => (prev > 0 ? prev - 1 : 0))
-  }
-
-  // 加入購物車
-  const handleAddToCart = () => {
-    addToCart(product_id, quantity)
-    onClose()
-  }
-
-  // 加入购物车并跳转
-  const handleBuyNow = () => {
-    if (quantity > 0) {
-      // 确保有选择数量
-      addToCart(product_id, quantity)
-      onClose()
-      window.location.href = '/order/orderStep1'
-    } else {
-      alert('请选择商品数量！')
+  const toggleFavoriteProducts = async () => {
+    try {
+      const response = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`);
+      const data = await response.json();
+      if (data.success) {
+        setIsFavorite(data.action === 'add');
+      }
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
     }
-  }
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(prev => prev + 1);
+  };
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      const response = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`);
+      const data = await response.json();
+      setIsFavorite(data.isFavorite);
+    };
+
+    checkFavoriteStatus();
+  }, [product_id]);
 
   return (
     <>
-      <div className={styles.detailContainer}>
-        {/* 產品圖 */}
-        <Image
-          src={imageUrl}
-          width={759}
-          height={726}
-          className={styles.detailPic}
-        />
-
-        <div className={styles.detailTextArray}>
-          <RxCross1 className={styles.detailCrossIcon} onClick={onClose} />
-
-          {/* 店家名稱 */}
-          <div className={styles.detailSeller}>{seller}</div>
-          {/* 產品名稱 */}
-          <div className={styles.detailProductName}>{product}</div>
-
-          {/* 產品描述 */}
-          <div className={styles.detailIntroduce}>{description}</div>
-          {/* 價格 */}
-          <div className={styles.detailPrice}>${price}</div>
-
-          {/* '+ -'按鈕 */}
-          <div className={`${tstyle.quantity}`}>
-            <button onClick={decreaseQuantity}>
-              <FaMinus />
-            </button>
-            <input
-              type="text"
-              min="1"
-              value={quantity}
-              style={{ border: 'none', outline: 'none' }}
-              readOnly
-            />
-
-            <button onClick={increaseQuantity}>
-              <FaPlus />
-            </button>
+      <div className="modal fade" id="detailModal" tabIndex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div className={`modal-dialog ${styles.detailModalSize}`}>
+          <div className="modal-content">
+            <div className="modal-body">
+              <div className={styles.detailContainer}>
+                <Image src={imageUrl} width={759} height={726} alt="Product" />
+                <div className={styles.detailTextArray}>
+                  <button type="button" className={`btn-close ${styles.detailCrossIcon}`} data-bs-dismiss="modal" aria-label="Close"></button>
+                  <div className={styles.detailSeller}>{seller}</div>
+                  <div className={styles.detailProductName}>{product}</div>
+                  <div className={styles.detailIntroduce}>{description}</div>
+                  <div className={styles.detailPrice}>${price}</div>
+                  <div className={styles.quantity}>
+                    <button onClick={decreaseQuantity}><FiMinus /></button>
+                    <input type="text" value={quantity} readOnly />
+                    <button onClick={increaseQuantity}><FiPlus /></button>
+                  </div>
+                  <div style={{ display: 'flex', marginTop: '20px', marginLeft: '115px', color: '#A32C2D', fontSize: '30px' }}>
+                    <FiHeart className={styles.detailHeartIcon} onClick={toggleFavoriteProducts} />
+                    <button className={styles.addCartButton}>加入購物車</button>
+                    <button className={styles.immediateBuyButton}>立即購買</button>
+                  </div>
+                  <div className="accordion accordion-flush" id="accordionFlushExample">
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="flush-headingOne">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                          成分 :
+                        </button>
+                      </h2>
+                      <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne">
+                        <div className={`accordion-body ${styles.detailIngredient}`}>{ingredient}</div>
+                      </div>
+                    </div>
+                    <div className="accordion-item">
+                      <h2 className="accordion-header" id="flush-headingTwo">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                          營養成分:
+                        </button>
+                      </h2>
+                      <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo">
+                        <div className={`accordion-body ${styles.nutritionIngredient}`}>{nutrition}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* 收藏 加入購物車 */}
-          <div
-            className="align-items-center"
-            style={{
-              display: 'flex',
-              marginTop: '20px',
-              marginLeft: '115px',
-              color: '#A32C2D',
-              fontSize: '30px',
-            }}
-          >
-            {isFavorite ? (
-              <FaHeart
-                className={`${styles.detailHeartIcon}`}
-                onClick={favorite}
-              />
-            ) : (
-              <FaRegHeart
-                className={`${styles.detailHeartIcon}`}
-                onClick={favorite}
-              />
-            )}
-
-            <button
-              className={`btn btn-outline-primary ms-3`}
-              onClick={handleAddToCart}
-            >
-              加入購物車
-            </button>
-
-            <a
-              href="/order/orderStep1"
-              className="btn btn-primary ms-2"
-              onClick={handleBuyNow}
-            >
-              立即購買
-            </a>
-          </div>
-
-          {/* 虛線 */}
-          <div className={styles.detailDashed}></div>
-
-          <div className={styles.ingredientText}>成分</div>
-
-          {/* 成分 */}
-          <div className={styles.detailIngredient}>含有 : {ingredient}</div>
-
-          <IoIosArrowDown className={styles.ingredientDown1} />
-
-          {/* 實線 */}
-          <div className={styles.detailSolid}></div>
-
-          {/* 營養成分表 */}
-          <div className={styles.nutritionIngredient}>{nutrition}</div>
-          <IoIosArrowDown className={styles.ingredientDown2} />
         </div>
       </div>
-
-      <FiHeart className={styles.detailProductCollect} />
     </>
-  )
+  );
 }

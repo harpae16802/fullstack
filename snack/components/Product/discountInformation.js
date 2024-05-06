@@ -9,7 +9,7 @@ export default function DiscountInformation ({
 
     return (
 
-      <div style={{ marginTop: '480px', marginLeft: '48px', position: 'relative' }}>
+      <div className={styles.discountSize}>
         <Image src={imageUrl} width={329} height={314} className={styles.discountInformation} style={{ position: 'absolute' }} />
         <button className={styles.bbButton} style={{ width: '120px', height: '32px', marginBottom: '30px', position: 'absolute', top: '252px', left: '58px' }}>查看優惠</button>
       </div>

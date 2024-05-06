@@ -1,5 +1,6 @@
 .card {
-  width: 170px;
+  min-width: 170px;
+  margin: 10px;
   cursor: pointer;
   @media (max-width: 576px) {
     width: 155px;
@@ -25,5 +26,13 @@
   .title {
     text-align: center;
     margin: 0;
+  }
+}
+
+
+
+@media (max-width: 576px) {
+  .card {
+    width: 300px;
   }
 }

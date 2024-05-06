@@ -1,4 +1,4 @@
-import Section from '@/components/layout/section'
+import Section from './section'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import styles from '@/styles/Product.module.css'
@@ -37,7 +37,7 @@ export default function Product() {
 
   const handleProductClick = (product) => {
     // 如果點擊的是當前已選定的產品，則取消選定
-    setSelectedProduct(product);
+    setSelectedProduct(selectedProduct === product ? null : product);
   };
 
   useEffect(() => {
@@ -240,7 +240,8 @@ useEffect(() => {
       {/* 產品類型 */}
 
       <div className={`row ${style.content}`}>
-
+      <div className='container-fluid' style={{    overflow: "hidden",
+    width: "300px"}}>
       {/* 產品種類 */}
       <div className={`col ${style.category}`}>
           {categories.map((category, index) => (
@@ -252,10 +253,26 @@ useEffect(() => {
             </div>
           ))}
         </div>
+</div>
+      {/* <div className="container">
 
-    
+        <div className={`row ${styles.categoryPicInterval}`} >
 
-      <FilterOptions />
+        <div className="col-2"><CategoryItem /></div>
+        <div className="col-2"><CategoryItem /></div>
+        <div className="col-2"><CategoryItem /></div>
+        <div className="col-2"><CategoryItem /></div>
+        <div className="col-2"><CategoryItem /></div>
+        <div className="col-2"><Caterun dev>
+
+        </div>
+
+      </div> */}
+
+      
+
+    {/* '篩選條件'原本位置 */}
+      
 
       {/* 熱門商品 */}
 
@@ -281,7 +298,7 @@ useEffect(() => {
 
         {/* 熱門產品 */}
         {popularProducts && popularProducts.map((product, index) => (
-  <div key={index} className='col-12 col-sm-3'>
+  <div key={index} className='col-12 col-sm-3 '>
     <PopularProduct 
       product_id={product.product_id}
       imageUrl={`/${product.image_url}`}
@@ -290,13 +307,13 @@ useEffect(() => {
       seller={product.store_name}
       product={product.product_name}
       // 将 selectedProduct 设置为选定的商品状态
-      // selectedProduct={selectedProduct}
+      selectedProduct={selectedProduct}
     />
 
     <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
     
     {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
-   {selectedProduct && 
+    {selectedProduct === product && (
       <ProductDetailCard 
         imageUrl={`/${product.image_url}`}
         seller={product.store_name}
@@ -306,9 +323,9 @@ useEffect(() => {
         ingredient={product.product_ingredient}
         nutrition={product.product_nutrition}
         // 将 selectedProduct 设置为选定的商品状态
-        // selectedProduct={selectedProduct}
+        selectedProduct={selectedProduct}
       />
-   }
+    )}
   </div>
 ))}
 
@@ -332,9 +349,10 @@ useEffect(() => {
 
 
 {recommendProducts && (
-  <div className={`d-flex flex-wrap overflow-hidden`} style={{overflowX: 'auto'}}>
+  <div>
+  {/*<div className={styles.recommendSize}>  <div key={index} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}> */}
     {recommendProducts.map((product, index) => (
-      <div key={index} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}>
+      <div key={index}> 
         <div className={styles.productItemContainer}>
         <ProductItem 
           product_id = {product.product_id}
@@ -379,7 +397,12 @@ useEffect(() => {
       
       </div>
 
+
+      <FilterOptions />
+
         </div>
+       
+
       </Section>
     </>
   )
