@@ -5,6 +5,9 @@ import Image from 'next/image'
 import axios from 'axios'
 import { FaShopify, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
 // import styles from '@/styles/Order.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 import { useAuth } from '@/contexts/custom-context'
 import { CARTITEM, IMGROUTER } from '../../pages/seller-basic-data/config'
 import { FaCheck } from 'react-icons/fa'
@@ -53,6 +56,7 @@ const OrderDetailItem = ({
       try {
         const response = await axios.get(`${CARTITEM}${auth.custom_id}`)
         setGroupedItems(groupItemsBySeller(response.data.cartItems))
+
       } catch (error) {
         setError(error.message || '拿取產品詳細失敗')
       }
@@ -62,9 +66,33 @@ const OrderDetailItem = ({
     fetchData()
   }, [auth.custom_id])
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return 
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '200px', // Ensure visibility while loading
+  }}>
+    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+  </div>
   if (error) return <p>Error: {error}</p>
-
+  if (Object.keys(groupedItems).length === 0) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          borderRight:'20px',
+          alignItems: 'center',
+          height: '400px', 
+          backgroundColor: '#ffffff',
+          padding: '20px',
+        }}
+      >
+        您的購物車 沒有商品唷
+      </div>
+    )
+  }
   // 更新產品總查詢
   const updateCartItem = async (customId, productId, newQuantity) => {
     try {
@@ -76,7 +104,7 @@ const OrderDetailItem = ({
     } catch (error) {
       console.error(
         'Error updating cart:',
-        error.response ? error.response.data : error
+        error.response ? error.response.data : error,
       )
     }
   }
@@ -85,7 +113,7 @@ const OrderDetailItem = ({
   const handleIncreaseQuantity = (seller, productId) => {
     const newGroupedItems = { ...groupedItems }
     const item = newGroupedItems[seller].find(
-      (item) => item.product_id === productId
+      (item) => item.product_id === productId,
     )
     if (item) {
       item.quantity += 1
@@ -101,7 +129,7 @@ const OrderDetailItem = ({
   const handleDecreaseQuantity = (seller, productId) => {
     const newGroupedItems = { ...groupedItems }
     const itemIndex = newGroupedItems[seller].findIndex(
-      (item) => item.product_id === productId
+      (item) => item.product_id === productId,
     )
     if (itemIndex >= 0) {
       const item = newGroupedItems[seller][itemIndex]
@@ -121,18 +149,18 @@ const OrderDetailItem = ({
   const handleRemoveProduct = async (seller, productId) => {
     try {
       const response = await axios.delete(
-        `${CARTITEM}/${auth.custom_id}/${productId}`
+        `${CARTITEM}/${auth.custom_id}/${productId}`,
       )
       console.log('Remove response:', response.data)
       const updatedItems = { ...groupedItems }
       updatedItems[seller] = updatedItems[seller].filter(
-        (item) => item.product_id !== productId
+        (item) => item.product_id !== productId,
       )
       setGroupedItems(updatedItems)
     } catch (error) {
       console.error(
         'Error removing product:',
-        error.response ? error.response.data : error
+        error.response ? error.response.data : error,
       )
     }
   }
@@ -147,7 +175,7 @@ const OrderDetailItem = ({
       }))
       setSelectedItems(newSelectedItems)
       setSelectedProducts(
-        new Set(newSelectedItems.map((item) => item.product_id))
+        new Set(newSelectedItems.map((item) => item.product_id)),
       )
       onSelectSeller(seller, newSelectedItems)
     } else {
