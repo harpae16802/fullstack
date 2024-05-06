@@ -101,7 +101,7 @@ export default function GameRule({
         </div>
         <div className="buttons">
           <Link type="button" className="btn btn-outline-primary" href={'/game/game-select'}>
-            回遊戲首頁
+            回遊戲關卡
           </Link>
           <button
             type="button"
@@ -148,7 +148,7 @@ export default function GameRule({
         </div>
         <div className="buttons">
           <Link type="button" className="btn btn-primary" href={'/game/game-select'}>
-            回遊戲首頁
+            回遊戲關卡
           </Link>
         </div>
         {/* 挑戰成功結束 */}
@@ -186,7 +186,7 @@ export default function GameRule({
         </div>
         <div className="buttons">
           <Link type="button" className="btn btn-outline-primary" href={'/game/game-select'}>
-            回遊戲首頁
+            回遊戲關卡
           </Link>
           <button
             type="button"
