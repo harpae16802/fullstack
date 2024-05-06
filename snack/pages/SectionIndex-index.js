@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import CustomSlider from '@/components/index/custom-slider'
 import StoreSlider from '@/components/index/store-slider'
@@ -7,14 +7,26 @@ import ProductSlider from '@/components/index/product-slider'
 import SearchBarIndex from '@/components/common/search-bar-index'
 import { FaVolumeDown } from 'react-icons/fa'
 import Link from 'next/link'
+// import { useLoader } from '@/hooks/use-loader'
+import Section from '@/components/layout/section'
+
 
 export default function SectionIndex() {
   // 搜尋後 跳轉至 夜市資訊 || 地圖導覽
   // const handlesearch = ()=>{
 
   // }
+  // const { showLoader, hideLoader, loading, delay } = useLoader()
+  // // didmount-初次渲染
+  // useEffect(() => {
+  //   showLoader()
+  
+      
+  // }, [])
 
   return (
+    // <>
+    // {loading ? <Section><div style={{height:'300px',color:'rgb(163, 44, 45)',fontSize:'40px',display:'flex',alignItems:'center'}}>載入中...</div></Section> : 
     <>
       {' '}
       <div className="topicon" onClick={() => window.scrollTo(0, 0)}>
@@ -235,6 +247,8 @@ export default function SectionIndex() {
           </div>
         </div>
       </div>
-    </>
+      </>
+      // }
+      // </>
   )
 }

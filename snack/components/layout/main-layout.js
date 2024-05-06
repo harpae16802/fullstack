@@ -9,9 +9,11 @@ import Section from './section'
 import Navbars from '../navbars'
 import { useSeller } from '../../contexts/SellerContext'
 import { useAuth } from '@/contexts/custom-context'
+// import { useLoader } from '@/hooks/use-loader'
 
 
 export default function MainLayout({ children }) {
+  
   // const { seller } = useSeller();
   // const sellerId = seller?.id;
 
@@ -36,6 +38,8 @@ export default function MainLayout({ children }) {
 
     }
   }
+  // const { loader } = useLoader()
+
   return (
     <>
       <Head>
@@ -54,6 +58,8 @@ export default function MainLayout({ children }) {
         </header>
         <main className="row">
           {children}
+          {/* 全域的載入動畫指示器
+        {loader()} */}
         </main>
         <Footer />
       </div>
