@@ -541,7 +541,7 @@ const ProductsList = () => {
                   </table>
                 )}
               </div>
-
+<br></br>
               <div className={styles.buttonGroup}>
                 <button
                   onClick={() => handleBatchUpdateStatus(0)}
