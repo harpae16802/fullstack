@@ -24,7 +24,7 @@ export default function NavbarCustom() {
       <nav className="navbar navbar-expand-lg  ">
         <div className="container-fluid">
           <div className="inline-nav">
-            <Link className="navbar-brand" href="/order/orderStep1">
+            <Link className="navbar-brand" href="/">
               <Image src="/logo-o.svg" alt="" width={180} height={70} />
             </Link>
             <div className="right-icons">
