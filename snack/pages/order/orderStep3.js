@@ -5,6 +5,7 @@ import styles from '@/styles/Order.module.css'
 import axios from 'axios'
 import { useAuth } from '../../contexts/custom-context'
 import { CARTITEM } from '../seller-basic-data/config'
+import Link from 'next/link'
 
 
 export default function OrderF() {
@@ -159,9 +160,11 @@ export default function OrderF() {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div className={styles.nextButton} style={{ paddingTop: '3px' }}>
+       
+            <Link  style={{ paddingTop: '3px' }} className={styles.nextButton} href='/'>
             回到主頁
-          </div>
+            </Link>
+     
         </div>
       </div>
     </Section>
