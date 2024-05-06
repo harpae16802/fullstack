@@ -5,10 +5,10 @@ import { CustomContextProvider } from '@/contexts/custom-context'
 import { MiniloginProvider } from '@/contexts/minilogin-context'
 import { LevelProvider } from '@/contexts/LevelContext'
 import { MapProvider } from '@/contexts/mapContext'
-import { PaymentProvider } from '../contexts/PaymentContext';
+import { PaymentProvider } from '../contexts/PaymentContext'
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
-import {NotifyProvider} from "@/data/context/use-notify"
+import { NotifyProvider } from '@/data/context/use-notify'
 import { ImgProvider } from '@/data/context/ImgContext'
 import { QrcodeProvider } from '@/data/context/QrcodeContext'
 import Sesson from '@/components/layout/section'
@@ -43,25 +43,25 @@ function MyApp({ Component, pageProps }) {
   return (
     // <LoaderProvider close={3} CustomLoader={HunterLoader}>
     <PaymentProvider>
-    <NotifyProvider>
-    <ImgProvider>   
-    <QrcodeProvider>
-    <CustomContextProvider>
-      <SellerProvider>
-        <MapProvider>
-          <AuthChecker>
-            <MiniloginProvider>
-              <LevelProvider>
-                {getLayout(<Component {...pageProps} />)}
-                </LevelProvider>
-              </MiniloginProvider>
-            </AuthChecker>
-          </MapProvider>
-        </SellerProvider>
-      </CustomContextProvider>
-    </QrcodeProvider>
-    </ImgProvider>
-    </NotifyProvider>
+      <NotifyProvider>
+        <ImgProvider>
+          <QrcodeProvider>
+            <CustomContextProvider>
+              <SellerProvider>
+                <MapProvider>
+                  <AuthChecker>
+                    <MiniloginProvider>
+                      <LevelProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                      </LevelProvider>
+                    </MiniloginProvider>
+                  </AuthChecker>
+                </MapProvider>
+              </SellerProvider>
+            </CustomContextProvider>
+          </QrcodeProvider>
+        </ImgProvider>
+      </NotifyProvider>
     </PaymentProvider>
     // </LoaderProvider>
   )
