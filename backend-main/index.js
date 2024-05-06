@@ -25,6 +25,7 @@ import QRrouter from "./routes/qrcode.js"
 import orderDataRouter from "./routes/orderData.js"
 import commentRouter from './routes/comment.js'
 import adRouter from "./routes/adRouter.js"
+import { join } from 'path';
 import categoriesRouter from './routes/categoriesRouter.js'
 import cartRouter from './routes/cartRouter.js'
 import gameDataRouter from "./routes/game-data.js";
@@ -45,6 +46,9 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+// 宜 加入token黑名單
+// const blacklist = ['/backRoute'];
 // ==== 如
 
 // 自訂的頂層middleware
@@ -307,7 +311,7 @@ app.use("/market-map", marketMapRouter);
 
 // ==== 蓁
 // 會員路由
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/images", express.static(path.join(__dirname, "public/discuss/")));
 app.use("/backRoute", index);
 
 /*---其他路由放在這之前---*/

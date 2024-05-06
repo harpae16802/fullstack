@@ -5,7 +5,7 @@ import jsQR from 'jsqr';
 const CameraQRScanner = ({ onCodeDetected }) => {
   const webcamRef = useRef(null);
 
-  // 定义一个方法来处理扫描逻辑
+  // 處裡函數
   const capture = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
@@ -29,10 +29,10 @@ const CameraQRScanner = ({ onCodeDetected }) => {
     }
   };
 
-  // 使用 useEffect 配合 setInterval 来周期性执行扫描
+  // 使用 useEffect 配合 setInterval 連續掃描
   useEffect(() => {
-    const interval = setInterval(capture, 2000); // 每2秒扫描一次
-    return () => clearInterval(interval); // 组件卸载时清除定时器
+    const interval = setInterval(capture, 2000); // 每個2秒持行掃描
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -40,9 +40,10 @@ const CameraQRScanner = ({ onCodeDetected }) => {
       audio={false}
       ref={webcamRef}
       screenshotFormat="image/jpeg"
+      style={{ width: '100%', height: 'auto' }}  
       videoConstraints={{
-        width: 770,
-        height: 400,
+        // width: 770,
+        // height: 400,
         facingMode: "environment"
       }}
     />

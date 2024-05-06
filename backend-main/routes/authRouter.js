@@ -6,7 +6,7 @@ import multer from "multer";
 const authRouter = express.Router();
 const upload = multer();
 
-// 使用 multer().none() 表示不处理文件上传
+// 使用 multer().none() 不處裡上傳文件
 authRouter.post("/login", upload.none(), async (req, res) => {
   const { account, password } = req.body;
   try {

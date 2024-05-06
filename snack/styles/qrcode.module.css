@@ -1,3 +1,9 @@
+
+a.btna{
+  color: #a32c2d !important;
+  border:2px solid #a32c2d !important;
+  
+} 
 /* .qrcodeProduct */
 .qrcodeProduct {
   align-items: center;
@@ -23,12 +29,28 @@
   font-size: 16px;
   text-align: end;
 }
+.wrap0-ti{
+  display :grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+}
+.wrap0{
+  display: grid;
+  grid-template-columns: .5fr .5fr 1fr  1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    'a1  a2 a3  a6 a4'
+     ;
+  /* height: 100vh; */
+  width: 100%;
+  margin: 0 auto;
+}
 .wrap{
   display: grid;
   grid-template-columns: .5fr .5fr 1fr  1fr 1fr;
   grid-template-rows: 1fr;
   grid-template-areas:
-    'a1  a2 a3  a4   a6'
+    'a1  a2 a3  a4  a6'
      ;
   /* height: 100vh; */
   width: 100%;
@@ -45,13 +67,24 @@
     width: 100%;
     margin: 0 auto;
   }
-  .wrap3 {
+  .wrapr2 {
     display: grid;
-    grid-template-columns: auto  .1fr 1fr .5fr auto;
+    grid-template-columns: auto .1fr 1fr .5fr auto .1fr  auto;
     grid-template-rows: 1fr;
     grid-template-areas:
-      'a1 . a2 . a4 '
+      'a1 . a2 .    a3 . a6'
        ;
+    /* height: 100vh; */
+    width: 100%;
+    margin: 0 auto;
+  }
+  .wrap3 {
+    display: grid;
+    grid-template-columns: auto  2fr 2fr 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      'a1  a2 . a4 ' ;
+      
     /* height: 100vh; */
     width: 100%;
     margin: 0 auto;
@@ -75,18 +108,32 @@
   .postion-a4 {
     grid-area: a4;
   }
-
+  .smbtn{
+    padding: 0 !important;
+    font-size: 10px;
+    color: #a32c2d;
+    background-color: transparent;  
+    border-radius: 12px;
+}
  
 
 @media (max-width: 1300px) {
+  a.btna{
+    color: #a32c2d !important;
+    border:2px solid #a32c2d !important;
+    width: 50px;
+ 
+  } 
 .smbtn{
     padding: 0 !important;
     font-size: 10px;
     color: #a32c2d;
     background-color: transparent;  
+    border-radius: 12px;
 }
+ 
 
-    .wrap {
+    .wrap0 {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr ;
@@ -97,6 +144,21 @@
           justify-items: center;
           text-align: center;
           justify-content: space-between;
+        /* height: 100vh; */
+        width: 100%;
+        margin: 0 auto;
+      }
+      .wrapr2 {
+        display: grid;
+        grid-template-columns:auto auto 1fr;
+        grid-template-rows: auto auto  0.5fr ;
+        grid-template-areas:
+          'a6 a1  a2'
+          'a6 a1  a2'
+          'a6 a1  a3';
+          justify-items: end;
+          text-align: end;
+          justify-content: space-between; 
         /* height: 100vh; */
         width: 100%;
         margin: 0 auto;

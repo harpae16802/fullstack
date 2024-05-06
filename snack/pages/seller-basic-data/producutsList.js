@@ -20,20 +20,19 @@ const ProductsList = () => {
   // 使用useRef 作為拿取DOM元素操作
   const fileInputRef = useRef(null)
 
+  //拿取seller_id
 
- //拿取seller_id
+  const [sellerId, setSellerId] = useState(null)
 
- const [sellerId, setSellerId] = useState(null)
-
- // 安全性 確認身分
- useEffect(() => {
-   const localSellerId = localStorage.getItem('sellerId')
-   if (localSellerId) {
-     setSellerId(localSellerId)
-   } else {
-     router.replace('/login/login-seller')
-   }
- }, [])
+  // 安全性 確認身分
+  useEffect(() => {
+    const localSellerId = localStorage.getItem('sellerId')
+    if (localSellerId) {
+      setSellerId(localSellerId)
+    } else {
+      router.replace('/login/login-seller')
+    }
+  }, [])
 
   // 預設圖片
   const IMG = 'http://localhost:3000/images/seller.jpg'
@@ -64,7 +63,7 @@ const ProductsList = () => {
 
   // 總請求 發至後端
   useEffect(() => {
-    setLoading(true) 
+    setLoading(true)
     if (sellerId) {
       axios
         .get(`${SELLER_API}${sellerId}`)
@@ -101,7 +100,7 @@ const ProductsList = () => {
     }
 
     const fetchData = async () => {
-      setLoading(true) 
+      setLoading(true)
       try {
         const response = await axios.get(
           `${PRODUCTS_API}/${sellerId}?${queryParams}`
@@ -121,11 +120,11 @@ const ProductsList = () => {
           setCurrentPage(1)
         }
       } catch (error) {
-        console.error('Fetching data failed', error);
+        console.error('Fetching data failed', error)
       } finally {
         setTimeout(() => {
-          setLoading(false); // 延迟1秒后设置loading为false
-        }, 1000); 
+          setLoading(false) // 延迟1秒后设置loading为false
+        }, 1000)
       }
     }
 
@@ -478,7 +477,7 @@ const ProductsList = () => {
 
               <div
                 className="d-flex justify-content-center align-items-center mt-3"
-                style={{ minHeight: '200px' }}
+                style={{ minHeight: '450px' ,  maxHeight: '500px;'}}
               >
                 {loading ? (
                   <div className="text-center">
@@ -561,6 +560,72 @@ const ProductsList = () => {
               {/* 分頁 */}
               <nav>
                 <ul className="pagination justify-content-center">
+                  {/* 前往第一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === 1 ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageChange(1)}
+                      disabled={currentPage === 1}
+                    >
+                      <i className="bi bi-chevron-double-left"></i> 
+                    </button>
+                  </li>
+                  {/* 前往前一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === 1 ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() =>
+                        currentPage > 1 && handlePageChange(currentPage - 1)
+                      }
+                    >
+                      <i className="bi bi-chevron-left"></i>
+                    </button>
+                  </li>
+                  {/* 現有的分頁號碼 */}
+                  {renderPageNumbers()}
+                  {/* 前往下一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === totalPages ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() =>
+                        currentPage < totalPages &&
+                        handlePageChange(currentPage + 1)
+                      }
+                    >
+                      <i className="bi bi-chevron-right"></i>
+                    </button>
+                  </li>
+                  {/* 前往最後一頁按鈕 */}
+                  <li
+                    className={`page-item ${
+                      currentPage === totalPages ? 'disabled' : ''
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageChange(totalPages)}
+                      disabled={currentPage === totalPages}
+                    >
+                      <i className="bi bi-chevron-double-right"></i> 
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+
+              {/* <nav>
+                <ul className="pagination justify-content-center">
                   <li
                     className={`page-item ${
                       currentPage === 1 ? 'disabled' : ''
@@ -592,7 +657,7 @@ const ProductsList = () => {
                     </button>
                   </li>
                 </ul>
-              </nav>
+              </nav> */}
             </div>
           </div>
         </div>

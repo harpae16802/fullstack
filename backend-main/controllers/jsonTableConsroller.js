@@ -1,6 +1,6 @@
 
 import db from "../utils/db.js";
-
+import { date } from '../utils/date.js';
 module.exports = {
     async hellojsonTable(req, res) {
 //         let page = req.query.page || 1;

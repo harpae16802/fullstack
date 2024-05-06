@@ -980,11 +980,13 @@
     margin-left: 80px;
     padding-top: 5px;
     text-align: center;
-    width: 200px;
+    width: 220px;
     height: 40px;
     background-color: #fff;
     border: solid 2px rgb(163, 44, 45);
     border-radius: 10px;
+    cursor: pointer;
+
 }
 @media (max-width: 576px) {
     .payment{    
@@ -1194,3 +1196,50 @@
    color: #A32C2D  !important; 
 }
 
+
+
+
+
+
+
+
+/* Order.module.css */
+.outerFrame11 {
+  width: 90%; /* 根据设计图调整宽度 */
+  margin: 0 auto; /* 居中显示 */
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 分隔線 */
+.orderDetailContainer {
+  background-color: #fff;
+  border: 2px solid #d1a073;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20px; 
+}
+
+.orderTable {
+  width: 100%; /* 表格宽度 */
+  margin: 20px 0; /* 上下边距 */
+  border-collapse: collapse;
+}
+
+.orderTable th, .orderTable td {
+  border: 1px solid #d1a073;
+  padding: 10px;
+  text-align: left;
+  font-size: 18px; /* 增大字号 */
+  font-weight: bold; /* 字体加粗 */
+}
+
+.orderTable th {
+  background-color: #f8f8f8;
+}
+.orderFooter1 {
+  text-align: right;
+  font-size: 18px; /* 增大字号 */
+  font-weight: bold; /* 字体加粗 */
+  color: red; /* 总金额显示为红色 */
+}

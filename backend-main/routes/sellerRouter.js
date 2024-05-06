@@ -55,7 +55,7 @@ sellerRouter.get('/:sellerId', async (req, res) => {
         ...sellerRows[0],
         ...accountInfo,
         bankAccounts: bankAccounts,
-        storeImage: `/public/images/seller/${sellerRows[0].store_image}`
+        storeImage: `${sellerRows[0].store_image}`
       };
 
       res.json({ success: true, data: sellerData });
@@ -68,7 +68,7 @@ sellerRouter.get('/:sellerId', async (req, res) => {
   }
 });
 
-// 賣家資訊編輯 PUT 路由
+// 賣家資訊編輯 PUT 包含商店圖片
 sellerRouter.put('/:sellerId/edit', upload.fields([
   { name: 'profilePicture', maxCount: 1 },
   { name: 'store_image', maxCount: 1 }
@@ -88,7 +88,7 @@ sellerRouter.put('/:sellerId/edit', upload.fields([
   } = req.body;
 
   const profilePicture = req.files['profilePicture'] ? req.files['profilePicture'][0].filename : null;
-  const storeImage = req.files['store_image'] ? req.files['store_image'][0].filename : null;
+  const storeImage = req.files['store_image'] ? 'images/seller/' + req.files['store_image'][0].filename : null;
 
   try {
     const sellerQuery = `
@@ -169,7 +169,7 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
 
         // 提交事务
         await conn.commit();
-        res.json({ success: true, message: "银行账户更新成功" });
+        res.json({ success: true, message: "銀行帳號更新成功" });
       } catch (error) {
         // 出现错误则回滚事务
         await conn.rollback();
@@ -180,8 +180,8 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("更新银行账户失败:", error);
-    res.status(500).json({ success: false, message: "服务器错误" });
+    console.error("銀行帳號更新失敗:", error);
+    res.status(500).json({ success: false, message: "伺服器錯誤" });
   }
 });
 

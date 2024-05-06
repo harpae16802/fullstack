@@ -106,28 +106,33 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
     }
   });
 
-  //優惠資訊
-  cartRouter.get("/discounts/:seller_id", async (req, res) => {
-    const sellerId = req.params.seller_id;
-    const query = `
-      SELECT sd.seller_id, dc.name, dc.min_amount, dc.discount
-      FROM seller_discounts sd 
-      JOIN discount_category dc ON sd.discount_category_id = dc.id 
-      WHERE sd.seller_id = ?
-    `;
-  
-    try {
-      const [results] = await db.query(query, [sellerId]);
-      if (results.length > 0) {
-        res.send({ discounts: results });
-      } else {
-        res.status(404).send({ error: "No discounts found for this seller." });
-      }
-    } catch (error) {
-      console.error("Database error:", error);
-      res.status(500).send({ error: "Database error occurred while fetching discounts." });
+// 優惠資訊路由
+cartRouter.get("/discounts/:seller_id", async (req, res) => {
+  const sellerId = req.params.seller_id;
+  const query = `
+    SELECT 
+      sd.seller_id, 
+      dc.name, 
+      dc.min_amount, 
+      dc.discount, 
+      dc.id as discount_category_id  
+    FROM seller_discounts sd
+    JOIN discount_category dc ON sd.discount_category_id = dc.id
+    WHERE sd.seller_id = ?
+  `;
+
+  try {
+    const [results] = await db.query(query, [sellerId]);
+    if (results.length > 0) {
+      res.send({ discounts: results });
+    } else {
+      res.status(404).send({ error: "No discounts found for this seller." });
     }
-  });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).send({ error: "Database error occurred while fetching discounts." });
+  }
+});
 
   // 使用用者點數
   cartRouter.get('/points/:customId', async (req, res) => {
@@ -151,56 +156,60 @@ cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
     }
 });
 
-  
-// 成立訂單
-cartRouter.post('/create', async (req, res) => {
-  const { seller_id, custom_id, discounts, items, usePoints, customPoints, totalAmount } = req.body;
+// 建立訂單
+cartRouter.post('/order_data', async (req, res) => {
+  // 提取請求體數據
+  const { custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum, items } = req.body;
 
   try {
-    const order_number = randomUUID(); // 生成隨機訂單編號
-    const consume_gamepoint = usePoints ? customPoints : 0;
-    const discount_category_id = discounts.length > 0 ? discounts[0].id : null;
+    // 插入訂單數據到 order_data 表
+    const [orderResult] = await db.query(`
+        INSERT INTO order_data (custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `, [custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum]);
 
-    // 插入 order_data 表
-    const [order] = await db.execute(`
-      INSERT INTO order_data (seller_id, custom_id, order_number, discount_category_id, consume_gamepoint, total_sum)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [seller_id, custom_id, order_number, discount_category_id, consume_gamepoint, totalAmount]);
+    const orderId = orderResult.insertId;
 
-    const order_id = order.insertId;
+    // 確保有 orderId 生成
+    if (!orderId) {
+      throw new Error('Failed to create order.');
+    }
 
-    // 插入 order_detail 表
-    items.forEach(async (item) => {
-      await db.execute(`
-        INSERT INTO order_detail (order_id, product_id, purchase_quantity)
-        VALUES (?, ?, ?)
-      `, [order_id, item.product_id, item.quantity]);
+    // 訂單詳細
+    const orderDetailsPromises = items.map(item => {
+      return db.query(`
+          INSERT INTO order_detail (order_id, product_id, purchase_quantity)
+          VALUES (?, ?, ?)
+      `, [orderId, item.product_id, item.purchase_quantity]); // 確保 purchase_quantity 正確傳遞
     });
 
-    res.status(201).send({ success: true, message: 'Order created successfully', order_id });
+    await Promise.all(orderDetailsPromises);
+
+    res.status(201).send({ message: '訂單創建成功', order_id: orderId });
   } catch (error) {
-    console.error('Create order failed:', error);
-    res.status(500).send({ success: false, message: 'Server error' });
+    console.error('創建訂單錯誤：', error);
+    res.status(500).send({ error: 'Database error occurred while creating order.' });
   }
 });
 
 
-// 從購物車中刪除已經購買的商品
-cartRouter.put('/remove-purchased', async (req, res) => {
-  const { custom_id, items } = req.body;
+
+
+// 清空購物車
+cartRouter.put('/cart/clear', async (req, res) => {
+  const { custom_id, product_ids } = req.body;
 
   try {
-    items.forEach(async (item) => {
-      await db.execute(`
-        DELETE FROM cart
-        WHERE custom_id = ? AND product_id = ? AND total_price = ?
-      `, [custom_id, item.product_id, item.total_price]);
-    });
+      const placeholders = product_ids.map(() => '?').join(',');
+      await db.query(`
+          DELETE FROM cart
+          WHERE custom_id = ? AND product_id IN (${placeholders})
+      `, [custom_id, ...product_ids]);
 
-    res.send({ success: true, message: 'Cart updated successfully' });
+      res.send({ message: '購物車已清空' });
   } catch (error) {
-    console.error('Failed to update cart:', error);
-    res.status(500).send({ success: false, message: 'Server error' });
+      console.error('清空購物車錯誤：', error);
+      res.status(500).send({ error: 'Database error occurred while clearing cart.' });
   }
 });
 

@@ -1,15 +1,18 @@
 // _app.js
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { SellerProvider } from '../contexts/SellerContext'
 import { CustomContextProvider } from '@/contexts/custom-context'
 import { MiniloginProvider } from '@/contexts/minilogin-context'
 import { LevelProvider } from '@/contexts/LevelContext'
 import { MapProvider } from '@/contexts/mapContext'
+import { PaymentProvider } from '../contexts/PaymentContext';
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
-import { useEffect } from 'react'
+import {NotifyProvider} from "@/data/context/use-notify"
+import { ImgProvider } from '@/data/context/ImgContext'
+import { QrcodeProvider } from '@/data/context/QrcodeContext'
 import Sesson from '@/components/layout/section'
+import { useEffect } from 'react'
 import '@/styles/globals.scss'
 import '../styles/form.css'
 import '@/styles/index.scss'
@@ -39,14 +42,20 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <LoaderProvider close={3} CustomLoader={HunterLoader}>
-      <CustomContextProvider>
-        <SellerProvider>
-          <MapProvider>
-            <AuthChecker>
-              <MiniloginProvider>
-                <LevelProvider>
-                  {getLayout(<Component {...pageProps} />)}
-                  {/* <script
+      
+                  
+    <PaymentProvider>
+    <NotifyProvider>
+    <ImgProvider>   
+    <QrcodeProvider>
+    <CustomContextProvider>
+      <SellerProvider>
+        <MapProvider>
+          <AuthChecker>
+            <MiniloginProvider>
+              <LevelProvider>
+                {getLayout(<Component {...pageProps} />)}
+                {/* <script
                 src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
                 integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
                 crossorigin="anonymous"
@@ -57,6 +66,10 @@ function MyApp({ Component, pageProps }) {
           </MapProvider>
         </SellerProvider>
       </CustomContextProvider>
+    </QrcodeProvider>
+    </ImgProvider>
+    </NotifyProvider>
+    </PaymentProvider>
     </LoaderProvider>
   )
 }

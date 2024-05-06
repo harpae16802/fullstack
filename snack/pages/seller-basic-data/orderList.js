@@ -6,6 +6,7 @@ import { SELLER_API, ORDERDETAIL } from './config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import Section from '@/components/layout/section'
 import styles from '../../styles/navbar-seller.module.scss'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -218,7 +219,7 @@ export default function Order() {
           key={i}
           className={`page-item ${i === currentPage ? 'active' : ''}`}
         >
-          <button className="page-link" onClick={() => setCurrentPage(i)}>
+          <button className="page-link" onClick={() => handlePageChange(i)}>
             {i}
           </button>
         </li>
@@ -227,6 +228,7 @@ export default function Order() {
 
     return pageNumbers
   }
+
   // 分頁
   const handlePageChange = (newPage) => {
     if (newPage !== currentPage) {
@@ -467,8 +469,8 @@ export default function Order() {
                 {/* 這裡要能搜索產品名稱 */}
                 {/* 我在這裡要實現資料的顯示 */}
                 <div
-                  className="d-flex justify-content-center align-items-center mt-3"
-                  style={{ minHeight: '200px' }}
+                  className="d-flex justify-content-center align-items-center mt-3" 
+                  style={{ minHeight: '450px' ,  maxHeight: '500px;' }}
                 >
                   {loading ? (
                     <div className="text-center">
@@ -527,6 +529,21 @@ export default function Order() {
                 {/* 分頁 */}
                 <nav>
                   <ul className="pagination justify-content-center">
+                    {/* 前往第一頁按鈕 */}
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1}
+                      >
+                        <i className="bi bi-chevron-double-left"></i>
+                      </button>
+                    </li>
+                    {/* 前往前一頁按鈕 */}
                     <li
                       className={`page-item ${
                         currentPage === 1 ? 'disabled' : ''
@@ -535,25 +552,44 @@ export default function Order() {
                       <button
                         className="page-link"
                         onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
                       >
-                        <i className="bi bi-chevron-left "></i>
+                        <i className="bi bi-chevron-left"></i>
                       </button>
                     </li>
+                    {/* 動態生成的頁碼按鈕 */}
                     {renderPageNumbers()}
+                    {/* 前往下一頁按鈕 */}
                     <li
-                      className={`page-item  ${
+                      className={`page-item ${
                         currentPage === totalPages ? 'disabled' : ''
                       }`}
                     >
                       <button
                         className="page-link"
                         onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
                       >
-                        <i className="bi bi-chevron-right "></i>
+                        <i className="bi bi-chevron-right"></i>
+                      </button>
+                    </li>
+                    {/* 前往最後一頁按鈕 */}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(totalPages)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <i className="bi bi-chevron-double-right"></i> 
                       </button>
                     </li>
                   </ul>
                 </nav>
+
                 {/* 分頁 */}
               </div>
             </div>
