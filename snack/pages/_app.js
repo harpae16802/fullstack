@@ -6,10 +6,10 @@ import { CustomContextProvider } from '@/contexts/custom-context'
 import { MiniloginProvider } from '@/contexts/minilogin-context'
 import { LevelProvider } from '@/contexts/LevelContext'
 import { MapProvider } from '@/contexts/mapContext'
-import { PaymentProvider } from '../contexts/PaymentContext';
+import { PaymentProvider } from '../contexts/PaymentContext'
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
-import {NotifyProvider} from "@/data/context/use-notify"
+import { NotifyProvider } from '@/data/context/use-notify'
 
 import { ImgProvider } from '@/data/context/ImgContext'
 import { QrcodeProvider } from '@/data/context/QrcodeContext'
@@ -38,31 +38,25 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <PaymentProvider>
-    <NotifyProvider>
-    <ImgProvider>   
-    <QrcodeProvider>
-    <CustomContextProvider>
-      <SellerProvider>
-        <MapProvider>
-          <AuthChecker>
-            <MiniloginProvider>
-              <LevelProvider>
-                {getLayout(<Component {...pageProps} />)}
-                {/* <script
-             
-                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-                integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-                crossorigin="anonymous"
-              ></script> */}
-              </LevelProvider>
-            </MiniloginProvider>
-          </AuthChecker>
-        </MapProvider>
-      </SellerProvider>
-    </CustomContextProvider>
-    </QrcodeProvider>
-    </ImgProvider>
-    </NotifyProvider>
+      <NotifyProvider>
+        <ImgProvider>
+          <QrcodeProvider>
+            <CustomContextProvider>
+              <SellerProvider>
+                <MapProvider>
+                  <AuthChecker>
+                    <MiniloginProvider>
+                      <LevelProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                      </LevelProvider>
+                    </MiniloginProvider>
+                  </AuthChecker>
+                </MapProvider>
+              </SellerProvider>
+            </CustomContextProvider>
+          </QrcodeProvider>
+        </ImgProvider>
+      </NotifyProvider>
     </PaymentProvider>
   )
 }
