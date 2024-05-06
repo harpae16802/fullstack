@@ -585,7 +585,7 @@ export default function AddProducts() {
                         <div
                           onClick={() =>
                             toggleImageModal(
-                              `${IMGROUTER}${productDetails.image_url}`
+                              `${IMGROUTER}public/${productDetails.image_url}`
                             )
                           }
                         >
@@ -595,7 +595,7 @@ export default function AddProducts() {
                           <br />
                           {productDetails.image_url ? (
                             <img
-                              src={`${IMGROUTER}${productDetails.image_url}`}
+                              src={`${IMGROUTER}public/${productDetails.image_url}`}
                               alt="Current Product Image"
                               className="img-fluid"
                               style={{ maxWidth: '190px', marginRight: '20px' }}

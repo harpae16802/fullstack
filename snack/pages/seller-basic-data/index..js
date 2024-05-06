@@ -530,7 +530,7 @@ export default function SellerBasicData() {
                       <br />
                       {sellerData.storeImage ? (
                         <Image
-                          src={`${IMGROUTER}${sellerData.storeImage}`}
+                          src={`${IMGROUTER}public/${sellerData.storeImage}`}
                           alt="商家現有圖片"
                           className="img-fluid"
                           style={{ maxWidth: '190px', marginRight: '20px' }}
@@ -538,7 +538,7 @@ export default function SellerBasicData() {
                           height={190}
                           onClick={() =>
                             toggleImageModal(
-                              `${IMGROUTER}${sellerData.storeImage}`
+                              `${IMGROUTER}public/${sellerData.storeImage}`
                             )
                           }
                         />
