@@ -19,7 +19,8 @@ async function createAndViewData() {
             c.custom_name,
             p.product_name,
             odt.remain_count,
-            s.store_name  
+            s.store_name,
+            qdr.count
         FROM 
             order_data od
         JOIN 

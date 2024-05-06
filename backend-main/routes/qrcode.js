@@ -14,7 +14,9 @@ QRrouter.get("/details/:qrcode_id", async (req, res) => {
                 remain_count,
                 total_sum,
                 status,
-                seller_id
+                seller_id,
+                product_id,
+                count,
             FROM
                 qrcodeview
             WHERE

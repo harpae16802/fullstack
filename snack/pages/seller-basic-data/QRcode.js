@@ -384,7 +384,7 @@ export default function QRcode() {
                         >
                           <td>{item.custom_account}</td>
                           <td>{item.product_name}</td>
-                          <td>{item.remain_count}</td>
+                          <td>{item.count}</td>
                           {/* <td>{item.total_sum}</td> */}
                           <td>{item.status === 0 ? '未兌換' : '兌換成功'}</td>
                         </tr>
