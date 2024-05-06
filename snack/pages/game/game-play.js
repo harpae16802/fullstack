@@ -229,7 +229,7 @@ const BalloonShooterGame = () => {
     // 在一段時間後移除動畫效果，讓下一次點擊時可以再次觸發動畫
     setTimeout(() => {
       charaGroup.classList.remove('shooting')
-    }, 500)
+    }, 300)
   }
 
   // 更新分數

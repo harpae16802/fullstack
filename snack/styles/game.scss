@@ -442,21 +442,11 @@
   @keyframes shoot {
     0% {
       left: 170px;
-
-
-    }
-    25%{
-      left: 165px;
-
     }
     50% {
-      left: 170px;
-
-
+      left: 160px;
     }
-    75%{
-      left: 175px;
-    }
+    
     100% {
       left: 170px;
 
@@ -467,7 +457,7 @@
     display: none;
   }
   .shooting{
-    animation: shoot 0.5s linear infinite;
+    animation: shoot 0.3s linear infinite;
   }
   .desket-obj{
     @media (max-width: 992px) {
