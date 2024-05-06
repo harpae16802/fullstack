@@ -24,54 +24,24 @@ export default function QrcodeselectMobile3() {
  const [storedQRcodeDataCreate,setStoredQRcodeDataCreate]=useState([])
   const [isBigScreen, setIsBigScreen] = useState(false);
   const [isTabletOrMobile, setIsTabletOrMobile] = useState(false);
-  // useEffect(() => {
-  //   setStoredQRcodeDataCreate(JSON.parse(sessionStorage.getItem("QRcodeData")))
-  //   const handleResize = () => {
-  //     setIsBigScreen(window.innerWidth > 500);
-  //     setIsTabletOrMobile(window.innerWidth <= 500);
-  //   };
-
-  //   // 監聽視窗大小變化
-  //   window.addEventListener('resize', handleResize);
-  //   // 初始設置一次
-  //   handleResize();
-
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-
-  // }, [])
   useEffect(() => {
-    const rawData = sessionStorage.getItem("QRcodeData");
-    if (rawData) {
-      try {
-        const parsedData = JSON.parse(rawData);
-        setStoredQRcodeDataCreate(parsedData);
-      } catch (error) {
-        console.error("解析 JSON 時出錯：", error);
-        // 處理錯誤情況，例如設置默認值或顯示錯誤信息
-      }
-    } else {
-      // 如果 rawData 為 null 或 undefined，可以在這裡處理
-      console.log("沒有找到 'QRcodeData'，設置為預設值或進行其他操作");
-      setStoredQRcodeDataCreate([]);  // 如果沒有數據，設置為空數組或其他適當的預設值
-    }
-  
+    setStoredQRcodeDataCreate(JSON.parse(sessionStorage.getItem("QRcodeData")))
     const handleResize = () => {
       setIsBigScreen(window.innerWidth > 500);
       setIsTabletOrMobile(window.innerWidth <= 500);
     };
-  
+
     // 監聽視窗大小變化
     window.addEventListener('resize', handleResize);
     // 初始設置一次
     handleResize();
-  
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+
   }, [])
-  
+ 
   return (
    
       <Section>

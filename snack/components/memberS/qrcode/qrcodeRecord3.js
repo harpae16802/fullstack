@@ -35,23 +35,12 @@ export default function creditComponts() {
 
   }, [])
   useEffect(() => {
-    const storedQRcodeDataCreate = sessionStorage.getItem("QrcodeOrder");
-    if (storedQRcodeDataCreate) {
-      try {
-        const parsedData = JSON.parse(storedQRcodeDataCreate);
-        setQRcodeDataOrder(parsedData);  // 確保這一行在 try 塊內，以捕獲 JSON 解析錯誤
-        const initialData = parsedData[0] ? parsedData[0] : {};
-        setT1(initialData);
-      } catch (error) {
-        console.error("解析 JSON 時出錯：", error);
-        setT1({});
-      }
-    } else {
-      console.log("沒有找到 'QrcodeOrder'，進行錯誤處理或設置預設值");
-      setT1({});
-    }
+    // 初始化賦值
+    // 查詢特定訂單資訊 
+    const storedQRcodeDataCreate = sessionStorage.getItem("QrcodeOrder"); 
+    setQRcodeDataOrder(JSON.parse(storedQRcodeDataCreate))
+    setT1(JSON.parse(storedQRcodeDataCreate)[0])
   }, []);
-  
 
   return (
     <div className={classNames('form', styles["navbar-top"])}>
@@ -60,7 +49,7 @@ export default function creditComponts() {
           className={classNames("d-flex border-0 qrcodeProduct", styles["mx-full"], styles["btn-parmary-transparent"])} type="button" data-toggle="collapse">
           <div className='d-flex align-content-end pe-1 w80  sm-w80' >
             <FaHome className={classNames("fahome pt-1 smt-1", styles["text-color"])} />
-            <h3 className='sm-h3'>  {t1.seller_name || '未知商家'}  </h3>
+            <h3 className='sm-h3'> {t1.seller_name}  </h3>
           </div>
           <div className='w-auto d-flex justify-content-end   text-end'>
             <button className={classNames(styles['border-1'], "px-3 ms-1 choosebtn  ", qrcodeStyles["smbtn"])}  >已選擇</button>
