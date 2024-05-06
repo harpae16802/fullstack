@@ -643,24 +643,22 @@ export default function AddProducts() {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {showImageModal && (
-        <div
-          className={styles.modalBackdrop}
-          onClick={() => toggleImageModal('')}
-        >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={currentImage}
-              alt="Enlarged"
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
-          </div>
-        </div>
-      )}
+      <Modal
+        show={showImageModal}
+        onHide={() => setShowImageModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>圖片預覽</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img
+            src={currentImage}
+            alt="Enlarged"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </Modal.Body>
+      </Modal>
     </Section>
   )
 }

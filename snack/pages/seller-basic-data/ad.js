@@ -1,4 +1,4 @@
-// pages/seller-basic-data/index.js
+// pages/seller-basic-data/ad.js
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
@@ -62,6 +62,10 @@ export default function Ad() {
   // 廣告類型
   const [showAlertModal, setShowAlertModal] = useState(false)
 
+  // 圖片放大
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
+
   // 使用Ref
   const handleImageClick = () => {
     fileInputRef.current.click()
@@ -83,7 +87,7 @@ export default function Ad() {
           }))
         })
         .catch((error) => {
-          console.error('获取商家信息失败', error)
+          console.error('拿取頭貼失敗', error)
         })
     }
     setTimeout(() => {
@@ -94,6 +98,12 @@ export default function Ad() {
   // 處裡文件
   const handleFileChange = (e) => {
     setFile(e.target.files[0])
+  }
+
+  // 廣告放大
+  const toggleImageModal = (imageSrc) => {
+    setCurrentImage(imageSrc)
+    setShowImageModal(!showImageModal)
   }
 
   // 上傳廣告
@@ -141,10 +151,10 @@ export default function Ad() {
       })
       .then((response) => {
         alert('頭像上傳成功')
-        setImageVersion((prevVersion) => prevVersion + 1) // 更新imageVersion以刷新图片
+        setImageVersion((prevVersion) => prevVersion + 1)
         setSellerData((prevData) => ({
           ...prevData,
-          profilePicture: response.data.imageUrl, // 使用后端返回的新图片路径
+          profilePicture: response.data.imageUrl,
         }))
       })
       .catch((error) => {
@@ -271,6 +281,9 @@ export default function Ad() {
                             className="card-img-top"
                             src="/adimg/ad_type1.jpg" //   圖片在這
                             alt="Ad Type 1"
+                            onClick={() =>
+                              toggleImageModal('/adimg/ad_type1.jpg')
+                            }
                           />
                           <div className="card-body d-flex justify-content-center">
                             <button
@@ -298,6 +311,9 @@ export default function Ad() {
                             className="card-img-top"
                             src="/adimg/ad_type2.jpg" //   圖片在這
                             alt="Ad Type 2"
+                            onClick={() =>
+                              toggleImageModal('/adimg/ad_type1.jpg')
+                            }
                           />
                           <div className="card-body d-flex justify-content-center">
                             <button
@@ -330,16 +346,25 @@ export default function Ad() {
                     />
                   </div>
                   {file && (
-                    <div className="preview-container">
+                    <div
+                      className="preview-container"
+                      onClick={() =>
+                        toggleImageModal(URL.createObjectURL(file))
+                      }
+                    >
                       <p>圖片名稱: {file.name}</p>
                       <img
                         src={URL.createObjectURL(file)}
                         alt="Preview"
                         className="img-preview"
+                        width={300}
+                        height={300}
                       />
                     </div>
                   )}
+
                   {/* 上傳 */}
+                  <br></br>
                   <button
                     onClick={handleUpload}
                     className={`${styles.btnPrimary} ,d-flex justify-content-center`}
@@ -402,6 +427,24 @@ export default function Ad() {
               關閉
             </Button>
           </Modal.Footer>
+        </Modal>
+      )}
+      {showImageModal && (
+        <Modal
+          show={showImageModal}
+          onHide={() => setShowImageModal(false)}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>圖片預覽</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <img
+              src={currentImage}
+              alt="Enlarged"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </Modal.Body>
         </Modal>
       )}
     </Section>
