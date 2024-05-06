@@ -11,7 +11,7 @@ QRrouter.get("/details/:qrcode_id", async (req, res) => {
             SELECT
                 custom_account,
                 product_name,
-                purchase_quantity,
+                remain_count,
                 total_sum,
                 status,
                 seller_id

@@ -1,4 +1,4 @@
-const db = require('./mysql2-connect');  
+import db from "../utils/db.js";
 
 async function createAndViewData() {
     try { 
@@ -18,6 +18,7 @@ async function createAndViewData() {
             odt.purchase_quantity,
             c.custom_name,
             p.product_name,
+            odt.remain_count,
             s.store_name  
         FROM 
             order_data od
@@ -56,4 +57,4 @@ async function createAndViewData() {
     }
 }
 
-module.exports = { createAndViewData };
+export { createAndViewData };

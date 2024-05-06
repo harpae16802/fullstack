@@ -115,7 +115,7 @@ export default function QRcode() {
         setOrderDetails([])
       }
     } catch (error) {
-      console.error('获取订单详情失败:', error)
+      console.error('獲取訂單詳情失敗:', error)
     }
   }
 
@@ -384,7 +384,7 @@ export default function QRcode() {
                         >
                           <td>{item.custom_account}</td>
                           <td>{item.product_name}</td>
-                          <td>{item.purchase_quantity}</td>
+                          <td>{item.remain_count}</td>
                           {/* <td>{item.total_sum}</td> */}
                           <td>{item.status === 0 ? '未兌換' : '兌換成功'}</td>
                         </tr>
