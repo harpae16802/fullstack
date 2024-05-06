@@ -201,10 +201,10 @@ cartRouter.post("/order_data", async (req, res) => {
     const orderDetailsPromises = items.map((item) => {
       return db.query(
         `
-          INSERT INTO order_detail (order_id, product_id, purchase_quantity)
-          VALUES (?, ?, ?)
+          INSERT INTO order_detail (order_id, product_id, purchase_quantity ,remain_count)
+          VALUES (?, ?, ?, ?)
       `,
-        [orderId, item.product_id, item.purchase_quantity]
+        [orderId, item.product_id, item.purchase_quantity, item.remain_count] 
       );
     });
 
