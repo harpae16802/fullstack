@@ -167,9 +167,16 @@ const DiscountContentItem = ({ items = [] }) => {
     if (selectedDiscount && totalAmount >= selectedDiscount.min_amount) {
       discountAmount = selectedDiscount.discount;
     }
-    const pointsReduction = usePoints ? customPoints / 10 : 0;
-    return Math.round(totalAmount - discountAmount - pointsReduction);
+  
+    const discountTotal = totalAmount - discountAmount;
+    const pointsReduction = usePoints ? Math.min(customPoints / 10, discountTotal) : 0; 
+    let finalAmount = discountTotal - pointsReduction;
+  
+    finalAmount = items.length > 0 ? Math.max(1, Math.round(finalAmount)) : 0;
+  
+    return finalAmount;
   }
+  
   
   // 樣式-------------------------------------------------------
 
@@ -212,16 +219,17 @@ const DiscountContentItem = ({ items = [] }) => {
   
   // 將資料劗送到locastorage
   const updatePaymentData = (discount) => {
-    const finalAmount = calculateFinalAmount();
-    const pointsReduction = usePoints ? Math.round(finalAmount * 10) : 0; 
-    const remainingPoints = customPoints - pointsReduction;  
+    const finalAmount = calculateFinalAmount(); 
+    const pointsUsed = usePoints ? Math.min(customPoints, finalAmount * 10) : 0;
+    const remainingPoints = customPoints - pointsUsed;
+    
     const selectedDiscountId = discount ? discount.discount_category_id : null; 
     const newPaymentData = {
       items,
       selectedDiscount: discount,
       discount_category_id: selectedDiscountId,
       finalAmount,
-      pointsReduction,
+      pointsReduction: pointsUsed,
       totalAmount: finalAmount,
       remainingPoints: remainingPoints > 0 ? remainingPoints : 0, 
     }
@@ -230,6 +238,8 @@ const DiscountContentItem = ({ items = [] }) => {
     console.log(newPaymentData);
     localStorage.setItem('paymentData', JSON.stringify(newPaymentData));
   }
+  
+  
   
   // 樣式-------------------------------------------------------
   
@@ -344,6 +354,7 @@ const DiscountContentItem = ({ items = [] }) => {
                   style={orderItemTextStyle}
                 />{' '}
                 使用您的遊戲點數來抵扣購買金額
+                (最低能折扣至1元)
               </label>
             </div>
 
@@ -397,14 +408,14 @@ const DiscountContentItem = ({ items = [] }) => {
       </div>
 
       {/* 測試 */}
-      {/* <button
+      <button
         type="button"
         onClick={() => {
           updatePaymentData(selectedDiscount)
         }}
       >
         測試按鈕
-      </button> */}
+      </button>
       {/* 測試 */}
 
       {/* 付款方式 */}
