@@ -175,7 +175,7 @@ cartRouter.post("/order_data", async (req, res) => {
   } = req.body;
 
   try {
-    // 注入order_data
+    //把前端的資料 注入order_data
     const [orderResult] = await db.query(
       `INSERT INTO order_data (custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -192,12 +192,12 @@ cartRouter.post("/order_data", async (req, res) => {
 
     const orderId = orderResult.insertId;
 
-    // 生成
+    // 生成order_id
     if (!orderId) {
       throw new Error("Failed to create order.");
     }
 
-    // 注入order_id到order_detail
+    // 注入order_data之中的 order_id到 order_detail 之中的 order_id
     const orderDetailsPromises = items.map((item) => {
       return db.query(
         `
