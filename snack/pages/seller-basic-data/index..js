@@ -23,7 +23,6 @@ export default function SellerBasicData() {
   const fileInputRef = useRef(null)
 
   //拿取seller_id
-
   const [sellerId, setSellerId] = useState(null)
 
   // 往店家網頁
@@ -80,6 +79,10 @@ export default function SellerBasicData() {
 
   // 上傳的新圖片
   const [newImagePreviewUrl, setNewImagePreviewUrl] = useState(null)
+
+  // 圖片縮放
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
 
   // 使用Ref
   const handleImageClick = () => {
@@ -201,6 +204,7 @@ export default function SellerBasicData() {
     }
   }
 
+  //表單送出
   const handleSubmit = (e) => {
     e.preventDefault()
     setErrors({})
@@ -242,6 +246,12 @@ export default function SellerBasicData() {
       .catch((error) => {
         setShowUpdateFailModal(true)
       })
+  }
+
+  // 控制圖片 大小
+  const toggleImageModal = (imageSrc) => {
+    setCurrentImage(imageSrc)
+    setShowImageModal(!showImageModal)
   }
 
   // 更新賣家 頭貼 包含顯示
@@ -405,44 +415,6 @@ export default function SellerBasicData() {
                       <div className="invalid-feedback">{errors.account}</div>
                     )}
                   </div>
-                  {/* <div className="mb-3 container">
-                    <label htmlFor="password" className="form-label">
-                      使用者密碼
-                    </label>
-                    <div className="input-wrapper row">
-                      <input
-                        type={passwordShown ? 'text' : 'password'}
-                        className={`form-control col-6 ${
-                          errors.password ? 'is-invalid' : ''
-                        }`}
-                        id="password"
-                        name="password"
-                        placeholder="至少包含英文 數字長度不少於8位數 不大於16位數"
-                        value={sellerData.password || ''}
-                        onChange={handleChange}
-                      />
-                      {errors.password && (
-                        <div className="invalid-feedback">
-                          {errors.password}
-                        </div>
-                      )}
-                      <i
-                        className="icon-toggle col-6"
-                        onClick={togglePasswordVisibility}
-                        style={{
-                          position: 'absolute',
-                          top: '265px',
-                          left: '150px',
-                          transform: 'translateY(-50%)',
-                          fontSize: '30px',
-                          cursor: 'pointer',
-                          zIndex: '2',
-                        }}
-                      >
-                        {passwordShown ? <FaEyeSlash /> : <FaEye />}
-                      </i>
-                    </div>
-                  </div> */}
                   <div className="mb-5 col-12container">
                     <label htmlFor="password" className="form-label">
                       使用者密碼
@@ -564,6 +536,11 @@ export default function SellerBasicData() {
                           style={{ maxWidth: '190px', marginRight: '20px' }}
                           width={190}
                           height={190}
+                          onClick={() =>
+                            toggleImageModal(
+                              `${IMGROUTER}${sellerData.storeImage}`
+                            )
+                          }
                         />
                       ) : (
                         <p>暫無圖片</p>
@@ -583,6 +560,11 @@ export default function SellerBasicData() {
                           style={{ maxWidth: '190px' }}
                           width={190}
                           height={190}
+                          onClick={() =>
+                            toggleImageModal(
+                              newImagePreviewUrl
+                            )
+                          }
                         />
                       ) : (
                         <p>請選擇圖片以預覽</p>
@@ -807,6 +789,15 @@ export default function SellerBasicData() {
           </Button>
         </Modal.Footer>
       </Modal>
+      {showImageModal && (
+  <div className={styles.modalBackdrop} onClick={() => toggleImageModal('')}>
+    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <img src={currentImage} alt="Enlarged" style={{ maxWidth: '100%', height: 'auto' }} />
+    </div>
+  </div>
+)}
+
+
     </Section>
   )
 }

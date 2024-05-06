@@ -1,6 +1,6 @@
 
 import express from "express";
-import db from "../utils/db.js"; // 引入数据库连接池
+import db from "../utils/db.js"; 
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router
       limit = 10,
     } = req.query;
 
-    // 用于数据总数计数的查询，现在包含所有可能的筛选条件
+    //  SQL查詢
     let countQuery = `
       SELECT COUNT(*) as total
       FROM order_data o
@@ -42,11 +42,11 @@ router
       countParams.push(`%${product_name}%`);
     }
 
-    // 执行总数查询
+    // 總查詢
     const [totalResults] = await db.query(countQuery, countParams);
     const totalPages = Math.ceil(totalResults[0].total / limit);
 
-    // 数据查询
+    // SQL
     let query = `
       SELECT o.*, p.product_name, p.category_id, c.category_name, od.purchase_quantity
       FROM order_data o
@@ -55,7 +55,7 @@ router
       JOIN product_categories c ON p.category_id = c.category_id
       WHERE o.seller_id = ?
     `;
-    let params = [seller_id]; // 参数数组
+    let params = [seller_id]; 
 
     if (start_date && end_date) {
       query += " AND o.payment_date BETWEEN ? AND ?";
@@ -72,7 +72,7 @@ router
       params.push(`%${product_name}%`);
     }
 
-    // 分页处理
+    // 分頁處裡
     const offset = (page - 1) * limit;
     query += " LIMIT ? OFFSET ?";
     params.push(parseInt(limit), offset);
@@ -100,7 +100,7 @@ router
     const sellerId = req.params.sellerId;
     const { start_date, end_date } = req.query;
   
-    // 構建帶有日期篩選的查詢語句
+    // 以日期查詢資料
     let query = `
       SELECT seller_id, SUM(total_sum) AS total_revenue
       FROM order_data

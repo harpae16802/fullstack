@@ -169,7 +169,7 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
 
         // 提交事务
         await conn.commit();
-        res.json({ success: true, message: "银行账户更新成功" });
+        res.json({ success: true, message: "銀行帳號更新成功" });
       } catch (error) {
         // 出现错误则回滚事务
         await conn.rollback();
@@ -180,8 +180,8 @@ sellerRouter.put("/:sellerId/update-bank-accounts", async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("更新银行账户失败:", error);
-    res.status(500).json({ success: false, message: "服务器错误" });
+    console.error("銀行帳號更新失敗:", error);
+    res.status(500).json({ success: false, message: "伺服器錯誤" });
   }
 });
 

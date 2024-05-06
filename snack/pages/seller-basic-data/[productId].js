@@ -62,6 +62,10 @@ export default function AddProducts() {
   // 圖片狀態檢測更新
   const [isFileSelected, setIsFileSelected] = useState(false)
 
+  // 在狀態中添加圖片預覽和模態顯示的變數
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentImage, setCurrentImage] = useState('')
+
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
@@ -165,6 +169,11 @@ export default function AddProducts() {
       category,
     }))
   }
+  // 函數來顯示圖片預覽模態
+  const toggleImageModal = (image) => {
+    setCurrentImage(image)
+    setShowImageModal(!showImageModal)
+  }
 
   // 更新產品 (可控表單)
   const handleChange = (e) => {
@@ -242,7 +251,7 @@ export default function AddProducts() {
         JSON.stringify(originalProductDetails) &&
       !isFileSelected
     ) {
-      setShowNoChangeModal(true) 
+      setShowNoChangeModal(true)
       return
     }
 
@@ -573,7 +582,13 @@ export default function AddProducts() {
                           flexWrap: 'wrap',
                         }}
                       >
-                        <div>
+                        <div
+                          onClick={() =>
+                            toggleImageModal(
+                              `${IMGROUTER}${productDetails.image_url}`
+                            )
+                          }
+                        >
                           <label htmlFor="store_image" className="form-label">
                             當前產品圖片
                           </label>
@@ -590,7 +605,7 @@ export default function AddProducts() {
                           )}
                         </div>
 
-                        <div>
+                        <div onClick={() => toggleImageModal(previewImage)}>
                           <label htmlFor="store_image" className="form-label">
                             新上傳圖片預覽
                           </label>
@@ -598,7 +613,7 @@ export default function AddProducts() {
                           {previewImage ? (
                             <img
                               src={previewImage}
-                              alt="新上傳圖片預覽"
+                              alt="新增產品圖片"
                               className="img-fluid"
                               style={{ maxWidth: '190px' }}
                             />
@@ -764,6 +779,24 @@ export default function AddProducts() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {showImageModal && (
+        <div
+          className={styles.modalBackdrop}
+          onClick={() => toggleImageModal('')}
+        >
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={currentImage}
+              alt="Enlarged"
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </div>
+        </div>
+      )}
     </Section>
   )
 }

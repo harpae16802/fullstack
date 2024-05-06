@@ -3,7 +3,7 @@ import db from "../utils/db.js";
 
 const QRrouter = express.Router();
 
-// 获取qrcode详情
+// 獲取前端的數據
 QRrouter.get("/details/:qrcode_id", async (req, res) => {
   const { qrcode_id } = req.params;
   try {
@@ -35,10 +35,10 @@ QRrouter.get("/details/:qrcode_id", async (req, res) => {
   }
 });
 
-// 更新订单状态
+// 更新訂單狀態
 QRrouter.put("/update-status/:qrcode_id", async (req, res) => {
   const { qrcode_id } = req.params;
-  const { status } = req.body; // 从请求体中获取新的状态
+  const { status } = req.body; // 解構出狀態
 
   try {
     const sql = `
@@ -49,13 +49,13 @@ QRrouter.put("/update-status/:qrcode_id", async (req, res) => {
     const [result] = await db.query(sql, [status, qrcode_id]);
 
     if (result.affectedRows > 0) {
-      res.json({ message: "订单状态更新成功" });
+      res.json({ message: "訂單更新成功" });
     } else {
-      res.status(404).json({ message: "未找到对应订单，更新失败" });
+      res.status(404).json({ message: "訂單更新失敗" });
     }
   } catch (error) {
     console.error("更新订单状态失败:", error);
-    res.status(500).json({ message: "服务器错误，更新失败", error: error.message });
+    res.status(500).json({ message: "伺服器錯誤", error: error.message });
   }
 });
 

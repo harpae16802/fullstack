@@ -128,7 +128,7 @@ productsRouter.get("/:sellerId", async (req, res) => {
   params.push(parseInt(limit), parseInt(offset));
 
   try {
-    // 查询总数
+    // 查詢所有分頁
     const [totalResults] = await db.query(countQuery, countParams);
     const total = totalResults[0].total;
 
@@ -146,8 +146,8 @@ productsRouter.get("/:sellerId", async (req, res) => {
 
     res.json({ success: true, total, products });
   } catch (error) {
-    console.error("获取产品列表失败", error);
-    res.status(500).json({ success: false, message: "服务器错误" });
+    console.error("獲取產品列表失敗", error);
+    res.status(500).json({ success: false, message: "伺服器錯誤" });
   }
 });
 
