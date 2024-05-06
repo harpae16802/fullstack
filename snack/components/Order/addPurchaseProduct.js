@@ -408,14 +408,14 @@ const DiscountContentItem = ({ items = [] }) => {
       </div>
 
       {/* 測試 */}
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           updatePaymentData(selectedDiscount)
         }}
       >
         測試按鈕
-      </button>
+      </button> */}
       {/* 測試 */}
 
       {/* 付款方式 */}
