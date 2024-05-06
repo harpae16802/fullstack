@@ -153,7 +153,7 @@ export async function insertProduct(req, res) {
   }
   try {
     const data2 = `INSERT INTO qrcode_record ( order_id, custom_id) VALUES (?, ?)`;
-    const [insertResult] = await db.query(data2, [req.body[0].order_id, req.body[0].custom_id]);
+    const [insertResult] = await db.query(data2, [+req.body[0].order_id, req.body[0].custom_id]);
 
     //  v.isvalue
     await Promise.all(req.body.map(async (v, i) => {
@@ -169,7 +169,7 @@ export async function insertProduct(req, res) {
       if (insertResult2) {
         const dataI = `INSERT INTO qrcode_detail_record (qrcode_id, product_id,count) VALUES (?, ?,?)`;
         console.log(qr_id, v.product_id, v.isvalue);
-        const [insertResult] = await db.query(dataI, [qr_id.max, v.product_id, v.isvalue]);
+        const [insertResult] = await db.query(dataI, [+qr_id.max+1, v.product_id, v.isvalue]);
 
 
       }
