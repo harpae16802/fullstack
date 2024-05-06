@@ -62,11 +62,11 @@ export default function NavbarCustom() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      router.pathname === '/nightmarket-info/index'
+                      router.pathname === '/order/product'
                         ? 'active'
                         : ''
                     }`}
-                    href="/nightmarket-info/night"
+                    href='/order/product'
                   >
                     美味商城
                   </Link>

@@ -119,29 +119,56 @@ export default function ProductDetailCard({
 
     </div>
 
-    {/* 虛線 */}
-   <div className={styles.detailDashed}></div>
 
-   <div className={styles.ingredientText}>成分</div>
+    
+    {/* // 手風琴:營養成分表 */}
+<div className="accordion accordion-flush" id="accordionFlushExample">
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="flush-headingOne">
+      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+       成分 : 
+      </button>
+    </h2>
+    <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+      <div className={`accordion-body ${styles.detailIngredient}`}>{ingredient}</div>
+    </div>
+  </div>
 
-    {/* 成分 */}
-    <div className={styles.detailIngredient}>含有 : {ingredient}</div>
+  <div class="accordion-item">
+   
+ 
+  </div>
+</div>
 
-    <IoIosArrowDown className={styles.ingredientDown1}  />
 
-    {/* 實線 */}
-    <div className={styles.detailSolid}></div>
+    {/* <IoIosArrowDown className={styles.ingredientDown1}  /> */}
+
+  
 
         {/* 營養成分表 */}
-     <div className={styles.nutritionIngredient}>營養成分表:{nutrition}</div>
-        <IoIosArrowDown className={styles.ingredientDown2}/>
+        <div className="accordion accordion-flush" id="accordionFlushExample">
+  <div classNameName="accordion-item">
+    <h2 classNameName="accordion-header" id="flush-headingTwo">
+      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+       營養成分:
+      </button>
+    </h2>
+    <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+      <div className={`accordion-body ${styles.nutritionIngredient}`}>{nutrition}</div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+   
+ 
+  </div>
+</div>
         
 
        </div>
 
     </div>
 
-    <FiHeart  className={styles.detailProductCollect}/>
 
 
       </div>

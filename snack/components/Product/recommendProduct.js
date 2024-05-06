@@ -37,11 +37,12 @@ export default function ProductItem  ({
 
     return (
       <div  className={styles.recommendProductContainer}>
-        <Image src={imageUrl} width={370} height={250} className={styles.recommendImage}/>
 
-        <div style={{ display: 'flex' }}>
+        <Image src={imageUrl} width={358} height={238} className={styles.recommendImage}/>
 
-          <p className={styles.recommendName}>{productName}</p>
+        <div className={styles.recommendInfo}>
+
+          <p className={styles.recommendName} style={{whiteSpace:'nowrap'}}>{productName}</p>
 
           {isFavorite ? (
             <FaHeart
@@ -60,6 +61,7 @@ export default function ProductItem  ({
 
 
         </div>
+
       </div>
     );
   };

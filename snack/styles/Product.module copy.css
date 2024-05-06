@@ -7,7 +7,9 @@
 
    
 }
-
+.div{
+  max-width: 200px;
+}
 
 .container {
     width: var(--container-width, 1742px);
@@ -17,7 +19,7 @@
     /* background-color: var(--container-color, #D2B48C); */
   }
 
-
+ 
 
   /* 產品分類:外層容器 */
   .content {
@@ -25,20 +27,12 @@
     padding-left: 80px;
     padding-right: 80px;
   }
-  .mm{
-    width: 100%;
-    height: auto;
-  }
   @media (max-width: 576px) {
     .content{
     margin-top: 20px;
     padding-left: 20px;
     padding-right: 20px;
     width: 100%;
-    }
-    .mm{
-      overflow: hidden;
-       width: 300px;
     }
   }
 

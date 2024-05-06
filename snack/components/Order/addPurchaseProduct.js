@@ -9,7 +9,7 @@ import {
 } from '../../pages/seller-basic-data/config'
 import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
-import { usePayment } from '@/contexts/PaymentContext';
+// import { usePayment } from '@/contexts/PaymentContext';
 import { Modal, Button } from 'react-bootstrap'
 
 const DiscountContentItem = ({ items = [] }) => {

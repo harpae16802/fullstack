@@ -29,9 +29,10 @@
       flex-wrap: nowrap;
 
       .categoryCard {
-        flex: 0 0 50%;
-        max-width: 50%;
-        min-width: 50%;
+        flex: 0 0 auto; /* 讓元素的基本大小自動調整以適應內容 */
+        // max-width: 10%; /* 設置元素的最大寬度為容器寬度的一半 */
+        // min-width:10%; /* 設置元素的最小寬度為容器寬度的一半 */
+        
       }
 
       &::-webkit-scrollbar {
