@@ -58,6 +58,17 @@ const BalloonShooterGame = () => {
       setShowModal(true) // 顯示規則的模態框
     }
   }, [selectedLevel])
+  useEffect(() => {
+    if (showModal) {
+      // 如果 showModal 為 true，表示 modal 出現，隱藏 chara-group desket-obj
+      const charaGroup = document.querySelector('.desket-obj')
+      charaGroup.classList.add('obj-hidden')
+    } else {
+      // 如果 showModal 為 false，表示 modal 隱藏，顯示 chara-group desket-obj
+      const charaGroup = document.querySelector('.desket-obj')
+      charaGroup.classList.remove('obj-hidden')
+    }
+  }, [showModal])
 
   // 開始遊戲
   const startGame = () => {
@@ -211,6 +222,14 @@ const BalloonShooterGame = () => {
     const balloonName = balloon.textContent
     balloon.remove()
     updateScore(points, balloonName)
+    // 在點擊汽球時，為 chara-group desket-obj 添加 CSS 類名，觸發動畫
+    const charaGroup = document.querySelector('.desket-obj')
+    charaGroup.classList.add('shooting')
+
+    // 在一段時間後移除動畫效果，讓下一次點擊時可以再次觸發動畫
+    setTimeout(() => {
+      charaGroup.classList.remove('shooting')
+    }, 500)
   }
 
   // 更新分數
@@ -295,16 +314,16 @@ const BalloonShooterGame = () => {
           <div className="balloon-play" ref={gameContainerRef}></div>
         </div>
       </div>
-       {/* <div className="chara-group">
-          <div className="character">
-            {' '}
-            <img
-              src="/images/game/cha01.png"
-              className="character-obj"
-              alt="..."
-            />
-          </div>
-        </div> */}
+      <div className="chara-group desket-obj">
+        <div className="character">
+          {' '}
+          <img
+            src="/images/game/cha09.png"
+            className="character-obj "
+            alt="..."
+          />
+        </div>
+      </div>
     </div>
   )
 }

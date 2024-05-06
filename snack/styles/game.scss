@@ -439,6 +439,46 @@
     left: 0;
     z-index: 1;
   }
+  @keyframes shoot {
+    0% {
+      left: 170px;
+
+
+    }
+    25%{
+      left: 165px;
+
+    }
+    50% {
+      left: 170px;
+
+
+    }
+    75%{
+      left: 175px;
+    }
+    100% {
+      left: 170px;
+
+
+    }
+  }
+  .obj-hidden {
+    display: none;
+  }
+  .shooting{
+    animation: shoot 0.5s linear infinite;
+  }
+  .desket-obj{
+    @media (max-width: 992px) {
+      display: none;
+    }
+    // 
+  }
+  .desket-obj.chara-group{
+    width: 300px;
+    left: 170px;
+  }
   .chara-group {
     @media (max-width: 992px) {
       top: 0;
@@ -451,6 +491,7 @@
     width: 100%;
     z-index: 1;
 
+ 
     .character {
       @media (max-width: 992px) {
         bottom: 0;
@@ -468,7 +509,7 @@
           width: 50%;
         }
         width: 300px;
-        transform: scaleX(-1);
+        // transform: scaleX(-1);
         position: absolute;
       }
     }
