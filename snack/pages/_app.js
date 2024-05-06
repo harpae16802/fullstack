@@ -11,7 +11,6 @@ import { PaymentProvider } from '../contexts/PaymentContext'
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
 import { NotifyProvider } from '@/data/context/use-notify'
-
 import { QrcodeProvider } from '@/data/context/QrcodeContext'
 import Sesson from '@/components/layout/section'
 import { useEffect } from 'react'
