@@ -52,6 +52,10 @@ export const INDEX_INFO_STORE = `${API_SERVER}/index-info/store`
     //商品
 export const INDEX_INFO_PRODUCT = `${API_SERVER}/index-info/product` 
     //優惠
-    export const INDEX_INFO_DISCOUNT = `${API_SERVER}/index-info/discount` 
+export const INDEX_INFO_DISCOUNT = `${API_SERVER}/index-info/discount` 
+
+//遊戲頁
+export const GAME_DATA_POST = `${API_SERVER}/game-data/gamefile` 
+
 
 

@@ -122,6 +122,7 @@ useEffect(() => {
     try {
       const response = await axios.get(`${COMMENT}/${sellerId}`)
       setComments(response.data) //設定評論
+      console.log(response)
     } catch (error) {
       console.error('獲取評論失敗:', error)
     }

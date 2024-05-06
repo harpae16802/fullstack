@@ -1,27 +1,32 @@
 // _app.js
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { SellerProvider } from '../contexts/SellerContext'
 import { CustomContextProvider } from '@/contexts/custom-context'
 import { MiniloginProvider } from '@/contexts/minilogin-context'
 import { LevelProvider } from '@/contexts/LevelContext'
 import { MapProvider } from '@/contexts/mapContext'
-import { PaymentProvider } from '../contexts/PaymentContext';
+import { PaymentProvider } from '../contexts/PaymentContext'
 import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
-import {NotifyProvider} from "@/data/context/use-notify"
+import { NotifyProvider } from '@/data/context/use-notify'
 
 import { ImgProvider } from '@/data/context/ImgContext'
 import { QrcodeProvider } from '@/data/context/QrcodeContext'
 import Sesson from '@/components/layout/section'
-
 import { useEffect } from 'react'
 import '@/styles/globals.scss'
 import '../styles/form.css'
 import '@/styles/index.scss'
+import '@/styles/loader.scss'
 import '@/styles/login.scss'
 import '@/styles/carousel.scss'
 import '@/styles/game.scss'
+
+// 載入動畫context
+import { LoaderProvider } from '@/hooks/use-loader'
+// 自訂用載入動畫元件
+import { HunterLoader } from '@/hooks/use-loader/components'
+// ...
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -37,33 +42,29 @@ function MyApp({ Component, pageProps }) {
     ))
 
   return (
+    // <LoaderProvider close={3} CustomLoader={HunterLoader}>
     <PaymentProvider>
-    <NotifyProvider>
-    <ImgProvider>   
-    <QrcodeProvider>
-    <CustomContextProvider>
-      <SellerProvider>
-        <MapProvider>
-          <AuthChecker>
-            <MiniloginProvider>
-              <LevelProvider>
-                {getLayout(<Component {...pageProps} />)}
-                {/* <script
-             
-                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-                integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-                crossorigin="anonymous"
-              ></script> */}
-              </LevelProvider>
-            </MiniloginProvider>
-          </AuthChecker>
-        </MapProvider>
-      </SellerProvider>
-    </CustomContextProvider>
-    </QrcodeProvider>
-    </ImgProvider>
-    </NotifyProvider>
+      <NotifyProvider>
+        <ImgProvider>
+          <QrcodeProvider>
+            <CustomContextProvider>
+              <SellerProvider>
+                <MapProvider>
+                  <AuthChecker>
+                    <MiniloginProvider>
+                      <LevelProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                      </LevelProvider>
+                    </MiniloginProvider>
+                  </AuthChecker>
+                </MapProvider>
+              </SellerProvider>
+            </CustomContextProvider>
+          </QrcodeProvider>
+        </ImgProvider>
+      </NotifyProvider>
     </PaymentProvider>
+    // </LoaderProvider>
   )
 }
 

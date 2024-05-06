@@ -275,18 +275,8 @@
 .section-index.index-nop.index-product {
   position: relative;
   overflow: visible;
-  .product-detail {
-    @media (max-width: 992px) {
-      top: 0;
-      left: 5%;
-
-    }
-    position: absolute;
-    top: 10px;
-    left: calc((1920px - 1518px) / 2 - 80px);
-    // display: none;
-    z-index: 1;
-  }
+img{
+}
 }
 
 // 輪播

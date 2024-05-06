@@ -73,9 +73,13 @@ export default function NavbarLogout() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      router.pathname === '/game/game-select' ? 'active' : ''
+                      router.pathname === '/game/game-index' ||
+                      router.pathname === '/game/game-select' ||
+                      router.pathname === '/game/game-play'
+                        ? 'active'
+                        : ''
                     }`}
-                    href="/game/game-select"
+                    href="/game/game-index"
                   >
                     趣味遊戲
                   </Link>
