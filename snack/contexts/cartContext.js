@@ -16,9 +16,10 @@ export const CartProvider = ({ children }) => {
   const { auth, getAuthHeader } = useAuth()
   const [cartItems, setCartItems] = useState([])
   const [total, setTotal] = useState(0)
+  const [totalItems, setTotalItems] = useState(0) // 小購物車用的總數
 
   // 添加商品到购物车
-  const addToCart = async (productId) => {
+  const addToCart = async (productId, quantity) => {
     try {
       if (!auth.token) {
         const willLogIn = confirm('請先登入會員')
@@ -28,13 +29,20 @@ export const CartProvider = ({ children }) => {
         return
       }
 
+      // 检查商品数量是否大于0
+      if (quantity <= 0) {
+        alert('請選擇至少一個商品數量')
+        return // 如果数量不大于0，则不进行添加操作
+      }
+
       const response = await fetch(CART_ADD, {
         method: 'POST',
         headers: {
           ...getAuthHeader(),
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ product_id: productId }),
+        // body: JSON.stringify({ product_id: productId }),
+        body: JSON.stringify({ product_id: productId, quantity: quantity }),
       })
 
       const data = await response.json()
@@ -124,6 +132,12 @@ export const CartProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    // 計算所有商品的總數量
+    const newItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+    setTotalItems(newItemCount)
+  }, [cartItems])
+
+  useEffect(() => {
     if (auth.token) {
       loadCartData()
     }
@@ -134,8 +148,9 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cartItems,
-        setCartItems,
         total,
+        totalItems,
+        setCartItems,
         setTotal,
         addToCart,
         removeFromCart,

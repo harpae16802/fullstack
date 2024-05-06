@@ -122,7 +122,7 @@ export default function Ad() {
       const response = await axios.post(
         `${ADROUTER}/upload${adType}`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        { headers: { 'Content-Type': 'multipart/form-data' } },
       )
       console.log(response.data)
       setFile(null)

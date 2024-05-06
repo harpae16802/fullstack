@@ -80,5 +80,4 @@ app.post("/favorite/favoriteSearch02Store", favoriteSearch02Store);
 // linePayBox
 app.post("/linePayBox",linePayBox)
 
-
 export default app;

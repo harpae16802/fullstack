@@ -1,5 +1,7 @@
 // _app.js
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { CartProvider } from '@/contexts/cartContext'
+import { ImgProvider } from '@/data/context/ImgContext'
 import { SellerProvider } from '../contexts/SellerContext'
 import { CustomContextProvider } from '@/contexts/custom-context'
 import { MiniloginProvider } from '@/contexts/minilogin-context'
@@ -10,12 +12,12 @@ import MainLayout from '@/components/layout/main-layout'
 import AuthChecker from '../components/AuthChecker'
 import { NotifyProvider } from '@/data/context/use-notify'
 
-import { ImgProvider } from '@/data/context/ImgContext'
 import { QrcodeProvider } from '@/data/context/QrcodeContext'
 import Sesson from '@/components/layout/section'
 import { useEffect } from 'react'
 import '@/styles/globals.scss'
 import '../styles/form.css'
+import '../styles/App.css'
 import '@/styles/index.scss'
 import '@/styles/loader.scss'
 import '@/styles/login.scss'
@@ -50,13 +52,15 @@ function MyApp({ Component, pageProps }) {
             <CustomContextProvider>
               <SellerProvider>
                 <MapProvider>
-                  <AuthChecker>
-                    <MiniloginProvider>
-                      <LevelProvider>
-                        {getLayout(<Component {...pageProps} />)}
-                      </LevelProvider>
-                    </MiniloginProvider>
-                  </AuthChecker>
+                  <CartProvider>
+                    <AuthChecker>
+                      <MiniloginProvider>
+                        <LevelProvider>
+                          {getLayout(<Component {...pageProps} />)}
+                        </LevelProvider>
+                      </MiniloginProvider>
+                    </AuthChecker>
+                  </CartProvider>
                 </MapProvider>
               </SellerProvider>
             </CustomContextProvider>

@@ -5,6 +5,7 @@ $white: #fff;
 .container {
   padding: 0;
   margin: 0;
+  margin-bottom: 150px;
 
   .banner {
     height: 200px;
@@ -99,4 +100,11 @@ $white: #fff;
 
 .titleHighlight {
   background-color: yellow; /* 或其他显著颜色 */
+}
+
+.slider {
+  margin-top: 30px;
+  span {
+    color: #a32c2d;
+  }
 }

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
 import Link from 'next/link'
-import { INDEX_INFO_STORE,IMAGES_SELLER,API_SERVER } from '@/components/config/api-path'
+import {
+  INDEX_INFO_STORE,
+  IMAGES_SELLER,
+  API_SERVER,
+} from '@/components/config/api-path'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -122,8 +126,12 @@ function StoreSlider() {
               />
               <div className="store-name">{v.store_name}</div>
               <div className="store-market">{v.market_name}</div>
-              <Link type="button" className="btn btn-light" href={`/shop-products/${v.seller_id}`}>
-                  看更多
+              <Link
+                type="button"
+                className="btn btn-light"
+                href={`/shop-products/${v.seller_id}`}
+              >
+                看更多
               </Link>
             </div>
           )

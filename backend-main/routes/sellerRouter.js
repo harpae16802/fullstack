@@ -54,8 +54,7 @@ sellerRouter.get('/:sellerId', async (req, res) => {
       const sellerData = {
         ...sellerRows[0],
         ...accountInfo,
-        bankAccounts: bankAccounts,
-        storeImage: `${sellerRows[0].store_image}`
+        bankAccounts: bankAccounts
       };
 
       res.json({ success: true, data: sellerData });
@@ -68,11 +67,8 @@ sellerRouter.get('/:sellerId', async (req, res) => {
   }
 });
 
-// 賣家資訊編輯 PUT 包含商店圖片
-sellerRouter.put('/:sellerId/edit', upload.fields([
-  { name: 'profilePicture', maxCount: 1 },
-  { name: 'store_image', maxCount: 1 }
-]), async (req, res) => {
+// 編輯賣家資訊
+sellerRouter.put("/:sellerId/edit", upload.array(), async (req, res) => {
   const sellerId = req.params.sellerId;
   const {
     storeName,
@@ -86,24 +82,9 @@ sellerRouter.put('/:sellerId/edit', upload.fields([
     account,
     password
   } = req.body;
-
-  const profilePicture = req.files['profilePicture'] ? req.files['profilePicture'][0].filename : null;
-  const storeImage = req.files['store_image'] ? 'images/seller/' + req.files['store_image'][0].filename : null;
-
   try {
-    const sellerQuery = `
-      UPDATE seller SET
-      store_name=?,
-      contact_number=?,
-      email=?,
-      company_address=?,
-      company_description=?,
-      store_image=?,
-      opening_hours=?,
-      closing_hours=?,
-      rest_day=?,
-      profile_picture=?
-      WHERE seller_id=?`;
+    const sellerQuery =
+      "UPDATE seller SET store_name=?, contact_number=?, email=?, company_address=?, company_description=?, store_image=?, opening_hours=?, closing_hours=?, rest_day=?, profile_picture=? WHERE seller_id=?";
     await db.query(sellerQuery, [
       storeName,
       contactNumber,

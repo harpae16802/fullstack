@@ -7,14 +7,14 @@ import OrderDetailItem from '@/components/Order/order1Seller'
 import DiscountContentItem from '@/components/Order/addPurchaseProduct'
 import { useAuth } from '@/contexts/custom-context'
 import CheckoutProduct from '@/components/Order/checkoutProduct'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap'
 
 export default function Order() {
   // 取得狀態
   const { auth } = useAuth()
 
   // 彈出視窗
-  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState(false)
 
   // 儲存目前選購狀態
   const [selectedSeller, setSelectedSeller] = useState(null)
@@ -55,7 +55,7 @@ export default function Order() {
     console.log('Selected Seller: ', chosenSeller)
     console.log('Selected Items: ', selectedItems)
     if (!chosenSeller || selectedItems.length === 0) {
-      setShowAlertModal(true); 
+      setShowAlertModal(true)
       return
     }
     if (step < 3) {
@@ -80,7 +80,6 @@ export default function Order() {
           <div className={styles.stepBorder}>
             {/* 步驟圓圈&長條 */}
             <div className="container">
-
               <div className={step >= 1 ? styles.step1 : styles.stepUndo}>
                 1
               </div>
@@ -92,7 +91,7 @@ export default function Order() {
               <div className={step >= 2 ? styles.step2 : styles.stepUndo}>
                 2
               </div>
-              
+
               <div
                 className={step >= 3 ? styles.connectRed : styles.connectGrey}
               ></div>
@@ -150,34 +149,41 @@ export default function Order() {
 
           {/* '上一步 下一步'按鈕 */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-  
-            {step !== 1 && <div className={styles.previousButton} onClick={handleBack}>上一步</div>}
-            {step !== 2 && <div className={styles.nextButton} onClick={handleNext}>下一步</div>}
+            {step !== 1 && (
+              <div className={styles.previousButton} onClick={handleBack}>
+                上一步
+              </div>
+            )}
+            {step !== 2 && (
+              <div className={styles.nextButton} onClick={handleNext}>
+                下一步
+              </div>
+            )}
           </div>
           <br></br>
           {/* outerFrame */}
         </div>
 
-         {showAlertModal && (
-        <Modal
-          show={showAlertModal}
-          onHide={() => setShowAlertModal(false)}
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>提示</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>您還沒有選擇任何商品結帳喔~</Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="primary"
-              onClick={() => setShowAlertModal(false)}
-            >
-              關閉
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
+        {showAlertModal && (
+          <Modal
+            show={showAlertModal}
+            onHide={() => setShowAlertModal(false)}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>提示</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>您還沒有選擇任何商品結帳喔~</Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
+                onClick={() => setShowAlertModal(false)}
+              >
+                關閉
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
       </Section>
     </>
   )

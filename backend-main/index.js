@@ -231,6 +231,7 @@ app.get("/jwt-data", async (req, res) => {
 
 app.use("/sign-up", signUpRouter);
 app.use("/index-info", indexInfoRouter);
+
 app.use("/game-data", gameDataRouter);
 
 // ====恆

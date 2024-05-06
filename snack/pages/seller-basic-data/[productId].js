@@ -293,7 +293,6 @@ export default function AddProducts() {
         console.error('更新失敗:', error)
       })
   }
-
   // 更新賣家 頭貼 包含顯示
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0]

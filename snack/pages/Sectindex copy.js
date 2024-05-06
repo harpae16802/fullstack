@@ -6,10 +6,8 @@ import CustomSlider from '@/components/index/custom-slider'
 import StoreSlider from '@/components/index/store-slider'
 import SearchBarIndex from '@/components/common/search-bar-index'
 
-
 export default function SectionIndex() {
-
-// 搜尋後 跳轉至 夜市資訊 || 地圖導覽
+  // 搜尋後 跳轉至 夜市資訊 || 地圖導覽
   // const handlesearch = ()=>{
 
   // }
@@ -62,10 +60,10 @@ export default function SectionIndex() {
           </div>
         </div>
       </div>
-      <div
-        className="section-index index-nop discount"
-      >
-        <div className="index-title" id="discountnews">最新消息</div>
+      <div className="section-index index-nop discount">
+        <div className="index-title" id="discountnews">
+          最新消息
+        </div>
         <div className="slide-container">
           <div className="slide-group">
             <CustomSlider />
@@ -105,7 +103,7 @@ export default function SectionIndex() {
                 width={500}
                 height={300}
               />
-               {/* 點圖片要到 咚咚的 商家頁面 */}
+              {/* 點圖片要到 咚咚的 商家頁面 */}
               <div className="discount-text discount-store">
                 士林夜市 林藤茶坊
               </div>
@@ -117,7 +115,7 @@ export default function SectionIndex() {
       <div className="section-index index-nop index-store">
         <div className="index-title">店家</div>
         {/* <StoreSlider/> */}
-        
+
         <div className="store-index-gruop">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +131,7 @@ export default function SectionIndex() {
             />
           </svg>
 
-              {/* 商品詳細談窗 */}
+          {/* 商品詳細談窗 */}
           <div className="card-store-index-group">
             <div className="card-store-index">
               <div className="store-name">月氏激蛋葱油餅</div>
@@ -162,7 +160,7 @@ export default function SectionIndex() {
               <button type="button" className="btn btn-light">
                 看更多
               </button>
-               {/* 商品詳細談窗 */}
+              {/* 商品詳細談窗 */}
             </div>
           </div>
           <svg
@@ -196,12 +194,12 @@ export default function SectionIndex() {
               stroke="#070505"
             />
           </svg>
-                {/* 商品詳細頁 && 購物車連結*/}
+          {/* 商品詳細頁 && 購物車連結*/}
           <div className="card-product-index-group">
             <div className="card-product-index">
               <div className="product-top">
                 <div className="product-title">
-                     {/* 商品詳細頁 && 購物車連結*/}
+                  {/* 商品詳細頁 && 購物車連結*/}
                   <div className="product-name">姊姊抓的餅</div>
                   <div className="product-name">豬排蛋</div>
                 </div>
@@ -218,7 +216,7 @@ export default function SectionIndex() {
                     <button>
                       <FaPlus />
                     </button>
-                    <input type="text" min="1" style={{border:'none'}} />
+                    <input type="text" min="1" style={{ border: 'none' }} />
                     <button>
                       <FaMinus />
                     </button>
@@ -308,8 +306,10 @@ export default function SectionIndex() {
           </svg>
         </div>
       </div>
-      <div className="section-index" >
-        <div className="index-title" id="aboutme">關於我們</div>
+      <div className="section-index">
+        <div className="index-title" id="aboutme">
+          關於我們
+        </div>
         <div className="qr-text">
           <div className="qr-video col-12 col-md-7 mb-5 mb-md-0">
             <iframe
@@ -323,7 +323,7 @@ export default function SectionIndex() {
             />
           </div>
 
-                          {/* 商品詳細頁 && 購物車連結*/}
+          {/* 商品詳細頁 && 購物車連結*/}
           <div className="qr-about col-12 col-md-5">
             <div className="accordion" id="accordionExample">
               <div className="accordion-item">

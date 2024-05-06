@@ -655,6 +655,7 @@ body {
           font-size: 1.2rem;
           font-weight: bolder;
           line-height: normal;
+          
         }
 
         .newsup {
@@ -1081,4 +1082,9 @@ body {
     // 'Apple Color Emoji',
     // 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'
 ;
+}
+
+.itemCount {
+  border-radius: 50%;
+  margin-left: 4px;
 }

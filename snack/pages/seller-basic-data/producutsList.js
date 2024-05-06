@@ -12,6 +12,9 @@ import styles from '../../styles/navbar-seller.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Button } from 'react-bootstrap'
 
 const ProductsList = () => {
   // 使用 useRouter
@@ -51,6 +54,11 @@ const ProductsList = () => {
   const [showFailModal, setShowFailModal] = useState(false)
 
   const [loading, setLoading] = useState(false) // 新增 loading 狀態
+  //彈出視窗
+  const [showModal, setShowModal] = useState(false)
+  const [showFailModal, setShowFailModal] = useState(false)
+
+  const [loading, setLoading] = useState(false) // 新增 loading 狀態
   // 修改賣家資料 後 的狀態
   const [sellerData, setSellerData] = useState({
     profilePicture: '',
@@ -69,13 +77,16 @@ const ProductsList = () => {
         .get(`${SELLER_API}${sellerId}`)
         .then((response) => {
           const data = response.data.data
+          const data = response.data.data
 
           setSellerData((prevData) => ({
             ...prevData,
             profilePicture: data.profile_picture || `${IMG}`,
+            profilePicture: data.profile_picture || `${IMG}`,
           }))
         })
         .catch((error) => {
+          console.error('獲取失敗', error)
           console.error('獲取失敗', error)
         })
     }
@@ -92,6 +103,7 @@ const ProductsList = () => {
       try {
         const response = await axios.get(
           `${PRODUCTS_API}/${sellerId}/categories`
+          `${PRODUCTS_API}/${sellerId}/categories`
         )
         setCategories(response.data.categories)
       } catch (error) {
@@ -103,6 +115,7 @@ const ProductsList = () => {
       setLoading(true)
       try {
         const response = await axios.get(
+          `${PRODUCTS_API}/${sellerId}?${queryParams}`
           `${PRODUCTS_API}/${sellerId}?${queryParams}`
         )
         const categoryMap = new Map(
@@ -129,14 +142,17 @@ const ProductsList = () => {
     }
 
     if (sellerId) {
+    if (sellerId) {
       fetchData()
       fetchCategories()
     }
+  }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems])
   }, [sellerId, currentPage, itemsPerPage, filter, searchTerm, totalItems])
 
   // 處裡分頁
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const renderPageNumbers = () => {
+    if (totalItems <= itemsPerPage) return null
     if (totalItems <= itemsPerPage) return null
 
     const pageNumbers = []
@@ -390,13 +406,14 @@ const ProductsList = () => {
                       type="button"
                       onClick={() => setSearchTerm('')}
                     >
-                      初始化搜尋
+                        初始化搜尋
                     </button>
                   </div>
                 </div>
                 {/* 清除搜索词按钮 */}
               </div>
               {/* 搜索框 */}
+              <br></br>
               <br></br>
               <br></br>
               {/* 篩選 */}
@@ -586,7 +603,7 @@ const ProductsList = () => {
                         currentPage > 1 && handlePageChange(currentPage - 1)
                       }
                     >
-                      <i className="bi bi-chevron-left"></i>
+                      <i className="bi bi-chevron-left cursor:'pointer'"></i>
                     </button>
                   </li>
                   {/* 現有的分頁號碼 */}
@@ -604,7 +621,7 @@ const ProductsList = () => {
                         handlePageChange(currentPage + 1)
                       }
                     >
-                      <i className="bi bi-chevron-right"></i>
+                      <i className="bi bi-chevron-right cursor:'pointer'"></i>
                     </button>
                   </li>
                   {/* 前往最後一頁按鈕 */}

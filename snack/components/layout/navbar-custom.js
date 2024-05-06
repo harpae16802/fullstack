@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/custom-context'
 import { useRouter } from 'next/router'
+// context
+import { useCartContext } from '@/contexts/cartContext'
 
 import {
   FaBars,
@@ -16,6 +18,7 @@ import {
 export default function NavbarCustom() {
   const router = useRouter()
 
+  const { totalItems } = useCartContext()
   const { auth, logout, login, handleLogout } = useAuth()
 
   return (
@@ -30,6 +33,12 @@ export default function NavbarCustom() {
             <div className="right-icons">
               <a className="navbar-brand min-cart" href="/order/orderStep1">
                 <FaShoppingCart />
+                {/* 添加商品數量顯示 */}
+                {totalItems > 0 && (
+                  <span className="badge rounded-pill bg-danger itemCount">
+                    {totalItems}
+                  </span>
+                )}
               </a>
               <button
                 className="navbar-toggler"
@@ -113,12 +122,19 @@ export default function NavbarCustom() {
                         className="dropdown-item"
                         href="/memberSystem/qrcodeSelect"
                       >
+                      <Link
+                        className="dropdown-item"
+                        href="/memberSystem/qrcodeSelect"
+                      >
                         商品與QRcode
+                      </Link>
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item" href="/memberSystem">
+                      <Link className="dropdown-item" href="/memberSystem">
                         編輯基本資料
+                      </Link>
                       </Link>
                     </li>
                   </ul>
@@ -130,7 +146,9 @@ export default function NavbarCustom() {
                     onClick={(e) => {
                       e.preventDefault()
 
+
                       logout()
+                      router.push(`/login/login-custom`)
                       router.push(`/login/login-custom`)
                     }}
                   >
@@ -167,7 +185,9 @@ export default function NavbarCustom() {
 
                         <li>
                           <Link className="dropdown-item" href="/memberSystem">
+                          <Link className="dropdown-item" href="/memberSystem">
                             編輯基本資料
+                          </Link>
                           </Link>
                         </li>
                         <li>
@@ -175,7 +195,12 @@ export default function NavbarCustom() {
                             className="dropdown-item"
                             href="/memberSystem/qrcodeSelect"
                           >
+                          <Link
+                            className="dropdown-item"
+                            href="/memberSystem/qrcodeSelect"
+                          >
                             商品與QRcode
+                          </Link>
                           </Link>
                         </li>
                         <li>
@@ -185,7 +210,9 @@ export default function NavbarCustom() {
                             onClick={(e) => {
                               e.preventDefault()
 
+
                               logout()
+                              router.push(`/login/login-custom`)
                               router.push(`/login/login-custom`)
                             }}
                           >
@@ -200,7 +227,12 @@ export default function NavbarCustom() {
                 <li className="nav-item">
                   <a className="nav-link"href="/order/orderStep1">
                     <div className="nav-icons">
-                      <FaShoppingCart href="/order/orderStep1" className="fa-solid fa-cart-shopping" />
+                      <FaShoppingCart className="fa-solid fa-cart-shopping" />
+                      {totalItems > 0 && (
+                        <span className="badge bg-danger itemCount">
+                          {totalItems}
+                        </span>
+                      )}
                     </div>
                   </a>
                 </li>

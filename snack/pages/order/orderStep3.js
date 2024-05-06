@@ -7,9 +7,7 @@ import { useAuth } from '../../contexts/custom-context'
 import { CARTITEM } from '../seller-basic-data/config'
 import Link from 'next/link'
 
-
 export default function OrderF() {
-
   // 拿取custom_id
   const { auth } = useAuth()
   const customId = auth.custom_id
@@ -23,9 +21,9 @@ export default function OrderF() {
     pointsReduction: 0,
     remainingPoints: 0,
   })
-  
+
   // 訂單提交的狀態
-  const [orderSubmitted, setOrderSubmitted] = useState(false) 
+  const [orderSubmitted, setOrderSubmitted] = useState(false)
   // 拿取 locastorage中的資料
   useEffect(() => {
     const data = localStorage.getItem('paymentData')
@@ -43,7 +41,7 @@ export default function OrderF() {
         paymentData.items,
         customId,
         paymentData.selectedDiscount,
-        paymentData.pointsReduction
+        paymentData.pointsReduction,
       )
     }
   }, [paymentData, customId, orderSubmitted])
@@ -53,7 +51,7 @@ export default function OrderF() {
     items,
     customId,
     selectedDiscount,
-    pointsReduction
+    pointsReduction,
   ) {
     if (
       !customId ||
@@ -82,13 +80,13 @@ export default function OrderF() {
       console.log('訂單成功提交')
       // 清除 localStorage 中的 paymentData
       localStorage.removeItem('paymentData')
-      
+
       await handleClearCart(customId, items)
       setOrderSubmitted(true) // 設置訂單已提交標誌
-      setPaymentData(prevData => ({
+      setPaymentData((prevData) => ({
         ...prevData,
         orderNumber,
-        orderDate: new Date().toLocaleDateString()
+        orderDate: new Date().toLocaleDateString(),
       }))
     } catch (error) {
       console.error('提交訂單時出現錯誤：', error)
@@ -162,11 +160,13 @@ export default function OrderF() {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-       
-            <Link  style={{ paddingTop: '3px' }} className={styles.nextButton} href='/'>
+          <Link
+            style={{ paddingTop: '3px' }}
+            className={styles.nextButton}
+            href="/"
+          >
             回到主頁
-            </Link>
-     
+          </Link>
         </div>
       </div>
     </Section>

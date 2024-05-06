@@ -44,7 +44,7 @@ router.post("/uploadType1", uploadType1.single("adImage"), async (req, res) => {
   }
 
   if (req.file) {
-    const imagePath = path.join("adimg/type1", req.file.filename); 
+    const imagePath = path.join("adimg/type1", req.file.filename);
     try {
       const result = await db.query(
         "INSERT INTO advertisements (seller_id, image_path, ad_type) VALUES (?, ?, ?)",
@@ -81,7 +81,7 @@ router.post("/uploadType2", uploadType2.single("adImage"), async (req, res) => {
   }
 
   if (req.file) {
-    const imagePath = path.join("adimg/type2", req.file.filename); 
+    const imagePath = path.join("adimg/type2", req.file.filename);
 
     try {
       const result = await db.query(
