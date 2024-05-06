@@ -163,7 +163,7 @@ cartRouter.get("/points/:customId", async (req, res) => {
 
 // 建立訂單
 cartRouter.post("/order_data", async (req, res) => {
-  // 提取请求体数据
+  // 解構
   const {
     custom_id,
     seller_id,
@@ -175,7 +175,7 @@ cartRouter.post("/order_data", async (req, res) => {
   } = req.body;
 
   try {
-    // 插入订单数据到 order_data 表
+    // 注入order_data
     const [orderResult] = await db.query(
       `INSERT INTO order_data (custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -192,12 +192,12 @@ cartRouter.post("/order_data", async (req, res) => {
 
     const orderId = orderResult.insertId;
 
-    // 确保有 orderId 生成
+    // 生成
     if (!orderId) {
       throw new Error("Failed to create order.");
     }
 
-    // 订单详情
+    // 注入order_id到order_detail
     const orderDetailsPromises = items.map((item) => {
       return db.query(
         `
@@ -210,12 +210,12 @@ cartRouter.post("/order_data", async (req, res) => {
 
     await Promise.all(orderDetailsPromises);
 
-    res.status(201).send({ message: "订单创建成功", order_id: orderId });
+    res.status(201).send({ message: "訂單建立成功", order_id: orderId });
   } catch (error) {
-    console.error("创建订单错误：", error);
+    console.error("建立訂單失敗", error);
     res
       .status(500)
-      .send({ error: "创建订单时发生数据库错误。" });
+      .send({ error: "建立訂單錯誤" });
   }
 });
 
