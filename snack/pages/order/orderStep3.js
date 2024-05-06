@@ -32,6 +32,7 @@ export default function OrderF() {
     if (data) {
       const parsedData = JSON.parse(data)
       setPaymentData(parsedData)
+      console.log(parsedData)
     }
   }, [])
 
@@ -75,6 +76,7 @@ export default function OrderF() {
         items: items.map((item) => ({
           product_id: item.product_id,
           purchase_quantity: item.quantity,
+          remain_count: item.quantity,
         })),
       })
       console.log('訂單成功提交')

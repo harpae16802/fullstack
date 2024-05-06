@@ -33,7 +33,6 @@ cartRouter.get("/:custom_id", async (req, res) => {
   }
 });
 
-
 // 更新商品總價
 cartRouter.put("/:custom_id", async (req, res) => {
   const customId = req.params.custom_id;
@@ -83,28 +82,29 @@ cartRouter.put("/:custom_id", async (req, res) => {
   }
 });
 
-
 // 刪除商品
-cartRouter.delete('/:custom_id/:product_id', async (req, res) => {
-    const customId = req.params.custom_id;
-    const productId = req.params.product_id;
-    const deleteQuery = `
+cartRouter.delete("/:custom_id/:product_id", async (req, res) => {
+  const customId = req.params.custom_id;
+  const productId = req.params.product_id;
+  const deleteQuery = `
       DELETE FROM cart
       WHERE custom_id = ? AND product_id = ?
     `;
-  
-    try {
-      const [result] = await db.execute(deleteQuery, [customId, productId]);
-      if (result.affectedRows > 0) {
-        res.send({ message: 'Product removed successfully from cart.' });
-      } else {
-        res.status(404).send({ error: 'Product not found in cart.' });
-      }
-    } catch (error) {
-      console.error('Database error:', error);
-      res.status(500).send({ error: 'Database error occurred while removing product.' });
+
+  try {
+    const [result] = await db.execute(deleteQuery, [customId, productId]);
+    if (result.affectedRows > 0) {
+      res.send({ message: "Product removed successfully from cart." });
+    } else {
+      res.status(404).send({ error: "Product not found in cart." });
     }
-  });
+  } catch (error) {
+    console.error("Database error:", error);
+    res
+      .status(500)
+      .send({ error: "Database error occurred while removing product." });
+  }
+});
 
 // 優惠資訊路由
 cartRouter.get("/discounts/:seller_id", async (req, res) => {
@@ -130,88 +130,117 @@ cartRouter.get("/discounts/:seller_id", async (req, res) => {
     }
   } catch (error) {
     console.error("Database error:", error);
-    res.status(500).send({ error: "Database error occurred while fetching discounts." });
+    res
+      .status(500)
+      .send({ error: "Database error occurred while fetching discounts." });
   }
 });
 
-  // 使用用者點數
-  cartRouter.get('/points/:customId', async (req, res) => {
-    const customId = parseInt(req.params.customId, 10);
-    try {
-        const [results] = await db.execute(`
+// 使用用者點數
+cartRouter.get("/points/:customId", async (req, res) => {
+  const customId = parseInt(req.params.customId, 10);
+  try {
+    const [results] = await db.execute(
+      `
             SELECT SUM(ac.get_point) AS total_points
             FROM clear_data cd
             JOIN achievement_category ac ON cd.level_id = ac.level_id
             WHERE cd.user_id = ?
-        `, [customId]);
+        `,
+      [customId]
+    );
 
-        if (results.length > 0) {
-            res.json({ points: results[0].total_points || 0 });
-        } else {
-            res.json({ points: 0 });
-        }
-    } catch (error) {
-        console.error('Error fetching points:', error);
-        res.status(500).send('Server error');
+    if (results.length > 0) {
+      res.json({ points: results[0].total_points || 0 });
+    } else {
+      res.json({ points: 0 });
     }
+  } catch (error) {
+    console.error("Error fetching points:", error);
+    res.status(500).send("Server error");
+  }
 });
 
 // 建立訂單
-cartRouter.post('/order_data', async (req, res) => {
-  // 提取請求體數據
-  const { custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum, items } = req.body;
+cartRouter.post("/order_data", async (req, res) => {
+  // 提取请求体数据
+  const {
+    custom_id,
+    seller_id,
+    order_number,
+    discount_category_id,
+    consume_gamepoint,
+    total_sum,
+    items,
+  } = req.body;
 
   try {
-    // 插入訂單數據到 order_data 表
-    const [orderResult] = await db.query(`
-        INSERT INTO order_data (custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum)
-        VALUES (?, ?, ?, ?, ?, ?)
-    `, [custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum]);
+    // 插入订单数据到 order_data 表
+    const [orderResult] = await db.query(
+      `INSERT INTO order_data (custom_id, seller_id, order_number, discount_category_id, consume_gamepoint, total_sum)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `,
+      [
+        custom_id,
+        seller_id,
+        order_number,
+        discount_category_id,
+        consume_gamepoint,
+        total_sum,
+      ]
+    );
 
     const orderId = orderResult.insertId;
 
-    // 確保有 orderId 生成
+    // 确保有 orderId 生成
     if (!orderId) {
-      throw new Error('Failed to create order.');
+      throw new Error("Failed to create order.");
     }
 
-    // 訂單詳細
-    const orderDetailsPromises = items.map(item => {
-      return db.query(`
+    // 订单详情
+    const orderDetailsPromises = items.map((item) => {
+      return db.query(
+        `
           INSERT INTO order_detail (order_id, product_id, purchase_quantity)
           VALUES (?, ?, ?)
-      `, [orderId, item.product_id, item.purchase_quantity]); // 確保 purchase_quantity 正確傳遞
+      `,
+        [orderId, item.product_id, item.purchase_quantity]
+      );
     });
 
     await Promise.all(orderDetailsPromises);
 
-    res.status(201).send({ message: '訂單創建成功', order_id: orderId });
+    res.status(201).send({ message: "订单创建成功", order_id: orderId });
   } catch (error) {
-    console.error('創建訂單錯誤：', error);
-    res.status(500).send({ error: 'Database error occurred while creating order.' });
+    console.error("创建订单错误：", error);
+    res
+      .status(500)
+      .send({ error: "创建订单时发生数据库错误。" });
   }
 });
-
-
 
 
 // 清空購物車
-cartRouter.put('/cart/clear', async (req, res) => {
+cartRouter.put("/cart/clear", async (req, res) => {
   const { custom_id, product_ids } = req.body;
 
   try {
-      const placeholders = product_ids.map(() => '?').join(',');
-      await db.query(`
+    const placeholders = product_ids.map(() => "?").join(",");
+    await db.query(
+      `
           DELETE FROM cart
           WHERE custom_id = ? AND product_id IN (${placeholders})
-      `, [custom_id, ...product_ids]);
+      `,
+      [custom_id, ...product_ids]
+    );
 
-      res.send({ message: '購物車已清空' });
+    res.send({ message: "購物車已清空" });
   } catch (error) {
-      console.error('清空購物車錯誤：', error);
-      res.status(500).send({ error: 'Database error occurred while clearing cart.' });
+    console.error("清空購物車錯誤：", error);
+    res
+      .status(500)
+      .send({ error: "Database error occurred while clearing cart." });
   }
 });
-
 
 export default cartRouter;
