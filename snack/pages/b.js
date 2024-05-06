@@ -2,34 +2,39 @@ import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import GameRule from '@/components/modal/game-rule'
-// import { useSelectedLevel } from '@/contexts/LevelContext'; // 引入剛剛創建的上下文
+import { useSelectedLevel } from '@/contexts/LevelContext' // 引入選擇的關卡上下文
+import { GAME_DATA_POST } from '@/components/config/api-path'
+import { useAuth } from '@/contexts/custom-context'
 
 const BalloonShooterGame = () => {
+  const { auth } = useAuth()
+
   const gameContainerRef = useRef(null)
   const timerRef = useRef(null)
   const gameIntervalRef = useRef(null)
 
   // 初始化狀態
-  // const { selectedLevel } = useSelectedLevel();
+  const { selectedLevel, setSelectedLevel } = useSelectedLevel() // 從上下文中讀取選擇的關卡值
   const [myScore, setScore] = useState(0)
   const [timer, setTimer] = useState(30)
-  const [level, setLevel] = useState(5)
+
   const [showModal, setShowModal] = useState(false)
   const [gameStatus, setGameStatus] = useState('rule') // 初始為顯示遊戲規則
-
+  const [gamePoint, setGamePoint] = useState(null)
   const [currentLevelInfo, setCurrentLevelInfo] = useState({
     levelName: '',
     time: 0,
     clear: 0,
   })
 
+  const selLevel = Number(selectedLevel)
   // 關卡條件
   const levelConfigs = [
-    { level: 1, levelName: '第一關', time: 10, speed: 3, clear: 100 },
+    { level: 1, levelName: '第一關', time: 20, speed: 3, clear: 1000 },
     { level: 2, levelName: '第二關', time: 20, speed: 2.5, clear: 3000 },
     { level: 3, levelName: '第三關', time: 15, speed: 2, clear: 2000 },
     { level: 4, levelName: '第四關', time: 15, speed: 1.5, clear: 3000 },
-    { level: 5, levelName: '第五關', time: 10, speed: 3, clear: 100 },
+    { level: 5, levelName: '第五關', time: 10, speed: 1.5, clear: 2000 },
   ]
 
   // 氣球的設定
@@ -41,21 +46,34 @@ const BalloonShooterGame = () => {
     { color: 'purple', name: 'x2', points: 'x2' },
   ]
 
-  
+  useEffect(() => {
+    if (selectedLevel !== null) {
+      // 確保選擇的關卡存在後才設置遊戲初始狀態
+      const levelConfig = levelConfigs.find(
+        (config) => config.level === selLevel
+      )
+      setCurrentLevelInfo(levelConfig)
+      setScore(0)
+      setTimer(levelConfig.time)
+      setShowModal(true) // 顯示規則的模態框
+    }
+  }, [selectedLevel])
+
   // 開始遊戲
-  const startGame = (level) => {
+  const startGame = () => {
     // 清除之前的遊戲間隔
     clearInterval(gameIntervalRef.current)
     clearInterval(timerRef.current)
 
     // 根據關卡設定設置遊戲
-    const levelConfig = levelConfigs.find((config) => config.level === level)
+    const levelConfig = levelConfigs.find((config) => config.level === selLevel)
+
     setCurrentLevelInfo(levelConfig)
     setScore(0)
     setTimer(levelConfig.time)
-    setLevel(level)
+    // setLevel(selLevel)
 
-    const balloonInterval = level >= 4 ? 400 : 600
+    const balloonInterval = selLevel >= 4 ? 400 : 600
 
     // 設置遊戲間隔
     const interval = setInterval(() => {
@@ -73,48 +91,36 @@ const BalloonShooterGame = () => {
     setTimeout(() => {
       clearInterval(timerRef.current)
       clearInterval(gameIntervalRef.current)
-      // let mmScore = 0;
-      // setScore(old=>{
-      //   console.log({old});
-      //   mmScore = old;
-      //   return old;
-      // })
-      // console.log({myScore, setScore});
-      // console.log({mmScore});
-      // checkGameResult(levelConfig, mmScore)
     }, levelConfig.time * 1000)
   }
   useEffect(() => {
     setShowModal(true)
   }, [])
+  // useEffect(() => {
+  //   if (selectedLevel !== null) {
+  //     setLevel(selectedLevel);
+  //   }
+  // }, [selectedLevel]);
 
   useEffect(() => {
-    const levelConfig = levelConfigs.find((config) => config.level === level);
+    const levelConfig = levelConfigs.find((config) => config.level === selLevel)
     if (timer === 0) {
-      clearInterval(timerRef.current);
-      clearInterval(gameIntervalRef.current);
-      
-      checkGameResult(levelConfig, myScore);
+      clearInterval(timerRef.current)
+      clearInterval(gameIntervalRef.current)
+
+      checkGameResult(levelConfig, myScore)
     }
-  }, [timer]);
+  }, [timer])
 
-  // useEffect(() => {
-  //   if (!showModal) {
-  //     startGame(1)
-  //   }
-
-  //   return () => {
-  //     clearInterval(timerRef.current)
-  //     clearInterval(gameIntervalRef.current)
-  //   }
-  // }, [showModal])
-
-  const checkGameResult = (levelConfig, myScore) => {
-    console.log({ levelConfig, level, myScore })
-    if (myScore >= levelConfig.clear && level < 5) {
+  //通關條件
+  const checkGameResult = async (levelConfig, myScore) => {
+    console.log({ levelConfig, selLevel, myScore })
+    if (myScore >= levelConfig.clear && selLevel < 5) {
+      await recordGameResult(levelConfig, myScore)
       setGameStatus('success') // 通關成功
       setShowModal(true)
-    } else if (myScore > levelConfig.clear && level === 5) {
+    } else if (myScore > levelConfig.clear && selLevel === 5) {
+      await recordGameResult(levelConfig, myScore)
       setGameStatus('success2') // 通關成功
       setShowModal(true)
     } else {
@@ -122,22 +128,33 @@ const BalloonShooterGame = () => {
       setShowModal(true)
     }
   }
-  //監聽分數和 modal 狀態的變化
 
-  // useEffect(() => {
-  //   // 檢查遊戲是否結束
-  //   const levelConfig = levelConfigs.find((config) => config.level === level)
-  //   if (myScore >= levelConfig.clear && level < 5) {
-  //     setGameStatus('success') // 通關成功
-  //     setShowModal(true)
-  //   } else if (myScore < levelConfig.clear && level === 5) {
-  //     setGameStatus('success') // 通關成功
-  //     setShowModal(true)
-  //   } else if (myScore < levelConfig.clear && level === 5) {
-  //     setGameStatus('failure') // 通關失敗
-  //     setShowModal(true)
-  //   }
-  // }, [myScore, level])
+  const recordGameResult = async (levelConfig, myScore) => {
+    const userId = auth.custom_id
+    const clearLevel = levelConfig.level
+    const finalscore = myScore
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        custom_id: userId,
+        score: finalscore,
+        level: clearLevel,
+      }),
+    }
+
+    try {
+      const response = await fetch(GAME_DATA_POST, requestOptions)
+      const data = await response.json()
+      if (data.success) {
+        setGamePoint(data.data.game_point)
+      } else {
+        console.error('Error:', data.error)
+      }
+    } catch (error) {
+      console.error('Error recording game result:', error.message)
+    }
+  }
 
   // 創建氣球
   const createBalloon = (speed) => {
@@ -210,10 +227,29 @@ const BalloonShooterGame = () => {
     })
   }
 
+  // ===== 傳給modal的按鈕功能
   // 當點擊規則模态框上的開始遊戲按鈕時
   const handleStartGame = () => {
-    setShowModal(false) // 關閉規則模态框
-    startGame(level) // 開始遊戲
+    setShowModal(false) // 關閉modal
+    startGame(selLevel) // 開始遊戲
+  }
+
+  const goToNextLevel = () => {
+    setGameStatus('rule')
+    const nextLevel = selLevel + 1
+    setSelectedLevel(nextLevel)
+    const nextLevelConfig = levelConfigs.find(
+      (config) => config.level === nextLevel
+    )
+    setCurrentLevelInfo(nextLevelConfig)
+    setShowModal(false) // 關閉modal
+  }
+
+  // 再次挑戰的事件處理函式
+  const retryLevel = () => {
+    // 重新開始當前關卡
+    startGame()
+    setShowModal(false) // 關閉modal
   }
 
   return (
@@ -246,8 +282,10 @@ const BalloonShooterGame = () => {
             time={currentLevelInfo.time}
             clear={currentLevelInfo.clear}
             score={myScore}
-            onClose={() => setShowModal(false)}
-            onStartGame={handleStartGame}
+            getPoint={gamePoint}
+            onGoToNextLevel={goToNextLevel} // 前往下一關
+            onRetryLevel={retryLevel} // 再次挑戰
+            onStartGame={handleStartGame} //遊戲開始
             showModal={showModal}
             setShowModal={setShowModal}
           />
@@ -257,6 +295,7 @@ const BalloonShooterGame = () => {
           <div className="balloon-play" ref={gameContainerRef}></div>
         </div>
       </div>
+      
     </div>
   )
 }

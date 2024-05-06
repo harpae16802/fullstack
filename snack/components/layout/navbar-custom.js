@@ -74,9 +74,13 @@ export default function NavbarCustom() {
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${
-                      router.pathname === '/game/game-select' ? 'active' : ''
+                      router.pathname === '/game/game-index' ||
+                      router.pathname === '/game/game-select' ||
+                      router.pathname === '/game/game-play'
+                        ? 'active'
+                        : ''
                     }`}
-                    href="/game/game-select"
+                    href="/game/game-index"
                   >
                     趣味遊戲
                   </Link>
@@ -105,7 +109,10 @@ export default function NavbarCustom() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link className="dropdown-item" href="/memberSystem/qrcodeSelect">
+                      <Link
+                        className="dropdown-item"
+                        href="/memberSystem/qrcodeSelect"
+                      >
                         商品與QRcode
                       </Link>
                     </li>
@@ -122,10 +129,9 @@ export default function NavbarCustom() {
                     href="#"
                     onClick={(e) => {
                       e.preventDefault()
-                    
+
                       logout()
                       router.push(`/login/login-custom`)
-
                     }}
                   >
                     登出
@@ -165,7 +171,10 @@ export default function NavbarCustom() {
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item" href="/memberSystem/qrcodeSelect">
+                          <Link
+                            className="dropdown-item"
+                            href="/memberSystem/qrcodeSelect"
+                          >
                             商品與QRcode
                           </Link>
                         </li>
@@ -175,10 +184,9 @@ export default function NavbarCustom() {
                             href="#"
                             onClick={(e) => {
                               e.preventDefault()
-              
+
                               logout()
                               router.push(`/login/login-custom`)
-                              
                             }}
                           >
                             登出

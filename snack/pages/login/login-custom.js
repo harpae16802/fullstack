@@ -31,7 +31,7 @@ export default function LoginCustom() {
   const router = useRouter()
 
   // 會員登入登出的勾子
-  const { auth, login, logout, callbackGoogleLoginRedirect,isLoginByGoogle } = useAuth()
+  const { auth, login, logout, callbackGoogleLoginRedirect } = useAuth()
 
   // 處理手機板的註冊登入的頁面呈現
   const { selectedContent, handleLinkClick } = useContext(MiniloginContext)
@@ -443,6 +443,7 @@ export default function LoginCustom() {
 
                     <button className="google-login mt-4" onClick={() => {
                         loginGoogleRedirect()
+                        // loginGoogle(callbackGoogleLoginRedirect)
                       }}>
                       <Image
                         src="/images/login/Google.svg"
@@ -578,20 +579,21 @@ export default function LoginCustom() {
                       </div>
                       <button
                         type="submit"
-                        className="btn btn-primary mb-4 mt-4"
+                        className="btn btn-primary mb-5 mt-5"
                       >
                         登入
                       </button>
-                      <div className="forget-text">
+                      {/* <div className="forget-text">
                         <Link href="/opt" className="forget-p mb-5">
                           <p>忘記密碼？</p>
                         </Link>
-                      </div>
+                      </div> */}
                     </form>
                     <button
                       className="google-login mt-5"
                       onClick={() => {
                         loginGoogleRedirect()
+                        // loginGoogle(callbackGoogleLoginRedirect)
                       }}
                     >
                       <Image
@@ -838,11 +840,11 @@ export default function LoginCustom() {
                   <button type="submit" className="btn btn-primary mb-4 mt-4">
                     登入
                   </button>
-                  <div className="forget-text">
+                  {/* <div className="forget-text">
                     <Link href="/opt" className="forget-p">
                       <p>忘記密碼？</p>
                     </Link>
-                  </div>
+                  </div> */}
                 </form>
                 <button className="google-login mt-4">
                   <Image

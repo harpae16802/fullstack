@@ -151,11 +151,11 @@ export default function LoginSeller() {
                   <div className="seller-input-group">
                     <LoginForm onSuccess={handleEnterSuccess} />
 
-                    <div className="forget-text">
+                    {/* <div className="forget-text">
                       <Link href="/opt" className="forget-p">
                         <p>忘記密碼？</p>
                       </Link>
-                    </div>
+                    </div> */}
                     {/* <button type="submit" className="btn btn-primary mb-5">
                         登入
                       </button> */}
@@ -239,12 +239,12 @@ export default function LoginSeller() {
                   title="登入失敗"
                   body="帳號或密碼錯誤，請重新輸入。"
                 />
-
+{/* 
                 <div className="forget-text">
                   <Link href="/opt" className="forget-p">
                     <p>忘記密碼？</p>
                   </Link>
-                </div>
+                </div> */}
                 {/* <button type="submit" className="btn btn-primary">
                     登入
                   </button> */}
