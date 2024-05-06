@@ -37,7 +37,7 @@ export default function Product() {
 
   const handleProductClick = (product) => {
     // 如果點擊的是當前已選定的產品，則取消選定
-    setSelectedProduct(selectedProduct === product ? null : product);
+    setSelectedProduct(product);
   };
 
   useEffect(() => {
@@ -253,23 +253,7 @@ useEffect(() => {
           ))}
         </div>
 
-      {/* <div className="container">
-
-        <div className={`row ${styles.categoryPicInterval}`} >
-
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><Caterun dev>
-
-        </div>
-
-      </div> */}
-
-      
-
+    
 
       <FilterOptions />
 
@@ -306,13 +290,13 @@ useEffect(() => {
       seller={product.store_name}
       product={product.product_name}
       // 将 selectedProduct 设置为选定的商品状态
-      selectedProduct={selectedProduct}
+      // selectedProduct={selectedProduct}
     />
 
     <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
     
     {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
-    {selectedProduct === product && (
+   {selectedProduct && 
       <ProductDetailCard 
         imageUrl={`/${product.image_url}`}
         seller={product.store_name}
@@ -322,9 +306,9 @@ useEffect(() => {
         ingredient={product.product_ingredient}
         nutrition={product.product_nutrition}
         // 将 selectedProduct 设置为选定的商品状态
-        selectedProduct={selectedProduct}
+        // selectedProduct={selectedProduct}
       />
-    )}
+   }
   </div>
 ))}
 
