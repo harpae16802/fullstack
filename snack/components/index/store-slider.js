@@ -116,7 +116,7 @@ function StoreSlider() {
           return (
             <div className="card-store-index" key={i}>
               <img
-                src={`${API_SERVER}/${v.store_image}`}
+                src={`${API_SERVER}/public/${v.store_image}`}
                 alt="store-img"
                 className="store-img"
               />

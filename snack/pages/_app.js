@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
     ))
 
   return (
-    <LoaderProvider close={3} CustomLoader={HunterLoader}>
+    // <LoaderProvider close={3} CustomLoader={HunterLoader}>
     <PaymentProvider>
     <NotifyProvider>
     <ImgProvider>   
@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps }) {
     </ImgProvider>
     </NotifyProvider>
     </PaymentProvider>
-    </LoaderProvider>
+    // </LoaderProvider>
   )
 }
 

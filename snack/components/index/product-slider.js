@@ -143,7 +143,7 @@ function ProductSlider() {
                   </div>
                   <div className="product-img">
                     <img
-                      src={`${API_SERVER}/${v.image_url}`}
+                      src={`${API_SERVER}/public/${v.image_url}`}
                       alt="product"
                       className="product"
                     />
@@ -189,7 +189,7 @@ function ProductSlider() {
       {selectedProductIndex !== null && (
         <div className="product-detail">
           <IndexProductDetailCard
-            imageUrl={`${API_SERVER}/${listData[selectedProductIndex].image_url}`}
+            imageUrl={`${API_SERVER}/public/${listData[selectedProductIndex].image_url}`}
             seller={listData[selectedProductIndex].store_name}
             product={listData[selectedProductIndex].product_name}
             description={listData[selectedProductIndex].product_description}
