@@ -29,7 +29,8 @@ import { join } from 'path';
 import categoriesRouter from './routes/categoriesRouter.js'
 import cartRouter from './routes/cartRouter.js'
 import gameDataRouter from "./routes/game-data.js";
-
+import {createAndViewData} from "./utils/qrcodeView.js"
+// createAndViewData();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const IMAGES_DIR = path.join(__dirname, "public/images"); // tung - 用於前端渲染圖片
