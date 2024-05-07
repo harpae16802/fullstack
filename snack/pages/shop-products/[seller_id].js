@@ -262,7 +262,7 @@ export default function ShopProducts() {
                   seller.opening_hours,
                 )}到凌晨${formatTime(seller.closing_hours)}`}
                 score={rating && Number(rating.average_night_rating).toFixed(1)}
-                comment={`${rating.total_comments}則留言`}
+                comment={rating ? rating.total_comments :'則留言'}
               />
             )}
           </div>
