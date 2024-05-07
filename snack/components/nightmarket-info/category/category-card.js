@@ -10,12 +10,13 @@ export default function CategoryCard({
 }) {
   return (
     <div className={style.card} onClick={() => onClick(title)}>
-      <div className={style.imageContainer}>
+      <div className={style.imageContainer} style={{width:'175px'}}>
         <img
           src={imgUrl}
           alt={title}
           className={style.image}
           style={imgStyle}
+          
         />
       </div>
       <p className={style.title}>{title}</p>

@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import Image from 'next/image';
-import { FiHeart } from 'react-icons/fi';
+import { FaHeart,FaRegHeart } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import styles from '@/styles/Product.module.css'; // 確保引入了正確的樣式文件
 import { RxCross1 } from "react-icons/rx";
@@ -23,13 +23,13 @@ export default function ProductDetailCard({
   price = "",
   ingredient = "",
   nutrition = "",
+
 }) { 
 
-  const [isFavorite, setIsFavorite] = useState(false) // 最愛
-
-  // 加入收藏 - 商品
+    const [isFavorite, setIsFavorite] = useState(false) // 最愛
+   console.log(product_id);
+      // 加入收藏 - 商品
   const toggleFavoriteProducts = async () => {
-    console.log(123345);
     try {
       const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
       const data = await r.json()
@@ -40,7 +40,6 @@ export default function ProductDetailCard({
       console.error('加入最愛 錯誤:', error)
     }
   }
-
   useEffect(() => {
     // 检查收藏状态
     const checkFavoriteStatus = async () => {
@@ -53,6 +52,7 @@ export default function ProductDetailCard({
 
     checkFavoriteStatus()
   }, [product_id])
+
 
 
 
@@ -101,7 +101,7 @@ export default function ProductDetailCard({
 
     {/* '+ -'按鈕 */}
     <div className={styles.detailNumber}>
-        <button className={styles.detailNumberButton}>-</button>
+        <button className={styles.detailNumberButton} >-</button>
         <div className={styles.detailNumberShow}>1</div>
         <button className={styles.detailNumberButton}>+</button>
     </div>
@@ -110,8 +110,17 @@ export default function ProductDetailCard({
     <div style={{display:'flex', marginTop:'20px',marginLeft:'115px',color:'#A32C2D',fontSize:'30px'}}>
 
   {/* 加入收藏 */}
-    <FiHeart  className={styles.detailHeartIcon}  onClick={toggleFavoriteProducts}
-    />
+  {isFavorite ? (
+            <FaHeart
+              className={styles.collectIcon}
+              onClick={toggleFavoriteProducts}
+            />
+          ) : (
+            <FaRegHeart
+              className={styles.collectIcon}
+              onClick={toggleFavoriteProducts}
+            />
+          )}
 
     <button className={styles.addCartButton}>加入購物車</button>
 
@@ -122,10 +131,10 @@ export default function ProductDetailCard({
 
     
     {/* // 手風琴:營養成分表 */}
-<div className="accordion accordion-flush" id="accordionFlushExample">
+<div className={`accordion accordion-flush ${styles.detailAccordionPosition}`} id="accordionFlushExample">
   <div className="accordion-item">
     <h2 className="accordion-header" id="flush-headingOne">
-      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+      <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" >
        成分 : 
       </button>
     </h2>
@@ -147,8 +156,8 @@ export default function ProductDetailCard({
 
         {/* 營養成分表 */}
         <div className="accordion accordion-flush" id="accordionFlushExample">
-  <div classNameName="accordion-item">
-    <h2 classNameName="accordion-header" id="flush-headingTwo">
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="flush-headingTwo">
       <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
        營養成分:
       </button>
@@ -173,12 +182,7 @@ export default function ProductDetailCard({
 
       </div>
       {/* 下方按鈕 */}
-      <div className="modal-footer">
 
-        {/* <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"></button>
-        <button type="button" class="btn btn-primary"></button> */}
-
-      </div>
 
     </div>
   </div>

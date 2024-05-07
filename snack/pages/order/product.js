@@ -33,11 +33,11 @@ export default function Product() {
   // 熱門產品
   const [popularProducts, setPopularProducts] = useState([]);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState(null);
 
   const handleProductClick = (product) => {
     // 如果點擊的是當前已選定的產品，則取消選定
-    setSelectedProduct(product);
+    setSelectedProducts(product);
   };
 
   useEffect(() => {
@@ -233,9 +233,7 @@ useEffect(() => {
       <Section>
 
 
-      <div >
-        <SearchBar /> 
-      </div>
+
       
       {/* 產品類型 */}
 
@@ -248,7 +246,7 @@ useEffect(() => {
               key={index}
               className={`col-xs-6 col-md-2 d-flex justify-content-center ${style.categoryCard}`}
             >
-              <CategoryCard {...category} />
+              <CategoryCard  {...category} />
             </div>
           ))}
         </div>
@@ -258,21 +256,6 @@ useEffect(() => {
       <FilterOptions />
 
       {/* 熱門商品 */}
-
-      <Swiper
-      spaceBetween={50}
-      slidesPerView={3}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
-    >
-      <SwiperSlide>
-
-        
-      </SwiperSlide>
-
-
-    </Swiper>
-
 
       
     <div className={`container-fluid  ${styles.popularDisplay}`}>
@@ -290,13 +273,15 @@ useEffect(() => {
       seller={product.store_name}
       product={product.product_name}
       // 将 selectedProduct 设置为选定的商品状态
-      // selectedProduct={selectedProduct}
+      selectedProduct={selectedProducts}
     />
 
     <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
+
+    
     
     {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
-   {selectedProduct && 
+   {selectedProducts && selectedProducts.product_id === product.product_id &&
       <ProductDetailCard 
         imageUrl={`/${product.image_url}`}
         seller={product.store_name}
@@ -309,9 +294,10 @@ useEffect(() => {
         // selectedProduct={selectedProduct}
       />
    }
+
+   
   </div>
 ))}
-
 
 
           </div>
@@ -341,6 +327,7 @@ useEffect(() => {
           imageUrl={`/${product.image_url}`}
           productName={product.product_name}
           score="4.7"
+          
         />
         </div>
 

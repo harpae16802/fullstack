@@ -3,6 +3,7 @@ import styles from '@/styles/Product.module.css'
 import { ImCross } from 'react-icons/im'
 import { RxCross1 } from 'react-icons/rx'
 import { IoIosArrowDown } from 'react-icons/io'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function FilterOptions() {
   return (

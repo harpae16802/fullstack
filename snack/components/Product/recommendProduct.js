@@ -38,9 +38,9 @@ export default function ProductItem  ({
     return (
       <div  className={styles.recommendProductContainer}>
 
-        <Image src={imageUrl} width={358} height={238} className={styles.recommendImage}/>
+        <Image src={imageUrl} width={358} height={238} className={styles.recommendImage} alt={imageUrl}/>
 
-        <div className={styles.recommendInfo}>
+        <div className={styles.recommendInfo} >
 
           <p className={styles.recommendName} style={{whiteSpace:'nowrap'}}>{productName}</p>
 

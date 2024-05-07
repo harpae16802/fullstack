@@ -2,7 +2,7 @@ import React from 'react';
 import { ImCross } from 'react-icons/im';
 import { FaCheck } from 'react-icons/fa';
 import styles from '@/styles/Order.module.css'; // 確保引入了正確的樣式文件
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const PaymentSuccessWindow = () => {
   return (

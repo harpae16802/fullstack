@@ -234,7 +234,7 @@ export default function Product() {
                 <div
                 
                   key={index}
-                  className={classNames(` justify-content-center ${style.categoryCard}`,style.productsList)}
+                  className={classNames(` justify-content-center ${style.categoryCard}`)}
                 >
                   <CategoryCard {...category} />
                 </div>
