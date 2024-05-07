@@ -110,7 +110,7 @@ export default function SellerBasicData() {
             openingHours: data.opening_hours || '17:00',
             closingHours: data.closing_hours || '23:00',
             restDay: data.rest_day?.toString() || '6',
-            storeImage: data.storeImage || '您還沒有圖片唷~',
+            storeImage: data.store_image || '您還沒有圖片唷~',
             profilePicture: data.profile_picture || `${IMG}`,
           }))
           setOriginData(data)

@@ -296,7 +296,6 @@ export default function Order() {
                   }} // 圖片錯誤處裡
                 />
 
-
                 <input
                   type="file"
                   id="profilePictureInput"
@@ -555,7 +554,7 @@ export default function Order() {
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                       >
-                        <i className="bi bi-chevron-left "></i>
+                        <i className="bi bi-chevron-left"></i>
                       </button>
                     </li>
                     {/* 動態生成的頁碼按鈕 */}
