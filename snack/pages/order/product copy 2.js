@@ -1,10 +1,8 @@
 import Section from '@/components/layout/section'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
-import { RxCross1 } from 'react-icons/rx'
-import { FaHeart, FaRegHeart } from 'react-icons/fa' 
-
+import { RxCross1 } from "react-icons/rx";
+import { FaHeart,FaRegHeart } from 'react-icons/fa';
 import styles from '@/styles/Product.module.css'
 import SearchBar from '@/components/common/search-bar'
 import PopularProduct from '@/components/Product/popularProduct'
@@ -19,7 +17,6 @@ import { MARKET_SELLER } from '@/components/config/api-path'
 import tryApi from '@/api/productApi.js/tryApi'
 import ProductDetailCard from '@/components/Product/productDetail'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Card from "./card";
 import { Modal, Button } from 'react-bootstrap'
 // fetch 網址
 import {
@@ -65,12 +62,8 @@ export default function Product() {
         const data = await response.json()
         console.log('eddie', data.data) // 檢查從後端獲得的資料
         // 解構第一個產品資料並設置到狀態中
-        const m = data.data.map((v, i) => {
-          v.imageUrl = 'http://localhost:3002/public/' + v.image_url
-          return v
-        })
 
-        setPopularProducts(m)
+        setPopularProducts(data.data)
       } catch (error) {
         console.error('Error fetching data:', error)
         // 處理錯誤
@@ -242,13 +235,13 @@ export default function Product() {
       <Section>
         {/* 產品類型 */}
 
-        <div>
+        <div className={`row ${style.content}`}>
           {/* 產品種類 */}
-          <div className={` ${style.category} d-flex justify-content-center`}>
+          <div className={`col ${style.category}`}>
             {categories.map((category, index) => (
               <div
                 key={index}
-                className={` d-flex justify-content-center ${style.categoryCard}`}
+                className={`col-xs-6 col-md-2 d-flex justify-content-center ${style.categoryCard}`}
               >
                 <CategoryCard {...category} />
               </div>
@@ -259,76 +252,210 @@ export default function Product() {
 
           {/* 熱門商品 */}
 
-          <div className='d-flex justify-content-between'>
-            <div className="d-flex justify-content-center" style={{width:"90vw"}}>
+          <div className={`container-fluid  ${styles.popularDisplay}`}>
+            <div
+              className={`col justify-content-center ${styles.popularContainer}`}
+            >
+            {JSON.stringify(popularProducts)}
               {/* 熱門產品 */}
               {popularProducts &&
                 popularProducts.map((product, index) => (
-                  <div className="d-flex flex-column ">
-                    <div className={styles.popularInfo}>
-                      {/* 火焰icon */}
-                      <Image
-                        src="/images/fire.png"
-                        width={45}
-                        height={55}
-                        className={styles.popularIcon}
-                        alt="火焰icon"
-                      />
+                  <div key={index} className="col-12 col-sm-3">
+                    {/* <PopularProduct 
+      product_id={product.product_id}
+      imageUrl={`/${product.image_url}`}
+      saleRanking={`No${index + 1}`}
+      market={product.market_name}
+      seller={product.store_name}
+      product={product.product_name}
+      // 将 selectedProduct 设置为选定的商品状态
+      selectedProduct={selectedProducts}
+    /> */}
+                    <>
+                      {/* <button onClick={() => handleProductClick(product)} type="button" data-bs-toggle="modal" data-bs-target="#detailModal" className={` ${styles.seeMoreButton}`}>
+      看更多
+    </button> */}
 
-                      <div className={styles.bestSellerText}>本週熱銷</div>
+                      <div
+                        className="modal fade"
+                        id="detailModal"
+                        tabindex="-1"
+                        aria-labelledby="detailModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div
+                          className={`modal-dialog ${styles.detailModalSize}`}
+                        >
+                          <div className="modal-content">
+                            <div className="modal-body">
+                              <div className={styles.detailContainer}>
+                                {/* 產品圖 */}
+                                <Image
+                                  src={product.imageUrl}
+                                  width={759}
+                                  height={726}
+                                  className={styles.detailPic}
+                                  alt={product.imageUrl}
+                                />
 
-                      <div className={styles.bestSellerText}>
-                        {`NO${index + 1}`}
+                                <div className={styles.detailTextArray}>
+                                  {/* <RxCross1 className={styles.detailCrossIcon}/> */}
+                                  <RxCross1
+                                    type="button"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    className={`btn-close ${styles.detailCrossIcon}`}
+                                  ></RxCross1>
+
+                                  {/* 店家名稱 */}
+                                  <div className={styles.detailSeller}>
+                                    {product.seller}
+                                  </div>
+                                  {/* 產品名稱 */}
+                                  <div className={styles.detailProductName}>
+                                    {product.product}
+                                  </div>
+
+                                  {/* 產品描述 */}
+                                  <div className={styles.detailIntroduce}>
+                                    {product.description}
+                                  </div>
+                                  {/* 價格 */}
+                                  <div className={styles.detailPrice}>
+                                    ${product.price}
+                                  </div>
+
+                                  {/* '+ -'按鈕 */}
+                                  <div className={styles.detailNumber}>
+                                    <button
+                                      className={styles.detailNumberButton}
+                                    >
+                                      -
+                                    </button>
+                                    <div className={styles.detailNumberShow}>
+                                      1
+                                    </div>
+                                    <button
+                                      className={styles.detailNumberButton}
+                                    >
+                                      +
+                                    </button>
+                                  </div>
+
+                                  {/* 收藏 加入購物車 */}
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      marginTop: '20px',
+                                      marginLeft: '115px',
+                                      color: '#A32C2D',
+                                      fontSize: '30px',
+                                    }}
+                                  >
+                                    {/* 加入收藏 */}
+                                    {isFavorite ? (
+                                      <FaHeart
+                                        className={styles.collectIcon}
+                                        onClick={toggleFavoriteProducts}
+                                      />
+                                    ) : (
+                                      <FaRegHeart
+                                        className={styles.collectIcon}
+                                        onClick={toggleFavoriteProducts}
+                                      />
+                                    )}
+
+                                    <button className={styles.addCartButton}>
+                                      加入購物車
+                                    </button>
+                                    <button
+                                      className={styles.immediateBuyButton}
+                                    >
+                                      立即購買
+                                    </button>
+                                  </div>
+                                  {/* // 手風琴:營養成分表 */}
+                                  <div
+                                    className={`accordion accordion-flush ${styles.detailAccordionPosition}`}
+                                    id="accordionFlushExample"
+                                  >
+                                    <div className="accordion-item">
+                                      <h2
+                                        className="accordion-header"
+                                        id="flush-headingOne"
+                                      >
+                                        <button
+                                          className="accordion-button collapsed"
+                                          type="button"
+                                          data-bs-toggle="collapse"
+                                          data-bs-target="#flush-collapseOne"
+                                          aria-expanded="false"
+                                          aria-controls="flush-collapseOne"
+                                        >
+                                          成分 :
+                                        </button>
+                                      </h2>
+                                      <div
+                                        id="flush-collapseOne"
+                                        className="accordion-collapse collapse"
+                                        aria-labelledby="flush-headingOne"
+                                        data-bs-parent="#accordionFlushExample"
+                                      >
+                                        <div
+                                          className={`accordion-body ${styles.detailIngredient}`}
+                                        >
+                                          {product.ingredient}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* 營養成分表 */}
+                                  <div
+                                    className="accordion accordion-flush"
+                                    id="accordionFlushExample"
+                                  >
+                                    <div className="accordion-item">
+                                      <h2
+                                        className="accordion-header"
+                                        id="flush-headingTwo"
+                                      >
+                                        <button
+                                          className="accordion-button collapsed"
+                                          type="button"
+                                          data-bs-toggle="collapse"
+                                          data-bs-target="#flush-collapseTwo"
+                                          aria-expanded="false"
+                                          aria-controls="flush-collapseTwo"
+                                        >
+                                          營養成分:
+                                        </button>
+                                      </h2>
+                                      <div
+                                        id="flush-collapseTwo"
+                                        className="accordion-collapse collapse"
+                                        aria-labelledby="flush-headingTwo"
+                                        data-bs-parent="#accordionFlushExample"
+                                      >
+                                        <div
+                                          className={`accordion-body ${styles.nutritionIngredient}`}
+                                        >
+                                          {product.nutrition}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {/* 下方按鈕 */}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </>
 
-                    <Image
-                      src={product.imageUrl}
-                      width={345}
-                      height={275}
-                      className={styles.popularImage}
-                      alt={product.product_name}
-                    />
-
-                    <p
-                      className={styles.bestSeller}
-                      style={{ marginTop: '10px' }}
-                    >
-                      {product.market_name}
-                    </p>
-
-                    <p
-                      className={styles.bestSeller}
-                      style={{ marginTop: '-18px' }}
-                    >
-                      {product.store_name}{' '}
-                    </p>
-
-                    <p
-                      className={styles.bestProduct}
-                      style={{ marginTop: '-18px' }}
-                    >
-                      {product.product_name}{' '}
-                    </p>
-
-                    {/* <div className={styles.bestProduct}>{props.product}
-<FaRegHeart  className={styles.collectIcon}  onClick={toggleFavoriteProducts}/></div> */}
-                    {isFavorite ? (
-                      <FaHeart
-                        className={styles.collectIcon}
-                        onClick={toggleFavoriteProducts}
-                      />
-                    ) : (
-                      <FaRegHeart
-                        className={styles.collectIcon}
-                        onClick={toggleFavoriteProducts}
-                      />
-                    )}
-                    <br />
                     <button
                       className={styles.seeMoreButton}
                       type="button"
-                      data-bs-target="#detailModal"
                       data-bs-toggle="modal"
                     >
                       看更多
@@ -343,10 +470,14 @@ export default function Product() {
                       aria-labelledby="detailModalLabel"
                       aria-hidden="true"
                     >
-
-                    {/* 產品詳細 */}
                       <div className={`modal-dialog ${styles.detailModalSize}`}>
                         <div className="modal-content">
+                          {/* 右上角叉叉 */}
+                          {/* <RxCross1 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{color: '#A32C2D'}}></RxCross1> */}
+
+                          {/* <button type="button" class="btn-close" style={{color: '#A32C2D'}}
+         data-bs-dismiss="modal" aria-label="Close"></button> */}
+
                           <div className="modal-body">
                             <div className={styles.detailContainer}>
                               {/* 產品圖 */}
@@ -359,7 +490,7 @@ export default function Product() {
                               />
 
                               <div className={styles.detailTextArray}>
-                              
+                                {/* <RxCross1 className={styles.detailCrossIcon}/> */}
                                 <RxCross1
                                   type="button"
                                   data-bs-dismiss="modal"
@@ -369,16 +500,16 @@ export default function Product() {
 
                                 {/* 店家名稱 */}
                                 <div className={styles.detailSeller}>
-                                  {product.store_name}
+                                  {product.seller}
                                 </div>
                                 {/* 產品名稱 */}
                                 <div className={styles.detailProductName}>
-                                  {product.product_name}
+                                  {product.product}
                                 </div>
 
                                 {/* 產品描述 */}
                                 <div className={styles.detailIntroduce}>
-                                  {product.product_description}
+                                  {product.description}
                                 </div>
                                 {/* 價格 */}
                                 <div className={styles.detailPrice}>
@@ -460,7 +591,7 @@ export default function Product() {
                                       <div
                                         className={`accordion-body ${styles.detailIngredient}`}
                                       >
-                                        {product.product_ingredient}
+                                        {product.ingredient}
                                       </div>
                                     </div>
                                   </div>
@@ -500,7 +631,7 @@ export default function Product() {
                                       <div
                                         className={`accordion-body ${styles.nutritionIngredient}`}
                                       >
-                                        {product.product_nutrition}
+                                        {product.nutrition}
                                       </div>
                                     </div>
                                   </div>
@@ -516,11 +647,6 @@ export default function Product() {
                     </div>
                   </div>
                 ))}
-              {/* 熱門產品 */}
-              {/* {popularProducts &&
-                popularProducts.map((product, index) => (
-                  <Card product={product}/>
-                ))} */}
             </div>
           </div>
 

@@ -1,93 +1,45 @@
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { FaHeart, FaRegHeart } from 'react-icons/fa'
-import { IoIosArrowDown } from 'react-icons/io'
-import styles from '@/styles/Product.module.css' // 確保引入了正確的樣式文件
-import { RxCross1 } from 'react-icons/rx'
-import 'bootstrap/dist/css/bootstrap.min.css'
-// fetch 網址
-import {
-  FAVORITE_PRODUCTS,
-  C_FAVORITE_PRODUCTS,
-} from '@/components/config/api-path'
-// 樣式
-import style from '@/components/shop-products/product-card/style.module.scss'
+import React from 'react'
 
-export default function ProductDetailCard({
-  product_id,
-  imageUrl = '',
-  seller = '',
-  product = '',
-  description = '',
-  price = '',
-  ingredient = '',
-  nutrition = '',
-}) {
-  const [open, setOpen] = useState(true)
-  const [isFavorite, setIsFavorite] = useState(false) // 最愛
-  console.log(product_id)
-  // 加入收藏 - 商品
-  const toggleFavoriteProducts = async () => {
-    try {
-      const r = await fetch(`${FAVORITE_PRODUCTS}/${product_id}`)
-      const data = await r.json()
-      if (data.success) {
-        setIsFavorite(data.action === 'add')
-      }
-    } catch (error) {
-      console.error('加入最愛 錯誤:', error)
-    }
+import ReactDOM from 'react-dom'
+import Modal from 'react-modal'
+export const card = ({ product }) => {
+  const [modalIsOpen, setIsOpen] = React.useState(false)
+  function openModal() {
+    setIsOpen(true)
   }
-  useEffect(() => {
-    // 检查收藏状态
-    const checkFavoriteStatus = async () => {
-      const r = await fetch(`${C_FAVORITE_PRODUCTS}/${product_id}`)
-      const data = await r.json()
-      if (data.isFavorite !== undefined) {
-        setIsFavorite(data.isFavorite)
-      }
-    }
 
-    checkFavoriteStatus()
-  }, [product_id])
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00'
+  }
+
+  function closeModal() {
+    setIsOpen(false)
+  }
 
   return (
     <>
-      <button
-        onClick={() => handleProductClick(product)}
-        className={styles.seeMoreButton}
-        type="button"
-        data-bs-toggle="modal"
-      >
-        看更多
-      </button>
-
-      {selectedProducts &&
-        selectedProducts.product_id === product.product_id && (
-          <div
-            className="modal fade"
-            id="detailModal"
-            tabindex="-1"
-            aria-labelledby="detailModalLabel"
-            aria-hidden="true"
+      <button onClick={openModal}>Open Modal</button>
+      <>
+        <div key={index}>
+          <Modal
+            isOpen={modalIsOpen}
+            onAfterOpen={afterOpenModal}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
           >
             <div className={`modal-dialog ${styles.detailModalSize}`}>
               <div className="modal-content">
-                {/* 右上角叉叉 */}
-                {/* <RxCross1 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{color: '#A32C2D'}}></RxCross1> */}
-
-                {/* <button type="button" class="btn-close" style={{color: '#A32C2D'}}
-         data-bs-dismiss="modal" aria-label="Close"></button> */}
-
                 <div className="modal-body">
                   <div className={styles.detailContainer}>
                     {/* 產品圖 */}
                     <Image
-                      src={imageUrl}
+                      src={product.imageUrl}
                       width={759}
                       height={726}
                       className={styles.detailPic}
-                      alt={imageUrl}
+                      alt={product.imageUrl}
                     />
 
                     <div className={styles.detailTextArray}>
@@ -100,16 +52,20 @@ export default function ProductDetailCard({
                       ></RxCross1>
 
                       {/* 店家名稱 */}
-                      <div className={styles.detailSeller}>{seller}</div>
+                      <div className={styles.detailSeller}>
+                        {product.store_name}
+                      </div>
                       {/* 產品名稱 */}
-                      <div className={styles.detailProductName}>{product}</div>
+                      <div className={styles.detailProductName}>
+                        {product.product_name}
+                      </div>
 
                       {/* 產品描述 */}
                       <div className={styles.detailIntroduce}>
-                        {description}
+                        {product.product_description}
                       </div>
                       {/* 價格 */}
-                      <div className={styles.detailPrice}>${price}</div>
+                      <div className={styles.detailPrice}>${product.price}</div>
 
                       {/* '+ -'按鈕 */}
                       <div className={styles.detailNumber}>
@@ -144,12 +100,10 @@ export default function ProductDetailCard({
                         <button className={styles.addCartButton}>
                           加入購物車
                         </button>
-
                         <button className={styles.immediateBuyButton}>
                           立即購買
                         </button>
                       </div>
-
                       {/* // 手風琴:營養成分表 */}
                       <div
                         className={`accordion accordion-flush ${styles.detailAccordionPosition}`}
@@ -180,16 +134,11 @@ export default function ProductDetailCard({
                             <div
                               className={`accordion-body ${styles.detailIngredient}`}
                             >
-                              {ingredient}
+                              {product.product_ingredient}
                             </div>
                           </div>
                         </div>
-
-                        <div class="accordion-item"></div>
                       </div>
-
-                      {/* <IoIosArrowDown className={styles.ingredientDown1}  /> */}
-
                       {/* 營養成分表 */}
                       <div
                         className="accordion accordion-flush"
@@ -220,12 +169,10 @@ export default function ProductDetailCard({
                             <div
                               className={`accordion-body ${styles.nutritionIngredient}`}
                             >
-                              {nutrition}
+                              {product.product_nutrition}
                             </div>
                           </div>
                         </div>
-
-                        <div class="accordion-item"></div>
                       </div>
                     </div>
                   </div>
@@ -233,8 +180,9 @@ export default function ProductDetailCard({
                 {/* 下方按鈕 */}
               </div>
             </div>
-          </div>
-        )}
+          </Modal>
+        </div>
+      </>
     </>
   )
 }

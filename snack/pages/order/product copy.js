@@ -1,4 +1,4 @@
-import Section from './section.js'
+import Section from '@/components/layout/section'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/styles/Product.module.css'
@@ -7,7 +7,6 @@ import PopularProduct from '@/components/Product/popularProduct'
 import ProductItem from '@/components/Product/recommendProduct'
 import DiscountInformation from '@/components/Product/discountInformation'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import classNames from "classnames";
 import 'swiper/css'
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
@@ -32,11 +31,11 @@ export default function Product() {
   // 熱門產品
   const [popularProducts, setPopularProducts] = useState([])
 
-  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [selectedProducts, setSelectedProducts] = useState(null)
 
   const handleProductClick = (product) => {
     // 如果點擊的是當前已選定的產品，則取消選定
-    setSelectedProduct(selectedProduct === product ? null : product)
+    setSelectedProducts(product)
   }
 
   useEffect(() => {
@@ -222,27 +221,122 @@ export default function Product() {
   return (
     <>
       <Section>
-    
+        {/* 產品類型 */}
 
-     
-        {/* 產品類型 */} 
         <div className={`row ${style.content}`}>
-          <div className="container-fluid">
-            {/* 產品種類 */}
-            <div className={`col ${style.category}`}>
-              {categories.map((category, index) => (
+          {/* 產品種類 */}
+          <div className={`col ${style.category}`}>
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                className={`col-xs-6 col-md-2 d-flex justify-content-center ${style.categoryCard}`}
+              >
+                <CategoryCard {...category} />
+              </div>
+            ))}
+          </div>
+
+          <FilterOptions />
+
+          {/* 熱門商品 */}
+
+          <div className={`container-fluid  ${styles.popularDisplay}`}>
+            <div
+              className={`col justify-content-center ${styles.popularContainer}`}
+            >
+              {/* 熱門產品 */}
+              {popularProducts &&
+                popularProducts.map((product, index) => (
+                  <div key={index} className="col-12 col-sm-3">
+                    <PopularProduct
+                      product_id={product.product_id}
+                      imageUrl={`/${product.image_url}`}
+                      saleRanking={`No${index + 1}`}
+                      market={product.market_name}
+                      seller={product.store_name}
+                      product={product.product_name}
+                      // 将 selectedProduct 设置为选定的商品状态
+                      selectedProduct={selectedProducts}
+                    />
+
+                    <button
+                      onClick={() => handleProductClick(product)}
+                      className={styles.seeMoreButton}
+                      type="button"
+                      data-bs-toggle="modal"
+                    >
+                      看更多
+                    </button>
+
+                    {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
+                    {selectedProducts &&
+                      selectedProducts.product_id === product.product_id && (
+                        <ProductDetailCard
+                          imageUrl={`/${product.image_url}`}
+                          seller={product.store_name}
+                          product={product.product_name}
+                          description={product.product_description}
+                          price={product.price}
+                          ingredient={product.product_ingredient}
+                          nutrition={product.product_nutrition}
+                          // 将 selectedProduct 设置为选定的商品状态
+                          // selectedProduct={selectedProduct}
+                        />
+                      )}
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {/* 推薦餐點 */}
+          <div className={`container-fluid row ${styles.recommendOuter}`}>
+            {/* 原本標題 */}
+            <div className={styles.recommendTitle}>推薦餐點</div>
+
+            <div className={`col ${styles.recommendContainer}`}>
+              {/* 第一行 */}
+
+              {recommendProducts && (
                 <div
-                
-                  key={index}
-                  className={classNames(` justify-content-center ${style.categoryCard}`)}
+                  className={`d-flex flex-wrap overflow-hidden`}
+                  style={{ overflowX: 'auto' }}
                 >
-                  <CategoryCard {...category} />
+                  {recommendProducts.map((product, index) => (
+                    <div
+                      key={index}
+                      className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}
+                    >
+                      <div className={styles.productItemContainer}>
+                        <ProductItem
+                          product_id={product.product_id}
+                          imageUrl={`/${product.image_url}`}
+                          productName={product.product_name}
+                          score="4.7"
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
+            </div>
+
+            <div className={`col ${styles.discountContainer}`}>
+              {/* 優惠資訊 */}
+
+              <div className="d-flex row">
+                {Array(2)
+                  .fill(null)
+                  .map((v, i) => {
+                    return (
+                      <div key={i} className="">
+                        <DiscountInformation imageUrl="/images/優惠.png" />
+                      </div>
+                    )
+                  })}
+              </div>
             </div>
           </div>
         </div>
-       
       </Section>
     </>
   )
