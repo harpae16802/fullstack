@@ -24,6 +24,7 @@ export default function SearchBar() {
           market_name: data.market_name,
           market_img: data.market_img,
           market_id: data.market_id,
+          average_night_rating: data.average_night_rating,
         })
       } else {
         console.error('API返回格式错误或未包含经纬度信息')

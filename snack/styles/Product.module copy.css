@@ -723,8 +723,7 @@
  
  /* 產品詳細:圖片設定 */
  .detailPic{
-  border-radius: 20px 0 0 20px;
-  
+  border-radius: 20px 0 0 20px;  
  
 }
 @media(max-width:576px){ 

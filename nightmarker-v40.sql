@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2024-05-03 16:04:16
+-- 產生時間： 2024-05-07 15:45:18
 -- 伺服器版本： 10.4.32-MariaDB
 -- PHP 版本： 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 資料庫： `nightmaker`
+-- 資料庫： `nightmarker`
 --
 
 -- --------------------------------------------------------
@@ -137,7 +137,8 @@ CREATE TABLE `advertisements` (
 --
 
 INSERT INTO `advertisements` (`ad_id`, `seller_id`, `image_path`, `created_at`, `updated_at`, `ad_type`) VALUES
-(1, 4, 'public\\adimg\\adImage-1713953279896-542946181.png', '2024-04-24 10:07:59', '2024-04-24 10:07:59', 1);
+(2, 4, 'adimg\\type1\\adImage-1714993547092-929770476.png', '2024-05-06 11:05:47', '2024-05-06 11:05:47', 1),
+(4, 4, 'adimg\\type1\\adImage-1714993735293-174822504.png', '2024-05-06 11:08:55', '2024-05-06 11:08:55', 1);
 
 -- --------------------------------------------------------
 
@@ -293,10 +294,10 @@ INSERT INTO `bank_account` (`account_id`, `seller_id`, `account_number`, `bank_c
 
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
-  `custom_id` int(10) NOT NULL,
+  `custom_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` int(20) NOT NULL,
-  `total_price` int(10) NOT NULL
+  `quantity` int(11) NOT NULL,
+  `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -340,10 +341,10 @@ CREATE TABLE `clear_data` (
 
 INSERT INTO `clear_data` (`clear_id`, `user_id`, `level_id`, `clear_score`, `play_date`) VALUES
 (1, 1, 1, 10, '2024-04-15 04:05:54'),
-(2, 1, 1, 1000, '0000-00-00 00:00:00'),
-(3, 1, 1, 1000, '0000-00-00 00:00:00'),
-(4, 1, 2, 1000, '0000-00-00 00:00:00'),
-(5, 2, 1, 1000, '0000-00-00 00:00:00'),
+(2, 1, 1, 1000, '2024-04-15 04:05:54'),
+(3, 1, 1, 1000, '2024-04-15 04:05:54'),
+(4, 1, 2, 1000, '2024-04-15 04:05:54'),
+(5, 2, 1, 1000, '2024-04-15 04:05:54'),
 (6, 1, 2, 3, '2024-04-15 08:14:05'),
 (7, 1, 2, 3, '2024-04-15 08:14:05'),
 (8, 1, 2, 5, '2024-04-16 08:14:05'),
@@ -367,7 +368,9 @@ INSERT INTO `clear_data` (`clear_id`, `user_id`, `level_id`, `clear_score`, `pla
 (26, 36, 1, 2050, '2024-05-03 15:26:03'),
 (27, 36, 2, 4870, '2024-05-03 15:42:20'),
 (28, 36, 2, 30670, '2024-05-03 15:42:52'),
-(29, 36, 2, 3870, '2024-05-03 15:43:31');
+(29, 36, 2, 3870, '2024-05-03 15:43:31'),
+(30, 35, 5, 6320, '2024-05-07 15:41:37'),
+(31, 35, 1, 6050, '2024-05-07 15:44:02');
 
 -- --------------------------------------------------------
 
@@ -376,15 +379,15 @@ INSERT INTO `clear_data` (`clear_id`, `user_id`, `level_id`, `clear_score`, `pla
 --
 
 CREATE TABLE `comment` (
-  `id` int(20) NOT NULL,
-  `order_id` int(20) DEFAULT NULL,
-  `night_rating` int(5) NOT NULL,
-  `store_rating` int(5) NOT NULL,
-  `product_rating` int(5) NOT NULL,
+  `id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `night_rating` int(11) NOT NULL,
+  `store_rating` int(11) NOT NULL,
+  `product_rating` int(11) NOT NULL,
   `photo` varchar(255) DEFAULT NULL,
   `comment` varchar(100) NOT NULL,
   `datetime` datetime NOT NULL,
-  `likes` int(255) NOT NULL,
+  `likes` int(11) NOT NULL,
   `seller_id` int(11) DEFAULT NULL,
   `market_id` int(11) NOT NULL,
   `custom_id` int(11) NOT NULL,
@@ -842,7 +845,7 @@ CREATE TABLE `comment_replies` (
 --
 
 CREATE TABLE `custom` (
-  `custom_id` int(10) NOT NULL,
+  `custom_id` int(11) NOT NULL,
   `custom_name` varchar(50) DEFAULT NULL,
   `custom_sex` varchar(1) DEFAULT NULL,
   `custom_descript` varchar(300) DEFAULT NULL,
@@ -852,8 +855,8 @@ CREATE TABLE `custom` (
   `custom_account` varchar(255) DEFAULT NULL,
   `google_uid` varchar(255) DEFAULT NULL,
   `photo_url` varchar(255) DEFAULT NULL,
-  `custom_month` int(2) DEFAULT NULL,
-  `custom_date` int(2) DEFAULT NULL,
+  `custom_month` int(11) DEFAULT NULL,
+  `custom_date` int(11) DEFAULT NULL,
   `custom_nickname` varchar(50) DEFAULT NULL,
   `custom month` int(11) NOT NULL,
   `custom_address` varchar(500) NOT NULL,
@@ -899,7 +902,7 @@ INSERT INTO `custom` (`custom_id`, `custom_name`, `custom_sex`, `custom_descript
 (32, '邱宜靜', 'd', '1', '2024', NULL, 'acdaAe154', 'acme', NULL, NULL, 0, 0, '', 0, '', 0),
 (33, '陳志玟', 'f', '1', '2024', NULL, 'acdaAe155', 'aewmfa', NULL, NULL, 0, 0, '', 0, '', 0),
 (34, '藍水年', 'a', '1', '2024', NULL, 'acdaAe156', 'afekw', NULL, NULL, 0, 0, '', 0, '', 0),
-(35, '測試王', '女', NULL, NULL, NULL, '$2a$10$2fAzSf05JOGIoEkVK3CBOOgrY0/kupnpM1CK5SqCLpf0nxVoeH6ou', 'luki@gg.com', NULL, '備註用:密碼:234567', NULL, NULL, 'LUKI', 0, '', 0),
+(35, '小獵人', '2', NULL, '1914', 'http://127.0.0.1:3002/images/1715046642181-3_éæ.png', '$2a$10$g8kpo11/z7cHmIRdX7J54.0ZuDmk.76VwyYsX.4ZwGdFJrzMyohZy', 'luki@gmail.com', NULL, '備註用:密碼:Abc123', 9, 16, 'LUKI', 0, '', 900123123),
 (36, '獵人君', NULL, '氣球打手', NULL, NULL, '$2a$10$i2zdJTwhlZhs.gnpRgRMdO7L8VNYWWy2uyrbgmkXgZihnIr2/NczW', 'hunter@gmail.com', NULL, '備註用:密碼123456', NULL, NULL, NULL, 0, '', 0);
 
 -- --------------------------------------------------------
@@ -971,6 +974,19 @@ CREATE TABLE `favorite_product` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- 傾印資料表的資料 `favorite_product`
+--
+
+INSERT INTO `favorite_product` (`favorite_id`, `product_id`, `custom_id`, `created_at`) VALUES
+(14, 1, 35, '2024-05-05 04:09:36'),
+(15, 2, 35, '2024-05-05 04:09:36'),
+(16, 3, 35, '2024-05-05 04:09:36'),
+(17, 4, 35, '2024-05-05 04:09:36'),
+(18, 5, 36, '2024-05-05 04:09:36'),
+(19, 6, 36, '2024-05-05 04:09:36'),
+(20, 7, 35, '2024-05-05 04:09:36');
+
 -- --------------------------------------------------------
 
 --
@@ -983,6 +999,18 @@ CREATE TABLE `favorite_store` (
   `custom_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- 傾印資料表的資料 `favorite_store`
+--
+
+INSERT INTO `favorite_store` (`favorite_id`, `seller_id`, `custom_id`, `created_at`) VALUES
+(3, 2, 35, '2024-05-05 04:09:04'),
+(4, 3, 35, '2024-05-05 04:09:04'),
+(5, 4, 35, '2024-05-05 04:09:04'),
+(6, 6, 36, '2024-05-05 04:09:04'),
+(7, 2, 36, '2024-05-05 04:09:04'),
+(8, 4, 35, '2024-05-05 04:09:04');
 
 -- --------------------------------------------------------
 
@@ -1015,7 +1043,7 @@ INSERT INTO `game_data` (`level_id`, `time_limit`, `require_score`, `level_name`
 --
 
 CREATE TABLE `market_data` (
-  `market_id` int(20) NOT NULL,
+  `market_id` int(11) NOT NULL,
   `market_name` varchar(20) NOT NULL,
   `latitude_and_longitude` varchar(100) NOT NULL,
   `market_introduction` varchar(400) NOT NULL,
@@ -1063,12 +1091,12 @@ CREATE TABLE `one_time_password` (
 
 CREATE TABLE `order_data` (
   `order_id` int(11) NOT NULL,
-  `order_number` int(255) NOT NULL,
+  `order_number` int(11) NOT NULL,
   `custom_id` int(11) NOT NULL,
   `seller_id` int(11) NOT NULL,
   `discount_category_id` int(11) NOT NULL,
-  `consume_gamepoint` int(255) NOT NULL,
-  `total_sum` int(255) NOT NULL,
+  `consume_gamepoint` int(11) NOT NULL,
+  `total_sum` int(11) NOT NULL,
   `payment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -1077,11 +1105,20 @@ CREATE TABLE `order_data` (
 --
 
 INSERT INTO `order_data` (`order_id`, `order_number`, `custom_id`, `seller_id`, `discount_category_id`, `consume_gamepoint`, `total_sum`, `payment_date`) VALUES
-(1, 1, 1, 4, 5, 4, 100, '2024-04-20 16:41:24'),
-(2, 1, 1, 4, 1, 5, 100, '2024-04-20 16:43:12'),
-(10, 2, 2, 16, 0, 0, 160, '2024-04-20 16:56:46'),
-(11, 2, 2, 16, 0, 0, 140, '2024-04-20 17:01:44'),
-(12, 3, 3, 6, 0, 0, 120, '2024-04-21 08:40:01');
+(13, 1, 36, 3, 1, 6, 100, '2024-05-05 03:48:35'),
+(14, 2, 36, 6, 1, 6, 100, '2024-05-05 03:48:35'),
+(15, 3, 36, 7, 1, 6, 100, '2024-05-05 03:48:35'),
+(16, 4, 36, 1, 1, 6, 100, '2024-05-05 03:48:35'),
+(17, 5, 35, 8, 1, 6, 100, '2024-05-05 03:54:32'),
+(18, 6, 35, 10, 1, 6, 100, '2024-05-05 03:54:32'),
+(19, 7, 35, 11, 1, 6, 100, '2024-05-05 03:54:32'),
+(20, 8, 35, 12, 1, 6, 100, '2024-05-05 03:54:32'),
+(21, 9, 35, 13, 1, 6, 100, '2024-05-05 03:54:32'),
+(22, 10, 35, 14, 1, 5, 100, '2024-05-05 07:49:59'),
+(23, 11, 35, 15, 1, 5, 100, '2024-05-05 07:49:59'),
+(24, 12, 35, 16, 1, 5, 100, '2024-05-05 07:49:59'),
+(26, 521858, 36, 16, 4, 0, 80, '2024-05-06 15:36:06'),
+(27, 676263, 36, 16, 4, 0, 100, '2024-05-06 15:47:14');
 
 -- --------------------------------------------------------
 
@@ -1093,7 +1130,7 @@ CREATE TABLE `order_detail` (
   `order_detail_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `purchase_quantity` int(255) NOT NULL,
+  `purchase_quantity` int(11) NOT NULL,
   `remain_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -1102,10 +1139,37 @@ CREATE TABLE `order_detail` (
 --
 
 INSERT INTO `order_detail` (`order_detail_id`, `order_id`, `product_id`, `purchase_quantity`, `remain_count`) VALUES
-(2, 1, 2, 100, 100),
-(3, 2, 3, 4, -15),
-(4, 2, 6, 30, 5),
-(5, 12, 10, 3, 3);
+(7, 13, 1, 100, 100),
+(8, 13, 2, 100, 100),
+(9, 13, 3, 100, 100),
+(10, 14, 1, 100, 100),
+(11, 14, 2, 100, 100),
+(12, 14, 3, 100, 100),
+(13, 15, 4, 100, 100),
+(14, 15, 5, 100, 100),
+(15, 15, 6, 100, 100),
+(16, 16, 1, 100, 100),
+(17, 16, 2, 100, 100),
+(18, 16, 3, 100, 100),
+(19, 17, 1, 100, 85),
+(20, 17, 2, 100, 92),
+(21, 18, 1, 100, 97),
+(22, 18, 2, 100, 96),
+(23, 19, 1, 100, 100),
+(24, 20, 3, 100, 95),
+(25, 20, 1, 100, 95),
+(26, 20, 2, 100, 95),
+(27, 21, 1, 100, 100),
+(28, 21, 2, 100, 100),
+(29, 22, 1, 100, 100),
+(30, 22, 2, 100, 100),
+(31, 23, 1, 100, 100),
+(32, 23, 1, 100, 100),
+(33, 24, 2, 100, 100),
+(34, 24, 3, 100, 100),
+(35, 24, 4, 100, 100),
+(37, 26, 139, 2, 2),
+(38, 27, 134, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1130,7 +1194,7 @@ CREATE TABLE `products` (
   `product_name` varchar(255) DEFAULT NULL,
   `product_description` text DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
-  `price` int(20) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
   `stock_quantity` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(1) NOT NULL DEFAULT 0,
@@ -1317,20 +1381,22 @@ INSERT INTO `product_categories` (`category_id`, `category_name`) VALUES
 -- (請參考以下實際畫面)
 --
 CREATE TABLE `qrcodeview` (
-`status` tinyint(11)
+`status` tinyint(4)
 ,`qrcode_id` int(11)
 ,`order_id` int(11)
 ,`custom_account` varchar(255)
-,`custom_id` int(10)
+,`custom_id` int(11)
 ,`seller_id` int(11)
-,`total_sum` int(255)
+,`total_sum` int(11)
 ,`payment_date` timestamp
 ,`order_detail_id` int(11)
 ,`product_id` int(11)
-,`purchase_quantity` int(255)
+,`purchase_quantity` int(11)
 ,`custom_name` varchar(50)
 ,`product_name` varchar(255)
+,`remain_count` int(11)
 ,`store_name` varchar(255)
+,`count` int(11)
 );
 
 -- --------------------------------------------------------
@@ -1342,8 +1408,8 @@ CREATE TABLE `qrcodeview` (
 CREATE TABLE `qrcode_detail_record` (
   `QRcode_detail_id` int(11) NOT NULL,
   `product_id` varchar(20) NOT NULL,
-  `count` int(255) NOT NULL,
-  `status` tinyint(11) NOT NULL DEFAULT 0,
+  `count` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
   `qrcode_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -1373,7 +1439,20 @@ INSERT INTO `qrcode_detail_record` (`QRcode_detail_id`, `product_id`, `count`, `
 (19, '3', 2, 0, 12),
 (20, '6', 1, 0, 12),
 (21, '3', 2, 0, 13),
-(22, '6', 2, 0, 13);
+(22, '6', 2, 0, 13),
+(23, '1', 3, 0, 14),
+(24, '2', 4, 0, 14),
+(25, '2', 4, 0, 15),
+(26, '1', 5, 0, 15),
+(27, '1', 5, 0, 16),
+(28, '2', 5, 0, 16),
+(29, '1', 4, 0, 17),
+(30, '2', 1, 0, 17),
+(31, '1', 5, 0, 18),
+(32, '2', 2, 0, 18),
+(33, '2', 1, 0, 19),
+(34, '1', 1, 0, 19),
+(35, '134', 1, 1, 21);
 
 -- --------------------------------------------------------
 
@@ -1403,7 +1482,14 @@ INSERT INTO `qrcode_record` (`qrcode_id`, `custom_id`, `qrcode_redeemDate`, `ord
 (11, 1, '2024-04-22 08:31:46', 2),
 (12, 1, '2024-04-22 08:42:06', 2),
 (13, 1, '2024-04-22 08:44:37', 2),
-(14, 1, '2024-04-22 08:55:10', 2);
+(14, 1, '2024-04-22 08:55:10', 2),
+(15, 35, '2024-05-05 03:58:46', 18),
+(16, 35, '2024-05-05 09:14:32', 17),
+(17, 35, '2024-05-05 09:20:13', 20),
+(18, 35, '2024-05-05 10:02:51', 17),
+(19, 35, '2024-05-05 10:37:44', 17),
+(20, 35, '2024-05-05 11:06:30', 17),
+(21, 36, '2024-05-06 15:48:51', 27);
 
 -- --------------------------------------------------------
 
@@ -1511,81 +1597,11 @@ CREATE TABLE `sms_verification` (
 -- --------------------------------------------------------
 
 --
--- 替換檢視表以便查看 `view_order_full_details`
--- (請參考以下實際畫面)
---
-CREATE TABLE `view_order_full_details` (
-`order_id` int(11)
-,`order_number` int(255)
-,`custom_id` int(11)
-,`seller_id` int(11)
-,`discount_category_id` int(11)
-,`consume_gamepoint` int(255)
-,`total_sum` int(255)
-,`payment_date` timestamp
-,`order_detail_id` int(11)
-,`product_id` int(11)
-,`purchase_quantity` int(255)
-,`custom_name` varchar(50)
-,`custom_sex` varchar(1)
-,`custom_descript` varchar(300)
-,`custom_year` varchar(4)
-,`custom_image` varchar(600)
-,`custom_nickname` varchar(50)
-);
-
--- --------------------------------------------------------
-
---
--- 替換檢視表以便查看 `view_order_full_details2`
--- (請參考以下實際畫面)
---
-CREATE TABLE `view_order_full_details2` (
-`order_id` int(11)
-,`order_number` int(255)
-,`custom_id` int(11)
-,`seller_id` int(11)
-,`discount_category_id` int(11)
-,`consume_gamepoint` int(255)
-,`total_sum` int(255)
-,`payment_date` timestamp
-,`order_detail_id` int(11)
-,`product_id` int(11)
-,`purchase_quantity` int(255)
-,`custom_name` varchar(50)
-,`custom_sex` varchar(1)
-,`custom_descript` varchar(300)
-,`custom_year` varchar(4)
-,`custom_image` varchar(600)
-,`custom_nickname` varchar(50)
-);
-
--- --------------------------------------------------------
-
---
 -- 檢視表結構 `qrcodeview`
 --
 DROP TABLE IF EXISTS `qrcodeview`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qrcodeview`  AS SELECT `qdr`.`status` AS `status`, `qr`.`qrcode_id` AS `qrcode_id`, `od`.`order_id` AS `order_id`, `c`.`custom_account` AS `custom_account`, `c`.`custom_id` AS `custom_id`, `s`.`seller_id` AS `seller_id`, `od`.`total_sum` AS `total_sum`, `od`.`payment_date` AS `payment_date`, `odt`.`order_detail_id` AS `order_detail_id`, `odt`.`product_id` AS `product_id`, `odt`.`purchase_quantity` AS `purchase_quantity`, `c`.`custom_name` AS `custom_name`, `p`.`product_name` AS `product_name`, `s`.`store_name` AS `store_name` FROM ((((((`order_data` `od` join `order_detail` `odt` on(`od`.`order_id` = `odt`.`order_id`)) join `custom` `c` on(`od`.`custom_id` = `c`.`custom_id`)) join `products` `p` on(`odt`.`product_id` = `p`.`product_id`)) join `seller` `s` on(`s`.`seller_id` = `p`.`seller_id`)) join `qrcode_record` `qr` on(`odt`.`order_id` = `qr`.`order_id`)) join `qrcode_detail_record` `qdr` on(`qr`.`qrcode_id` = `qdr`.`qrcode_id`)) ;
-
--- --------------------------------------------------------
-
---
--- 檢視表結構 `view_order_full_details`
---
-DROP TABLE IF EXISTS `view_order_full_details`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_order_full_details`  AS SELECT `od`.`order_id` AS `order_id`, `od`.`order_number` AS `order_number`, `od`.`custom_id` AS `custom_id`, `od`.`seller_id` AS `seller_id`, `od`.`discount_category_id` AS `discount_category_id`, `od`.`consume_gamepoint` AS `consume_gamepoint`, `od`.`total_sum` AS `total_sum`, `od`.`payment_date` AS `payment_date`, `odt`.`order_detail_id` AS `order_detail_id`, `odt`.`product_id` AS `product_id`, `odt`.`purchase_quantity` AS `purchase_quantity`, `c`.`custom_name` AS `custom_name`, `c`.`custom_sex` AS `custom_sex`, `c`.`custom_descript` AS `custom_descript`, `c`.`custom_year` AS `custom_year`, `c`.`custom_image` AS `custom_image`, `c`.`custom_nickname` AS `custom_nickname` FROM ((`order_data` `od` join `order_detail` `odt` on(`od`.`order_id` = `odt`.`order_id`)) join `custom` `c` on(`od`.`custom_id` = `c`.`custom_id`)) ;
-
--- --------------------------------------------------------
-
---
--- 檢視表結構 `view_order_full_details2`
---
-DROP TABLE IF EXISTS `view_order_full_details2`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_order_full_details2`  AS SELECT `od`.`order_id` AS `order_id`, `od`.`order_number` AS `order_number`, `od`.`custom_id` AS `custom_id`, `od`.`seller_id` AS `seller_id`, `od`.`discount_category_id` AS `discount_category_id`, `od`.`consume_gamepoint` AS `consume_gamepoint`, `od`.`total_sum` AS `total_sum`, `od`.`payment_date` AS `payment_date`, `odt`.`order_detail_id` AS `order_detail_id`, `odt`.`product_id` AS `product_id`, `odt`.`purchase_quantity` AS `purchase_quantity`, `c`.`custom_name` AS `custom_name`, `c`.`custom_sex` AS `custom_sex`, `c`.`custom_descript` AS `custom_descript`, `c`.`custom_year` AS `custom_year`, `c`.`custom_image` AS `custom_image`, `c`.`custom_nickname` AS `custom_nickname` FROM ((`order_data` `od` join `order_detail` `odt` on(`od`.`order_id` = `odt`.`order_id`)) join `custom` `c` on(`od`.`custom_id` = `c`.`custom_id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `qrcodeview`  AS SELECT `qdr`.`status` AS `status`, `qr`.`qrcode_id` AS `qrcode_id`, `od`.`order_id` AS `order_id`, `c`.`custom_account` AS `custom_account`, `c`.`custom_id` AS `custom_id`, `s`.`seller_id` AS `seller_id`, `od`.`total_sum` AS `total_sum`, `od`.`payment_date` AS `payment_date`, `odt`.`order_detail_id` AS `order_detail_id`, `odt`.`product_id` AS `product_id`, `odt`.`purchase_quantity` AS `purchase_quantity`, `c`.`custom_name` AS `custom_name`, `p`.`product_name` AS `product_name`, `odt`.`remain_count` AS `remain_count`, `s`.`store_name` AS `store_name`, `qdr`.`count` AS `count` FROM ((((((`order_data` `od` join `order_detail` `odt` on(`od`.`order_id` = `odt`.`order_id`)) join `custom` `c` on(`od`.`custom_id` = `c`.`custom_id`)) join `products` `p` on(`odt`.`product_id` = `p`.`product_id`)) join `seller` `s` on(`s`.`seller_id` = `p`.`seller_id`)) join `qrcode_record` `qr` on(`odt`.`order_id` = `qr`.`order_id`)) join `qrcode_detail_record` `qdr` on(`qr`.`qrcode_id` = `qdr`.`qrcode_id`)) ;
 
 --
 -- 已傾印資料表的索引
@@ -1778,7 +1794,7 @@ ALTER TABLE `achievement_category`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `advertisements`
 --
 ALTER TABLE `advertisements`
-  MODIFY `ad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `balloon_data`
@@ -1796,7 +1812,7 @@ ALTER TABLE `bank_account`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `character_data`
@@ -1808,13 +1824,13 @@ ALTER TABLE `character_data`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `clear_data`
 --
 ALTER TABLE `clear_data`
-  MODIFY `clear_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `clear_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `comment_replies`
@@ -1826,7 +1842,7 @@ ALTER TABLE `comment_replies`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom`
 --
 ALTER TABLE `custom`
-  MODIFY `custom_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `custom_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `custom_achievment`
@@ -1850,13 +1866,13 @@ ALTER TABLE `favorite_comment`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `favorite_product`
 --
 ALTER TABLE `favorite_product`
-  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `favorite_store`
 --
 ALTER TABLE `favorite_store`
-  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `game_data`
@@ -1868,19 +1884,19 @@ ALTER TABLE `game_data`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `market_data`
 --
 ALTER TABLE `market_data`
-  MODIFY `market_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `market_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_data`
 --
 ALTER TABLE `order_data`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `payment`
@@ -1898,13 +1914,13 @@ ALTER TABLE `products`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `qrcode_detail_record`
 --
 ALTER TABLE `qrcode_detail_record`
-  MODIFY `QRcode_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `QRcode_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `qrcode_record`
 --
 ALTER TABLE `qrcode_record`
-  MODIFY `qrcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `qrcode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `seller`

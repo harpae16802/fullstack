@@ -993,6 +993,8 @@ export default function ShopProducts() {
             </div>
           </div>
         </div>
+
+        <div className="topicon"  onClick={()=>window.scrollTo(0, 0)}>↑TOP</div>
       </div>
     </SectionProducts>
   )

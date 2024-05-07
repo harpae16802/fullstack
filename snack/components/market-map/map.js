@@ -21,6 +21,7 @@ function MapUpdater({ mapPosition }) {
       map.panTo(newPosition)
 
       const details = mapPosition.details
+      console.log(details)
 
       const popupContent = `
       <div class=${style.card}>
@@ -39,7 +40,7 @@ function MapUpdater({ mapPosition }) {
         <div
           class="d-flex justify-content-center align-items-center ${style.score}"
         >
-          <h6 class="fw-bold m-0">4.7</h6>
+          <h6 class="fw-bold m-0">${Number(details.average_night_rating).toFixed(1)}</h6>
         </div>
       </div>
     </div>
@@ -97,7 +98,7 @@ const MapComponent = () => {
           data.map((place) => ({
             ...place,
             position: place.latitude_and_longitude.split(', ').map(Number),
-          }))
+          })),
         )
       } catch (error) {
         console.log('fetch 錯誤:', error)
@@ -127,7 +128,7 @@ const MapComponent = () => {
             <div className={style.card}>
               <img
                 src={`${API_SERVER}/public/${point.market_img}`}
-                alt=""
+                alt={point.market_img}
                 className={style.img}
               />
               <div className={`d-flex justify-content-between ${style.text}`}>

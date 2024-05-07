@@ -3,13 +3,6 @@ import db from "../utils/db.js";
 
 const router = express.Router();
 
-// 取得夜市資料
-// router.get("/market-data", async (req, res) => {
-//   const sql = "SELECT * FROM market_data";
-//   const [rows] = await db.query(sql);
-
-//   res.json(rows);
-// });
 // 获取夜市资料及其夜市评分平均值
 router.get("/market-data", async (req, res) => {
   try {
@@ -50,8 +43,19 @@ router.get("/search", async (req, res) => {
     const searchTerm = req.query.term;
 
     // 准备SQL查询，用于根据搜索词查找位置
-    const sql =
-      "SELECT latitude_and_longitude, market_name, market_img, market_id FROM market_data WHERE market_name LIKE ? LIMIT 1";
+    const sql = `
+    SELECT 
+      m.latitude_and_longitude, 
+      m.market_name, 
+      m.market_img, 
+      m.market_id, 
+      AVG(c.night_rating) AS average_night_rating
+    FROM market_data m
+    LEFT JOIN comment c ON m.market_id = c.market_id
+    WHERE m.market_name LIKE ?
+    GROUP BY m.market_id
+    LIMIT 1;
+  `;
     const [row] = await db.query(sql, [`%${searchTerm}%`]);
 
     // 检查是否有结果
@@ -66,6 +70,7 @@ router.get("/search", async (req, res) => {
         market_name: row[0].market_name,
         market_img: row[0].market_img,
         market_id: row[0].market_id,
+        average_night_rating: row[0].average_night_rating,
       });
     } else {
       console.log({ message: "Location not found" });

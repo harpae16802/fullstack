@@ -18,10 +18,15 @@ export const ImgProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 // 使用 memberFormUpdate.searchImg() 方法來取得圖片資料
-                const custom_id =JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id
-                const imgb = await memberFormUpdate.searchImg({custom_id:custom_id}); 
+                if(localStorage.getItem("Nightmarket-auth")){
+                    const custom_id =JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id
+                    const imgb = await memberFormUpdate.searchImg({custom_id:custom_id}); 
+                    setPreviewUrl(imgb.result); 
+
+                }else{
+                    setPreviewUrl("/ch.jpeg"); 
+                }
                 // 將取得的圖片資料設置到 previewUrl 狀態變數中  
-                setPreviewUrl(imgb.result); 
             } catch (error) {
                 // 若取得圖片資料失敗，則輸出錯誤訊息到控制台
                 console.error("取得圖片資料失敗:", error);
