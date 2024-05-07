@@ -6,7 +6,7 @@ const router = express.Router();
 //熱銷產品
 router.get("/product", async (req, res) => {
   const sql = 
-    "SELECT p.product_id, p.product_name, p.image_url, p.price, p.product_description, p.product_ingredient, p.product_nutrition, s.store_name, m.market_name FROM products p JOIN seller s ON p.seller_id = s.seller_id JOIN market_data m ON s.market_id = m.market_id JOIN order_detail od ON p.product_id = od.product_id  ORDER BY purchase_quantity DESC LIMIT 4";
+    "SELECT p.product_id, p.product_name, p.image_url, p.price, p.product_description, p.product_ingredient, p.product_nutrition, s.store_name, m.market_name FROM products p JOIN seller s ON p.seller_id = s.seller_id JOIN market_data m ON s.market_id = m.market_id JOIN order_detail od ON p.product_id = od.product_id GROUP BY product_id ORDER BY purchase_quantity DESC LIMIT 4";
   // console.log('eddie',req.params);
 
   try {

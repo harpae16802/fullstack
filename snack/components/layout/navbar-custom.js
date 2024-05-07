@@ -118,24 +118,21 @@ export default function NavbarCustom() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link
-                        className="dropdown-item"
-                        href="/memberSystem/qrcodeSelect"
-                      >
+                    
                       <Link
                         className="dropdown-item"
                         href="/memberSystem/qrcodeSelect"
                       >
                         商品與QRcode
                       </Link>
-                      </Link>
+                     
                     </li>
                     <li>
-                      <Link className="dropdown-item" href="/memberSystem">
+                   
                       <Link className="dropdown-item" href="/memberSystem">
                         編輯基本資料
                       </Link>
-                      </Link>
+                   
                     </li>
                   </ul>
                 </li>
@@ -149,7 +146,7 @@ export default function NavbarCustom() {
 
                       logout()
                       router.push(`/login/login-custom`)
-                      router.push(`/login/login-custom`)
+                     
                     }}
                   >
                     登出
@@ -184,24 +181,21 @@ export default function NavbarCustom() {
                         <div className="triangle"></div>
 
                         <li>
-                          <Link className="dropdown-item" href="/memberSystem">
+                      
                           <Link className="dropdown-item" href="/memberSystem">
                             編輯基本資料
                           </Link>
-                          </Link>
+                     
                         </li>
                         <li>
-                          <Link
-                            className="dropdown-item"
-                            href="/memberSystem/qrcodeSelect"
-                          >
+                     
                           <Link
                             className="dropdown-item"
                             href="/memberSystem/qrcodeSelect"
                           >
                             商品與QRcode
                           </Link>
-                          </Link>
+                        
                         </li>
                         <li>
                           <a
@@ -213,7 +207,7 @@ export default function NavbarCustom() {
 
                               logout()
                               router.push(`/login/login-custom`)
-                              router.push(`/login/login-custom`)
+                            
                             }}
                           >
                             登出
