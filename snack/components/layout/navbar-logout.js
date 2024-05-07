@@ -59,13 +59,13 @@ export default function NavbarLogout() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link
+                <Link
                     className={`nav-link ${
-                      router.pathname === '/nightmarket-info/index'
+                      router.pathname === '/order/product'
                         ? 'active'
                         : ''
                     }`}
-                    href="/nightmarket-info/index"
+                    href='/order/product'
                   >
                     美味商城
                   </Link>

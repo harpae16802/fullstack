@@ -9,6 +9,7 @@ import {achieveLevel} from "../utils/pass.js"
 const getChtimes = (v) => {
     let action = '';
     switch (v) {
+        case null:action = "0"; break;
         case 1: action = "一"; break;
         case 2: action = "二"; break;
         case 3: action = "三"; break;
@@ -68,8 +69,7 @@ export async function maxTicket(req, res) {
     const userId = req.body.custom_id || 1;
     const sql = `SELECT max(level_id) as level_id  FROM clear_data  WHERE user_id=${userId}`;  
     try {
-        const res1 = await db.query(sql); 
-     
+        const res1 = await db.query(sql);  
         res.send({ success: true, data: getChtimes(res1[0][0].level_id) });
     } catch (err) {
         console.error("Error executing SQL query:", err);

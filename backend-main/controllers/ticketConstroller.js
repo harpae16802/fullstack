@@ -61,11 +61,13 @@ console.log(userId)
         LIMIT 1
     ) AS play_date
     FROM achievement_category a 
+
     WHERE a.clear_times <= (
         SELECT COUNT(b.user_id)
         FROM clear_data b
         WHERE b.user_id = ${userId} AND a.level_id = b.level_id
-    );`;
+    )    order by  play_date
+    ;`;
 
     await db.query(sql)
         .then((res2) => {
@@ -87,7 +89,7 @@ console.log(userId)
 export const selectGainedTicket03 = async (req, res) => {
     const userId = req.body.custom_id || 1;
 
-    const sql = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_Id and b.custom_Id=${userId}`;
+    const sql = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_Id and b.custom_Id=${userId}   order by  payment_date`;
     await db.query(sql)
         .then((res2) => {
             if (!res2) {
@@ -165,8 +167,14 @@ export const remainTicket = async (req, res) => {
         and a.custom_id= ${userId}
         group by  a.custom_id`;
         let [result2] = await db.query(sql2);
+        let data00=0;
+        if(!result2[0]){
+            data00=0;
+        }else{
+            data00=result2[0].consume_gamepoint
+        }
 
-        const point = result1[0].get_point - result2[0].consume_gamepoint;
+        const point = result1[0].get_point -data00;
 
         if (!result1 || !result2) {
             return res.json({ success: false, error: "Error in signup query" });
@@ -179,7 +187,6 @@ export const remainTicket = async (req, res) => {
         return res.status(500).json({ error: "An error occurred while processing the request" });
     };
 };
-
 
 export const selectry = async (req, res) => {
     const sql = `SELECT * FROM customerall_count WHERE 1`;

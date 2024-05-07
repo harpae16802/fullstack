@@ -157,11 +157,11 @@ useEffect(() => {
       //熱銷產品 撈資料呈現
       useEffect(()=>{
         
-        (async function() {
-        // 这里是立即执行函数的代码块
-       const data=await tryApi.customAP({custom_id:1});
-        console.log(data)
-      })()
+      //   (async function() {
+      //   // 这里是立即执行函数的代码块
+      //  const data=await tryApi.customAP({custom_id:1});
+      //   console.log(data)
+      // })()
        
         
         // const fetchData = async () => {
@@ -187,7 +187,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products');
+        const response = await axios.get('http://localhost:3002/api/products');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);

@@ -91,13 +91,13 @@ export default function NavbarSeller() {
                   </Link>
                 </li>
                 <li className="nav-item" style={{ border: 'none' }}>
-                  <Link
+                <Link
                     className={`nav-link ${
-                      router.pathname === '/nightmarket-info/index'
+                      router.pathname === '/order/product'
                         ? 'active'
                         : ''
                     }`}
-                    href="/nightmarket-info/index"
+                    href='/order/product'
                   >
                     美味商城
                   </Link>
