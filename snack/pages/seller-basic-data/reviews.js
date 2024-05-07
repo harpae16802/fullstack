@@ -14,7 +14,6 @@ import ReplyModal from '@/components/ReplyModal'
 import ReplySuccessModal from '@/components/ReplySuccessModal'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 export default function Reviews() {
   // 使用 useRouter

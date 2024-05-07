@@ -14,8 +14,6 @@ import CameraQRScanner from '@/components/CameraQRScanner'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
-
 export default function QRcode() {
   // 使用 useRouter
   const router = useRouter()
