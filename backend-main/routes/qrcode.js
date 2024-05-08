@@ -8,19 +8,26 @@ QRrouter.get("/details/:qrcode_id", async (req, res) => {
   const { qrcode_id } = req.params;
   try {
     const sql = `
-            SELECT
-                custom_account,
-                product_name,
-                remain_count,
-                total_sum,
-                status,
-                seller_id,
-                product_id,
-                count
-            FROM
-                qrcodeview
-            WHERE
-                qrcode_id = ?
+    SELECT 
+    c.custom_account,
+    p.product_name,
+    od.total_sum,
+    qdr.status,
+    p.seller_id,
+    qdr.product_id,
+    qdr.count
+FROM 
+    qrcode_record qr
+JOIN
+    custom c ON qr.custom_id = c.custom_id
+JOIN
+    order_data od ON qr.order_id = od.order_id
+JOIN
+    qrcode_detail_record qdr ON qr.qrcode_id = qdr.qrcode_id
+JOIN
+    products p ON qdr.product_id = p.product_id
+WHERE 
+    qr.qrcode_id =  ?
         `;
     const [rows] = await db.query(sql, [qrcode_id]);
     if (rows.length > 0) {
@@ -31,9 +38,9 @@ QRrouter.get("/details/:qrcode_id", async (req, res) => {
   } catch (error) {
     console.error("Failed to retrieve order details:", error);
     res.status(500).json({
-        message: "Server error while retrieving order details.",
-        error: error.message,
-      });
+      message: "Server error while retrieving order details.",
+      error: error.message,
+    });
   }
 });
 
