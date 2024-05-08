@@ -555,7 +555,7 @@ export default function SellerBasicData() {
                       {newImagePreviewUrl ? (
                         <Image
                           src={newImagePreviewUrl}
-                          alt="新上傳圖片預覽"
+                          // alt="新上傳圖片預覽"
                           className="img-fluid"
                           style={{ maxWidth: '190px' }}
                           width={190}

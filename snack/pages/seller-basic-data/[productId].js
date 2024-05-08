@@ -613,12 +613,12 @@ export default function AddProducts() {
                           {previewImage ? (
                             <img
                               src={previewImage}
-                              alt="新增產品圖片"
+                              
                               className="img-fluid"
                               style={{ maxWidth: '190px' }}
                             />
                           ) : (
-                            <p>請選擇圖片以預覽</p>
+                            <p></p>
                           )}
                         </div>
                       </div>
