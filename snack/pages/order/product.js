@@ -4,14 +4,11 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { RxCross1 } from 'react-icons/rx'
 import { FaHeart, FaRegHeart } from 'react-icons/fa' 
-
 import styles from '@/styles/Product.module.css'
 import SearchBar from '@/components/common/search-bar'
 import PopularProduct from '@/components/Product/popularProduct'
 import ProductItem from '@/components/Product/recommendProduct'
 import DiscountInformation from '@/components/Product/discountInformation'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
 import FilterOptions from '@/components/Product/productFilter'
@@ -21,6 +18,7 @@ import ProductDetailCard from '@/components/Product/productDetail'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Card from "./card";
 import { Modal, Button } from 'react-bootstrap'
+
 // fetch 網址
 import {
   FAVORITE_PRODUCTS,
@@ -132,12 +130,18 @@ export default function Product() {
     fetchProductScore()
   }, []) // 空的依賴項表示只在組件 mount 時執行一次
 
+
+  const showCategory1 = () =>{
+   
+  }
+
   // 食物分類，寫死
   const categories = [
     {
       imgUrl: '/images/category-main.png',
       title: '主食',
       imgStyle: { top: '-50px', left: '-56px' },
+      onClick: () => {showCategory1()},
     },
     {
       imgUrl: '/images/category-snack.png',
@@ -224,18 +228,38 @@ export default function Product() {
       })
   }, [])
 
-  //swiper
-  const [isMobile, setIsMobile] = useState(false)
+
+
+  //產品篩選:點心
+  const [productCategory1, setProductCategory1] = useState([])
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 576)
+    const fetchProductCategory1 = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3002/productPageRouter/productCategory1'
+        )
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        console.log('eddie', data.data) // 檢查從後端獲得的資料
+        // 解構第一個產品資料並設置到狀態中
+
+        setProductCategory1(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        // 處理錯誤
+      }
     }
 
-    handleResize() // 確保初始狀態正確
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    fetchProductCategory1()
+  }, []) // 空的依賴項表示只在組件 mount 時執行一次
+
+
+
+
+
 
   return (
     <>
@@ -259,8 +283,8 @@ export default function Product() {
 
           {/* 熱門商品 */}
 
-          <div className='d-flex justify-content-between'>
-            <div className="d-flex justify-content-center" style={{width:"90vw"}}>
+          <div className='d-flex justify-content-center'>
+            <div className="d-flex justify-content-between" style={{width:"80vw"}}>
               {/* 熱門產品 */}
               {popularProducts &&
                 popularProducts.map((product, index) => (
@@ -513,6 +537,10 @@ export default function Product() {
                           {/* 下方按鈕 */}
                         </div>
                       </div>
+  
+
+
+
                     </div>
                   </div>
                 ))}
@@ -527,7 +555,7 @@ export default function Product() {
           {/* 推薦餐點 */}
           <div className={`container-fluid row ${styles.recommendOuter}`}>
             {/* 原本標題 */}
-            <div className={styles.recommendTitle}>推薦餐點</div>
+            <div className={styles.recommendTitle} >推薦餐點</div>
 
             <div className={`col ${styles.recommendContainer}`}>
               {/* 第一行 */}
@@ -547,7 +575,7 @@ export default function Product() {
                           product_id={product.product_id}
                           imageUrl={`/${product.image_url}`}
                           productName={product.product_name}
-                          score="4.7"
+                          score={product.avg}
                         />
                       </div>
                     </div>
