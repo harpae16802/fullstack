@@ -45,7 +45,7 @@ export default function ProductItem({
 
   return (
     <div className={styles.recommendProductContainer}>
-      {product_id}-----------------
+      
       <Image
         src={imageUrl}
         width={358}
