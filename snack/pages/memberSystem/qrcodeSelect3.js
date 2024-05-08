@@ -75,9 +75,7 @@ export default function QrcodeselectMobile3() {
 
                 { /* <QrcodeCurrent />*/}
 
-                <button type="button" onClick={() => pages("qrcodeSelect3")} className={classNames("btn btn-outline-primary", qrcodeStyle["qrcodeRecord"])}>
-                  上一步
-                </button>
+             
 
                 <button type="button" onClick={() => pages("qrcodeSelect4")} className={classNames("btn btn-outline-primary", qrcodeStyle["qrcodeRecord"])}>
                   下一步

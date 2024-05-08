@@ -105,7 +105,7 @@ export default function QrcodeselectMobile1() {
               </div>
               <div className="d-flex justify-content-center align-items-center"> 
                 { /* <QrcodeCurrent />*/} 
-                <button type="button" onClick={() => pages("qrcodeSelect1")} className={classNames("btn btn-outline-primary", qrcodeStyle["qrcodeRecord"])}>
+                <button type="button" onClick={() => pages("qrcodeSelect")} className={classNames("btn btn-outline-primary", qrcodeStyle["qrcodeRecord"])}>
                   上一步
                 </button> 
                 <button type="button"
