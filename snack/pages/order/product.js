@@ -588,7 +588,9 @@ export default function Product() {
               {/* 優惠資訊 */}
 
               <div className="d-flex row">
-                {Array(2)
+              <DiscountInformation imageUrl="/images/seller/小七的滷肉飯.jpg" />
+              <DiscountInformation imageUrl="/images/seller/阿嬤的鹹酥雞.jpg" />
+                {/* {Array(2)
                   .fill(null)
                   .map((v, i) => {
                     return (
@@ -596,7 +598,7 @@ export default function Product() {
                         <DiscountInformation imageUrl="/images/優惠.png" />
                       </div>
                     )
-                  })}
+                  })} */}
               </div>
             </div>
           </div>

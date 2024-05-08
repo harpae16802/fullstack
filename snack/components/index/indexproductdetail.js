@@ -31,6 +31,7 @@ export default function IndexProductDetailCard({
             height={726}
             className={styles.detailPic}
             style={{backgroundColor:'transparent',borderRadius:'8px 0px 0px 8px',objectFit:'cover',top:'-50px'}}
+            alt="product"
           />
           </div> 
          
@@ -78,7 +79,7 @@ export default function IndexProductDetailCard({
             <div className={styles.ingredientText}>成分</div>
 
             {/* 成分 */}
-            <div className={styles.detailIngredient}>含有 : {ingredient}</div>
+            <div className={styles.detailIngredient} style={{marginLeft:'120px'}}>含有 : {ingredient}</div>
 
             <IoIosArrowDown className={styles.ingredientDown1} />
 
@@ -86,7 +87,7 @@ export default function IndexProductDetailCard({
             <div className={styles.detailSolid}></div>
 
             {/* 營養成分表 */}
-            <div className={styles.nutritionIngredient}>{nutrition}</div>
+            <div className={styles.nutritionIngredient} style={{marginLeft:'120px'}}>{nutrition}</div>
             <IoIosArrowDown className={styles.ingredientDown2} />
           </div>
         </div>

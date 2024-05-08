@@ -398,7 +398,7 @@ export default function Ad() {
           <Modal.Footer>
             <Link href="/seller-basic-data/producutsList" passHref>
               <Button variant="secondary" className={styles.secondary}
-                onClick={ goToNightPage}>
+                onClick={goToNightPage}>
                 前往夜市
               </Button>
             </Link>
