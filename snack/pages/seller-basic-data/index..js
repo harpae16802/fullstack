@@ -543,7 +543,7 @@ export default function SellerBasicData() {
                           }
                         />
                       ) : (
-                        <p>無當前圖片</p>
+                        <p>暫無圖片</p>
                       )}
                     </div>
 

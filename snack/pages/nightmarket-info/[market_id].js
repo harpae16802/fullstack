@@ -262,6 +262,8 @@ export default function NightmarketInfo({ initialMarketData }) {
           })}
         </div>
       </div>
+
+      <div className="topicon"  onClick={()=>window.scrollTo(0, 0)}>↑TOP</div>
     </SectionNopaddin>
   )
 }
