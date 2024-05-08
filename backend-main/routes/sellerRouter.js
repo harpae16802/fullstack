@@ -68,47 +68,75 @@ sellerRouter.get('/:sellerId', async (req, res) => {
 });
 
 // 編輯賣家資訊
-sellerRouter.put("/:sellerId/edit", upload.array(), async (req, res) => {
-  const sellerId = req.params.sellerId;
-  const {
-    storeName,
-    contactNumber,
-    email,
-    companyAddress,
-    companyDescription,
-    openingHours,
-    closingHours,
-    restDay,
-    account,
-    password
-  } = req.body;
-  try {
-    const sellerQuery =
-      "UPDATE seller SET store_name=?, contact_number=?, email=?, company_address=?, company_description=?, store_image=?, opening_hours=?, closing_hours=?, rest_day=?, profile_picture=? WHERE seller_id=?";
-    await db.query(sellerQuery, [
+sellerRouter.put(
+  "/:sellerId/edit",
+  upload.fields([
+    { name: "profilePicture", maxCount: 1 },
+    { name: "store_image", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    const sellerId = req.params.sellerId;
+    const {
       storeName,
       contactNumber,
       email,
       companyAddress,
       companyDescription,
-      storeImage,
       openingHours,
       closingHours,
       restDay,
-      profilePicture,
-      sellerId
-    ]);
+      account,
+      password,
+    } = req.body;
 
-    if (account && password) {
-      const accountQuery = 'UPDATE account SET account=?, password=? WHERE seller_id=?';
-      await db.query(accountQuery, [account, password, sellerId]);
+    const profilePicture = req.files["profilePicture"]
+      ? req.files["profilePicture"][0].filename
+      : null;
+    const storeImage = req.files["store_image"]
+      ? "images/seller/" + req.files["store_image"][0].filename
+      : null;
+
+    try {
+      const sellerQuery = `
+      UPDATE seller SET
+      store_name=?,
+      contact_number=?,
+      email=?,
+      company_address=?,
+      company_description=?,
+      store_image=?,
+      opening_hours=?,
+      closing_hours=?,
+      rest_day=?,
+      profile_picture=?
+      WHERE seller_id=?`;
+      await db.query(sellerQuery, [
+        storeName,
+        contactNumber,
+        email,
+        companyAddress,
+        companyDescription,
+        storeImage,
+        openingHours,
+        closingHours,
+        restDay,
+        profilePicture,
+        sellerId,
+      ]);
+
+      if (account && password) {
+        const accountQuery =
+          "UPDATE account SET account=?, password=? WHERE seller_id=?";
+        await db.query(accountQuery, [account, password, sellerId]);
+      }
+      res.status(200).json({ success: true, message: "賣家資訊編輯成功" });
+    } catch (error) {
+      console.error("賣家資訊編輯失敗:", error);
+      res.status(500).json({ success: false, message: "賣家資訊編輯失敗" });
     }
-    res.status(200).json({ success: true, message: '賣家資訊編輯成功' });
-  } catch (error) {
-    console.error('賣家資訊編輯失敗:', error);
-    res.status(500).json({ success: false, message: '賣家資訊編輯失敗' });
   }
-});
+);
+
 
 // 編輯賣家頭像 (圖片上傳)
 sellerRouter.put("/:sellerId/edit/profilePicture", upload.single('profilePicture'), async (req, res) => {
