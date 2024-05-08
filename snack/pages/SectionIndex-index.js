@@ -119,10 +119,19 @@ export default function SectionIndex() {
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen=""
             /> */}
-            <iframe
+            {/* <iframe
               width={840}
               height={542}
               src="https://www.youtube.com/embed/iMgnutnCtsE?si=jLeSoea0zuuZGS36"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen=""
+            ></iframe> */}
+            <iframe
+              width={840}
+              height={542}
+              src="https://www.youtube.com/embed/rPfoc4oMPH4?si=E6Dy9seKJK9fNEEd"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -195,9 +204,13 @@ export default function SectionIndex() {
                         <li>在網頁上找到會員中心</li>
                         <li>在會員中心內 找到商品與QRcode</li>
                         <li>在 "我的商品" 內選擇要兌換的商品 進行下一步</li>
-                        <li>在 "我的商品" 內進行 確認擇要兌換的商品 進行下一步</li>
+                        <li>
+                          在 "我的商品" 內進行 確認擇要兌換的商品 進行下一步
+                        </li>
                         <li>將 網頁上的 QRcode 進行拍照或是截圖紀錄下來</li>
-                        <li>將 QRcode 給予 販售該商品的商家進行兌換就可以了囉 ~ !</li>
+                        <li>
+                          將 QRcode 給予 販售該商品的商家進行兌換就可以了囉 ~ !
+                        </li>
                       </ol>
                     </span>
                   </div>

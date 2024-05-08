@@ -26,7 +26,7 @@ export default function Ad() {
   const goToNightPage = (e) => {
     router.push(`/nightmarket-info/${1}`)
   }
-  goToNightPage
+  
   // 安全性 確認身分
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
@@ -312,12 +312,14 @@ export default function Ad() {
                             adType === 'type2' ? styles.adCardActive : ''
                           }`}
                         >
-                          <img
+                          <Image
                             className="card-img-top"
                             src="/adimg/ad_type2.jpg" //   圖片在這
                             alt="Ad Type 2"
+                            width={300}
+                            height={332}
                             onClick={() =>
-                              toggleImageModal('/adimg/ad_type1.jpg')
+                              toggleImageModal('/adimg/ad_type2.jpg')
                             }
                           />
                           <div className="card-body d-flex justify-content-center">
@@ -396,7 +398,7 @@ export default function Ad() {
           <Modal.Footer>
             <Link href="/seller-basic-data/producutsList" passHref>
               <Button variant="secondary" className={styles.secondary}
-                onClick={() => goToNightPage(e)}>
+                onClick={goToNightPage}>
                 前往夜市
               </Button>
             </Link>
