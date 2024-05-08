@@ -341,11 +341,13 @@ export default function Product() {
                       <FaHeart
                         className={styles.collectIcon}
                         onClick={toggleFavoriteProducts}
+                        style={{cursor:'pointer'}}
                       />
                     ) : (
                       <FaRegHeart
                         className={styles.collectIcon}
                         onClick={toggleFavoriteProducts}
+                        style={{cursor:'pointer'}}
                       />
                     )}
                     <br />
@@ -437,11 +439,13 @@ export default function Product() {
                                     <FaHeart
                                       className={styles.collectIcon}
                                       onClick={toggleFavoriteProducts}
+                                      style={{cursor:'pointer'}}
                                     />
                                   ) : (
                                     <FaRegHeart
                                       className={styles.collectIcon}
                                       onClick={toggleFavoriteProducts}
+                                      style={{cursor:'pointer'}}
                                     />
                                   )}
 

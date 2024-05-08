@@ -56,8 +56,9 @@ const DiscountContentItem = ({ items = [] }) => {
   useEffect(() => {
     const fetchPoints = async () => {
       try {
-        const { data } = await axios.get(`${CARTITEM}points/${customId}`)
-        setCustomPoints(data.points)
+        const { data } = await axios.get(`${CARTITEM}cart/${customId}`)
+        setCustomPoints(data.sum)
+        console.log(customPoints)
       } catch (error) {
         console.error('拿取點數錯誤:', error)
       }
@@ -408,14 +409,14 @@ const DiscountContentItem = ({ items = [] }) => {
       </div>
 
       {/* 測試 */}
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           updatePaymentData(selectedDiscount)
         }}
       >
         測試按鈕
-      </button>
+      </button> */}
       {/* 測試 */}
 
       {/* 付款方式 */}

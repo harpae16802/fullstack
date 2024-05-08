@@ -52,8 +52,7 @@ export const selectGainedTicket01 = async (req, res) => {
 };
 
 export const selectGainedTicket02 = async (req, res) => {
-    const userId = req.body.custom_id;
-console.log(userId)
+    const userId = req.body.custom_id; 
     const sql = `SELECT a.*, (
         SELECT b.play_date
         FROM clear_data b
