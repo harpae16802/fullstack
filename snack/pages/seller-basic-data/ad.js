@@ -23,7 +23,10 @@ export default function Ad() {
   //拿取seller_id
 
   const [sellerId, setSellerId] = useState(null)
-
+  const goToNightPage = (e) => {
+    router.push(`/nightmarket-info/${1}`)
+  }
+  
   // 安全性 確認身分
   const goToSellerPage = (sellerId) => {
     router.push(`/shop-products/${sellerId}`)
@@ -122,7 +125,7 @@ export default function Ad() {
       const response = await axios.post(
         `${ADROUTER}/upload${adType}`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        { headers: { 'Content-Type': 'multipart/form-data' } },
       )
       console.log(response.data)
       setFile(null)
@@ -277,10 +280,12 @@ export default function Ad() {
                             adType === 'type1' ? styles.adCardActive : ''
                           }`}
                         >
-                          <img
+                          <Image
                             className="card-img-top"
                             src="/adimg/ad_type1.jpg" //   圖片在這
                             alt="Ad Type 1"
+                            width={300}
+                            height={332}
                             onClick={() =>
                               toggleImageModal('/adimg/ad_type1.jpg')
                             }
@@ -294,7 +299,7 @@ export default function Ad() {
                                   : `${styles.btnPrimary}`
                               }`}
                             >
-                              產品列表廣告
+                              夜市橫幅廣告
                             </button>
                           </div>
                         </div>
@@ -307,12 +312,14 @@ export default function Ad() {
                             adType === 'type2' ? styles.adCardActive : ''
                           }`}
                         >
-                          <img
+                          <Image
                             className="card-img-top"
                             src="/adimg/ad_type2.jpg" //   圖片在這
                             alt="Ad Type 2"
+                            width={300}
+                            height={332}
                             onClick={() =>
-                              toggleImageModal('/adimg/ad_type1.jpg')
+                              toggleImageModal('/adimg/ad_type2.jpg')
                             }
                           />
                           <div className="card-body d-flex justify-content-center">
@@ -390,8 +397,9 @@ export default function Ad() {
           </Modal.Body>
           <Modal.Footer>
             <Link href="/seller-basic-data/producutsList" passHref>
-              <Button variant="secondary" className={styles.secondary}>
-                前往產品頁
+              <Button variant="secondary" className={styles.secondary}
+                onClick={ goToNightPage}>
+                前往夜市
               </Button>
             </Link>
             <Link href="/seller-basic-data" passHref>

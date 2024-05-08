@@ -138,7 +138,7 @@ export default function AddProducts() {
           setOriginalProductDetails(productData)
           if (productData.image_url) {
             setPreviewImage(
-              `http://localhost:3002/images/${productData.image_url}`
+              `http://localhost:3002/images/${productData.image_url}`,
             )
           }
           return axios.get(`${PRODUCTS_CATEGORIES}`)
@@ -585,7 +585,7 @@ export default function AddProducts() {
                         <div
                           onClick={() =>
                             toggleImageModal(
-                              `${IMGROUTER}public/${productDetails.image_url}`
+                              `${IMGROUTER}public/${productDetails.image_url}`,
                             )
                           }
                         >
@@ -605,17 +605,24 @@ export default function AddProducts() {
                           )}
                         </div>
 
-                        <div onClick={() => toggleImageModal(previewImage)}>
+                        <div>
                           <label htmlFor="store_image" className="form-label">
                             新上傳圖片預覽
                           </label>
                           <br />
                           {previewImage ? (
-                            <img
+                            <Image
                               src={previewImage}
-                              
+                              alt="新上傳圖片預覽"
                               className="img-fluid"
+                              width={190}
+                              height={190}
                               style={{ maxWidth: '190px' }}
+                              onClick={() => 
+                              toggleImageModal(
+                                previewImage
+                                )
+                                }
                             />
                           ) : (
                             <p></p>

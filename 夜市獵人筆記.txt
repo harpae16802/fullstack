@@ -3,13 +3,24 @@
 帳號快速輸入區
 
 -老帳號
+
 luki@gmail.com
+
 -原有密碼
 Abc123
 
+-新密碼
+Bac123
+
 -註冊
 riz@gmail.com
-
+max@gmail.com
 
 -google
 lu913526@gmail.com
+akr913526@gmail.com
+
+
+-商家
+0976331267
+asd12345

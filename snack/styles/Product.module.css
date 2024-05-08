@@ -121,8 +121,8 @@
       padding-top: 3px;
       padding-left: -10px;
         text-align: center;
-      margin-right: 1400px;
-      margin-top: -2685px;
+      margin-right: 100px;
+      margin-top: 15px;
     }
    }
 
@@ -262,8 +262,8 @@
    .collectIcon{
     font-weight: bolder;
     font-size: 30px;
-    margin-top: -95px;
-    margin-left: 130px;
+    margin-top: 0px;
+    margin-left: 10px;
     color: rgb(163, 44, 45);
    }
    @media(max-width:576px){ 
@@ -443,7 +443,7 @@
     margin-top: 8px;
     margin-left: 75px;
     padding-top: 15px;
-    padding-left: 13px;
+    padding-left: 15px;
     background-color: #E5E1DD;
     border-radius: 50%;
     padding-right: 8px;
@@ -966,6 +966,11 @@
   }
 }
 
+
+.detailAccordionPosition{
+  margin-top: 30px;
+}
+
 /* 產品詳細:虛線 */
 .detailDashed {
   width: 578px;
@@ -997,7 +1002,7 @@
 
 .detailIngredient {
   margin-top: 15px;
-  margin-left: 115px;
+  margin-left: 0px;
   font-weight: bold;
 }
 @media (max-width: 576px) {
@@ -1038,7 +1043,7 @@
 /* 營養成分表:文字 */
 .nutritionIngredient {
   margin-top: 14px;
-  margin-left: 115px;
+  margin-left: 0px;
   font-size: 16px;
   font-weight: bold;
 }
