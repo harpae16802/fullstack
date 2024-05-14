@@ -217,6 +217,7 @@ export default function Order() {
       pageNumbers.push(
         <li
           key={i}
+          style={{cursor:'pointer'}}
           className={`page-item ${i === currentPage ? 'active' : ''}`}
         >
           <button className="page-link" onClick={() => handlePageChange(i)}>

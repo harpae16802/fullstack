@@ -148,14 +148,14 @@ export default function Order() {
           </div>
 
           {/* '上一步 下一步'按鈕 */}
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center' ,cursor:'pointer'}}>
             {step !== 1 && (
               <div className={styles.previousButton} onClick={handleBack}>
                 上一步
               </div>
             )}
             {step !== 2 && (
-              <div className={styles.nextButton} onClick={handleNext}>
+              <div className={styles.nextButton} onClick={handleNext} style={{cursor:'pointer'}}>
                 下一步
               </div>
             )}

@@ -611,12 +611,10 @@ export default function AddProducts() {
                           </label>
                           <br />
                           {previewImage ? (
-                            <Image
+                            <img
                               src={previewImage}
                               alt="新上傳圖片預覽"
                               className="img-fluid"
-                              width={190}
-                              height={190}
                               style={{ maxWidth: '190px' }}
                               onClick={() => 
                               toggleImageModal(
@@ -625,7 +623,7 @@ export default function AddProducts() {
                                 }
                             />
                           ) : (
-                            <p></p>
+                            <p>請選擇圖片以預覽</p>
                           )}
                         </div>
                       </div>

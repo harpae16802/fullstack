@@ -241,6 +241,58 @@ cartRouter.put("/cart/clear", async (req, res) => {
       .status(500)
       .send({ error: "Database error occurred while clearing cart." });
   }
-});
+}); 
+ 
+  cartRouter.get("/cart/:id", async (req, res) => {
+  const customId = req.params.id;  
+  let sum=0;
+  const sql = `SELECT a.*, (
+      SELECT b.play_date
+      FROM clear_data b
+      WHERE b.user_id = ${customId} AND a.level_id = b.level_id
+      LIMIT 1
+  ) AS play_date
+  FROM achievement_category a 
 
+  WHERE a.clear_times <= (
+      SELECT COUNT(b.user_id)
+      FROM clear_data b
+      WHERE b.user_id = ${customId} AND a.level_id = b.level_id
+  )    order by  play_date
+  ;`;
+
+  await db.query(sql)
+      .then(async(res2) => {
+          if (!res2) {
+              return res.json({ success: false, error: "Error in signup query" });
+          } else { 
+          console.log(res2)
+ 
+          res2[0].map((v,i)=>{
+            sum+=(+v.get_point);
+            console.log(v.get_point)
+          })
+          // 扣掉點數
+          const sql2 = `SELECT * FROM order_data a JOIN custom b ON a.custom_id=b.custom_Id and b.custom_Id=?   order by  payment_date`;
+          await db.query(sql2,customId)
+              .then((res2) => {
+                  if (!res2) {
+                      return res.json({ success: false, error: "Error in signup query" });
+                  } else {
+                    let sum2=0;
+                    res2[0].map((v,i)=>{
+                      sum2+=v.consume_gamepoint;
+                    }) 
+                    return res.send({ success: true, sum:sum-sum2});
+                  }
+
+                })
+          }
+      })
+      .catch((err) => {
+          console.error("Error executing SQL query:", err);
+          return res.status(500).json({ error: "An error occurred while processing the request" });
+      });
+})
+ 
 export default cartRouter;

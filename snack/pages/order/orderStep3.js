@@ -12,7 +12,7 @@ export default function OrderF() {
   const { auth } = useAuth()
   const customId = auth.custom_id
   console.log(customId)
-
+//s110
   // 設定資料
   const [paymentData, setPaymentData] = useState({
     items: [],

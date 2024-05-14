@@ -151,7 +151,8 @@ const ProductsList = () => {
       pageNumbers.push(
         <li
           key={i}
-          className={`page-item ${i === currentPage ? 'active' : ''}`}
+          style={{cursor:'pointer'}}
+          className={`page-item  ${i === currentPage ? 'active' : ''}`}
         >
           <a className="page-link" onClick={() => handlePageChange(i)}>
             {i}
@@ -411,7 +412,7 @@ const ProductsList = () => {
                           const value = e.target.value
                           setFilter((prev) => ({
                             ...prev,
-                            category: value || undefined, // 当选择“以类别搜索”时，设置为undefined
+                            category: value || undefined, 
                           }))
                         }}
                         value={filter.category || ''}

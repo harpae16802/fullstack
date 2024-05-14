@@ -106,5 +106,7 @@ $white: #fff;
   margin-top: 30px;
   span {
     color: #a32c2d;
+    @media (max-width: 576px) {
+    }
   }
 }

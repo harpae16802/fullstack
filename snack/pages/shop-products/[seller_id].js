@@ -558,6 +558,17 @@ export default function ShopProducts() {
     cssEase: 'linear',
     arrows: false,
     centerMode: true,
+    responsive: [
+      {
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+    ],
   }
 
   // 關鍵字搜尋

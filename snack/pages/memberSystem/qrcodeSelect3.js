@@ -3,6 +3,7 @@
 import SelectMenu from "@/components/memberS/person/selectMenu";
 import QrcodeRecord from "@/components/memberS/qrcode/qrcodeRecord3"
 import { useQrcode } from '@/data/context/QrcodeContext'; 
+import color from "./color.module.css";
 import StepComputer from "@/components/memberS/qrcode/step/stepComputer";
 import Search from "@/components/memberS/qrcode/searchbar"
 import qrcodeStyle from "@/styles/qrcode.module.css"
@@ -75,9 +76,7 @@ export default function QrcodeselectMobile3() {
 
                 { /* <QrcodeCurrent />*/}
 
-                <button type="button" onClick={() => pages("qrcodeSelect3")} className={classNames("btn btn-outline-primary", qrcodeStyle["qrcodeRecord"])}>
-                  上一步
-                </button>
+             
 
                 <button type="button" onClick={() => pages("qrcodeSelect4")} className={classNames("btn btn-outline-primary", qrcodeStyle["qrcodeRecord"])}>
                   下一步

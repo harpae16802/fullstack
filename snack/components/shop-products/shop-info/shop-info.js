@@ -295,7 +295,7 @@ export default function ShopInfo({
           </div>
           <div className="d-flex flex-column">
             <div className={`d-flex align-items-end`}>
-              <h2 className="m-0 me-1">{averageScore}</h2>
+              <h2 className="m-0 me-1">3.0</h2>
               <p className="m-0">/ 5</p>
             </div>
             {/* star */}

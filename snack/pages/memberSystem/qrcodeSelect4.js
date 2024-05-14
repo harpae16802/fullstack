@@ -4,6 +4,7 @@ import SelectMenu from "@/components/memberS/person/selectMenu";
 import QrcodeRecord from "@/components/memberS/qrcode/qrcodeRecord4"
 import StepComputer from "@/components/memberS/qrcode/step/stepComputer";
 import Search from "@/components/memberS/qrcode/searchbar"
+import color from "./color.module.css";
 import styles from "@/styles/form.module.css"
 import Pagination from "@/components/memberS/others/pagination"
 import qrcodeStyle from "@/styles/qrcode.module.css"
@@ -73,7 +74,7 @@ export default function QrcodeselectMobile1() {
                     <input  ref={myRef} type="text" style={{ height: "40px", width: "100%", textIndent: "30px", borderRadius: "20px", padding: " 0 100px 0  20px" }} className="form-control" id="inputPassword2" placeholder="搜尋產品名稱" />
                     <button type="submit"
                     onClick={(e)=>handleString(e)}
-                      className={classNames("btn submit", styles["btn-parmary"])}
+                      className={classNames("btn submit",color["color"] ,styles["btn-parmary"])}
                     >搜尋</button>
 
                   </div> 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 // 套件
 import Modal from 'react-modal'
 // 元件
-import ProductDetailCard from '@/components/Product/productDetail'
+import ProductDetailCardCopy from '@/components/Product/productDetail-copy'
 // icons
 import { FaThumbsUp, FaPlus, FaRegHeart, FaHeart } from 'react-icons/fa'
 // fetch 網址
@@ -150,7 +150,7 @@ export default function ProductCard({
         overlayClassName={style.overlay}
       >
         {selectedProduct && (
-          <ProductDetailCard
+          <ProductDetailCardCopy
             imageUrl={`${API_SERVER}/public/${selectedProduct.image_url}`}
             seller={selectedProduct.store_name}
             product={selectedProduct.product_name}

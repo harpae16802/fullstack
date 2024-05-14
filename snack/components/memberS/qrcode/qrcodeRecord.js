@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from "@/styles/form.module.css"
+import color from"../color.module.css";
 import Image from 'next/image'
 import classNames from 'classnames'
 import { FaHome } from "react-icons/fa";

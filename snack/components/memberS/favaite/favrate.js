@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import Point from '../others/point'
 import Image from 'next/image'
 import Link from 'next/link'
+import color from "../color.module.css";
 import styles from "@/styles/form.module.css"
 // import Pagination from '@/components/memberS/others/pagination'
 import { FaHeart } from "react-icons/fa";
@@ -112,7 +113,7 @@ export default function ticket() {
       {tab == 1 && (
         <div className=" border1">
           <div className={classnames("itemgroup item1", styles["mb-0"])}>
-
+ 
             {/* flexBetween */}
             {products&&products.map((v, i) => {
               const handleRemoveProduct = () => {
@@ -131,10 +132,10 @@ export default function ticket() {
                         <h6 className={classnames(styles['btn-parmary-transparent'])}>{v.product_name} {isTabletOrMobile && (
                           <FaHeart
                             onClick={handleRemoveProduct}
-                            className='text-color iconsize' />)}</h6> 
+                            className={classnames('text-color iconsize',color["color"])} />)}</h6> 
                       </div>  
                       <div className={classnames("md-content mx-full", favStyle["postion-a4"])}>
-                        {isBigScreen && (<button type="submit"    onClick={handleRemoveProduct}  style={{ height: "50px" }} className={classnames("btn  recordBtn", styles["btn-parmary"])}>移除最愛<FaHeart className=' ms-2 colorw iconsize' /> </button>)}
+                        {isBigScreen && (<button type="submit"    onClick={handleRemoveProduct}  style={{ height: "50px" }} className={classnames("btn  recordBtn",color["color"], styles["btn-parmary"])}>移除最愛<FaHeart className=' ms-2 colorw iconsize' /> </button>)}
 
                       </div>
 
@@ -167,12 +168,12 @@ export default function ticket() {
                       </div>
                       <div className={classnames(favStyle["postion-a2"])}>
                         <small>{v.created_at}</small>
-                        <h6 className={classnames(styles['btn-parmary-transparent'])}>{v.seller_id} {isTabletOrMobile && (<FaHeart    onClick={handleRemoveProduct} className='text-color iconsize' />)}</h6>
+                        <h6 className={classnames(styles['btn-parmary-transparent'])}>{v.seller_id} {isTabletOrMobile && (<FaHeart    onClick={handleRemoveProduct} className={classnames('text-color iconsize',color["color"])} />)}</h6>
                       </div>
 
 
                       <div className={classnames("md-content mx-full", favStyle["postion-a4"])}>
-                        {isBigScreen && (<button onClick={handleRemoveProduct}  type="submit" style={{ height: "50px" }} className={classnames("btn  recordBtn", styles["btn-parmary"])}>移除最愛<FaHeart  onClick={handleRemoveProduct} className='text-color iconsize' /> </button>)}
+                        {isBigScreen && (<button onClick={handleRemoveProduct}  type="submit" style={{ height: "50px" }} className={classnames("btn  recordBtn",color["color"], styles["btn-parmary"])}>移除最愛<FaHeart  onClick={handleRemoveProduct} className='text-color iconsize' /> </button>)}
 
                       </div>
 

@@ -63,11 +63,13 @@ export default function ProductItem({
           <FaHeart
             className={styles.RecommendCollectIcon}
             onClick={toggleFavoriteProducts}
+            style={{cursor:'pointer'}}
           />
         ) : (
           <FaRegHeart
             className={styles.RecommendCollectIcon}
             onClick={toggleFavoriteProducts}
+            style={{cursor:'pointer'}}
           />
         )}
 
