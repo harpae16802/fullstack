@@ -1,6 +1,6 @@
 
   import {useData} from "@/pages/context/qrcodeProduct"
-import { useEffect } from "react";
+import { useEffect} from "react";
 
 const ParentComponent = () => {
   const { data, setData } = useData(); // 修改為使用解構賦值，保持一致性
