@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { useAuth } from '@/contexts/custom-context'
-import { CARTITEM, IMGROUTER } from '../../pages/seller-basic-data/config'
+import { CARTITEM, IMGROUTER } from '../../api/config'
 import { FaCheck } from 'react-icons/fa'
 // 加減號
 import QuantityControls from './QuantityControls'

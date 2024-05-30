@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./snack
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend-main
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    environment:
+      WEB_PORT: 3002
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: 
+      DB_NAME: nightmaker
+      DB_PORT: 3306
+      JWT_SECRET: drfj65787GJYHGJ73463
+      CLIENT_ID: abc19wwwww-ba057041-4a8f-4d99
+      CLIENT_SECRET: b340bfe5-827a-4134-80e4-f1fc737f3d97
+
+  db:
+    image: mariadb:10.4
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: nightmaker
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

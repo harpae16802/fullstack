@@ -8,7 +8,7 @@ import {
   PRODUCTS_API,
   PRODUCTS_CATEGORIES,
   IMGROUTER,
-} from './config'
+} from '../../api/config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'

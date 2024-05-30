@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { SELLER_API, PRODUCTS_API, SELLER_LOCATION } from './config' // 引入配置
+import { SELLER_API, PRODUCTS_API, SELLER_LOCATION } from '../../api/config' // 引入配置
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Section from '@/components/layout/section'

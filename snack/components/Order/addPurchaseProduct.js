@@ -6,7 +6,7 @@ import {
   CARTITEM,
   BackEndPIMG,
   IMGROUTER,
-} from '../../pages/seller-basic-data/config'
+} from '../../api/config'
 import styles from '@/styles/Order.module.css'
 import { useAuth } from '@/contexts/custom-context'
 import { usePayment } from '@/contexts/PaymentContext'

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import styles from '@/styles/Order.module.css'
 import axios from 'axios'
 import { useAuth } from '../../contexts/custom-context'
-import { CARTITEM } from '../seller-basic-data/config'
+import { CARTITEM } from '../../api/config'
 import Link from 'next/link'
 
 export default function OrderF() {

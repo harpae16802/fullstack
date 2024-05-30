@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import { SELLER_API, COMMENT } from './config'
+import { SELLER_API, COMMENT } from '../../api/config'
 import { useRouter } from 'next/router'
 import { useSeller } from '../../contexts/SellerContext'
 import 'bootstrap/dist/css/bootstrap.min.css'

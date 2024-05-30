@@ -5,9 +5,9 @@ import Image from 'next/image'
 import SearchBar from '@/components/common/search-bar'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import LoginForm from '../../components/LoginForm' // 賣家表單
+import LoginForm from '@/components/LoginForm' // 賣家表單
 import RegisterForm from '@/components/RegisterForm' //賣家註冊
-import CustomModal from '../../components/CustomModal' // 賣家彈窗
+import CustomModal from '@/components/CustomModal' // 賣家彈窗
 import { MiniloginContext } from '@/contexts/minilogin-context'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
