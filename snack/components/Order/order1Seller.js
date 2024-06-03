@@ -430,6 +430,78 @@ const OrderDetailItem = ({
     );
   }
 
+    // 更新產品總查詢
+  const updateCartItem = async (customId, productId, newQuantity) => {
+    try {
+      const response = await axios.put(`${CARTITEM}/${customId}`, {
+        product_id: productId,
+        quantity: newQuantity,
+      })
+      console.log('Update response:', response.data)
+    } catch (error) {
+      console.error(
+        'Error updating cart:',
+        error.response ? error.response.data : error,
+      )
+    }
+  }
+
+  // 商品增加数量
+  const handleIncreaseQuantity = (seller, productId) => {
+    const newGroupedItems = { ...groupedItems }
+    const item = newGroupedItems[seller].find(
+      (item) => item.product_id === productId,
+    )
+    if (item) {
+      item.quantity += 1
+      const price = parseFloat(item.price) || 0
+      const quantity = parseInt(item.quantity) || 0
+      item.total_price = quantity * price // 更新總價
+      setGroupedItems(newGroupedItems)
+      updateCartItem(auth.custom_id, productId, item.quantity)
+    }
+  }
+
+  // 商品减少数量
+  const handleDecreaseQuantity = (seller, productId) => {
+    const newGroupedItems = { ...groupedItems }
+    const itemIndex = newGroupedItems[seller].findIndex(
+      (item) => item.product_id === productId,
+    )
+    if (itemIndex >= 0) {
+      const item = newGroupedItems[seller][itemIndex]
+      if (item.quantity > 1) {
+        // 如果商品小於一就直接刪除 XD
+        item.quantity -= 1
+        item.total_price = parseFloat(item.price) * item.quantity // 更新總價
+        setGroupedItems(newGroupedItems)
+        updateCartItem(auth.custom_id, productId, item.quantity)
+      } else {
+        handleRemoveProduct(seller, productId)
+      }
+    }
+  }
+
+  // 移除商品
+  const handleRemoveProduct = async (seller, productId) => {
+    try {
+      const response = await axios.delete(
+        `${CARTITEM}/${auth.custom_id}/${productId}`,
+      )
+      console.log('Remove response:', response.data)
+      const updatedItems = { ...groupedItems }
+      updatedItems[seller] = updatedItems[seller].filter(
+        (item) => item.product_id !== productId,
+      )
+      setGroupedItems(updatedItems)
+    } catch (error) {
+      console.error(
+        'Error removing product:',
+        error.response ? error.response.data : error,
+      )
+    }
+  }
+
   return (
     <div className="container" style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '20px' }}>
       {Object.entries(groupedItems).map(([seller, items]) => (
