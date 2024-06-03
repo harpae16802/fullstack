@@ -1246,13 +1246,19 @@
 
 
 
-.outerFrame {
+
+
+/*  */
+
+
+
+/* .outerFrame {
   border: 2px solid #d13f32;
   border-radius: 10px;
   padding: 20px;
   margin-top: 20px;
   background-color: #fdf6e4;
-}
+} */
 
 .orderTitle {
   text-align: center;
@@ -1275,7 +1281,7 @@
   height: 40px;
   border-radius: 50%;
   display: flex;
-  justify-content: space-around;
+  justify-content:  space-around;
   align-items: center;
   font-size: 18px;
   font-weight: bold;
@@ -1305,39 +1311,19 @@
 .textContainer {
   display: flex;
   justify-content: space-around;
-  margin-top: 10px;
+  margin-top: 3%;
 }
 
 .stepText {
   font-size: 18px;
   color: #d1d1d1;
   text-align: center;
-  width: 33.33%; /* 适应三个步骤 */
+  width: 10%;
   position: relative;
-  top: -15px; /* 调整文字位置使其与数字对齐 */
+  
 }
 
 .stepText.active {
   color: #d13f32;
   font-weight: bold;
 }
-
-/* .orderBorder {
-  border: 2px solid #d13f32;
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 20px;
-  background-color: #fff;
-} */
-
-/* .previousButton, .nextButton {
-  padding: 10px 20px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #d13f32;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px;
-} */

@@ -10,6 +10,7 @@ export default function OrderF() {
   // Get custom_id from auth context
   const { auth } = useAuth()
   const customId = auth.custom_id
+  const [step, setStep] = useState(3);
 
   // Set initial state
   const [paymentData, setPaymentData] = useState({
@@ -109,21 +110,21 @@ export default function OrderF() {
     <Section>
       <div className={styles.outerFrame} style={{ height: '1250px' }}>
         <h2 className={styles.orderTitle}>【 訂單明細 】</h2>
-        <div className={styles.stepBorder}>
-          <div className="container">
-            <div className={styles.step1}>1</div>
-            <div className={styles.connectRed}></div>
-            <div className={styles.step2}>2</div>
-            <div className={styles.connectRed}></div>
-            <div className={styles.step2}>3</div>
+         {/* <div className={styles.stepBorder}> */}
+         <div className={styles.stepContainer}>
+            <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>1</div>
+            <div className={`${styles.connector} ${step >= 2 ? styles.active : ''}`}></div>
+            <div className={`${styles.step} ${step >= 2 ? styles.active : ''}`}>2</div>
+            <div className={`${styles.connector} ${step >= 3 ? styles.active : ''}`}></div>
+            <div className={`${styles.step} ${step >= 3 ? styles.active : ''}`}>3</div>
           </div>
-          <br />
           <div className={styles.textContainer}>
-            <div className={styles.step1Text}>訂單資訊</div>
-            <div className={styles.step2Text}>訂單優惠</div>
-            <div className={styles.step3Text}>完成</div>
+            <div className={`${styles.stepText} ${step >= 1 ? styles.active : ''}`}>訂單資訊</div>
+            <div className={`${styles.stepText} ${step >= 2 ? styles.active : ''}`}>訂單優惠</div>
+            <div className={`${styles.stepText} ${step >= 3 ? styles.active : ''}`}>完成</div>
           </div>
-        </div>
+          {/* </div> */}
+          
 
         {/* 表格 */}
         <div className={styles.outerFrame11}>

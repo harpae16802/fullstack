@@ -61,6 +61,7 @@ export default function Order() {
       <Section>
         <div className={styles.outerFrame}>
           <div className={styles.orderTitle}>【 結帳頁面 】</div>
+          {/* <div className={styles.stepBorder}> */}
           <div className={styles.stepContainer}>
             <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>1</div>
             <div className={`${styles.connector} ${step >= 2 ? styles.active : ''}`}></div>
@@ -73,6 +74,8 @@ export default function Order() {
             <div className={`${styles.stepText} ${step >= 2 ? styles.active : ''}`}>訂單優惠</div>
             <div className={`${styles.stepText} ${step >= 3 ? styles.active : ''}`}>完成</div>
           </div>
+          {/* </div> */}
+          
           <div className={styles.orderBorder}>
             <div className={`mt-5 ${styles}`}>
               {step === 1 && (
@@ -95,7 +98,7 @@ export default function Order() {
                 上一步
               </div>
             )}
-            {step !== 3 && (
+            {step !== 2 && (
               <div className={styles.nextButton} onClick={handleNext} style={{ cursor: 'pointer' }}>
                 下一步
               </div>
