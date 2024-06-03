@@ -1327,3 +1327,55 @@
   color: #d13f32;
   font-weight: bold;
 }
+
+
+/* Order.module.css */
+
+.paymentMethodBorder {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.orderTitle {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.methodFlex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  flex-basis: 100%;
+}
+
+.methodImage {
+  margin-bottom: 10px;
+}
+
+.paymentText {
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* 媒體查詢 */
+@media (min-width: 768px) {
+  .payment {
+    flex-basis: 48%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .payment {
+    flex-basis: 23%;
+  }
+}
