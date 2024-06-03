@@ -5,7 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from "@/styles/form.module.css"
 import Pagination from '@/components/memberS/others/pagination'
-export default function ticket() {
+
+export default function Ticket() {
   return (
     <div>
       <Point />
@@ -20,38 +21,30 @@ export default function ticket() {
           <Link aria-current="page" href="#" style={{ border: "2px solid grey" }} className={classNames("nav-link me-1", styles['border-1'], styles["btn-parmary-white"])}>已使用</Link>
         </li>
       </ul>
-      <div className=" border1">
+      <div className="border1">
         <div className={classNames("itemgroup item1", styles["mb-0"])}>
-
           <div className="card">
             {/* flexBetween */}
-            {Array(4).fill(1).map(() => {
-              return <div className={classNames("card card-body", styles.flexBetween)}>
+            {Array(4).fill(1).map((_, i) => (
+              <div key={i} className={classNames("card card-body", styles.flexBetween)}>
                 <div className={classNames("", styles.flexBetween)}>
                   <Image src="/ch.jpeg" alt="Description" width={150} height={150} />
                   <div className="time" style={{ textAlign: 'center' }}>
                     遊戲獎勵
-                    <br />  2024/0202
+                    <br />  2024/02/02
                   </div>
-
                 </div>
                 <div className={classNames("countGroup", styles.flexBetween)}>
                   <div style={{ display: 'flex' }}>
                     +10<h5>點</h5>
                   </div>
-                  <div>
-                  </div>
                 </div>
-
-
               </div>
-            })
-            }
+            ))}
           </div>
-
         </div>
       </div>
-      <Pagination/>
+      <Pagination />
     </div>
   )
 }

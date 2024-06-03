@@ -1,9 +1,10 @@
-version: '3.8'
+version: '3'
 
 services:
   frontend:
     build:
       context: ./snack
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     depends_on:
@@ -13,7 +14,8 @@ services:
 
   backend:
     build:
-      context: ./backend-main
+      context: ./backend-main 
+      dockerfile: Dockerfile
     ports:
       - "3002:3002"
     depends_on:
@@ -24,7 +26,7 @@ services:
       WEB_PORT: 3002
       DB_HOST: db
       DB_USER: root
-      DB_PASS: 
+      DB_PASS:  
       DB_NAME: nightmaker
       DB_PORT: 3306
       JWT_SECRET: drfj65787GJYHGJ73463
@@ -34,9 +36,9 @@ services:
   db:
     image: mariadb:10.4
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
       MYSQL_DATABASE: nightmaker
     volumes:
       - db-data:/var/lib/mysql

@@ -5,21 +5,21 @@ import classNames from 'classnames';
 import styles from "@/styles/form.module.css"
 import memberFormUpdate from '@/api/memberFormUpdate';
 import { useNotify } from '@/data/context/use-notify'
-// 主頁面的form
+
 export default function PersonForm() {
-  const {notify}=useNotify()
+  const { notify } = useNotify();
   const yearVal = useRef();
   const monthVal = useRef();
-  const   dateVal  = useRef(); 
+  const dateVal = useRef(); 
   const passwordErrVal = useRef();
   const repasswordErrVal = useRef();
-  const [data, setdata] = useState({});
+  const [data, setData] = useState({});
   const {
     register, setValue,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm()
+  } = useForm();
   const [birthY, setBirthY] = useState([]);
   const [birthM, setBirthM] = useState([]);
   const [birthD, setBirthD] = useState([]);
@@ -31,28 +31,25 @@ export default function PersonForm() {
       try {
         setBirthY(dataBirth.years());
         setBirthM(dataBirth.month()); 
-        const custom_id =JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id
-        const memberData = await memberFormUpdate.searchMemberData({ custom_id:custom_id }); 
-        setdata(memberData);
-    
-      
+        const custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
+        const memberData = await memberFormUpdate.searchMemberData({ custom_id: custom_id }); 
+        setData(memberData);
+        
         if (memberData) {  
-          setValue('custom_account',memberData.data[0].custom_account);
-          setValue('custom_password',memberData.data[0].custom_password);
-          setValue('custom_phone',memberData.data[0].custom_phone);
-          setValue('custom_name',memberData.data[0].custom_name);
-          setValue('custom_nickname',memberData.data[0].custom_nickname);
-          setValue('custom_year',memberData.data[0].custom_year);
-          setValue('custom_month',memberData.data[0].custom_month);
-          setValue('custom_date',memberData.data[0].custom_date);
-          setValue('custom_sex',memberData.data[0].custom_sex);
-          setValue('custom_address',memberData.data[0].custom_address);
-          setDateValue(memberData.data[0].custom_date)
+          setValue('custom_account', memberData.data[0].custom_account);
+          setValue('custom_password', memberData.data[0].custom_password);
+          setValue('custom_phone', memberData.data[0].custom_phone);
+          setValue('custom_name', memberData.data[0].custom_name);
+          setValue('custom_nickname', memberData.data[0].custom_nickname);
+          setValue('custom_year', memberData.data[0].custom_year);
+          setValue('custom_month', memberData.data[0].custom_month);
+          setValue('custom_date', memberData.data[0].custom_date);
+          setValue('custom_sex', memberData.data[0].custom_sex);
+          setValue('custom_address', memberData.data[0].custom_address);
+          setDateValue(memberData.data[0].custom_date);
         }
-        const arrD=Array(memberData.data[0].custom_date).fill(1).map((v,i)=>{
-          return i;
-        })
-        setBirthD(dataBirth.date(memberData.data[0].custom_year,memberData.data[0].custom_month));
+        
+        setBirthD(dataBirth.date(memberData.data[0].custom_year, memberData.data[0].custom_month));
 
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -64,8 +61,8 @@ export default function PersonForm() {
 
   const selectChange = (e) => {
     const dateD = dataBirth.date(birthgety, e.target.value);
-    setBirthD(dateD)
-  }
+    setBirthD(dateD);
+  };
 
   const custom_account = {
     name: "custom_account",
@@ -107,7 +104,6 @@ export default function PersonForm() {
         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,20}$/,
         message: "至少一個數字、大小寫、 5-20 個字"
       },
-
     },
   };
   const custom_phone = {
@@ -120,12 +116,10 @@ export default function PersonForm() {
       },
     },
   }
-  const custom_name =
-  {
+  const custom_name = {
     name: "nameErr",
     setting: {
       required: { value: true, message: "此欄位必填" },
-
     },
   }
   const custom_nickname = {
@@ -150,56 +144,39 @@ export default function PersonForm() {
   }
   const custom_sex = {
     name: "custom_sex",
-    setting: {
-
-    },
+    setting: {},
   }
   const custom_address = {
     name: "custom_address",
-    setting: {
-
-    },
+    setting: {},
   }
 
-
-  // 送出表單
   const onSubmit = async (formData, e) => {
     e.preventDefault();  // 阻止表单默认提交行为
   
     try {
-      // 从localStorage获取认证信息，并解析出custom_id
       const custom_id = JSON.parse(localStorage.getItem("Nightmarket-auth")).custom_id;
-      
-      // 创建一个新的URLSearchParams对象，并将表单中的所有字段追加进去
       const urlEncodedData = new URLSearchParams();
       Object.entries(formData).forEach(([key, value]) => {
-        urlEncodedData.append(key, value);  // 将每个表单字段添加到URL参数中
+        urlEncodedData.append(key, value);
       });
-  
-      // 单独追加custom_id
       urlEncodedData.append("custom_id", custom_id);
-  
-      // 将URLSearchParams对象转换成字符串，以便提交
       const formString = urlEncodedData.toString();
-  
-      // 此处可以将数据发送到服务器或API端点
       const result = await memberFormUpdate.formUpdate(formString);
-      console.log(result);  // 打印服务器返回的结果
       
       if (result.success) {
-        notify(true,'修改成功');  // 如果修改成功，通知用户
+        notify(true, '修改成功');
       } else {
-        notify(false,'修改失敗，請重新輸入');  // 如果返回的结果不是成功的，通知用户失败
+        notify(false, '修改失敗，請重新輸入');
       }
     } catch (error) {
       console.error("提交失敗，請重新輸入:", error);
-      notify(false,'提交失拜，請檢查');  // 通知用户错误信息
+      notify(false, '提交失拜，請檢查');
     }
   }
   
   return (
     <div>
-      {/* // 主頁面的form */}
       <div className="container"> 
         <form onSubmit={handleSubmit(onSubmit)} method="POST">
           <div className="row">
@@ -207,11 +184,8 @@ export default function PersonForm() {
               <label htmlFor="exampleInputId" className="form-label">帳號</label>
               <input type="text"
                 {...register("custom_account", custom_account.setting)}
-                // onInput={handleSubmit(onSubmit)}
-                // className={(errors.idInputErr && "inputErr") +" form-control"} 
                 className={classNames(errors.custom_account ? "inputErr" : "", "form-control")}
                 id="exampleInputId" aria-describedby="emailHelp" />
-
               {errors.custom_account && <div id="idInputHelp" style={{ color: "red" }} className="form-text">{errors["custom_account"]?.message}</div>}
             </div>
           </div>
@@ -222,10 +196,8 @@ export default function PersonForm() {
                 ref={custom_password}
                 className={classNames(errors.custom_password ? "inputErr" : "", "form-control")}
                 {...register("custom_password", custom_password.setting)}
-                // onInput={handleSubmit(onSubmit)}
                 aria-describedby="passwordHelp" />
               {errors.custom_password && <div className="form-text" style={{ color: "red" }}>{errors["custom_password"]?.message}</div>}
-
             </div>
             <div className={`col-12 col-md-6`}>
               <label htmlFor="examplerepasswordEmail1" className="form-label">請重新輸入密碼</label>
@@ -235,7 +207,6 @@ export default function PersonForm() {
                 className={classNames(errors.repasswordErr ? "inputErr" : "", "form-control")}
                 id="examplerepasswordEmail1" aria-describedby="examplerepasswordHelp" />
               {errors.repasswordErr && <div className="form-text" style={{ color: "red" }}> {errors["repasswordErr"]?.message}</div>}
-
             </div>
           </div>
           <div className="row">
@@ -243,10 +214,8 @@ export default function PersonForm() {
               <label htmlFor="exampleInputName" className="form-label">姓名</label>
               <input type="text"
                 className={classNames(errors.custom_name ? "inputErr" : "", "form-control")}
-
                 id="exampleInputName"
                 {...register("custom_name", custom_name.setting)}
-
                 aria-describedby="custom_name" />
               {errors.custom_name && <div className="form-text" style={{ color: "red" }}> {errors["custom_name"]?.message}</div>}
             </div>
@@ -260,27 +229,21 @@ export default function PersonForm() {
             </div>
           </div>
           <div className="row">
-
-
             <label htmlFor="inputGroupSelect01" className="form-label" >生日</label>
             <div className="col-12 col-md-4">
               <div className="face.input-group pa-1 " style={{ paddingRight: 0 }}>
                 <select className="form-select pa-0" ref={yearVal}
                   {...register("custom_year", custom_year.setting)}
                   onChange={(e) => {
-                    selectChange(e)
+                    selectChange(e);
                     setbirthgety(e.target.value);
-
                   }} defaultValue="年" id="inputGroupSelect02">
                   <option value="年">年</option>
-         
-                  {birthY.map((v, i) => {
-                    return <option value={v} key={v}>{v}</option>
-                      ;
-                  })}
+                  {birthY.length > 0 ? birthY.map((v, i) => (
+                    <option value={v} key={v}>{v}</option>
+                  )) : <option disabled>暫無資料</option>}
                 </select>
                 {errors.custom_year && <div className="form-text" style={{ color: "red" }}> {errors["custom_year"]?.message}</div>}
-
               </div>
             </div>
             <div className="col-12 col-md-4">
@@ -289,31 +252,27 @@ export default function PersonForm() {
                   {...register("custom_month", custom_month.setting)}
                   onChange={(e) => selectChange(e)} defaultValue="月" id="inputGroupSelect02">
                   <option value="月">月</option>
-                  {birthM.map((v, i) => {
-                    return <option value={v} key={v}>{v}</option>
-                      ;
-                  })}
+                  {birthM.length > 0 ? birthM.map((v, i) => (
+                    <option value={v} key={v}>{v}</option>
+                  )) : <option disabled>暫無資料</option>}
                 </select>
                 {errors.custom_month && <div className="form-text" style={{ color: "red" }}> {errors["custom_month"]?.message}</div>}
-
               </div>
             </div>
             <div className="col-12 col-md-4">
               <div className="face.input-group pa-1 " style={{ paddingRight: 0 }}>
                 <select className="form-select pa-0"
-                ref={register("custom_date", custom_date.setting)}
+                  ref={dateVal}
                   {...register("custom_date", custom_date.setting)}
                   defaultValue={custom_date}
-                   id="inputGroupSelect03">
-                    <option value={dateValue} >{dateValue}</option> 
+                  id="inputGroupSelect03">
+                  <option value={dateValue} >{dateValue}</option> 
                   <option >日</option>
-                  {birthD.map((v, i) => {
-                    return <option value={v} key={v}>{v}</option>
-                      ;
-                  })}
+                  {birthD.length > 0 ? birthD.map((v, i) => (
+                    <option value={v} key={v}>{v}</option>
+                  )) : <option disabled>暫無資料</option>}
                 </select>
                 {errors.custom_date && <div className="form-text" style={{ color: "red" }}> {errors["custom_date"]?.message}</div>}
-
               </div>
             </div>
           </div>
@@ -328,8 +287,7 @@ export default function PersonForm() {
                 <option value="2">男</option>
                 <option value="2">女</option>
               </select>
-              {errors.custom_sex}
-
+              {errors.custom_sex && <div className="form-text" style={{ color: "red" }}>{errors.custom_sex?.message}</div>}
             </div>
             <div className={`col-12 col-md-6`}>
               <label htmlFor="exampleInputphone" className="form-label">電話</label>
@@ -340,14 +298,13 @@ export default function PersonForm() {
               {errors.custom_phone && <div id="emailHelp" className="form-text" style={{ color: "red" }}>{errors["custom_phone"]?.message}</div>}
             </div>
           </div>
-
           <div className="row">
             <div className={`col-12 col-md-12`}>
               <label htmlFor="exampleInputAddress" className="form-label">地址(選填)</label>
               <input type="text"
                 {...register("custom_address", custom_address.setting)}
                 className="form-control" id="exampleInputAddress" aria-describedby="emailHelp" />
-              {errors.custom_address}
+              {errors.custom_address && <div className="form-text" style={{ color: "red" }}>{errors["custom_address"]?.message}</div>}
             </div>
           </div>
           <div className="row mt-4 justify-content-center"><button className='fxbtngrey'>送出</button></div>

@@ -1,23 +1,26 @@
-# 使用 Node.js 18 作為基礎映像
+# 使用官方的Node.js镜像作为基础镜像
 FROM node:18
 
-# 設置工作目錄
+# 设置工作目录
 WORKDIR /app
 
-# 複製 package.json 和 package-lock.json
+# 复制package.json和package-lock.json文件
 COPY package*.json ./
 
-# 安裝依賴
+# 安装依赖
 RUN npm install
 
-# 複製項目文件
+# 安装eslint相关依赖
+RUN npm install eslint-config-prettier --save-dev
+
+# 复制所有文件到工作目录
 COPY . .
 
-# 構建應用程序
+# 运行构建命令
 RUN npm run build
 
-# 暴露應用的端口
+# 暴露端口
 EXPOSE 3000
 
-# 啟動應用程序
+# 启动应用
 CMD ["npm", "start"]

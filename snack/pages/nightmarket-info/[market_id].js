@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-// 套件
-import Slider from 'react-slick'
-// 元件
-import SectionNopaddin from '@/components/layout/section-nopaddin'
-import SearchBar from '@/components/common/search-bar'
-import CategoryCard from '@/components/nightmarket-info/category/category-card'
-import Night from '@/components/nightmarket-info/night/night'
-import ShopCard from '@/components/nightmarket-info/shop-card/shop-card'
-// api-path
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Slider from 'react-slick';
+import SectionNopaddin from '@/components/layout/section-nopaddin';
+import SearchBar from '@/components/common/search-bar';
+import CategoryCard from '@/components/nightmarket-info/category/category-card';
+import Night from '@/components/nightmarket-info/night/night';
+import ShopCard from '@/components/nightmarket-info/shop-card/shop-card';
 import {
   MARKET_SELLER,
   CATEGORY,
   MARKET,
   STORE_RATINGS,
   API_SERVER,
-} from '@/components/config/api-path'
-// 樣式
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import style from './nightmarket-info.module.scss'
+} from '@/components/config/api-path';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import style from './nightmarket-info.module.scss';
 
 export default function NightmarketInfo({ initialMarketData }) {
-  const router = useRouter()
-  const { market_id } = router.query
+  if (!initialMarketData) {
+    return <div>Loading...</div>;
+  }
+  
+  const router = useRouter();
+  const { market_id } = router.query;
 
-  const [featuredShops, setFeaturedShops] = useState([]) // 夜市店家圖片(3)
-  const [allShops, setAllShops] = useState([]) // 所有商家的數據
-  const [banner, setBanner] = useState([]) // ad banner
+  const [featuredShops, setFeaturedShops] = useState([]); // 夜市店家圖片(3)
+  const [allShops, setAllShops] = useState([]); // 所有商家的數據
+  const [banner, setBanner] = useState([]); // ad banner
 
-  var settings = {
+  const settings = {
     dots: false,
     infinite: true,
     slidesToShow: 1,
@@ -39,9 +39,8 @@ export default function NightmarketInfo({ initialMarketData }) {
     autoplaySpeed: 8000,
     cssEase: 'linear',
     pauseOnDotsHover: true,
-  }
+  };
 
-  // 食物分類，寫死
   const categories = [
     {
       id: 6,
@@ -79,46 +78,53 @@ export default function NightmarketInfo({ initialMarketData }) {
       title: '飲料',
       imgStyle: { top: '-40px', left: '-52px' },
     },
-  ]
+  ];
 
-  const marketInfo = initialMarketData[0] || {}
+  const marketInfo = initialMarketData[0] || {};
 
   const handleCategoryClick = async (categoryId) => {
     try {
-      const response = await fetch(`${CATEGORY}/${categoryId}`)
-      const filteredShops = await response.json()
+      const response = await fetch(`${CATEGORY}/${categoryId}`);
+      const filteredShops = await response.json();
+      if (!Array.isArray(filteredShops)) {
+        console.error('分類店家數據格式錯誤:', filteredShops);
+        setAllShops([]); // 清空列表
+        return;
+      }
 
       if (filteredShops.length > 0) {
-        const ratingsResponse = await fetch(`${STORE_RATINGS}/${market_id}`)
-        const ratingsData = await ratingsResponse.json()
+        const ratingsResponse = await fetch(`${STORE_RATINGS}/${market_id}`);
+        const ratingsData = await ratingsResponse.json();
+        if (!Array.isArray(ratingsData)) {
+          console.error('評分數據格式錯誤:', ratingsData);
+          setAllShops([]); // 清空列表
+          return;
+        }
 
         const shopsWithRatings = filteredShops.map((shop) => {
           const ratingInfo =
-            ratingsData.find((rating) => rating.seller_id === shop.seller_id) ||
-            {}
+            ratingsData.find((rating) => rating.seller_id === shop.seller_id) || {};
           return {
             ...shop,
             score: Number(ratingInfo.average_night_rating),
             commentCount: ratingInfo.total_comments,
-          }
-        })
+          };
+        });
 
-        setAllShops(shopsWithRatings) // 更新显示筛选后的店家列表
+        setAllShops(shopsWithRatings); // 更新顯示篩選後的店家列表
       } else {
-        setAllShops([]) // 如果没有找到任何店家，清空列表
+        setAllShops([]); // 如果沒有找到任何店家，清空列表
       }
 
-      // 滑动到店家列表
-      const shopListElement = document.getElementById('shopList')
+      const shopListElement = document.getElementById('shopList');
       if (shopListElement) {
-        shopListElement.scrollIntoView({ behavior: 'smooth' })
+        shopListElement.scrollIntoView({ behavior: 'smooth' });
       }
     } catch (error) {
-      console.error('获取分类店家数据失败:', error)
+      console.error('獲取分類店家數據失敗:', error);
     }
-  }
+  };
 
-  // 休息日的映射函數
   const mapDayToChinese = (dayNumber) => {
     const dayMapping = {
       7: '日',
@@ -128,54 +134,66 @@ export default function NightmarketInfo({ initialMarketData }) {
       4: '四',
       5: '五',
       6: '六',
-    }
-    return dayMapping[dayNumber] || '未知' // 如果沒有匹配到，返回'未知'
-  }
+    };
+    return dayMapping[dayNumber] || '未知';
+  };
 
-  // 格式化時間的函數，將 '00:00:00' 轉換為 '00:00'
   const formatTime = (time) => {
-    return time.slice(0, 5)
-  }
+    return time.slice(0, 5);
+  };
 
   useEffect(() => {
-    // 获取商家的基本信息
-    fetch(`${MARKET_SELLER}/${market_id}`)
-      .then((r) => r.json())
-      .then(async (data) => {
-        let shopsWithRatings = []
+    if (!market_id) return;
 
-        const ratingsResponse = await fetch(`${STORE_RATINGS}/${market_id}`)
-        const ratingsData = await ratingsResponse.json()
-        shopsWithRatings = data.map((shop) => {
+    const fetchData = async () => {
+      try {
+        const marketResponse = await fetch(`${MARKET_SELLER}/${market_id}`);
+        const marketData = await marketResponse.json();
+        if (!Array.isArray(marketData)) {
+          console.error('商家數據格式錯誤:', marketData);
+          return;
+        }
+
+        const ratingsResponse = await fetch(`${STORE_RATINGS}/${market_id}`);
+        const ratingsData = await ratingsResponse.json();
+        if (!Array.isArray(ratingsData)) {
+          console.error('評分數據格式錯誤:', ratingsData);
+          return;
+        }
+
+        const shopsWithRatings = marketData.map((shop) => {
           const ratingInfo =
-            ratingsData.find((rating) => rating.seller_id === shop.seller_id) ||
-            {}
+            ratingsData.find((rating) => rating.seller_id === shop.seller_id) || {};
           return {
             ...shop,
             score: Number(ratingInfo.average_night_rating),
             commentCount: ratingInfo.total_comments,
-          }
-        })
+          };
+        });
 
-        const shopImages = shopsWithRatings.map((shop) => shop.store_image)
-        setFeaturedShops(shopImages.slice(0, 3))
-        setAllShops(shopsWithRatings)
-      })
-      .catch((error) => {
-        console.error('獲取商家數據失敗:', error)
-      })
+        const shopImages = shopsWithRatings.map((shop) => shop.store_image);
+        setFeaturedShops(shopImages.slice(0, 3));
+        setAllShops(shopsWithRatings);
 
-    fetch(`${MARKET}/ad/banner`)
-      .then((r) => r.json())
-      .then((data) => {
-        const fixedPaths = data.map((ad) => ({
+        const bannerResponse = await fetch(`${MARKET}/ad/banner`);
+        const bannerData = await bannerResponse.json();
+        if (!Array.isArray(bannerData)) {
+          console.error('廣告數據格式錯誤:', bannerData);
+          return;
+        }
+
+        const fixedPaths = bannerData.map((ad) => ({
           ...ad,
           image_path: ad.image_path.replace(/\\/g, '/'),
-        }))
-        setBanner(fixedPaths)
-        console.log(fixedPaths)
-      })
-  }, [])
+        }));
+        setBanner(fixedPaths);
+      } catch (error) {
+        console.error('獲取數據失敗:', error);
+      }
+    };
+
+    fetchData();
+  }, [market_id]);
 
   return (
     <SectionNopaddin>
@@ -231,14 +249,11 @@ export default function NightmarketInfo({ initialMarketData }) {
         <div className={`row ${style.shopCard}`}>
           {allShops.map((seller, index) => {
             const handleCardClick = () => {
-              router.push(
-                `http://localhost:3000/shop-products/${seller.seller_id}`,
-              )
-            }
-            const restDayChinese = mapDayToChinese(seller.rest_day)
-            // 格式化開店和關店時間
-            const openingTime = formatTime(seller.opening_hours)
-            const closingTime = formatTime(seller.closing_hours)
+              router.push(`http://localhost:3000/shop-products/${seller.seller_id}`);
+            };
+            const restDayChinese = mapDayToChinese(seller.rest_day);
+            const openingTime = formatTime(seller.opening_hours);
+            const closingTime = formatTime(seller.closing_hours);
             return (
               <div
                 key={index}
@@ -258,38 +273,35 @@ export default function NightmarketInfo({ initialMarketData }) {
                   onClick={handleCardClick}
                 />
               </div>
-            )
+            );
           })}
         </div>
       </div>
 
-      <div className="topicon"  onClick={()=>window.scrollTo(0, 0)}>↑TOP</div>
+      <div className="topicon" onClick={() => window.scrollTo(0, 0)}>↑TOP</div>
     </SectionNopaddin>
-  )
+  );
 }
 
-// 頁面重整時
 export async function getServerSideProps(context) {
-  let initialMarketData = null
+  let initialMarketData = [];
 
   try {
-    const { market_id } = context.params
+    const { market_id } = context.params;
 
-    // 獲取市場數據
-    const response = await fetch(`${MARKET}/${market_id}`)
+    const response = await fetch(`${MARKET}/${market_id}`);
     if (response.ok) {
-      initialMarketData = await response.json()
+      initialMarketData = await response.json();
     } else {
-      console.error('API response error:', response.statusText)
+      console.error('API response error:', response.statusText);
     }
   } catch (error) {
-    console.error('获取市场数据失败', error)
+    console.error('获取市场数据失败', error);
   }
 
-  // 返回給組件的props
   return {
     props: {
       initialMarketData,
     },
-  }
+  };
 }

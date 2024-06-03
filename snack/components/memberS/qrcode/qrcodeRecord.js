@@ -17,6 +17,7 @@ export default function CreditComponts({ propsData }) {
   const [data, setdata] = useState([]);
   const [choose, setdatachoose] = useState(-1);
   const [select, setselect] = useState(0);
+
   useEffect(() => {
     try {
       (async function () {
@@ -47,6 +48,7 @@ export default function CreditComponts({ propsData }) {
       console.error("Error in setStoredQRdata:", error);
     }
   }, [router]);
+
   const chooseHandler = (v) => {
     setdatachoose(v);
     setOrderId(v[0].order_id)
@@ -55,38 +57,31 @@ export default function CreditComponts({ propsData }) {
     sessionStorage.setItem('QRcodeDataCreate', []);
     sessionStorage.setItem('QRcodeData', []);
   }
+
   return (
     <>
       <div className={classNames(qrcodeStyles["navbar-top"], 'form')}>
-
-        {data.map((v, i) => {
+        {data.length > 0 ? data.map((v, i) => {
           return (
-            <>
-              <div key={i} className={classNames("d-flex border-1-main-bg     justify-content-between align-items-center ", styles["border-1"])} data-bs-toggle="collapse" data-bs-target={`#collapseExample${i}`} aria-expanded="false" aria-controls={`collapseExample${i}`}>
+            <React.Fragment key={i}>
+              <div className={classNames("d-flex border-1-main-bg justify-content-between align-items-center", styles["border-1"])} data-bs-toggle="collapse" data-bs-target={`#collapseExample${i}`} aria-expanded="false" aria-controls={`collapseExample${i}`}>
                 <div className={classNames(qrcodeStyles["wrap0-ti"], styles["mx-full"], styles["btn-parmary-transparent"])} type="button" data-toggle="collapse">
-                  <div className={classNames(styles["postion-a1"], 'd-flex')} >
-                    <FaHome className={classNames("fahome  ", styles["text-color"])} />
-                    <h3 className='sm-h3'> {v[0].seller_name} </h3>
+                  <div className={classNames(styles["postion-a1"], 'd-flex')}>
+                    <FaHome className={classNames("fahome", styles["text-color"])} />
+                    <h3 className='sm-h3'> {v[0]?.seller_name} </h3>
                   </div>
                   <div className={classNames(styles["postion-a3"], 'd-flex')}></div>
                   <div className={classNames(styles["postion-a2"], 'd-flex')}>
-                    {
-                      choose != v && <button className={classNames(styles['border-1'], "px-3 ms-1 choosebtn  ", qrcodeStyles["choosebtn"], qrcodeStyles["smbtn"])} onClick={() => chooseHandler(v)}  >點選</button>
-                    }
-                    {v == choose && <button className={classNames(styles['border-1'], "px-3 ms-1  ", qrcodeStyles["choosebtn"], qrcodeStyles["smbtn"])}  >已選擇</button>
-                    }
-
+                    {choose !== v && <button className={classNames(styles['border-1'], "px-3 ms-1 choosebtn", qrcodeStyles["choosebtn"], qrcodeStyles["smbtn"])} onClick={() => chooseHandler(v)}>點選</button>}
+                    {v === choose && <button className={classNames(styles['border-1'], "px-3 ms-1", qrcodeStyles["choosebtn"], qrcodeStyles["smbtn"])}>已選擇</button>}
                     <IoIosArrowDown className="align-self-center" />
-
                   </div>
                 </div>
               </div>
-              {/**/}
-              <div key={i} className={classNames("collapse")} id={`collapseExample${i}`}>
-                {v.map((m, ia) => (
+              <div className={classNames("collapse")} id={`collapseExample${i}`}>
+                {v.length > 0 && v.map((m, ia) => (
                   <div className="creditItem" key={ia}>
                     <div className={classNames("itemgroup item1", styles["mb-0"])}>
-                      {/* flexBetween */}
                       <div className={classNames(styles['border-1-grey'], qrcodeStyles["wrap0"], "mx-0 px-3 py-3")}>
                         <div className={classNames(qrcodeStyles["postion-a1"], "text-center")}>
                           <Image src={m.image_url} alt="Description" width={90} height={90} />
@@ -106,9 +101,9 @@ export default function CreditComponts({ propsData }) {
                   </div>
                 ))}
               </div>
-            </>
+            </React.Fragment>
           )
-        })}
+        }) : <div>暫無資料</div>}
       </div>
     </>
   )

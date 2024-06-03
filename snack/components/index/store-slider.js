@@ -67,7 +67,6 @@ function StoreSlider() {
   const [listData, setListData] = useState([])
 
   // 箭頭的useEffect
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 992) {
@@ -116,8 +115,8 @@ function StoreSlider() {
   return (
     <div className="slider-container store-index-gruop">
       <Slider {...settings}>
-        {listData?.map((v, i) => {
-          return (
+        {Array.isArray(listData) && listData.length > 0 ? (
+          listData.map((v, i) => (
             <div className="card-store-index" key={i}>
               <img
                 src={`${API_SERVER}/public/${v.store_image}`}
@@ -134,8 +133,10 @@ function StoreSlider() {
                 看更多
               </Link>
             </div>
-          )
-        })}
+          ))
+        ) : (
+          <div>No data available</div>
+        )}
       </Slider>
     </div>
   )

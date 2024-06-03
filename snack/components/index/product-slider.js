@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import ProductDetailCard from '../Product/productDetail'
-import IndexProductDetailCard from './indexproductdetail'
 import { FaSistrix, FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
-import {
-  INDEX_INFO_PRODUCT,
-  IMAGES_PRODUCTS,
-  API_SERVER,
-} from '@/components/config/api-path'
+import { INDEX_INFO_PRODUCT, API_SERVER } from '@/components/config/api-path'
+import IndexProductDetailCard from './indexproductdetail'
 
 // Prev 箭頭自定義
 const CustomPrevArrow = (props) => {
@@ -51,6 +46,7 @@ const CustomNextArrow = (props) => {
     </div>
   )
 }
+
 function ProductSlider() {
   const [settings, setSettings] = useState({
     dots: false,
@@ -71,9 +67,10 @@ function ProductSlider() {
     setSelectedProductIndex(index)
   }
 
-  const handleCloseModal=(index)=>{
+  const handleCloseModal = () => {
     setSelectedProductIndex(null)
   }
+
   // 加減的按鈕
   const handleQuantityChange = (index, increment) => {
     const newListData = [...listData]
@@ -129,11 +126,10 @@ function ProductSlider() {
 
   return (
     <>
-
       <div className="slider-container product-index-gruop">
         <Slider {...settings}>
-          {listData?.map((v, i) => {
-            return (
+          {Array.isArray(listData) && listData.length > 0 ? (
+            listData.map((v, i) => (
               <div className="card-product-index" key={i}>
                 <div className="product-top">
                   <div className="product-title">
@@ -182,8 +178,10 @@ function ProductSlider() {
                   </div>
                 </div>
               </div>
-            )
-          })}
+            ))
+          ) : (
+            <div>No data available</div>
+          )}
         </Slider>
       </div>
       {selectedProductIndex !== null && (

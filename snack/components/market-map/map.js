@@ -94,19 +94,23 @@ const MapComponent = () => {
           throw new Error('Network response 錯誤')
         }
         const data = await r.json()
-        setPlaces(
-          data.map((place) => ({
-            ...place,
-            position: place.latitude_and_longitude.split(', ').map(Number),
-          })),
-        )
+        if (Array.isArray(data)) {
+          setPlaces(
+            data.map((place) => ({
+              ...place,
+              position: place.latitude_and_longitude.split(', ').map(Number),
+            })),
+          )
+        } else {
+          setPlaces([]) // 如果數據不是數組，設置為空數組
+        }
       } catch (error) {
         console.log('fetch 錯誤:', error)
       }
     }
     fetchData()
   }, [])
-
+  
   return (
     <MapContainer
       center={centerPosition}
@@ -118,7 +122,7 @@ const MapComponent = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
-      {places.map((point) => (
+      {places && places.length > 0 && places.map((point) => (
         <Marker
           key={point.market_id}
           position={point.position}
@@ -157,6 +161,7 @@ const MapComponent = () => {
       ))}
     </MapContainer>
   )
+  
 }
 
 export default MapComponent

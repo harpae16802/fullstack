@@ -32,11 +32,12 @@ function NewsSlider() {
         setListData(result)
       })
   }, [])
+
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        {listData?.map((v, i) => {
-          return (
+        {Array.isArray(listData) && listData.length > 0 ? (
+          listData.map((v, i) => (
             <Link href={`/shop-products/${v.seller_id}`} key={i}>
               <p>
                 ‧【{v.store_name}】－ {v.name}！
@@ -44,8 +45,10 @@ function NewsSlider() {
                 {v.market_name}】
               </p>
             </Link>
-          )
-        })}
+          ))
+        ) : (
+          <p>No data available</p> // 當 listData 是空數組或未定義時顯示的內容
+        )}
       </Slider>
     </div>
   )

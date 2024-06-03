@@ -1,32 +1,23 @@
-import React from 'react'
-// context
-import { useCartContext } from '@/contexts/cartContext'
-// api-path
-import { API_SERVER } from '@/components/config/api-path'
-// icons
-import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
-// 樣式
-import style from './style.module.scss'
+import React from 'react';
+import { useCartContext } from '@/contexts/cartContext';
+import { API_SERVER } from '@/components/config/api-path';
+import { FaShoppingCart, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa';
+import style from './style.module.scss';
 
 export default function Cart() {
-  const { cartItems, total, addToCart, removeFromCart, delFromCart } =
-    useCartContext()
+  const { cartItems, total, addToCart, removeFromCart, delFromCart } = useCartContext();
 
-  // 增加數量
   const handleIncreaseQuantity = (productId) => {
-    // 调用 addToCart 方法并传入商品ID
-    addToCart(productId)
-  }
+    addToCart(productId);
+  };
 
-  // 減少數量
   const handleDecreaseQuantity = (productId) => {
-    removeFromCart(productId)
-  }
+    removeFromCart(productId);
+  };
 
-  // 減少數量
   const handleDel = (productId) => {
-    delFromCart(productId)
-  }
+    delFromCart(productId);
+  };
 
   return (
     <div className={`${style.container}`}>
@@ -40,22 +31,14 @@ export default function Cart() {
                   alt={item.title}
                   className={style.cartItemImage}
                 />
-                <div
-                  className={`d-flex flex-column justify-content-between ${style.cartItemDetails}`}
-                >
+                <div className={`d-flex flex-column justify-content-between ${style.cartItemDetails}`}>
                   <div>
-                    <span className={`fw-bold ${style.productName}`}>
-                      {item.product_name}
-                    </span>
+                    <span className={`fw-bold ${style.productName}`}>{item.product_name}</span>
                     <span>${item.total_price}</span>
                   </div>
-                  <div
-                    className={`d-flex align-items-center justify-content-between`}
-                  >
+                  <div className={`d-flex align-items-center justify-content-between`}>
                     <div className={`${style.quantity}`}>
-                      <button
-                        onClick={() => handleDecreaseQuantity(item.product_id)}
-                      >
+                      <button onClick={() => handleDecreaseQuantity(item.product_id)}>
                         <FaMinus />
                       </button>
                       <input
@@ -65,28 +48,21 @@ export default function Cart() {
                         style={{ border: 'none', outline: 'none' }}
                         readOnly
                       />
-                      <button
-                        onClick={() => handleIncreaseQuantity(item.product_id)}
-                      >
+                      <button onClick={() => handleIncreaseQuantity(item.product_id)}>
                         <FaPlus />
                       </button>
                     </div>
-                    <FaTrashAlt
-                      onClick={() => handleDel(item.product_id)}
-                      className={style.removeItem}
-                    />
+                    <FaTrashAlt onClick={() => handleDel(item.product_id)} className={style.removeItem} />
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <div className={`${style.summaryandbutton}`}>
-            {cartItems.length > 0 && (
-              <div className={`${style.summary}`}>
-                <p>總計</p>
-                <p>${total}</p>
-              </div>
-            )}
+            <div className={`${style.summary}`}>
+              <p>總計</p>
+              <p>${total}</p>
+            </div>
             <a href="/order/orderStep1" className="btn btn-light">
               去購物車結帳
             </a>
@@ -108,5 +84,5 @@ export default function Cart() {
         </div>
       )}
     </div>
-  )
+  );
 }

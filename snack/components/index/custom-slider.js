@@ -73,8 +73,8 @@ function CustomSlider() {
   return (
     <div className="slider-container discount-index-gruop ss">
       <Slider {...settings}>
-        {listData?.map((v, i) => {
-          return (
+        {Array.isArray(listData) && listData.length > 0 ? (
+          listData.map((v, i) => (
             <Link className="slide-item" href={`/shop-products/${v.seller_id}`} key={i}>
               {/* 點圖片要到 咚咚的 商家頁面 */}
               <Image
@@ -85,12 +85,14 @@ function CustomSlider() {
                 height={300}
               />
               <div className="discount-text discount-store">
-              {v.market_name} {v.store_name}
+                {v.market_name} {v.store_name}
               </div>
               <div className="discount-text discount-name">{v.name}</div>
             </Link>
-          )
-        })}
+          ))
+        ) : (
+          <div>No data available</div> // 當 listData 是空數組或未定義時顯示的內容
+        )}
       </Slider>
     </div>
   )

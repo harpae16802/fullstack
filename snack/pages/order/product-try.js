@@ -7,7 +7,7 @@ import PopularProduct from '@/components/Product/popularProduct'
 import ProductItem from '@/components/Product/recommendProduct'
 import DiscountInformation from '@/components/Product/discountInformation'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import classNames from "classnames";
+import classNames from "classnames"
 import 'swiper/css'
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
@@ -17,104 +17,22 @@ import tryApi from '@/api/productApi.js/tryApi'
 import ProductDetailCard from '@/components/Product/productDetail'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Modal, Button } from 'react-bootstrap'
-// fetch 網址
+import axios from 'axios'
 import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
 } from '@/components/config/api-path'
-// 加入收藏:樣式
-// import style from './style.module.scss'
-
-// import { Container, Row, Col } from 'react-bootstrap';
-import axios from 'axios'
 
 export default function Product() {
-  // 熱門產品
   const [popularProducts, setPopularProducts] = useState([])
-
-  const [selectedProduct, setSelectedProduct] = useState(null)
-
-  const handleProductClick = (product) => {
-    // 如果點擊的是當前已選定的產品，則取消選定
-    setSelectedProduct(selectedProduct === product ? null : product)
-  }
-
-  useEffect(() => {
-    const fetchPopularProduct = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:3002/productPageRouter/product'
-        )
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        console.log('eddie', data.data) // 檢查從後端獲得的資料
-        // 解構第一個產品資料並設置到狀態中
-
-        setPopularProducts(data.data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        // 處理錯誤
-      }
-    }
-
-    fetchPopularProduct()
-  }, []) // 空的依賴項表示只在組件 mount 時執行一次
-
-  //隨機推薦
   const [recommendProducts, setRecommendProducts] = useState([])
-
-  useEffect(() => {
-    const fetchRecommendProduct = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:3002/productPageRouter/recommendProduct'
-        )
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        console.log('eddie', data.data) // 檢查從後端獲得的資料
-        // 解構第一個產品資料並設置到狀態中
-
-        setRecommendProducts(data.data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        // 處理錯誤
-      }
-    }
-
-    fetchRecommendProduct()
-  }, []) // 空的依賴項表示只在組件 mount 時執行一次
-
-  // 商品的評分
   const [productScore, setProductScore] = useState([])
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [products, setProducts] = useState([])
 
-  useEffect(() => {
-    const fetchProductScore = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:3002/productPageRouter/recommendProduct'
-        )
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        console.log('eddie', data.data) // 檢查從後端獲得的資料
-        // 解構第一個產品資料並設置到狀態中
+  const router = useRouter()
+  const { market_id } = router.query
 
-        setProductScore(data.data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        // 處理錯誤
-      }
-    }
-
-    fetchProductScore()
-  }, []) // 空的依賴項表示只在組件 mount 時執行一次
-
-  // 食物分類，寫死
   const categories = [
     {
       imgUrl: '/images/category-main.png',
@@ -148,37 +66,56 @@ export default function Product() {
     },
   ]
 
-  const router = useRouter()
-  const { market_id } = router.query
-  const { data } = router.query
-  const [showProductFilter, setShowProductFilter] = useState()
-  // const [popularProduct, setPopularProduct] = useState([])
-
-  //熱銷產品 撈資料呈現
   useEffect(() => {
-    ;(async function () {
-      // 这里是立即执行函数的代码块
-      const data = await tryApi.customAP({ custom_id: 1 })
-      console.log(data)
-    })()
+    const fetchPopularProduct = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/product')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        setPopularProducts(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
 
-    // const fetchData = async () => {
-    //   try {
-    //     const r = await fetch('http://localhost:3002/');
-    //     if (!r.ok) {
-    //       throw new Error("Network response 錯誤");
-    //     }
-    //     const data = await r.json();
-    //     setSeller(data[3]);
-    //   } catch (error) {
-    //     console.log("fetch 錯誤:", error);
-    //   }
-    // };
-    // fetchData();
+    fetchPopularProduct()
   }, [])
 
-  //產品資訊:HTTP請求
-  const [products, setProducts] = useState([])
+  useEffect(() => {
+    const fetchRecommendProduct = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        setRecommendProducts(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchRecommendProduct()
+  }, [])
+
+  useEffect(() => {
+    const fetchProductScore = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        setProductScore(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchProductScore()
+  }, [])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -193,57 +130,76 @@ export default function Product() {
     fetchProducts()
   }, [])
 
-  useEffect(() => {
-    // 因為 market_id 是固定的，這裡不再檢查它的值
-    fetch(`${MARKET_SELLER}/1`) // 直接使用市場ID為1
-      .then((r) => r.json())
-      .then((data) => {
-        setFeaturedShops(data.slice(0, 3)) // 只取前三個作為特色商家
-        setAllShops(data) // 設置所有商家的數據
-      })
-      .catch((error) => {
-        console.error('獲取商家數據失敗:', error)
-      })
-  }, [])
-
-  //swiper
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 576)
-    }
-
-    handleResize() // 確保初始狀態正確
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const handleProductClick = (product) => {
+    setSelectedProduct(selectedProduct === product ? null : product)
+  }
 
   return (
-    <>
-      <Section>
-    
-
-     
-        {/* 產品類型 */} 
-        <div className={`row ${style.content}`}>
-          <div className="container-fluid">
-            {/* 產品種類 */}
-            <div className={`col ${style.category}`}>
-              {categories.map((category, index) => (
-                <div
-                
-                  key={index}
-                  className={classNames(` justify-content-center ${style.categoryCard}`,style.productsList)}
-                >
-                  <CategoryCard {...category} />
-                </div>
-              ))}
-            </div>
+    <Section>
+      <SearchBar />
+      <div className={`row ${style.content}`}>
+        <div className="container-fluid">
+          <div className={`col ${style.category}`}>
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                className={classNames(`justify-content-center ${style.categoryCard}`, style.productsList)}
+              >
+                <CategoryCard {...category} />
+              </div>
+            ))}
           </div>
         </div>
-       
-      </Section>
-    </>
+      </div>
+
+      <div className="container">
+        <h2>熱門產品</h2>
+        <div className="row">
+          {popularProducts.map((product) => (
+            <div key={product.product_id} className="col-md-4">
+              <PopularProduct product={product} onClick={() => handleProductClick(product)} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="container">
+        <h2>隨機推薦</h2>
+        <div className="row">
+          {recommendProducts.map((product) => (
+            <div key={product.product_id} className="col-md-4">
+              <ProductItem product={product} onClick={() => handleProductClick(product)} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="container">
+        <h2>產品評分</h2>
+        <div className="row">
+          {productScore.map((product) => (
+            <div key={product.product_id} className="col-md-4">
+              <ProductDetailCard product={product} onClick={() => handleProductClick(product)} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {selectedProduct && (
+        <Modal show={true} onHide={() => setSelectedProduct(null)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedProduct.product_name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ProductDetailCard product={selectedProduct} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setSelectedProduct(null)}>
+              關閉
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+    </Section>
   )
 }

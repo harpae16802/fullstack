@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const CommentList = ({ comments }) => {
+  const comments = comments || []
   return (
     <div className="container mt-5">
       <h2 className="mb-4">賣家評論</h2>

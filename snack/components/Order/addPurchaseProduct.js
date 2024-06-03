@@ -409,21 +409,21 @@ const DiscountContentItem = ({ items = [] }) => {
       </div>
 
       {/* 測試 */}
-      {/** 
+       
       <button
         type="button"
         onClick={() => {
           updatePaymentData(selectedDiscount)
         }}
       >
-        測試按鈕
-      </button>*/}
+         直接付款 測試按鈕
+      </button>
       {/* 測試 */}
 
       {/* 付款方式 */}
       <div className={styles.paymentMethodBorder}>
         <h3 className={styles.orderTitle}>【 請選擇支付方式來結帳 】</h3>
-
+API 因安全性已移除 請使用測試按鈕
         <div className={styles.methodFlex}>
           {/* 711繳費 */}
           <div className={styles.payment}>

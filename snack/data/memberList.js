@@ -78,4 +78,97 @@ const dataMobile = [
 
   } 
 ];
-export default { data, dataMobile };
+
+const FAVORITE_PRODUCTS = [
+  {
+    title: "個人基本資料",
+    type: "memberData",
+    href: "/memberSystem"
+  }
+    
+  ,  {
+    title: "Qrcode確認",
+    type: "qrcodeExchange2",
+    href: "/memberSystem/qrcodeSelect2"
+
+  }, {
+    title: "Qrcode兌換",
+    type: "qrcodeExchange210",
+    href: "/home1"
+
+  }, {
+    title: "已兌換產品",
+    href: "/memberSystem/qrcodeSelect3",
+    type: "qrcodeExchanged22"
+
+  }
+  ,
+  {
+    title: "我的點數",
+    type: "mTicket",
+    href: "/memberSystem/ticket"
+
+  },
+  {
+    title: "我的遊戲紀錄",
+    href: "/home2",
+    type: "qrcodeExchanged4",
+    href: "/memberSystem/record"
+
+  }
+
+  , {
+    title: "我的最愛",
+    type: "mLove",
+    href: "/memberSystem/favorite"
+
+  } 
+];
+
+
+const selectNav = [
+  {
+    title: "個人基本資料",
+    type: "memberData",
+    href: "/memberSystem"
+  }
+    
+  ,  {
+    title: "Qrcode確認",
+    type: "qrcodeExchange2",
+    href: "/memberSystem/qrcodeSelect2"
+
+  }, {
+    title: "Qrcode兌換",
+    type: "qrcodeExchange210",
+    href: "/home1"
+
+  }, {
+    title: "已兌換產品",
+    href: "/memberSystem/qrcodeSelect3",
+    type: "qrcodeExchanged22"
+
+  }
+  ,
+  {
+    title: "我的點數",
+    type: "mTicket",
+    href: "/memberSystem/ticket"
+
+  },
+  {
+    title: "我的遊戲紀錄",
+    href: "/home2",
+    type: "qrcodeExchanged4",
+    href: "/memberSystem/record"
+
+  }
+
+  , {
+    title: "我的最愛",
+    type: "mLove",
+    href: "/memberSystem/favorite"
+
+  } 
+];
+export  { data, dataMobile ,FAVORITE_PRODUCTS,selectNav   };

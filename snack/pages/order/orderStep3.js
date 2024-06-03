@@ -1,4 +1,3 @@
-// pages/order/orderStep3.js 訂單詳細頁面
 import Section from '@/components/layout/section'
 import React, { useState, useEffect } from 'react'
 import styles from '@/styles/Order.module.css'
@@ -8,12 +7,11 @@ import { CARTITEM } from '../../api/config'
 import Link from 'next/link'
 
 export default function OrderF() {
-  // 拿取custom_id
+  // Get custom_id from auth context
   const { auth } = useAuth()
   const customId = auth.custom_id
-  console.log(customId)
-//s110
-  // 設定資料
+
+  // Set initial state
   const [paymentData, setPaymentData] = useState({
     items: [],
     selectedDiscount: null,
@@ -22,19 +20,19 @@ export default function OrderF() {
     remainingPoints: 0,
   })
 
-  // 訂單提交的狀態
+  // Order submission status
   const [orderSubmitted, setOrderSubmitted] = useState(false)
-  // 拿取 locastorage中的資料
+
+  // Retrieve payment data from localStorage
   useEffect(() => {
     const data = localStorage.getItem('paymentData')
     if (data) {
       const parsedData = JSON.parse(data)
       setPaymentData(parsedData)
-      console.log(parsedData)
     }
   }, [])
 
-  // 如果有資料 就發送請求到後端
+  // Handle order checkout
   useEffect(() => {
     if (!orderSubmitted && paymentData.items.length > 0 && customId) {
       handleOrderCheckout(
@@ -46,7 +44,7 @@ export default function OrderF() {
     }
   }, [paymentData, customId, orderSubmitted])
 
-  //  發送糗求到後端
+  // Function to handle order checkout
   async function handleOrderCheckout(
     items,
     customId,
@@ -77,22 +75,23 @@ export default function OrderF() {
           remain_count: item.quantity,
         })),
       })
-      console.log('訂單成功提交')
-      // 清除 localStorage 中的 paymentData
+      console.log('Order successfully submitted')
+      // Clear payment data from localStorage
       localStorage.removeItem('paymentData')
 
       await handleClearCart(customId, items)
-      setOrderSubmitted(true) // 設置訂單已提交標誌
+      setOrderSubmitted(true) // Set order submitted flag
       setPaymentData((prevData) => ({
         ...prevData,
         orderNumber,
         orderDate: new Date().toLocaleDateString(),
       }))
     } catch (error) {
-      console.error('提交訂單時出現錯誤：', error)
+      console.error('Error submitting order:', error)
     }
   }
 
+  // Function to clear cart
   async function handleClearCart(customId, items) {
     try {
       const productIds = items.map((item) => item.product_id)
@@ -100,9 +99,9 @@ export default function OrderF() {
         custom_id: customId,
         product_ids: productIds,
       })
-      console.log('購物車已經成功清除')
+      console.log('Cart successfully cleared')
     } catch (error) {
-      console.error('清除購物車該筆訂單出錯', error)
+      console.error('Error clearing cart:', error)
     }
   }
 

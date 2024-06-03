@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import { useState, useEffect } from "react"; // 添加了 useEffect 的引入
 const inter = Inter({ subsets: ["latin"] });
-import selectNav from "@/data/memberList";
+import {selectNav} from "@/data/memberList";
 import Link from "next/link";
 import styles from "@/styles/form.module.css";
 import classNames from "classnames";

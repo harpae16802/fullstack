@@ -1,119 +1,38 @@
-import Section from './section'
-import React, { useState, useEffect } from 'react';
+import Section from './section.js'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/styles/Product.module.css'
 import SearchBar from '@/components/common/search-bar'
-import  PopularProduct  from '@/components/Product/popularProduct';
-import ProductItem from '@/components/Product/recommendProduct';
-import DiscountInformation from '@/components/Product/discountInformation';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import PopularProduct from '@/components/Product/popularProduct'
+import ProductItem from '@/components/Product/recommendProduct'
+import DiscountInformation from '@/components/Product/discountInformation'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import classNames from "classnames"
+import 'swiper/css'
 import style from '../nightmarket-info/nightmarket-info.module.scss'
 import CategoryCard from '@/components/nightmarket-info/category/category-card'
 import FilterOptions from '@/components/Product/productFilter'
 import { MARKET_SELLER } from '@/components/config/api-path'
-import  tryApi from "@/api/productApi.js/tryApi"
-import ProductDetailCard from '@/components/Product/productDetail';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button } from 'react-bootstrap';
-// fetch 網址
+import tryApi from '@/api/productApi.js/tryApi'
+import ProductDetailCard from '@/components/Product/productDetail'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { Modal, Button } from 'react-bootstrap'
+import axios from 'axios'
 import {
   FAVORITE_PRODUCTS,
   C_FAVORITE_PRODUCTS,
 } from '@/components/config/api-path'
-// 加入收藏:樣式
-// import style from './style.module.scss'
-
-
-// import { Container, Row, Col } from 'react-bootstrap';
-import axios from 'axios'; 
-
 
 export default function Product() {
-  // 熱門產品
-  const [popularProducts, setPopularProducts] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([])
+  const [recommendProducts, setRecommendProducts] = useState([])
+  const [productScore, setProductScore] = useState([])
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [products, setProducts] = useState([])
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const router = useRouter()
+  const { market_id } = router.query
 
-  const handleProductClick = (product) => {
-    // 如果點擊的是當前已選定的產品，則取消選定
-    setSelectedProduct(selectedProduct === product ? null : product);
-  };
-
-  useEffect(() => {
-    const fetchPopularProduct = async () => {
-      try {
-        const response = await fetch('http://localhost:3002/productPageRouter/product');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log('eddie',data.data); // 檢查從後端獲得的資料
-        // 解構第一個產品資料並設置到狀態中
-    
-        setPopularProducts(data.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        // 處理錯誤
-      }
-    };
-
-    fetchPopularProduct();
-  }, []); // 空的依賴項表示只在組件 mount 時執行一次
-
-
-//隨機推薦
-const [recommendProducts, setRecommendProducts] = useState([]);
-
-useEffect(() => {
-  const fetchRecommendProduct = async () => {
-    try {
-      const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log('eddie',data.data); // 檢查從後端獲得的資料
-      // 解構第一個產品資料並設置到狀態中
-  
-      setRecommendProducts(data.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // 處理錯誤
-    }
-  };
-
-  fetchRecommendProduct();
-}, []); // 空的依賴項表示只在組件 mount 時執行一次
-
-
-// 商品的評分
-const [productScore, setProductScore] = useState([]);
-
-useEffect(() => {
-  const fetchProductScore = async () => {
-    try {
-      const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log('eddie',data.data); // 檢查從後端獲得的資料
-      // 解構第一個產品資料並設置到狀態中
-  
-      setProductScore(data.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // 處理錯誤
-    }
-  };
-
-  fetchProductScore();
-}, []); // 空的依賴項表示只在組件 mount 時執行一次
-
-
-
-  // 食物分類，寫死
   const categories = [
     {
       imgUrl: '/images/category-main.png',
@@ -147,268 +66,140 @@ useEffect(() => {
     },
   ]
 
-  const router = useRouter()
-  const { market_id } = router.query
-  const { data } = router.query
-  const [showProductFilter, setShowProductFilter] = useState();
-  // const [popularProduct, setPopularProduct] = useState([])
+  useEffect(() => {
+    const fetchPopularProduct = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/product')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        setPopularProducts(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
 
- 
-      //熱銷產品 撈資料呈現
-      useEffect(()=>{
-        
-        (async function() {
-        // 这里是立即执行函数的代码块
-       const data=await tryApi.customAP({custom_id:1});
-        console.log(data)
-      })()
-       
-        
-        // const fetchData = async () => {
-        //   try {
-        //     const r = await fetch('http://localhost:3002/');
-        //     if (!r.ok) {
-        //       throw new Error("Network response 錯誤");
-        //     }
-        //     const data = await r.json();
-        //     setSeller(data[3]);
-        //   } catch (error) {
-        //     console.log("fetch 錯誤:", error);
-        //   }
-        // };
-        // fetchData();
-      }, []);
+    fetchPopularProduct()
+  }, [])
 
+  useEffect(() => {
+    const fetchRecommendProduct = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        setRecommendProducts(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
 
-  //產品資訊:HTTP請求
-  const [products, setProducts] = useState([]);
- 
+    fetchRecommendProduct()
+  }, [])
+
+  useEffect(() => {
+    const fetchProductScore = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/productPageRouter/recommendProduct')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const data = await response.json()
+        setProductScore(data.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchProductScore()
+  }, [])
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/products');
-        setProducts(response.data);
+        const response = await axios.get('/api/products')
+        setProducts(response.data)
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching products:', error)
       }
-    };
+    }
 
-    fetchProducts();
-  }, []);
-
-
-
-  useEffect(() => {
-    // 因為 market_id 是固定的，這裡不再檢查它的值
-    fetch(`${MARKET_SELLER}/1`) // 直接使用市場ID為1
-      .then((r) => r.json())
-      .then((data) => {
-        setFeaturedShops(data.slice(0, 3)) // 只取前三個作為特色商家
-        setAllShops(data) // 設置所有商家的數據
-      })
-      .catch((error) => {
-        console.error('獲取商家數據失敗:', error)
-      })
+    fetchProducts()
   }, [])
 
-
-  //swiper
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 576);
-    };
-
-    handleResize(); // 確保初始狀態正確
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-
+  const handleProductClick = (product) => {
+    setSelectedProduct(selectedProduct === product ? null : product)
+  }
 
   return (
-    <>
-      <Section>
-
-
-      <div >
-        <SearchBar /> 
-      </div>
-      
-      {/* 產品類型 */}
-
+    <Section>
+      <SearchBar />
       <div className={`row ${style.content}`}>
-      <div className='container-fluid' style={{    overflow: "hidden",
-    width: "300px"}}>
-      {/* 產品種類 */}
-      <div className={`col ${style.category}`}>
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className={`col-xs-6 col-md-2 d-flex justify-content-center ${style.categoryCard}`}
-            >
-              <CategoryCard {...category} />
+        <div className="container-fluid">
+          <div className={`col ${style.category}`}>
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                className={classNames(`justify-content-center ${style.categoryCard}`, style.productsList)}
+              >
+                <CategoryCard {...category} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <h2>熱門產品</h2>
+        <div className="row">
+          {popularProducts.map((product) => (
+            <div key={product.product_id} className="col-md-4">
+              <PopularProduct product={product} onClick={() => handleProductClick(product)} />
             </div>
           ))}
         </div>
-</div>
-      {/* <div className="container">
-
-        <div className={`row ${styles.categoryPicInterval}`} >
-
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><CategoryItem /></div>
-        <div className="col-2"><Caterun dev>
-
-        </div>
-
-      </div> */}
-
-      
-
-    {/* '篩選條件'原本位置 */}
-      
-
-      {/* 熱門商品 */}
-
-      <Swiper
-      spaceBetween={50}
-      slidesPerView={3}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
-    >
-      <SwiperSlide>
-
-        
-      </SwiperSlide>
-
-
-    </Swiper>
-
-
-      
-    <div className={`container-fluid  ${styles.popularDisplay}`}>
-
-      <div className={`col justify-content-center ${styles.popularContainer}`}>
-
-        {/* 熱門產品 */}
-        {popularProducts && popularProducts.map((product, index) => (
-  <div key={index} className='col-12 col-sm-3 '>
-    <PopularProduct 
-      product_id={product.product_id}
-      imageUrl={`/${product.image_url}`}
-      saleRanking={`No${index + 1}`}
-      market={product.market_name}
-      seller={product.store_name}
-      product={product.product_name}
-      // 将 selectedProduct 设置为选定的商品状态
-      selectedProduct={selectedProduct}
-    />
-
-    <button onClick={() => handleProductClick(product)} className={styles.seeMoreButton} type="button" data-bs-toggle="modal" data-bs-target="#detailModal">看更多</button>
-    
-    {/* 如果選定的商品等於當前迴圈中的商品，則渲染商品詳細資訊 */}
-    {selectedProduct === product && (
-      <ProductDetailCard 
-        imageUrl={`/${product.image_url}`}
-        seller={product.store_name}
-        product={product.product_name}
-        description={product.product_description}
-        price={product.price}
-        ingredient={product.product_ingredient}
-        nutrition={product.product_nutrition}
-        // 将 selectedProduct 设置为选定的商品状态
-        selectedProduct={selectedProduct}
-      />
-    )}
-  </div>
-))}
-
-
-
-          </div>
-
-    </div>
-     
-
-   
-      {/* 推薦餐點 */}
-  <div className={`container-fluid row ${styles.recommendOuter}`} >
-
-{/* 原本標題 */}
-<div className={styles.recommendTitle}>推薦餐點</div>
-
-    <div className={`col ${styles.recommendContainer}`}>
-     
-      {/* 第一行 */}
-
-
-{recommendProducts && (
-  <div>
-  {/*<div className={styles.recommendSize}>  <div key={index} className={`col-lg-4 col-md-6 mb-4 mr-lg-4 ml-lg-4`}> */}
-    {recommendProducts.map((product, index) => (
-      <div key={index}> 
-        <div className={styles.productItemContainer}>
-        <ProductItem 
-          product_id = {product.product_id}
-          imageUrl={`/${product.image_url}`}
-          productName={product.product_name}
-          score="4.7"
-        />
-        </div>
-
-      </div>
-    ))}
-  </div>
-
-)}
-
-       </div>
-
-
-
-
-        <div className={`col ${styles.discountContainer}`} >
-          {/* 優惠資訊 */}
-
-          <div className='d-flex row'>
-
-          {Array(2)
-          .fill(null)
-          .map((v,i) => {
-            return(
-              <div key={i} className=''>
-              <DiscountInformation
-               imageUrl="/images/優惠.png"
-           />
-              </div>
-              
-            )
-          })}
-
-          </div>
-          
-        </div>
-      
       </div>
 
-
-      <FilterOptions />
-
+      <div className="container">
+        <h2>隨機推薦</h2>
+        <div className="row">
+          {recommendProducts.map((product) => (
+            <div key={product.product_id} className="col-md-4">
+              <ProductItem product={product} onClick={() => handleProductClick(product)} />
+            </div>
+          ))}
         </div>
-       
+      </div>
 
-      </Section>
-    </>
+      <div className="container">
+        <h2>產品評分</h2>
+        <div className="row">
+          {productScore.map((product) => (
+            <div key={product.product_id} className="col-md-4">
+              <ProductDetailCard product={product} onClick={() => handleProductClick(product)} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {selectedProduct && (
+        <Modal show={true} onHide={() => setSelectedProduct(null)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedProduct.product_name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ProductDetailCard product={selectedProduct} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setSelectedProduct(null)}>
+              關閉
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+    </Section>
   )
 }
-
-
-
-
-

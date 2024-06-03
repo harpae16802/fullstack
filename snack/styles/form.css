@@ -343,7 +343,7 @@ div.accordion-item:not(.accordion-drop)
 }
 .qrcodeCurrentBackdrop .qrcode-header {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   font-size: 30px;
   color: rgb(163, 44, 45);
@@ -488,7 +488,7 @@ div.accordion-item:not(.accordion-drop)
   .countGroup {
     display: flex;
     width: atuo;
-    justify-content: end;
+    justify-content: flex-end;
     text-align: end;
   }
 
