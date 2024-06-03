@@ -150,7 +150,8 @@ export default function LoginSeller() {
                   </div>
                   <div className="seller-input-group">
                     <LoginForm onSuccess={handleEnterSuccess} />
-
+                    帳號:0987654321
+密碼:asd1236
                     {/* <div className="forget-text">
                       <Link href="/opt" className="forget-p">
                         <p>忘記密碼？</p>
@@ -223,7 +224,8 @@ export default function LoginSeller() {
                   onSuccess={handleEnterSuccess}
                   onError={handleError}
                 />
-
+帳號:0987654321
+密碼:asd1236
                 {/* 登入成功彈窗 */}
                 <CustomModal
                   show={showSuccessModal}

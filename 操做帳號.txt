@@ -2,8 +2,8 @@
 
 
 -買家
-luki@gmail.com
-Abc123
+帳號:luki@gmail.com
+密碼:Abc123
 
 -商家(目前有三組每一個賣家的商品都不同 不同賣家的商品QRcode 驗證也會不同)
 小七的滷肉飯seller_id:4   

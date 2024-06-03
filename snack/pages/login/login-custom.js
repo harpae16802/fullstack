@@ -311,6 +311,7 @@ export default function LoginCustom() {
                     onClick={() => handleLinkClick('type2')}
                   >
                     一般會員登入
+
                   </button>
                 </li>
               </ul>
@@ -588,6 +589,8 @@ export default function LoginCustom() {
                           <p>忘記密碼？</p>
                         </Link>
                       </div> */}
+                      帳號:luki@gmail.com
+密碼:Abc123
                     </form>
                     <button
                       className="google-login mt-5"
@@ -840,6 +843,8 @@ export default function LoginCustom() {
                   <button type="submit" className="btn btn-primary mb-4 mt-4">
                     登入
                   </button>
+                  帳號:luki@gmail.com
+密碼:Abc123
                   {/* <div className="forget-text">
                     <Link href="/opt" className="forget-p">
                       <p>忘記密碼？</p>
