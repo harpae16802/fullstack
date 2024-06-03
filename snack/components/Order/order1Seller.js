@@ -345,13 +345,20 @@
 // }
 
 // export default OrderDetailItem
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import axios from 'axios';
-import { FaTrashAlt, FaCheck } from 'react-icons/fa';
-import { useAuth } from '@/contexts/custom-context';
-import { CARTITEM } from '../../api/config';
-import QuantityControls from './QuantityControls';
+import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
+import axios from 'axios'
+import { FaShopify, FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'
+// import styles from '@/styles/Order.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
+import { useAuth } from '@/contexts/custom-context'
+import { CARTITEM, IMGROUTER } from '../../api/config'
+import { FaCheck } from 'react-icons/fa'
+// 加減號
+import QuantityControls from './QuantityControls'
+
 
 const groupItemsBySeller = (items) => {
   return items.reduce((acc, item) => {
@@ -390,9 +397,28 @@ const OrderDetailItem = ({
     fetchData();
   }, [auth.custom_id]);
 
+  const handleSelectProduct = (seller, item) => {
+    setSelectedSeller(seller);
+    const newSelectedProducts = new Set(selectedProducts);
+    if (newSelectedProducts.has(item.product_id)) {
+      newSelectedProducts.delete(item.product_id);
+    } else {
+      newSelectedProducts.add(item.product_id);
+    }
+    setSelectedProducts(newSelectedProducts);
+
+    const selectedItems = Array.from(newSelectedProducts).map((productId) => {
+      return groupedItems[seller].find((product) => product.product_id === productId);
+    });
+
+    setSelectedItems(selectedItems);
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+    onSelectSeller(seller, selectedItems); // 确保将选择的商品信息传递给父组件
+  };
+
   if (isLoading) return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-      <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+      <faSpinner spin size="3x" />
     </div>
   );
   if (error) return <p>Error: {error}</p>;
@@ -403,64 +429,6 @@ const OrderDetailItem = ({
       </div>
     );
   }
-
-  const updateCartItem = async (customId, productId, newQuantity) => {
-    try {
-      const response = await axios.put(`${CARTITEM}/${customId}`, {
-        product_id: productId,
-        quantity: newQuantity,
-      });
-      console.log('Update response:', response.data);
-    } catch (error) {
-      console.error('Error updating cart:', error.response ? error.response.data : error);
-    }
-  };
-
-  const handleIncreaseQuantity = (seller, productId) => {
-    const newGroupedItems = { ...groupedItems };
-    const item = newGroupedItems[seller].find((item) => item.product_id === productId);
-    if (item) {
-      item.quantity += 1;
-      item.total_price = item.quantity * parseFloat(item.price);
-      setGroupedItems(newGroupedItems);
-      updateCartItem(auth.custom_id, productId, item.quantity);
-    }
-  };
-
-  const handleDecreaseQuantity = (seller, productId) => {
-    const newGroupedItems = { ...groupedItems };
-    const itemIndex = newGroupedItems[seller].findIndex((item) => item.product_id === productId);
-    if (itemIndex >= 0) {
-      const item = newGroupedItems[seller][itemIndex];
-      if (item.quantity > 1) {
-        item.quantity -= 1;
-        item.total_price = item.quantity * parseFloat(item.price);
-        setGroupedItems(newGroupedItems);
-        updateCartItem(auth.custom_id, productId, item.quantity);
-      } else {
-        handleRemoveProduct(seller, productId);
-      }
-    }
-  };
-
-  const handleRemoveProduct = async (seller, productId) => {
-    try {
-      const response = await axios.delete(`${CARTITEM}/${auth.custom_id}/${productId}`);
-      console.log('Remove response:', response.data);
-      const updatedItems = { ...groupedItems };
-      updatedItems[seller] = updatedItems[seller].filter((item) => item.product_id !== productId);
-      setGroupedItems(updatedItems);
-    } catch (error) {
-      console.error('Error removing product:', error.response ? error.response.data : error);
-    }
-  };
-
-  const handleSelectProduct = (seller, product) => {
-    setSelectedSeller(seller);
-    const newSelectedItems = [product];
-    setSelectedItems(newSelectedItems);
-    localStorage.setItem('selectedItems', JSON.stringify(newSelectedItems));
-  };
 
   return (
     <div className="container" style={{ backgroundColor: '#ffffff', borderRadius: '10px', padding: '20px' }}>
@@ -473,7 +441,7 @@ const OrderDetailItem = ({
           {items.map((item) => (
             <div key={item.product_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', padding: '10px', borderRadius: '10px', backgroundColor: '#f9f9f9' }}>
               <div style={{ display: 'flex', alignItems: 'center', marginRight: 'auto' }}>
-                <input type="checkbox" onChange={() => handleSelectProduct(seller, item)} style={{ marginRight: '10px' }} />
+                <input type="checkbox" checked={selectedProducts.has(item.product_id)} onChange={() => handleSelectProduct(seller, item)} style={{ marginRight: '10px' }} />
                 <div style={{ padding: '5px', borderRadius: '10px', border: '1px solid #eaeaea', display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}>
                   <Image src={`http://localhost:3002/public/${item.image_url}`} alt={item.product_name} width={60} height={60} unoptimized style={{ borderRadius: '10px', objectFit: 'cover' }} />
                 </div>
@@ -483,7 +451,7 @@ const OrderDetailItem = ({
                   <div style={{ padding: '2px 0' }}>總價格: ${item.total_price}</div>
                 </div>
               </div>
-              <QuantityControls seller={seller} item={item} handleIncreaseQuantity={handleIncreaseQuantity} handleDecreaseQuantity={handleDecreaseQuantity} />
+              <QuantityControls seller={seller} item={item} handleIncreaseQuantity={() => handleIncreaseQuantity(seller, item.product_id)} handleDecreaseQuantity={() => handleDecreaseQuantity(seller, item.product_id)} />
               <button onClick={() => handleRemoveProduct(seller, item.product_id)} style={{ color: 'red' }}>
                 <FaTrashAlt />
               </button>
