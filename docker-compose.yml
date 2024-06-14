@@ -11,6 +11,9 @@ services:
       - backend
     networks:
       - app-network
+    volumes:
+      - ./snack:/usr/src/app
+      - /usr/src/app/node_modules
 
   backend:
     build:
@@ -32,6 +35,9 @@ services:
       JWT_SECRET: drfj65787GJYHGJ73463
       CLIENT_ID: abc19wwwww-ba057041-4a8f-4d99
       CLIENT_SECRET: b340bfe5-827a-4134-80e4-f1fc737f3d97
+    volumes:
+      - ./backend-main:/usr/src/app
+      - /usr/src/app/node_modules
 
   db:
     build:
